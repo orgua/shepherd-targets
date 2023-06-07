@@ -5,9 +5,7 @@
 #  pre-commit run -a
 # update deps:
 #  pre-commit autoupdate
-# TODO:
-# - auto-enable for repo on clone
-# - more hooks (clang-format,...) https://pre-commit.com/hooks.html
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -25,12 +23,6 @@ repos:
       - id: check-symlinks
       - id: check-toml
       - id: fix-byte-order-marker
-
-  - repo: https://github.com/ansible-community/ansible-lint.git
-    rev: v6.13.1
-    hooks:
-      - id: ansible-lint
-        files: \.(yaml|yml)$
 
   - repo: https://github.com/codespell-project/codespell
     rev: "v2.2.2"

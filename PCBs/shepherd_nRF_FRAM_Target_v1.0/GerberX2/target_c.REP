@@ -1,0 +1,353 @@
+*************************************************************
+FileName = target_c.GBR
+AutoAperture = True
+*************************************************************
+Generating : L1
+      File : target_c_Copper_Signal_Top.gbr
+
+    Adding Layer      : L1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+    D20
+    D21
+    D22
+    D23
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+    D33
+*************************************************************
+
+*************************************************************
+Generating : L2P
+      File : target_c_Copper_Signal_1.gbr
+
+    Adding Layer      : L2P
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D33
+    D34
+*************************************************************
+
+*************************************************************
+Generating : L3
+      File : target_c_Copper_Signal_2.gbr
+
+    Adding Layer      : L3
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D27
+    D30
+    D33
+    D34
+*************************************************************
+
+*************************************************************
+Generating : L4
+      File : target_c_Copper_Signal_Bot.gbr
+
+    Adding Layer      : L4
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D11
+    D12
+    D27
+    D28
+    D31
+    D32
+    D33
+*************************************************************
+
+*************************************************************
+Generating : Bottom Pad Master
+      File : target_c_Pads_Bot.gbr
+
+    Adding Layer      : L4
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D11
+    D12
+    D31
+    D32
+*************************************************************
+
+*************************************************************
+Generating : Top Pad Master
+      File : target_c_Pads_Top.gbr
+
+    Adding Layer      : L1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+    D17
+    D18
+    D19
+    D20
+    D21
+    D22
+    D23
+    D24
+    D25
+    D26
+    D31
+    D32
+*************************************************************
+
+*************************************************************
+Generating : Bottom Overlay
+      File : target_c_Legend_Bot.gbr
+
+    Adding Layer      : Bottom Overlay
+
+
+Used DCodes :
+    D29
+    D35
+    D36
+    D37
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+    D47
+    D48
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : target_c_Soldermask_Bot.gbr
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : L4
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D49
+    D50
+    D51
+    D52
+*************************************************************
+
+*************************************************************
+Generating : Bottom Paste
+      File : target_c_Paste_Bot.gbr
+
+    Adding Layer      : Bottom Paste
+
+    Adding Layer      : L4
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D53
+    D54
+*************************************************************
+
+*************************************************************
+Generating : Top Overlay
+      File : target_c_Legend_Top.gbr
+
+    Adding Layer      : Top Overlay
+
+
+Used DCodes :
+    D29
+    D36
+*************************************************************
+
+*************************************************************
+Generating : Top Paste
+      File : target_c_Paste_Top.gbr
+
+    Adding Layer      : Top Paste
+
+    Adding Layer      : L1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D18
+    D19
+    D20
+    D53
+    D54
+    D55
+    D56
+    D57
+    D58
+    D59
+    D60
+    D61
+    D62
+    D63
+    D64
+    D65
+    D66
+    D67
+    D68
+    D69
+    D70
+    D71
+    D72
+    D73
+    D74
+    D75
+    D76
+    D77
+    D78
+    D79
+    D80
+    D81
+    D82
+    D83
+*************************************************************
+
+*************************************************************
+Generating : Top Solder
+      File : target_c_Soldermask_Top.gbr
+
+    Adding Layer      : Top Solder
+
+    Adding Layer      : L1
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D29
+    D49
+    D50
+    D51
+    D52
+    D84
+    D85
+    D86
+    D87
+    D88
+    D89
+    D90
+    D91
+    D92
+    D93
+    D94
+    D95
+    D96
+    D97
+    D98
+*************************************************************
+
+*************************************************************
+Generating : Keep-Out Layer
+      File : target_c_Keep-out.gbr
+
+    Adding Layer      : Keep-Out Layer
+
+
+Used DCodes :
+    D99
+*************************************************************
+
+*************************************************************
+Generating : Profile
+      File : target_c_Profile.gbr
+
+
+Used DCodes :
+    D100
+*************************************************************
+
+*************************************************************
+Generating : Non-plated through-hole drill file
+      File : target_c_NPTH_Drill.gbr
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Plated through-hole drill file
+      File : target_c_PTH_Drill.gbr
+
+
+Used DCodes :
+    D101
+    D102
+*************************************************************
+
+*************************************************************
+Generating : Drill Drawing
+      File : target_c_Drawing_1.gbr
+
+    Adding Drill Pair : L1-L4
+
+    Adding Layer      : Drill Drawing
+
+
+Used DCodes :
+    D104
+    D105
+*************************************************************
+
+*************************************************************
+Generating : Drill Guide
+      File : target_c_Drillmap_1.gbr
+
+    Adding Drill Pair : L1-L4
+
+    Adding Layer      : Drill Guide
+
+
+Used DCodes :
+    D104
+*************************************************************
+

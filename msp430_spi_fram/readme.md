@@ -2,11 +2,7 @@
 
 The code in this repository turns an MSP430FR5962 microcontrollers into a general purpose non-volatile memory controlled via SPI.
 
-The MSP430FR59XX series of microcontrollers come with on-board ferroelectric RAM (FRAM). In contrast to SRAM, this memory is non-volatile, i.e. it keeps its state without requiring periodic refreshs and without requiring a power supply. In contrast to flash memory, which must be erased before being written, FRAM can be treated just like SRAM and writing consumes very little energy.
-
-## Building
-
-To build the code, you'll need the gcc toolchain for the MSP430 microcontroller series. Refer to [the GitHub workflow](../.github/workflows/build_msp.yml) for how to install the toolchain and build the project.
+The MSP430FR59XX series of microcontrollers come with on-board ferroelectric RAM (FRAM). In contrast to SRAM, this memory is non-volatile, i.e. it keeps its state without requiring periodic refreshes and without requiring a power supply. In contrast to flash memory, which must be erased before being written, FRAM can be treated just like SRAM and writing consumes very little energy.
 
 ## Interface
 
@@ -17,7 +13,7 @@ After the SPI controller pulls the CS line low, the peripheral (this firmware) s
 These three control bytes contain the 20-bit target address of the memory access and the type of operation (R/W).
 The address is transferred lowest byte first.
 If the highest bit of the third address byte is set, the operation is a write operation, otherwise it is a read operation.
-After receiving the three command bytes, the peripheral will setup the corresponding DMA transfer and wait in a low power mode until the CS line goes high.
+After receiving the three command bytes, the peripheral will set up the corresponding DMA transfer and wait in a low power mode until the CS line goes high.
 The controller shall keep the CS line low until the transfer has finished.
 Upon this rising edge, the peripheral stops the transfer and transitions to low power mode again.
 
@@ -32,7 +28,7 @@ The time from the rising edge of the CS line until the next falling edge of the 
 ## Memory map
 
 The MSP430FR5962 has a total of 128kB FRAM.
-Unfortunately, the interrupt vector table lives in the middle of this memory so the 128kB cannot be used contiguosly. Instead they are separated into two regions.
+Unfortunately, the interrupt vector table lives in the middle of this memory so the 128kB cannot be used contiguously. Instead, they are separated into two regions.
 The lower region starts at 0x4000 and ends at 0xFF80 where the IVT lives.
 The upper region starts at 0xFFFF and ends at 0x24000.
 The code/data for this firmware also has to be placed within this area.

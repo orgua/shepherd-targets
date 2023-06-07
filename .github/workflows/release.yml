@@ -1,0 +1,28 @@
+name: Release firmware
+
+on:
+  push:
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/build.yml
+  release-firmware:
+    runs-on: ubuntu-latest
+    needs: call-build
+    steps:
+      - run: mkdir output
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: msp430_nvm_binary
+          path: output/
+
+      - name: Upload artifacts to webserver
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: www.riotee.nessie-circuits.de
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: output/
+          server-dir: /htdocs/riotee/artifacts/msp430fram/latest/
+          protocol: ftps

@@ -22,7 +22,7 @@ jobs:
       SDK_LINK: https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/sdks/nrf5/binaries/nrf5_sdk_17.1.0_ddde560.zip
       SDK_ROOT: "${{ github.workspace }}/sdk_nrf/nrf5_sdk_17.1.0_ddde560"
       # updates: https://www.nordicsemi.com/Products/Development-software/nrf5-sdk/download
-      # -> the two _ROOT environment variables are important for the make-file 
+      # -> the two _ROOT environment variables are important for the make-file
 
     steps:
       - name: Checkout 🛎️

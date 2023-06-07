@@ -15,7 +15,10 @@ jobs:
           - msp430_spi_fram
           #- msp430_testable
     env:
-      MSP_GNU_ROOT: ""${{ github.workspace }}/msp430-gcc"
+      MSP_GNU_LINK: https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-LlCjWuAbzH/9.3.1.2/msp430-gcc-full-linux-x64-installer-9.3.1.2.7z
+      MSP_GNU_FILE: msp430-gcc-full-linux-x64-installer-9.3.1.2.run
+      MSP_GNU_ROOT: "${{ github.workspace }}/msp430-gcc"
+      # updates: https://www.ti.com/tool/MSP430-GCC-OPENSOURCE#downloads
 
     steps:
     - name: Checkout 🛎️
@@ -25,14 +28,11 @@ jobs:
       run: sudo apt update && sudo apt install -y p7zip build-essential wget
 
     - name: Download TI's MSP gcc toolchain 🔽
-      run: wget https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-LlCjWuAbzH/9.3.1.2/msp430-gcc-full-linux-x64-installer-9.3.1.2.7z
-      # updates: https://www.ti.com/tool/MSP430-GCC-OPENSOURCE#downloads
-
-    - name: Unpack with 7zip 📦
-      run: 7zr x msp430-gcc-full-linux-x64-installer-9.3.1.2.7z
-
+      run: "wget -q --tries 3 ${{ env.MSP_GNU_LINK }} --output-document=gcc-msp.7z"
+    - name: Unpack TI's MSP gcc toolchain with 7zip 📦
+      run: 7zr x gcc-msp.7z
     - name: Run the installer 🏃
-      run: sudo ./msp430-gcc-full-linux-x64-installer-9.3.1.2.run --mode unattended --prefix ${{ env.MSP_GNU_ROOT }}
+      run: sudo ./${{ env.MSP_GNU_FILE }} --mode unattended --prefix ${{ env.MSP_GNU_ROOT }}
 
     - name: Build the project "${{ matrix.subproject }}" 🧱
       run: make

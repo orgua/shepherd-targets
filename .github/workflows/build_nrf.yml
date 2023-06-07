@@ -1,0 +1,56 @@
+name: Build nRF52
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        subproject:
+          - nrf52_demo_rf
+          - nrf52_testable
+          # - nrf52_conn_test_tx
+
+    env:
+      GNU_INSTALL_LINK: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+      GNU_INSTALL_ROOT: "${{ github.workspace }}/msp430-gcc/gcc-arm-none-eabi-10.3-2021.10/"
+      # updates: https://developer.arm.com/downloads/-/gnu-rm
+      SDK_LINK: https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/sdks/nrf5/binaries/nrf5_sdk_17.1.0_ddde560.zip
+      SDK_ROOT: "${{ github.workspace }}/sdk_nrf/nrf5_sdk_17.1.0_ddde560"
+      # updates: https://www.nordicsemi.com/Products/Development-software/nrf5-sdk/download
+      # -> the two _ROOT environment variables are important for the make-file 
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install dependencies 🔧
+        run: sudo apt update && sudo apt install -y build-essential wget unzip
+
+      - name: Download GNU Arm Embedded Toolchain 🔽
+        run: "wget -q --tries 3 ${{ env.GNU_INSTALL_LINK }} --output-document=gcc-arm.tar.bz2"
+        working-directory: "${{ github.workspace }}"
+      - name: Extract GCC cross-compiler ⚔
+        run: "tar -xf gcc-arm.tar.xz"
+        working-directory: "${{ github.workspace }}"
+
+      - name: Download nRF5 SDK 🔽
+        run: "wget -q --tries 3 ${{ env.SDK_LINK }} --output-document=sdk_nrf.zip"
+        working-directory: "${{ github.workspace }}"
+      - name: Extract GCC cross-compiler ⚔
+        run: "unzip sdk_nrf.zip"
+        working-directory: "${{ github.workspace }}"
+
+      - name: Build the project "${{ matrix.subproject }}" 🧱
+        run: make
+        working-directory: "${{ github.workspace }}/${{ matrix.subproject }}"
+
+      - name: Upload artifacts to github 🔼
+        uses: actions/upload-artifact@v3
+        with:
+          name: "${{ matrix.subproject }}"
+          path: "${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex"

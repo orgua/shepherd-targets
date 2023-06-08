@@ -1,0 +1,11 @@
+
+# directories
+
+# RSSISpy repo used to merge RSSISpy updates
+target/rssispy/
+
+
+# files
+README_internal.txt
+target/gpi/.git*
+*.pyc

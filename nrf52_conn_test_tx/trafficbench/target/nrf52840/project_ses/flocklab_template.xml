@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    FlockLab test configuration.
+    Help is available at <https://gitlab.ethz.ch/tec/public/flocklab/wiki/-/wikis/Man/XmlConfig>
+
+    #define COMMENT_DUMMY \
+    /*
+    * NOTE: This file gets processed by the standard C preprocessor.
+    * It defines _XML_ as a hint that this is an XML file (it can be evaluated in included files).
+    * ATTENTION:
+    * The C preprocessor is not aware of XML comment markers, so you can do fragile things
+    * within XML comment blocks.
+    * The preprocessor must be called with an option to keep C-style comments, otherwise the
+    * BASE64 encoded image can be damaged (since it can contain // combinations).
+    * NOTE: In consequence, all C-style comments (e.g. from included files) will be kept in the
+    * generated output (other than one might expect). An exception are comments inside macro 
+    * declarations, which is the reason why you won't see this comment block in the output
+    * (as it is inside the definition of COMMENT_DUMMY). To avoid struggling and confusion with
+    * this topic, we include the config header using GCC option -imacro (instead of #include),
+    * which generates no output (only keeps the macro definitions). Another (less comfortable)
+    * workaround would be to wrap all comments into an empty macro like this:
+    *  #define C(...)
+    *  C(/ * some comment * /)
+    */ /*
+    // #define _XML_
+    // #include "config_flocklab.h"
+    */
+    #undef COMMENT_DUMMY
+-->
+
+<testConf xmlns="http://www.flocklab.ethz.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flocklab.ethz.ch xml/flocklab.xsd">
+
+    <!-- General configuration -->
+    <generalConf>
+        <name>FLOCKLAB_TEST_NAME</name>
+        <description>FLOCKLAB_TEST_DESCRIPTION</description>
+        <!--<custom>up to 4096 characters</custom>-->
+        <schedule>
+            <!--<start>YYYY-mm-ddTHH:MM:SSZ</start>-->
+            <duration>FLOCKLAB_TEST_DURATION</duration>
+        </schedule>
+        <emailResults>no</emailResults>
+        <abortOnError>no</abortOnError>
+    </generalConf>
+
+    <!-- Target configuration -->
+    <targetConf>
+	<obsIds>FLOCKLAB_OBSERVERS</obsIds>
+#ifdef FLOCKLAB_NODES
+        <targetIds>FLOCKLAB_NODES</targetIds>
+#endif
+        <voltage>3.3</voltage>
+        <embeddedImageId>Image_1</embeddedImageId>
+    </targetConf>
+
+    <!-- Serial Service configuration -->
+    <serialConf>
+	<obsIds>FLOCKLAB_OBSERVERS</obsIds>
+        <port>serial</port>
+        <baudrate>FLOCKLAB_UART_BAUDRATE</baudrate>
+    </serialConf>
+
+    <!-- GPIO Tracing Service configuration -->
+    <gpioTracingConf>
+	<obsIds>FLOCKLAB_OBSERVERS</obsIds>
+        <pins>LED1 LED2 LED3 INT1 INT2</pins>
+        <offset>1</offset>
+    </gpioTracingConf>
+
+    <!-- GPIO Actuation Service configuration -->
+    <gpioActuationConf>
+	<obsIds>FLOCKLAB_OBSERVERS</obsIds>
+        <!-- use SIG1 as near-synchronous start signal -->
+        <pinConf>
+            <pin>SIG1</pin>
+            <level>toggle</level>
+            <offset>2</offset>
+        </pinConf>
+    </gpioActuationConf>
+    
+#if FLOCKLAB_POWER_PROFILING
+    <!-- Power Profiling Service configuration -->
+    <powerProfilingConf>
+	<obsIds>FLOCKLAB_OBSERVERS</obsIds>
+        <offset>1</offset>
+        <duration>FLOCKLAB_POWER_PROFILING_DURATION</duration>
+        <samplingRate>FLOCKLAB_POWER_PROFILING_SAMPLING_RATE</samplingRate>
+        <fileFormat>csv</fileFormat>
+    </powerProfilingConf>
+#endif
+
+#if 0
+    <!-- Debug configuration -->
+    <debugConf>
+	<obsIds>FLOCKLAB_OBSERVERS</obsIds>
+    </debugConf>
+#endif
+
+    <!-- Embedded Image(s) -->
+    <embeddedImageConf>
+        <embeddedImageId>Image_1</embeddedImageId>
+        <name>FLOCKLAB_IMAGE_NAME</name>
+        <description>FLOCKLAB_IMAGE_DESCRIPTION</description>
+        <platform>nrf5</platform>
+        <data>
+          #define FLOCKLAB_STRINGIFY(x)   FLOCKLAB_STRINGIFY2(x)
+          #define FLOCKLAB_STRINGIFY2(x)  #x
+          #include FLOCKLAB_STRINGIFY(IMAGE)
+        </data>
+    </embeddedImageConf>
+
+</testConf>

@@ -381,7 +381,7 @@ TICKS_PER_US = 16
 //**************************************************************************************************
 
 // TRX is a short form to specify TRX instructions on a single line (with limited flexibility)
-// maybe it shoud be avoided
+// maybe it should be avoided
 .macro TRX transmitter:req, timeout:req, tx_delay:req, type=fixed, options:vararg
 	.ifc "\type", "fixed"; .else; .ifc "\type", "random"
 	.else
@@ -538,7 +538,7 @@ schedule_end:
 	TRX_PRE_DELAY  = TRX_PRE_DELAY * TICKS_PER_US
 	TRX_POST_DELAY = TRX_POST_DELAY * TICKS_PER_US
 
-	// for some reason SCHEDULE_SIZE_1 (= label difference in subsection 1 with subsections switched inbetween)
+	// for some reason SCHEDULE_SIZE_1 (= label difference in subsection 1 with subsections switched in between)
 	// is interpreted as non-constant
 	//.subsection 0
 	//SCHEDULE_SIZE_0 = . - schedule

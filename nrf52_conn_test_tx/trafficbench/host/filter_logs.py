@@ -72,7 +72,7 @@ ap.add_argument("-r", "--record-spec", nargs=2, metavar=("ID", "PREFIX"), defaul
 
 group = ap.add_mutually_exclusive_group()
 group.add_argument("--strict", action="store_true", default=True, help=
-        "parse input more strictly, show warnings if control characters appear at unsual places. "
+        "parse input more strictly, show warnings if control characters appear at unusual places. "
         "makes processing slower. default = on")
 group.add_argument("--no-strict", dest="strict", action="store_false")
 

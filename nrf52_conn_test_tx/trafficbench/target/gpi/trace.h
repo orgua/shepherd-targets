@@ -116,7 +116,7 @@ typedef uint32_t Gpi_Trace_Uint_t;
 // anyway, we don't use it here.
 #if (GPI_TRACE_FILTER_PATH > 1)
   #if __OPTIMIZE__
-    // ok
+        // ok
   #else
         //		#pragma message "relaxing GPI_TRACE_FILTER_PATH to 1 because values > 1 are critical without optimization"
     #undef GPI_TRACE_FILTER_PATH

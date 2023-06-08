@@ -30,7 +30,7 @@
  *
  *	@file					cbor.h
  *
- *	@brief					CBOR data types and leightweight encoding functions
+ *	@brief					CBOR data types and lightweight encoding functions
  *
  *	@version				$Id$
  *	@date					TODO

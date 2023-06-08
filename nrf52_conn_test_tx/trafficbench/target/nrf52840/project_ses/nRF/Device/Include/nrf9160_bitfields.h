@@ -9158,13 +9158,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define TAD_CLOCKSTOP_STOP_Stop       (1UL) /*!< Stop all trace and debug clocks. */
 
 /* Register: TAD_ENABLE */
-/* Description: Enable debug domain and aquire selected GPIOs */
+/* Description: Enable debug domain and acquire selected GPIOs */
 
 /* Bit 0 :   */
 #define TAD_ENABLE_ENABLE_Pos         (0UL) /*!< Position of ENABLE field. */
 #define TAD_ENABLE_ENABLE_Msk         (0x1UL << TAD_ENABLE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
 #define TAD_ENABLE_ENABLE_DISABLED    (0UL) /*!< Disable debug domain and release selected GPIOs */
-#define TAD_ENABLE_ENABLE_ENABLED     (1UL) /*!< Enable debug domain and aquire selected GPIOs */
+#define TAD_ENABLE_ENABLE_ENABLED     (1UL) /*!< Enable debug domain and acquire selected GPIOs */
 
 /* Register: TAD_PSEL_TRACECLK */
 /* Description: Pin number configuration for TRACECLK */

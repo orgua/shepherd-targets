@@ -2,7 +2,7 @@
 
 The app monitors up to eight GPIO pins for rising edges and upon detection prints the index of the pin where the edge was detected over UART. Simultaneously, it waits for incoming messages on the UART. When receiving an ASCII encoded number between 0 and the number of configured pins, the app sets the corresponding pin high for ~100us.
 
-Edit the `pins` array and the UART pin defintions at the top of `src/main.c` to reflect your hardware.
+Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to reflect your hardware.
 
 # Functionality
 

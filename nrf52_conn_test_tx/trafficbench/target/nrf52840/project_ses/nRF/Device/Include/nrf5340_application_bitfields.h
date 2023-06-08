@@ -2059,7 +2059,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Bits 31..0 : If the value of the KEY field is non-zero, and the KEY fields match on both the
         CPU and debugger sides, disable APPROTECT and enable debug access to non-secure mode until
-        the next pin reset, brown-out reset, power-on reset, or watchog timer reset. After reset the debugger side register has a fixed KEY value. To enable debug access, both CTRL-AP and UICR.APPROTECT protection needs to be disabled. */
+        the next pin reset, brown-out reset, power-on reset, or watchdog timer reset. After reset the debugger side register has a fixed KEY value. To enable debug access, both CTRL-AP and UICR.APPROTECT protection needs to be disabled. */
 #define CTRLAPPERI_APPROTECT_DISABLE_KEY_Pos  (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_APPROTECT_DISABLE_KEY_Msk                                                       \
   (0xFFFFFFFFUL << CTRLAPPERI_APPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
@@ -2081,7 +2081,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Bits 31..0 : If the value of the KEY field is non-zero, and the KEY fields match on both the
         CPU and debugger sides, disable SECUREAPPROTECT and enable debug access to secure mode until
-        the next pin reset, brown-out reset, power-on reset, or watchog timer reset. After reset the debugger side register has a fixed KEY value. To enable debug access, both CTRL-AP and UICR.SECUREAPPROTECT protection needs to be disabled. */
+        the next pin reset, brown-out reset, power-on reset, or watchdog timer reset. After reset the debugger side register has a fixed KEY value. To enable debug access, both CTRL-AP and UICR.SECUREAPPROTECT protection needs to be disabled. */
 #define CTRLAPPERI_SECUREAPPROTECT_DISABLE_KEY_Pos (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_SECUREAPPROTECT_DISABLE_KEY_Msk                                                 \
   (0xFFFFFFFFUL << CTRLAPPERI_SECUREAPPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
@@ -15548,13 +15548,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define TAD_CLOCKSTOP_STOP_Stop       (1UL) /*!< Stop all trace and debug clocks. */
 
 /* Register: TAD_ENABLE */
-/* Description: Enable debug domain and aquire selected GPIOs */
+/* Description: Enable debug domain and acquire selected GPIOs */
 
 /* Bit 0 :   */
 #define TAD_ENABLE_ENABLE_Pos         (0UL) /*!< Position of ENABLE field. */
 #define TAD_ENABLE_ENABLE_Msk         (0x1UL << TAD_ENABLE_ENABLE_Pos) /*!< Bit mask of ENABLE field. */
 #define TAD_ENABLE_ENABLE_DISABLED    (0UL) /*!< Disable debug domain and release selected GPIOs */
-#define TAD_ENABLE_ENABLE_ENABLED     (1UL) /*!< Enable debug domain and aquire selected GPIOs */
+#define TAD_ENABLE_ENABLE_ENABLED     (1UL) /*!< Enable debug domain and acquire selected GPIOs */
 
 /* Register: TAD_PSEL_TRACECLK */
 /* Description: Pin configuration for TRACECLK */

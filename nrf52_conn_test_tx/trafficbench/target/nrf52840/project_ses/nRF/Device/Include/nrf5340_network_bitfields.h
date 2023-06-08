@@ -1728,7 +1728,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Bits 31..0 : If the value of the KEY field is non-zero, and the KEY fields match on both the
         CPU and debugger sides, disable APPROTECT and enable debug access to non-secure mode until
-        the next pin reset, brown-out reset, power-on reset, or watchog timer reset. After reset the debugger side register has a fixed KEY value. To enable debug access, both CTRL-AP and UICR.APPROTECT protection needs to be disabled. */
+        the next pin reset, brown-out reset, power-on reset, or watchdog timer reset. After reset the debugger side register has a fixed KEY value. To enable debug access, both CTRL-AP and UICR.APPROTECT protection needs to be disabled. */
 #define CTRLAPPERI_APPROTECT_DISABLE_KEY_Pos  (0UL) /*!< Position of KEY field. */
 #define CTRLAPPERI_APPROTECT_DISABLE_KEY_Msk                                                       \
   (0xFFFFFFFFUL << CTRLAPPERI_APPROTECT_DISABLE_KEY_Pos) /*!< Bit mask of KEY field. */
@@ -8254,7 +8254,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Register: RADIO_CCACTRL */
 /* Description: IEEE 802.15.4 clear channel assessment control */
 
-/* Bits 31..24 : Limit for occurances above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled. */
+/* Bits 31..24 : Limit for occurrences above CCACORRTHRES. When not equal to zero the corrolator based signal detect is enabled. */
 #define RADIO_CCACTRL_CCACORRCNT_Pos (24UL) /*!< Position of CCACORRCNT field. */
 #define RADIO_CCACTRL_CCACORRCNT_Msk                                                               \
   (0xFFUL << RADIO_CCACTRL_CCACORRCNT_Pos) /*!< Bit mask of CCACORRCNT field. */

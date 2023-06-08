@@ -2308,7 +2308,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LPCOMP_SHORTS_DOWN_STOP_Disabled (0UL) /*!< Shortcut disabled. */
 #define LPCOMP_SHORTS_DOWN_STOP_Enabled  (1UL) /*!< Shortcut enabled. */
 
-/* Bit 1 : Shortcut between RADY event and STOP task. */
+/* Bit 1 : Shortcut between READY event and STOP task. */
 #define LPCOMP_SHORTS_READY_STOP_Pos     (1UL) /*!< Position of READY_STOP field. */
 #define LPCOMP_SHORTS_READY_STOP_Msk                                                               \
   (0x1UL << LPCOMP_SHORTS_READY_STOP_Pos)       /*!< Bit mask of READY_STOP field. */
@@ -4617,9 +4617,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Bits 1..0 : Radio data rate and modulation setting. Decision point: TXEN or RXEN task. */
 #define RADIO_MODE_MODE_Pos            (0UL) /*!< Position of MODE field. */
 #define RADIO_MODE_MODE_Msk            (0x3UL << RADIO_MODE_MODE_Pos) /*!< Bit mask of MODE field. */
-#define RADIO_MODE_MODE_Nrf_1Mbit      (0x00UL) /*!< 1Mbit/s Nordic propietary radio mode. */
-#define RADIO_MODE_MODE_Nrf_2Mbit      (0x01UL) /*!< 2Mbit/s Nordic propietary radio mode. */
-#define RADIO_MODE_MODE_Nrf_250Kbit    (0x02UL) /*!< 250kbit/s Nordic propietary radio mode. */
+#define RADIO_MODE_MODE_Nrf_1Mbit      (0x00UL) /*!< 1Mbit/s Nordic proprietary radio mode. */
+#define RADIO_MODE_MODE_Nrf_2Mbit      (0x01UL) /*!< 2Mbit/s Nordic proprietary radio mode. */
+#define RADIO_MODE_MODE_Nrf_250Kbit    (0x02UL) /*!< 250kbit/s Nordic proprietary radio mode. */
 #define RADIO_MODE_MODE_Ble_1Mbit      (0x03UL) /*!< 1Mbit/s Bluetooth Low Energy */
 
 /* Register: RADIO_PCNF0 */

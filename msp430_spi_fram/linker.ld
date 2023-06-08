@@ -242,7 +242,7 @@ SECTIONS
   } > FRAM
 
 
-  /* This section contains data that is initialised during load
+  /* This section contains data that is initialized during load
      but not on application reset.  */
   .persistent :
   {
@@ -314,7 +314,7 @@ SECTIONS
   PROVIDE (__bsssize = SIZEOF(.lower.bss) + SIZEOF(.bss));
 
 
-  /* This section contains data that is not initialised during load
+  /* This section contains data that is not initialized during load
      or application reset.  */
   .noinit (NOLOAD) :
   {

@@ -839,7 +839,7 @@ PT_THREAD(postproc_thread())
                 // drop all rssi data because we might have damaged samples from other packets
                 radio_drop_rssi_space();
 
-                // do not update rssi_space_num_written_postproc (will be catched with the next packet)
+                // do not update rssi_space_num_written_postproc (will be caught with the next packet)
                 // ATTENTION: this is important to ensure that rssi_space_num_written_postproc
                 // stays behind rssi_space_nw_begin (see above)
                 // rssi_space_num_written_postproc = rssi_space_num_written_radio;

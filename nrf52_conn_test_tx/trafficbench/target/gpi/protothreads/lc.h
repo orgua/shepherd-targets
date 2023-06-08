@@ -60,7 +60,7 @@
  */
 
 #ifdef DOXYGEN
-    /**
+/**
  * Initialize a local continuation.
  *
  * This operation initializes the local continuation, thereby
@@ -70,7 +70,7 @@
  */
   #define LC_INIT(lc)
 
-    /**
+/**
  * Set a local continuation.
  *
  * The set operation saves the state of the function at the point
@@ -83,7 +83,7 @@
  */
   #define LC_SET(lc)
 
-    /**
+/**
  * Resume a local continuation.
  *
  * The resume operation resumes a previously set local continuation, thus
@@ -95,7 +95,7 @@
  */
   #define LC_RESUME(lc)
 
-    /**
+/**
  * Mark the end of local continuation usage.
  *
  * The end operation signifies that local continuations should not be

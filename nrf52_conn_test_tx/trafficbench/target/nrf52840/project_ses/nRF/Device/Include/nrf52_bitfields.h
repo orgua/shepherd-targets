@@ -12263,8 +12263,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define TWI_ERRORSRC_OVERRUN_Pos      (0UL) /*!< Position of OVERRUN field. */
 #define TWI_ERRORSRC_OVERRUN_Msk                                                                   \
   (0x1UL << TWI_ERRORSRC_OVERRUN_Pos)         /*!< Bit mask of OVERRUN field. */
-#define TWI_ERRORSRC_OVERRUN_NotPresent (0UL) /*!< Read: no overrun occured */
-#define TWI_ERRORSRC_OVERRUN_Present    (1UL) /*!< Read: overrun occured */
+#define TWI_ERRORSRC_OVERRUN_NotPresent (0UL) /*!< Read: no overrun occurred */
+#define TWI_ERRORSRC_OVERRUN_Present    (1UL) /*!< Read: overrun occurred */
 #define TWI_ERRORSRC_OVERRUN_Clear      (1UL) /*!< Write: clear error on writing '1' */
 
 /* Register: TWI_ENABLE */

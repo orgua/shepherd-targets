@@ -88,7 +88,7 @@
   #define GPI_ARM_NRF_STDOUT_UART_FLOWCONTROL_MODE 0
 #endif
 
-// decide wether stdout/stderr functionality uses interrupt driven async I/O
+// decide whether stdout/stderr functionality uses interrupt driven async I/O
 #ifndef GPI_STDOUT_INTERRUPT_ENABLED
   #define GPI_STDOUT_INTERRUPT_ENABLED 0
 #endif

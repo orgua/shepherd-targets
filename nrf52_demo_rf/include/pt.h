@@ -48,7 +48,7 @@ struct pt
 /*
  * Local continuation based on goto label references.
  *
- * Pros: works with all control sturctures.
+ * Pros: works with all control structures.
  * Cons: requires GCC or Clang, doesn't preserve local variables.
  */
 struct pt

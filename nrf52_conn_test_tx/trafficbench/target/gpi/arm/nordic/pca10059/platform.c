@@ -223,7 +223,7 @@ static inline void uart_init(uint32_t baudrate)
         }
     }
 
-    // (un)mask interrupts
+        // (un)mask interrupts
   #if GPI_STDOUT_INTERRUPT_ENABLED
     NRF_UARTE0->INTEN = BV_BY_NAME(UARTE_INTEN_ENDTX, Enabled);
     NVIC_SetPriority(UARTE0_UART0_IRQn, GPI_ARM_NRF_STDIO_INTERRUPT_PRIORITY);

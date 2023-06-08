@@ -77,7 +77,7 @@
     "GPI_STDOUT_UART_BAUDRATE undefined, default = 115200"
 #endif
 
-// decide wether stdout/stderr functionality uses interrupt driven async I/O
+// decide whether stdout/stderr functionality uses interrupt driven async I/O
 #ifndef GPI_STDOUT_INTERRUPT_ENABLED
   #define GPI_STDOUT_INTERRUPT_ENABLED 0
 #endif

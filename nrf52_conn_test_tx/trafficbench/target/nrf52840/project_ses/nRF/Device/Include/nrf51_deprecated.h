@@ -119,10 +119,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define SIZERAMBLOCK1                     SIZERAMBLOCKS
 #define SIZERAMBLOCK2                                                                              \
   SIZERAMBLOCK                                                                                     \
-          [2] /*!< Note that this macro will disapear when SIZERAMBLOCK array is eliminated. SIZERAMBLOCK is a deprecated array. */
+  [2] /*!< Note that this macro will disappear when SIZERAMBLOCK array is eliminated. SIZERAMBLOCK is a deprecated array. */
 #define SIZERAMBLOCK3                                                                              \
   SIZERAMBLOCK                                                                                     \
-          [3] /*!< Note that this macro will disapear when SIZERAMBLOCK array is eliminated. SIZERAMBLOCK is a deprecated array. */
+  [3] /*!< Note that this macro will disappear when SIZERAMBLOCK array is eliminated. SIZERAMBLOCK is a deprecated array. */
 /* The registers FICR.DEVICEID0 and FICR.DEVICEID1 were renamed into an array. */
 #define DEVICEID0                 DEVICEID[0]
 #define DEVICEID1                 DEVICEID[1]

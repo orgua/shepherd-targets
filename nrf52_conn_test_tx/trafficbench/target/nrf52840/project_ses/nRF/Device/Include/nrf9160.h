@@ -158,11 +158,11 @@ typedef enum
 } IRQn_Type;
 
 
-    /* =========================================================================================================================== */
-    /* ================                           Processor and Core Peripheral Section                           ================ */
-    /* =========================================================================================================================== */
+/* =========================================================================================================================== */
+/* ================                           Processor and Core Peripheral Section                           ================ */
+/* =========================================================================================================================== */
 
-    /* ==========================  Configuration of the ARM Cortex-M33 Processor and Core Peripherals  =========================== */
+/* ==========================  Configuration of the ARM Cortex-M33 Processor and Core Peripherals  =========================== */
   #define __CM33_REV                                                                               \
     0x0004U /*!< CM33 Core Revision                                                        */
   #define __DSP_PRESENT                                                                            \
@@ -987,7 +987,7 @@ typedef struct
             CLOCKSTOP; /*!< (@ 0x00000004) Stop all trace and debug clocks.                           */
     __IM uint32_t RESERVED[318];
     __IOM uint32_t
-            ENABLE; /*!< (@ 0x00000500) Enable debug domain and aquire selected GPIOs              */
+            ENABLE; /*!< (@ 0x00000500) Enable debug domain and acquire selected GPIOs              */
     __IOM TAD_PSEL_Type
             PSEL; /*!< (@ 0x00000504) Unspecified                                                */
     __IOM uint32_t

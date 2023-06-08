@@ -73,7 +73,7 @@ logfile = os.path.splitext(trx_h5)[0] + ".log"
 	--add-markers rssi_pp_3 'catalogs/rx_info' 'rssi_sum_max - rssi_sum_min' '# > 3' 'RSSI peak-to-peak range > 3' destination_node_id \
 	--add-markers rssi_split_unclear 'catalogs/rx_info' '(rssi_range_noise1_len < 0) | (rssi_range_sum_len < 0)' '#' 'unclear signal and/or noise period, power estimated from histogram' destination_node_id \
 	--add-markers rssi_implausible 'catalogs/rx_info' 'rssi_sum - rssi_noise' '# < 0' 'implausible RSSI split (sum < noise)' destination_node_id \
-	--add-markers late_start 'trx_data/trx' 'late_start_delay' '# > 0' 'late start occured' node_id \
+	--add-markers late_start 'trx_data/trx' 'late_start_delay' '# > 0' 'late start occurred' node_id \
 	@(trx_h5) err>out | tee @(logfile)
 
 #===================================================================================================

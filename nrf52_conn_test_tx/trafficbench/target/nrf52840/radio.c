@@ -903,8 +903,8 @@ void radio_init()
     // disable FPU context preservation
     // ATTENTION: Automatic FPU context preservation may increase ISR latency to a value that
     // is too high for the time critical RSSI sampling routine. It should work with lazy stacking
-    // because this seems interruptable (https://developer.arm.com/documentation/ka001321/latest)
-    // and the RSSI ISR does not use the FPU. If lazy stacking is not interruptable, it can cause
+    // because this seems interruptible (https://developer.arm.com/documentation/ka001321/latest)
+    // and the RSSI ISR does not use the FPU. If lazy stacking is not interruptible, it can cause
     // trouble even without using the FPU in the RSSI ISR (if the FPU is used in other ISRs).
     // (I don't see any reason to doubt https://developer.arm.com/documentation/ka001321/latest,
     // but it should be tested for sure).
@@ -1531,14 +1531,14 @@ Gpi_Fast_Tick_Native radio_get_packet_airtime(Gpi_Radio_Mode mode, uint_fast8_t 
     switch (mode)
     {
             // field lengths:	PREAMBLE	ADDRESS		CI		TERM1		PDU			CRC		TERM2
-            // allways [bit]:				 32							(2...258)*8		24
+            // always [bit]:				 32							(2...258)*8		24
             // 1M:				 8, 8us		 32us		0		0						 24us	0
             // 2M:				16, 8us		 16us		0		0						 12us	0
             // 125k:			80,80us		256us		2,16us	3,24us					192us	3,24us
             // 500k:			80,80us		256us		2,16us	3,24us					 48us	3, 6us
             //
             // PDU:				S0			LENGTH		S1		PAYLOAD
-            // allways [bit]:	8			8			0		(0...255)*8
+            // always [bit]:	8			8			0		(0...255)*8
             // (S1 = 8 bit if Constant Tone Extension is used)
 
         case BLE_1M:

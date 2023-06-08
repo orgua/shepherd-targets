@@ -137,11 +137,11 @@ typedef enum
 } IRQn_Type;
 
 
-    /* =========================================================================================================================== */
-    /* ================                           Processor and Core Peripheral Section                           ================ */
-    /* =========================================================================================================================== */
+/* =========================================================================================================================== */
+/* ================                           Processor and Core Peripheral Section                           ================ */
+/* =========================================================================================================================== */
 
-    /* ===========================  Configuration of the ARM Cortex-M0 Processor and Core Peripherals  =========================== */
+/* ===========================  Configuration of the ARM Cortex-M0 Processor and Core Peripherals  =========================== */
   #define __CM0_REV                                                                                \
     0x0301U /*!< CM0 Core Revision                                                         */
   #define __DSP_PRESENT                                                                            \
@@ -174,7 +174,7 @@ typedef enum
   #endif
 
 
-    /* ========================================  Start of section using anonymous unions  ======================================== */
+/* ========================================  Start of section using anonymous unions  ======================================== */
   #if defined(__CC_ARM)
     #pragma push
     #pragma anon_unions
@@ -830,10 +830,10 @@ typedef struct
 typedef struct
 { /*!< (@ 0x40006000) GPIOTE Structure                                           */
     __OM uint32_t TASKS_OUT
-            [4]; /*!< (@ 0x00000000) Tasks asssociated with GPIOTE channels.                    */
+            [4]; /*!< (@ 0x00000000) Tasks associated with GPIOTE channels.                    */
     __IM uint32_t  RESERVED[60];
     __IOM uint32_t EVENTS_IN
-            [4]; /*!< (@ 0x00000100) Tasks asssociated with GPIOTE channels.                    */
+            [4]; /*!< (@ 0x00000100) Tasks associated with GPIOTE channels.                    */
     __IM uint32_t RESERVED1[27];
     __IOM uint32_t
             EVENTS_PORT; /*!< (@ 0x0000017C) Event generated from multiple pins.                        */
@@ -1488,7 +1488,7 @@ typedef struct
             PPFC; /*!< (@ 0x0000002C) Pre-programmed factory code present.                       */
     __IM uint32_t RESERVED2;
     __IM uint32_t
-            NUMRAMBLOCK; /*!< (@ 0x00000034) Number of individualy controllable RAM blocks.             */
+            NUMRAMBLOCK; /*!< (@ 0x00000034) Number of individually controllable RAM blocks.             */
 
     union
     {
@@ -1678,10 +1678,10 @@ typedef struct
   #define NRF_UICR        ((NRF_UICR_Type *) NRF_UICR_BASE)
   #define NRF_GPIO        ((NRF_GPIO_Type *) NRF_GPIO_BASE)
 
-    /** @} */ /* End of group Device_Peripheral_declaration */
+/** @} */ /* End of group Device_Peripheral_declaration */
 
 
-    /* =========================================  End of section using anonymous unions  ========================================= */
+/* =========================================  End of section using anonymous unions  ========================================= */
   #if defined(__CC_ARM)
     #pragma pop
   #elif defined(__ICCARM__)

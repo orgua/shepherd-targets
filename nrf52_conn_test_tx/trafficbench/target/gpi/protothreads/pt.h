@@ -67,12 +67,12 @@ struct pt
     // don't #include "gpi/trace.h" because maybe __BASEFILE__ doesn't use GPI_TRACE
   #endif
 
-    /**
+/**
  * \name Initialization
  * @{
  */
 
-    /**
+/**
  * Initialize a protothread.
  *
  * Initializes a protothread. Initialization must be done prior to
@@ -86,14 +86,14 @@ struct pt
  */
   #define PT_INIT(pt)          LC_INIT((pt)->lc)
 
-    /** @} */
+/** @} */
 
-    /**
+/**
  * \name Declaration and definition
  * @{
  */
 
-    /**
+/**
  * Declaration of a protothread.
  *
  * This macro is used to declare a protothread. All protothreads must
@@ -106,14 +106,14 @@ struct pt
  */
   #define PT_THREAD(name_args) char name_args
 
-    /**
+/**
  * Declare the start of a protothread inside the C function
  * implementing the protothread.
  *
  * This macro is used to declare the starting point of a
  * protothread. It should be placed at the start of the function in
  * which the protothread runs. All C statements above the PT_BEGIN()
- * invokation will be executed each time the protothread is scheduled.
+ * invocation will be executed each time the protothread is scheduled.
  *
  * \param pt A pointer to the protothread control structure.
  *
@@ -125,7 +125,7 @@ struct pt
       LC_RESUME((pt)->lc);                                                                         \
       GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_BEGIN")
 
-    /**
+/**
  * Declare the end of a protothread.
  *
  * This macro is used for declaring that a protothread ends. It must
@@ -143,14 +143,14 @@ struct pt
     return PT_ENDED;                                                                               \
     }
 
-    /** @} */
+/** @} */
 
-    /**
+/**
  * \name Blocked wait
  * @{
  */
 
-    /**
+/**
  * Block and wait until condition is true.
  *
  * This macro blocks the protothread until the specified condition is
@@ -174,7 +174,7 @@ struct pt
     }                                                                                              \
     while (0)
 
-    /**
+/**
  * Block and wait while condition is true.
  *
  * This function blocks and waits while condition is true. See
@@ -187,14 +187,14 @@ struct pt
  */
   #define PT_WAIT_WHILE(pt, cond)    PT_WAIT_UNTIL((pt), !(cond))
 
-    /** @} */
+/** @} */
 
-    /**
+/**
  * \name Hierarchical protothreads
  * @{
  */
 
-    /**
+/**
  * Block and wait until a child protothread completes.
  *
  * This macro schedules a child protothread. The current protothread
@@ -212,7 +212,7 @@ struct pt
  */
   #define PT_WAIT_THREAD(pt, thread) PT_WAIT_WHILE((pt), PT_SCHEDULE(thread))
 
-    /**
+/**
  * Spawn a child protothread and wait until it exits.
  *
  * This macro spawns a child protothread and waits until it exits. The
@@ -231,14 +231,14 @@ struct pt
     }                                                                                              \
     while (0)
 
-    /** @} */
+/** @} */
 
-    /**
+/**
  * \name Exiting and restarting
  * @{
  */
 
-    /**
+/**
  * Restart the protothread.
  *
  * This macro will block and cause the running protothread to restart
@@ -256,7 +256,7 @@ struct pt
     }                                                                                              \
     while (0)
 
-    /**
+/**
  * Exit the protothread.
  *
  * This macro causes the protothread to exit. If the protothread was
@@ -275,14 +275,14 @@ struct pt
     }                                                                                              \
     while (0)
 
-    /** @} */
+/** @} */
 
-    /**
+/**
  * \name Calling a protothread
  * @{
  */
 
-    /**
+/**
  * Schedule a protothread.
  *
  * This function schedules a protothread. The return value of the
@@ -294,14 +294,14 @@ struct pt
  *
  * \hideinitializer
  */
-    //#define PT_SCHEDULE(f) ((f) < PT_EXITED)
+//#define PT_SCHEDULE(f) ((f) < PT_EXITED)
   #define PT_SCHEDULE(f)                                                                           \
     ({                                                                                             \
   GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_SCHEDULE " #f);                                  \
   (f) < PT_EXITED;                                                                                 \
     })
 
-    /**
+/**
  * Schedule a protothread.
  *
  * This function schedules a protothread.
@@ -319,14 +319,14 @@ struct pt
   (f);                                                                                             \
     })
 
-    /** @} */
+/** @} */
 
-    /**
+/**
  * \name Yielding from a protothread
  * @{
  */
 
-    /**
+/**
  * Yield from the current protothread.
  *
  * This function will yield the protothread, thereby allowing other
@@ -348,7 +348,7 @@ struct pt
     }                                                                                              \
     while (0)
 
-    /**
+/**
  * \brief      Yield from the protothread until a condition occurs.
  * \param pt   A pointer to the protothread control structure.
  * \param cond The condition.

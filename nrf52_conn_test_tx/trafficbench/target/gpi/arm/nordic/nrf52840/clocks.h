@@ -183,7 +183,7 @@ static ALWAYS_INLINE Gpi_Fast_Tick_Native gpi_tick_fast_native(void)
     // -> we trigger a capture event and read the value from the capture register
     //
     // ATTENTION: Exactly speaking, this procedure is not reentrant without additional locking.
-    // However, if the caller's context is interruptable, it does not matter if the returned
+    // However, if the caller's context is interruptible, it does not matter if the returned
     // timestamp is taken before, during, or after the interrupt as long as it stems from the
     // interval between function entry and return. Hence, we do not need a locking mechanism.
 

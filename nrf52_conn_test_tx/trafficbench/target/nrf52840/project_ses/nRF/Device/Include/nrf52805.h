@@ -145,11 +145,11 @@ typedef enum
 } IRQn_Type;
 
 
-    /* =========================================================================================================================== */
-    /* ================                           Processor and Core Peripheral Section                           ================ */
-    /* =========================================================================================================================== */
+/* =========================================================================================================================== */
+/* ================                           Processor and Core Peripheral Section                           ================ */
+/* =========================================================================================================================== */
 
-    /* ===========================  Configuration of the ARM Cortex-M4 Processor and Core Peripherals  =========================== */
+/* ===========================  Configuration of the ARM Cortex-M4 Processor and Core Peripherals  =========================== */
   #define __CM4_REV                                                                                \
     0x0001U /*!< CM4 Core Revision                                                         */
   #define __DSP_PRESENT                                                                            \
@@ -182,7 +182,7 @@ typedef enum
   #endif
 
 
-    /* ========================================  Start of section using anonymous unions  ======================================== */
+/* ========================================  Start of section using anonymous unions  ======================================== */
   #if defined(__CC_ARM)
     #pragma push
     #pragma anon_unions
@@ -2375,10 +2375,10 @@ typedef struct
   #define NRF_NVMC        ((NRF_NVMC_Type *) NRF_NVMC_BASE)
   #define NRF_PPI         ((NRF_PPI_Type *) NRF_PPI_BASE)
 
-    /** @} */ /* End of group Device_Peripheral_declaration */
+/** @} */ /* End of group Device_Peripheral_declaration */
 
 
-    /* =========================================  End of section using anonymous unions  ========================================= */
+/* =========================================  End of section using anonymous unions  ========================================= */
   #if defined(__CC_ARM)
     #pragma pop
   #elif defined(__ICCARM__)

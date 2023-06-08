@@ -654,7 +654,7 @@ PT_THREAD(log_thread())
             Log_Rssi *crssi    = (Log_Rssi *) cp;
 
             // ATTENTION: Log_Rssi::status is of type cbor_uint_tiny_t. Although rssi->status < 24
-            // if valid, this need not hold if rssi_space overflows inbetween -> enforce it explicitly
+            // if valid, this need not hold if rssi_space overflows in between -> enforce it explicitly
             cbor_encode_uint(crssi->status, MIN(23, rssi->status));
             cbor_encode_uint(crssi->timestamp_rssi_end, rssi->timestamp_rssi_end);
             cbor_encode_uint(crssi->num_samples_missed, rssi->num_missed);

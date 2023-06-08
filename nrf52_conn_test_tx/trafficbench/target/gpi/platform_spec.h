@@ -68,7 +68,7 @@
 	can be some	"less official" identifiers, but again they must be unique.
 
 	In case of a "standard" board connected to a custom environment (e.g. with application specific
-	GPIO connections) it is prefered to use the scheme <vendor>_<board>_<customization> with
+	GPIO connections) it is preferred to use the scheme <vendor>_<board>_<customization> with
 	<vendor> and <board> as above and <customization> identifying the application specific usage.
 	If there is a need to distinguish such customizations, there should also be a PURE variant
 	(i.e., <vendor>_<board>_PURE) that identifies the base board used in a stand-alone manner.
@@ -76,7 +76,7 @@
 	It may be convenient to identify a family of boards from a different perspective, e.g.
 	plug-in cards for a specific hardware system or from a functionality point of view. If such
 	naming should be used, then it should not replace the <vendor>_<board>[_<customization>]
-	baseline. Instead, names following a different taxonomy should be added as aliases refering
+	baseline. Instead, names following a different taxonomy should be added as aliases referring
 	to the standard names.
 
 	Example:
@@ -158,11 +158,11 @@
     #define _GPI_ARCH_GET(field)       GPI_ARCH_##field
     #define _GPI_ARCH_ENCODE(field, x) UINT32_C(x)
 
-    // variant 3: GPI_ARCH_PLATFORM = ...
-    // example:
-    //		#define GPI_ARCH_PLATFORM	(GPI_ARCH_BOARD_TMOTE | GPI_ARCH_OS_NONE)
-    // This is the preferred method (currently).
-    //
+        // variant 3: GPI_ARCH_PLATFORM = ...
+        // example:
+        //		#define GPI_ARCH_PLATFORM	(GPI_ARCH_BOARD_TMOTE | GPI_ARCH_OS_NONE)
+        // This is the preferred method (currently).
+        //
   #else
 
         // information is encoded in a single 32 bit value
@@ -549,8 +549,8 @@ _GPI_ARCH_RTE_AUTO_WARN(changed CRT to SEGGER1)
            GPI_ARCH_##field##_MASK)
       #endif
 
-        // SEGGER RTL (available since SES 5.10, version 2.4.2 in SES 5.42)
-        // https://studio.segger.com/arm_segger_studio_release_notes.htm
+            // SEGGER RTL (available since SES 5.10, version 2.4.2 in SES 5.42)
+            // https://studio.segger.com/arm_segger_studio_release_notes.htm
     #elif (__SEGGER_RTL_VERSION >= 24201)
 
 _GPI_ARCH_RTE_AUTO_WARN(changed CRT to SEGGER2)

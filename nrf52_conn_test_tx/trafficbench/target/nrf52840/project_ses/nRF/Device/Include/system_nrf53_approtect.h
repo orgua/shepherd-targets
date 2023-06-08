@@ -57,7 +57,7 @@ static inline void nrf53_handle_approtect(void)
     NRF_CTRLAP_S->APPROTECT.DISABLE       = NRF_UICR_S->APPROTECT;
   #endif
 
-    /* Secure APPROTECT is only available for Application core. */
+        /* Secure APPROTECT is only available for Application core. */
   #if defined(ENABLE_SECURE_APPROTECT)
     /* Prevent processor from unlocking SECURE APPROTECT soft branch after this point. */
     NRF_CTRLAP_S->SECUREAPPROTECT.LOCK = NRF_CTRLAP_S_SECUREAPPROTECT_LOCK_LOCK_Locked;

@@ -20,7 +20,7 @@ jobs:
       GNU_INSTALL_ROOT: "${{ github.workspace }}/gcc-arm-none-eabi-10.3-2021.10/bin/"
       # updates: https://developer.arm.com/downloads/-/gnu-rm
       SDK_LINK: https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/sdks/nrf5/binaries/nrf5_sdk_17.1.0_ddde560.zip
-      SDK_ROOT: "${{ github.workspace }}/nrf5_sdk_17.1.0_ddde560/"
+      SDK_ROOT: "${{ github.workspace }}/nrf5_sdk_17.1.0_ddde560"
       # updates: https://www.nordicsemi.com/Products/Development-software/nrf5-sdk/download
       # -> the two _ROOT environment variables are important for the make-file
 

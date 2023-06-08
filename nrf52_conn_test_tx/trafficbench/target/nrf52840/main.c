@@ -99,8 +99,8 @@ GPI_TRACE_CONFIG(main, GPI_TRACE_BASE_SELECTION | GPI_TRACE_USER_SELECTION);
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
-// see flocklab_node_id.c for details
-extern const uint16_t FLOCKLAB_NODE_ID;
+// see shepherd_node_id.c for details
+extern const uint16_t SHEPHERD_NODE_ID;
 
 //**************************************************************************************************
 //***** Local Functions ****************************************************************************
@@ -149,8 +149,8 @@ int main()
 	printf("System started.\n");
 
 	// get physical_node_id
-	physical_node_id = FLOCKLAB_NODE_ID;
-	GPI_TRACE_MSG(TRACE_INFO, "FLOCKLAB_NODE_ID = %u", physical_node_id);
+	physical_node_id = SHEPHERD_NODE_ID;
+	GPI_TRACE_MSG(TRACE_INFO, "SHEPHERD_NODE_ID = %u", physical_node_id);
 	GPI_TRACE_FLUSH();
 	
 	// if not set by testbed's programming toolchain

@@ -6,6 +6,6 @@
 extern pt_event_t evt_on;
 extern pt_event_t evt_off;
 
-void application(struct pt *pt);
+void              application(struct pt *pt);
 
 #endif /* __APP_H_ */

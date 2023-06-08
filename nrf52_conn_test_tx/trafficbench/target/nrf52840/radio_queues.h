@@ -56,24 +56,21 @@
 // otherwise include customized version and ensure that all structures include at least
 // the fields defined in radio_queues_base.h.
 #ifdef RADIO_QUEUES_CUSTOM_HEADER
-	#include STRINGIFY(RADIO_QUEUES_CUSTOM_HEADER)
+  #include STRINGIFY(RADIO_QUEUES_CUSTOM_HEADER)
 #else
-	#include "radio_queues_base.h"
+  #include "radio_queues_base.h"
 #endif
 
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
-
 
 
 //**************************************************************************************************
@@ -83,7 +80,7 @@
 
 // Radio_Packet
 ASSERT_CT_STATIC(0 == offsetof(Radio_Packet, raw_payload) % sizeof(uint32_t));
-ASSERT_CT_STATIC(0 == offsetof(Radio_Packet, trx_status ) % sizeof(uint32_t));
+ASSERT_CT_STATIC(0 == offsetof(Radio_Packet, trx_status) % sizeof(uint32_t));
 
 // Rx_Queue_Entry
 ASSERT_CT_STATIC(0 == offsetof(Rx_Queue_Entry, packet) % sizeof(uint32_t));
@@ -95,22 +92,20 @@ ASSERT_CT_STATIC(0 == offsetof(Rx_Queue_Entry, rssi_space_num_written_begin) % s
 //***** Global Variables ***************************************************************************
 
 
-
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
-
 
 
 //**************************************************************************************************

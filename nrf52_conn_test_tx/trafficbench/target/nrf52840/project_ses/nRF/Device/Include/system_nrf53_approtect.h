@@ -43,48 +43,48 @@ extern "C" {
 
 static inline void nrf53_handle_approtect(void)
 {
-    #if defined(NRF_APPLICATION)
-        #if defined (ENABLE_APPROTECT)
-            /* Prevent processor from unlocking APPROTECT soft branch after this point. */
-            NRF_CTRLAP_S->APPROTECT.LOCK = NRF_CTRLAP_S_APPROTECT_LOCK_LOCK_Locked;
+#if defined(NRF_APPLICATION)
+  #if defined(ENABLE_APPROTECT)
+    /* Prevent processor from unlocking APPROTECT soft branch after this point. */
+    NRF_CTRLAP_S->APPROTECT.LOCK = NRF_CTRLAP_S_APPROTECT_LOCK_LOCK_Locked;
 
-        #elif  defined (ENABLE_APPROTECT_USER_HANDLING)
-                /* Do nothing, allow user code to handle APPROTECT. Use this if you want to enable authenticated debug. */
+  #elif defined(ENABLE_APPROTECT_USER_HANDLING)
+            /* Do nothing, allow user code to handle APPROTECT. Use this if you want to enable authenticated debug. */
 
-        #else
-            /* Load APPROTECT soft branch from UICR.
+  #else
+    /* Load APPROTECT soft branch from UICR.
                If UICR->APPROTECT is disabled, CTRLAP->APPROTECT will be disabled. */
-            NRF_CTRLAP_S->APPROTECT.DISABLE = NRF_UICR_S->APPROTECT;
-        #endif
+    NRF_CTRLAP_S->APPROTECT.DISABLE       = NRF_UICR_S->APPROTECT;
+  #endif
 
-        /* Secure APPROTECT is only available for Application core. */
-        #if defined (ENABLE_SECURE_APPROTECT)
-            /* Prevent processor from unlocking SECURE APPROTECT soft branch after this point. */
-            NRF_CTRLAP_S->SECUREAPPROTECT.LOCK = NRF_CTRLAP_S_SECUREAPPROTECT_LOCK_LOCK_Locked;
+    /* Secure APPROTECT is only available for Application core. */
+  #if defined(ENABLE_SECURE_APPROTECT)
+    /* Prevent processor from unlocking SECURE APPROTECT soft branch after this point. */
+    NRF_CTRLAP_S->SECUREAPPROTECT.LOCK = NRF_CTRLAP_S_SECUREAPPROTECT_LOCK_LOCK_Locked;
 
-        #elif  defined (ENABLE_SECURE_APPROTECT_USER_HANDLING)
-                /* Do nothing, allow user code to handle SECURE APPROTECT. Use this if you want to enable authenticated debug. */
+  #elif defined(ENABLE_SECURE_APPROTECT_USER_HANDLING)
+            /* Do nothing, allow user code to handle SECURE APPROTECT. Use this if you want to enable authenticated debug. */
 
-        #else
-            /* Load SECURE APPROTECT soft branch from UICR.
+  #else
+    /* Load SECURE APPROTECT soft branch from UICR.
                If UICR->SECUREAPPROTECT is disabled, CTRLAP->SECUREAPPROTECT will be disabled. */
-            NRF_CTRLAP_S->SECUREAPPROTECT.DISABLE = NRF_UICR_S->SECUREAPPROTECT;
-        #endif
-    #endif
-    #if defined(NRF_NETWORK)
-        #if defined (ENABLE_APPROTECT)
-            /* Prevent processor from unlocking APPROTECT soft branch after this point. */
-            NRF_CTRLAP_NS->APPROTECT.LOCK = NRF_CTRLAP_NS_APPROTECT_LOCK_LOCK_Locked;
+    NRF_CTRLAP_S->SECUREAPPROTECT.DISABLE = NRF_UICR_S->SECUREAPPROTECT;
+  #endif
+#endif
+#if defined(NRF_NETWORK)
+  #if defined(ENABLE_APPROTECT)
+    /* Prevent processor from unlocking APPROTECT soft branch after this point. */
+    NRF_CTRLAP_NS->APPROTECT.LOCK = NRF_CTRLAP_NS_APPROTECT_LOCK_LOCK_Locked;
 
-        #elif  defined (ENABLE_APPROTECT_USER_HANDLING)
-                /* Do nothing, allow user code to handle APPROTECT. Use this if you want to enable authenticated debug. */
+  #elif defined(ENABLE_APPROTECT_USER_HANDLING)
+            /* Do nothing, allow user code to handle APPROTECT. Use this if you want to enable authenticated debug. */
 
-        #else
-            /* Load APPROTECT soft branch from UICR.
+  #else
+    /* Load APPROTECT soft branch from UICR.
                If UICR->APPROTECT is disabled, CTRLAP->APPROTECT will be disabled. */
-            NRF_CTRLAP_NS->APPROTECT.DISABLE = NRF_UICR_NS->APPROTECT;
-        #endif
-    #endif
+    NRF_CTRLAP_NS->APPROTECT.DISABLE      = NRF_UICR_NS->APPROTECT;
+  #endif
+#endif
 }
 
 #ifdef __cplusplus

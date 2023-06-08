@@ -146,7 +146,7 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 	#define NODES18(i, ...)		NODE(i) __VA_OPT__(, NODES19(__VA_ARGS__))
 	#define NODES19(i, ...)		NODE(i) __VA_OPT__(, NODES20(__VA_ARGS__))
 	#define NODES20(i, ...)		NODE(i) __VA_OPT__(_Pragma("GCC error \"NODES() size exceeded, macro needs extension (can be done easily)\""))
-#else 
+#else
 	// alternative implementation (if __VA_OPT__() is not available)
 
 	#define Nstop(...)			__VA_ARGS__
@@ -197,10 +197,10 @@ main_loop:
 		TRX_data_checkpoint
 		TRX_data_checkpoint_marker
 	TRX_end
-	
+
 	// sleep a second
 	SLEEP		1000000
-	
+
 	// another packet from node 1
 	TRX_begin			transmitter=NODE(1), tx_delay=2000, timeout=10000
 		TRX_data_fixed			0x11, 0x12, 0x13, 0x14
@@ -282,7 +282,7 @@ basic parameters:
 	All nodes not listed as transmitter enter receive mode.
 
 - timeout (m): listening timeout [us] to be used at receiver nodes (i.e. at all non-transmitters).
-	The timeout also determines the execution time of the TRX instruction (together with 
+	The timeout also determines the execution time of the TRX instruction (together with
 	TRX_PRE_DELAY and TRX_POST_DELAY).
 
 - tx_delay (m): delay [us] from nominal start time to start of transmission.
@@ -290,18 +290,18 @@ basic parameters:
 	which introduces some clock drift tolerance and avoids misleading race conditions.
 
 advanced parameters:
-	
+
 - rng_offset (o): random number generator (RNG) offset. default = 0 (i.e. no offset).
 	The synchronous execution of the schedule on all nodes also includes the RNGs, so at
 	the same step in a schedule all nodes generate the same random numbers. While this is
-	beneficial for some purposes (e.g., to synchronously transmit random but identical packets), 
+	beneficial for some purposes (e.g., to synchronously transmit random but identical packets),
 	it may not be appropriate for others.
 	rng_offset > 0 can be used to generate differing random payloads at different transmitters
-	even from synchronized RNGs. To this end, it applies x = transmitter_index * rng_offset to the 
+	even from synchronized RNGs. To this end, it applies x = transmitter_index * rng_offset to the
 	RNG output,	where the meaning of "apply" is implementation-specific (currently it just adds x
 	to the results, but it could, for instance, also temporarily shift the internal RNG states by x).
-	
-- tx_carrier_period_1, tx_carrier_period_2 (o): length [us] of pure carrier period 
+
+- tx_carrier_period_1, tx_carrier_period_2 (o): length [us] of pure carrier period
 	before (1) and after (2) the packet. default = 0 (i.e. no pure carrier period).
 	This feature is provided for deep inspection and special purposes.
 	Do not use it if you are unsure about it.
@@ -310,42 +310,42 @@ RSSI sampling control:
 
 - rssi_buffer_size (o): amount of space reserved as RSSI sample buffer for this TRX operation.
 	reserved space = 2 ^ <provided value>. default = 0 (use internal minimum).
-	
-- rssi_pretrigger_time (o): extra sampling time [us] before start of packet, 
+
+- rssi_pretrigger_time (o): extra sampling time [us] before start of packet,
 	i.e. time before packet for which RSSI samples should be kept. default = 0.
-	For internal reasons, the number of stored pretrigger samples can be a little bit (< 5) higher 
-	than specified. More important, it can be significantly lower if the received packet started 
+	For internal reasons, the number of stored pretrigger samples can be a little bit (< 5) higher
+	than specified. More important, it can be significantly lower if the received packet started
 	before the pretrigger time has passed or if the reserved buffer is too small to keep all samples.
-	
+
 - rssi_posttrigger_time (o): extra sampling time [us] after end of packet. default = 0.
-	For internal reasons, the number of stored posttrigger samples can be a little bit (< 5) higher 
+	For internal reasons, the number of stored posttrigger samples can be a little bit (< 5) higher
 	than specified. More important, it can be significantly lower if the specified timeout is reached
-	before the posttrigger time has passed (note that rssi_posttrigger_time > 0 requires to keep the 
-	receiver active for some extra time after the end of a received packet) or if the reserved buffer 
+	before the posttrigger time has passed (note that rssi_posttrigger_time > 0 requires to keep the
+	receiver active for some extra time after the end of a received packet) or if the reserved buffer
 	is too small to keep all samples.
 
 packet content commands and parameters (used between TRX_SYNC_begin and TRX_SYNC_end):
 
 - TRX_data_fixed: fixed content.
-	- data (m): comma-separated list of byte values. 
+	- data (m): comma-separated list of byte values.
 	  The length of the data block is determined automatically.
 	  The identifier 'data=' can be left out, so one can just write 'TRX_data_fixed 1,2,3,4'
-	
+
 - TRX_data_random: random data of fixed length.
 	- len (m): length of data block, i.e. number of random bytes.
 	  Currently, the length is required to be a multiple of 4.
 
 - TRX_data_checkpoint: a checkpoint data block containing the node's internal program state.
 	Checkpoints can be used by receiving nodes to synchronize their clocks and schedule
-	execution states, which is most important during network startup. Besides that, clock 
+	execution states, which is most important during network startup. Besides that, clock
 	synchronization is a continuous process, so transmitted packets should include checkpoints
 	at least once in a while.
 	The content of a checkpoint is generated automatically at runtime.
 	The size of a checkpoint, TRX_CHECKPOINT_SIZE, is defined internally (currently it is 12 byte).
 
-- TRX_data_checkpoint_marker: 
+- TRX_data_checkpoint_marker:
   marker that determines the availability and position of a checkpoint inside the packet.
-	Checkpoints can be placed at arbitrary positions inside packets, so receiving nodes 
+	Checkpoints can be placed at arbitrary positions inside packets, so receiving nodes
 	need to know if and in case where a packet contains a checkpoint. This information
 	is provided by a checkpoint marker, which must be placed at a predefined position in
 	each packet, namely at the statically configurable TRX_CHECKPOINT_MARKER_POS (see above).
@@ -353,7 +353,7 @@ packet content commands and parameters (used between TRX_SYNC_begin and TRX_SYNC
 
 - TRX_data_no_packet: do not send a packet.
 	This special content type causes the transmission of the packet to be skipped.
-	It can be used to generate stand-alone pure carrier periods (with tx_carrier_period_1 + 
+	It can be used to generate stand-alone pure carrier periods (with tx_carrier_period_1 +
 	tx_carrier_period_2 > 0).
 	Do not use it together with other content types.
 
@@ -370,33 +370,33 @@ A TRX group allows to implement multiple TRX_SYNC operations that overlap each o
 It can be used to transmit overlapping packets from different nodes with fine-grained start time
 offsets.
 For the included TRX_SYNC blocks, there are two restrictions:
-(1) A single node cannot transmit multiple packets. Hence, if a node is listed as transmitter 
+(1) A single node cannot transmit multiple packets. Hence, if a node is listed as transmitter
     in multiple TRX_SYNC blocks, then all but the first one are ignored for that node.
-(2) All TRX_SYNC blocks have the same timeout, which is specified at TRX_GROUP_begin (instead of 
-    TRX_SYNC_begin). This is necessary because a receiving node cannot know in advance which of the 
+(2) All TRX_SYNC blocks have the same timeout, which is specified at TRX_GROUP_begin (instead of
+    TRX_SYNC_begin). This is necessary because a receiving node cannot know in advance which of the
 	packets (or if any at all) it will receive. The global timeout enables synchronous schedule
 	execution independent of the received packets.
 	For the same reason, the RSSI sampling control parameters are defined for the whole group
 	because a receiving node has to reserve the RSSI destination buffer before sampling starts.
 
 - timeout (m): listening timeout [us] to be used at receiver nodes (i.e. at all non-transmitters).
-	The timeout also determines the execution time of the TRX instruction (together with 
+	The timeout also determines the execution time of the TRX instruction (together with
 	TRX_PRE_DELAY and TRX_POST_DELAY).
 
 - rssi_buffer_size (o): amount of space reserved as RSSI sample buffer for this TRX operation.
 	reserved space = 2 ^ <provided value>. default = 0 (use internal minimum).
-	
-- rssi_pretrigger_time (o): extra sampling time [us] before start of packet, 
+
+- rssi_pretrigger_time (o): extra sampling time [us] before start of packet,
 	i.e. time before packet for which RSSI samples should be kept. default = 0.
-	For internal reasons, the number of stored pretrigger samples can be a little bit (< 5) higher 
-	than specified. More important, it can be significantly lower if the received packet started 
+	For internal reasons, the number of stored pretrigger samples can be a little bit (< 5) higher
+	than specified. More important, it can be significantly lower if the received packet started
 	before the pretrigger time has passed or if the reserved buffer is too small to keep all samples.
-	
+
 - rssi_posttrigger_time (o): extra sampling time [us] after end of packet. default = 0.
-	For internal reasons, the number of stored posttrigger samples can be a little bit (< 5) higher 
+	For internal reasons, the number of stored posttrigger samples can be a little bit (< 5) higher
 	than specified. More important, it can be significantly lower if the specified timeout is reached
-	before the posttrigger time has passed (note that rssi_posttrigger_time > 0 requires to keep the 
-	receiver active for some extra time after the end of a received packet) or if the reserved buffer 
+	before the posttrigger time has passed (note that rssi_posttrigger_time > 0 requires to keep the
+	receiver active for some extra time after the end of a received packet) or if the reserved buffer
 	is too small to keep all samples.
 
 */

@@ -47,7 +47,6 @@
 //***** Trace Settings *****************************************************************************
 
 
-
 //**************************************************************************************************
 //**** Includes ************************************************************************************
 
@@ -58,15 +57,12 @@
 //***** Local Defines and Consts *******************************************************************
 
 
-
 //**************************************************************************************************
 //***** Local Typedefs and Class Declarations ******************************************************
 
 
-
 //**************************************************************************************************
 //***** Forward Declarations ***********************************************************************
-
 
 
 //**************************************************************************************************
@@ -74,71 +70,71 @@
 
 static const __attribute__((section("gpi_profile_info @"), used)) struct __attribute__((packed))
 {
-	uint8_t		marker;
-	uint16_t	size;
-	uint8_t		type;
-	
-	uint32_t	timestamp_frequency;
-	uint32_t	timestamp_range;
-	
-} gpi_profile_info_setup = {0x81, 12, 2, 64000000, 0x00ffffff};
+    uint8_t  marker;
+    uint16_t size;
+    uint8_t  type;
+
+    uint32_t timestamp_frequency;
+    uint32_t timestamp_range;
+
+} gpi_profile_info_setup                 = {0x81, 12, 2, 64000000, 0x00ffffff};
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
-Gpi_Profile_Desc	gpi_profile_desc_anchor
-						= {&gpi_profile_desc_anchor, &gpi_profile_desc_anchor, 0, 0, 0};
+Gpi_Profile_Desc gpi_profile_desc_anchor = {&gpi_profile_desc_anchor, &gpi_profile_desc_anchor, 0,
+                                            0, 0};
 
 //**************************************************************************************************
 //***** Local Functions ****************************************************************************
-
 
 
 //**************************************************************************************************
 //***** Global Functions ***************************************************************************
 
 // read next valid timestamp and update ticket
-int_fast8_t gpi_profile_read(Gpi_Profile_Ticket *ticket, const char **module_name, uint16_t *line, uint32_t *timestamp)
+int_fast8_t gpi_profile_read(Gpi_Profile_Ticket *ticket, const char **module_name, uint16_t *line,
+                             uint32_t *timestamp)
 {
-	if (0 == ticket->desc)
-	{
-		ticket->desc = gpi_profile_desc_anchor.next;
-		ticket->index = 0;
-	}
-
-	while (ticket->desc != &gpi_profile_desc_anchor)
-	{
-		Gpi_Profile_Buffer_Entry 	*p = &(ticket->desc->buffer[ticket->index]);
-		Gpi_Profile_Buffer_Entry 	*p_end = &(ticket->desc->buffer[ticket->desc->buffer_length]);
-		
-		for (; p < p_end; ++p)
-		{
-			if (0 != p->line)
-			{
-				*module_name = ticket->desc->module_name;
-
-				register int a, b;
-				register int ie = gpi_int_lock();
-				
-				a = p->line;
-				b = p->timestamp;
-				
-				gpi_int_unlock(ie);
-
-				*line = a;
-				*timestamp = 0x00ffffff - b;
-				
-				ticket->index = ARRAY_INDEX(p, ticket->desc->buffer) + 1;
-				return 1;
-			}
-		}
-		
-		ticket->desc = ticket->desc->next;
-		ticket->index = 0;
+    if (0 == ticket->desc)
+    {
+        ticket->desc  = gpi_profile_desc_anchor.next;
+        ticket->index = 0;
     }
 
-	ticket->desc = 0;
-	return 0;
+    while (ticket->desc != &gpi_profile_desc_anchor)
+    {
+        Gpi_Profile_Buffer_Entry *p     = &(ticket->desc->buffer[ticket->index]);
+        Gpi_Profile_Buffer_Entry *p_end = &(ticket->desc->buffer[ticket->desc->buffer_length]);
+
+        for (; p < p_end; ++p)
+        {
+            if (0 != p->line)
+            {
+                *module_name = ticket->desc->module_name;
+
+                register int a, b;
+                register int ie = gpi_int_lock();
+
+                a               = p->line;
+                b               = p->timestamp;
+
+                gpi_int_unlock(ie);
+
+                *line         = a;
+                *timestamp    = 0x00ffffff - b;
+
+                ticket->index = ARRAY_INDEX(p, ticket->desc->buffer) + 1;
+                return 1;
+            }
+        }
+
+        ticket->desc  = ticket->desc->next;
+        ticket->index = 0;
+    }
+
+    ticket->desc = 0;
+    return 0;
 }
 
 //**************************************************************************************************

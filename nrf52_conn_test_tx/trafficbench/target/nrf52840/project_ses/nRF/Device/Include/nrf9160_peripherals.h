@@ -61,22 +61,22 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* GPIO */
 #define GPIO_PRESENT
-#define GPIO_COUNT 1
+#define GPIO_COUNT              1
 
-#define P0_PIN_NUM 32
+#define P0_PIN_NUM              32
 
 #define P0_FEATURE_PINS_PRESENT 0xFFFFFFFFUL
 
 /* Distributed  Peripheral to Peripheral Interconnect */
 #define DPPI_PRESENT
-#define DPPI_COUNT 1
+#define DPPI_COUNT     1
 
-#define DPPI_CH_NUM 16
+#define DPPI_CH_NUM    16
 #define DPPI_GROUP_NUM 6
 
 /* Event Generator Unit */
 #define EGU_PRESENT
-#define EGU_COUNT 6
+#define EGU_COUNT   6
 
 #define EGU0_CH_NUM 16
 #define EGU1_CH_NUM 16
@@ -87,20 +87,20 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Timer/Counter */
 #define TIMER_PRESENT
-#define TIMER_COUNT 3
+#define TIMER_COUNT     3
 
 #define TIMER0_MAX_SIZE 32
 #define TIMER1_MAX_SIZE 32
 #define TIMER2_MAX_SIZE 32
 
 
-#define TIMER0_CC_NUM 6
-#define TIMER1_CC_NUM 6
-#define TIMER2_CC_NUM 6
+#define TIMER0_CC_NUM   6
+#define TIMER1_CC_NUM   6
+#define TIMER2_CC_NUM   6
 
 /* Real Time Counter */
 #define RTC_PRESENT
-#define RTC_COUNT 2
+#define RTC_COUNT   2
 
 #define RTC0_CC_NUM 4
 #define RTC1_CC_NUM 4
@@ -111,12 +111,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Serial Peripheral Interface Master with DMA */
 #define SPIM_PRESENT
-#define SPIM_COUNT 4
+#define SPIM_COUNT                4
 
-#define SPIM0_MAX_DATARATE  8
-#define SPIM1_MAX_DATARATE  8
-#define SPIM2_MAX_DATARATE  8
-#define SPIM3_MAX_DATARATE  8
+#define SPIM0_MAX_DATARATE        8
+#define SPIM1_MAX_DATARATE        8
+#define SPIM2_MAX_DATARATE        8
+#define SPIM3_MAX_DATARATE        8
 
 #define SPIM0_EASYDMA_MAXCNT_SIZE 12
 #define SPIM1_EASYDMA_MAXCNT_SIZE 12
@@ -125,7 +125,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Serial Peripheral Interface Slave with DMA*/
 #define SPIS_PRESENT
-#define SPIS_COUNT 4
+#define SPIS_COUNT                4
 
 #define SPIS0_EASYDMA_MAXCNT_SIZE 12
 #define SPIS1_EASYDMA_MAXCNT_SIZE 12
@@ -134,7 +134,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Two Wire Interface Master with DMA */
 #define TWIM_PRESENT
-#define TWIM_COUNT 4
+#define TWIM_COUNT                4
 
 #define TWIM0_EASYDMA_MAXCNT_SIZE 12
 #define TWIM1_EASYDMA_MAXCNT_SIZE 12
@@ -143,7 +143,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Two Wire Interface Slave with DMA */
 #define TWIS_PRESENT
-#define TWIS_COUNT 4
+#define TWIS_COUNT                4
 
 #define TWIS0_EASYDMA_MAXCNT_SIZE 12
 #define TWIS1_EASYDMA_MAXCNT_SIZE 12
@@ -152,7 +152,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Universal Asynchronous Receiver-Transmitter with DMA */
 #define UARTE_PRESENT
-#define UARTE_COUNT 4
+#define UARTE_COUNT                4
 
 #define UARTE0_EASYDMA_MAXCNT_SIZE 12
 #define UARTE1_EASYDMA_MAXCNT_SIZE 12
@@ -161,14 +161,14 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Successive Approximation Analog to Digital Converter */
 #define SAADC_PRESENT
-#define SAADC_COUNT 1
+#define SAADC_COUNT               1
 
-#define SAADC_CH_NUM 8
+#define SAADC_CH_NUM              8
 #define SAADC_EASYDMA_MAXCNT_SIZE 15
 
 /* GPIO Tasks and Events */
 #define GPIOTE_PRESENT
-#define GPIOTE_COUNT 2
+#define GPIOTE_COUNT  2
 
 #define GPIOTE_CH_NUM 8
 
@@ -177,30 +177,30 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Pulse Width Modulator */
 #define PWM_PRESENT
-#define PWM_COUNT 4
+#define PWM_COUNT               4
 
-#define PWM_CH_NUM 4
+#define PWM_CH_NUM              4
 
 #define PWM_EASYDMA_MAXCNT_SIZE 15
 
 /* Pulse Density Modulator */
 #define PDM_PRESENT
-#define PDM_COUNT 1
+#define PDM_COUNT               1
 
 #define PDM_EASYDMA_MAXCNT_SIZE 15
 
 /* Inter-IC Sound Interface */
 #define I2S_PRESENT
-#define I2S_COUNT 1
+#define I2S_COUNT               1
 
 #define I2S_EASYDMA_MAXCNT_SIZE 14
 
 /* Inter Processor Communication */
 #define IPC_PRESENT
-#define IPC_COUNT 1
+#define IPC_COUNT     1
 
-#define IPC_CH_NUM 8
-#define IPC_CONF_NUM 8
+#define IPC_CH_NUM    8
+#define IPC_CONF_NUM  8
 #define IPC_GPMEM_NUM 4
 
 /* FPU */
@@ -223,7 +223,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* MAGPIO */
 #define MAGPIO_PRESENT
-#define MAGPIO_COUNT 1
+#define MAGPIO_COUNT   1
 #define MAGPIO_PIN_NUM 3
 
 /* REGULATORS */
@@ -231,4 +231,4 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define REGULATORS_COUNT 1
 
 
-#endif  // _NRF9160_PERIPHERALS_H
+#endif // _NRF9160_PERIPHERALS_H

@@ -25546,8 +25546,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\
           <fields>
             <field>
               <name>SLEEPSTATE</name>
-              <description>Reflects the sleep state during automatic collision resolution. Set to IDLE 
-        by a GOIDLE task. Set to SLEEP_A when a valid SLEEP_REQ frame is received or by a 
+              <description>Reflects the sleep state during automatic collision resolution. Set to IDLE
+        by a GOIDLE task. Set to SLEEP_A when a valid SLEEP_REQ frame is received or by a
         GOSLEEP task.</description>
               <lsb>0</lsb>
               <msb>0</msb>

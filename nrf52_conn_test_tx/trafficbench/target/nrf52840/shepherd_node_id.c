@@ -5,7 +5,7 @@
 //
 // ATTENTION: The patching mechanism is a sensible thing. To work properly, the most important
 // prerequisite is that SHEPHERD_NODE_ID is placed in a section of type SHT_PROGBITS (see ELF spec.
-// for details), i.e. a section with a 1:1 content image in the elf file (which gets patched then). 
+// for details), i.e. a section with a 1:1 content image in the elf file (which gets patched then).
 // (In the past it was also required to be the .data section (".data", not ".data.<something>").
 // Starting from 2022-02-21 the patch tool looks for a section containing symbol SHEPHERD_NODE_ID,
 // so today SHEPHERD_NODE_ID can also reside in .rodata or any other section.)
@@ -14,7 +14,7 @@
 // via the init table functions). Hence, SHEPHERD_NODE_ID must not reside in .data in this case.
 // We move it to .rodata by declaring it const. However, with const it must be ensured that the
 // variable does not get optimized away via constant propagation. A safe way to achieve this is
-// to put the variable definition in a different *.c file (so the compiler has no prior knowledge 
+// to put the variable definition in a different *.c file (so the compiler has no prior knowledge
 // about the value, which renders constant propagation impossible).
 
 #include <inttypes.h>

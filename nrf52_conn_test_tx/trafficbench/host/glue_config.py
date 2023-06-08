@@ -155,7 +155,7 @@ def read_trx(file_name):
     data = []
     with tbl.open_file(file_name, mode="r") as h5file:
 
-        # check enum types        
+        # check enum types
         assert(TRX_Operation == h5file.root.trx_data.trx.get_enum('operation'))
 
         path_to_label = {
@@ -171,10 +171,10 @@ def read_trx(file_name):
 
         nodes = h5file.root.catalogs.nodes.read()
         data.append(Data(label=path_to_label["/catalogs/nodes"], node_id=nodes))
-        
+
         t = h5file.root.catalogs.transactions.read()
         data.append(Data(label=path_to_label["/catalogs/transactions"], **dict(map(lambda x: (x, t[x]), t.dtype.names))))
-    
+
         t = h5file.root.catalogs.rx_info.read()
         data.append(Data(label=path_to_label["/catalogs/rx_info"], **dict(map(lambda x: (x, t[x]), t.dtype.names))))
         rx_info = data[-1]
@@ -274,11 +274,11 @@ def read_trx(file_name):
                 data.append(Data(label=f"rssi_{n}", **dict(map(lambda n: (n, xx[n]), xx.dtype.names))))
                 xx = data[-1]
 
-                xx.add_component_link(ComponentLink([xx.id["rssi_dBm"]], ComponentID("rssi_mW"), 
+                xx.add_component_link(ComponentLink([xx.id["rssi_dBm"]], ComponentID("rssi_mW"),
                     using=power_db_to_linear, inverse=power_linear_to_db))
-                xx.add_component_link(ComponentLink([xx.id["gts"]], ComponentID("gts_us"), 
+                xx.add_component_link(ComponentLink([xx.id["gts"]], ComponentID("gts_us"),
                     using=gts_ticks_to_us, inverse=gts_us_to_ticks))
-                xx.add_component_link(ComponentLink([xx.id["gts"]], ComponentID("gts_s"), 
+                xx.add_component_link(ComponentLink([xx.id["gts"]], ComponentID("gts_s"),
                     using=gts_ticks_to_s, inverse=gts_s_to_ticks))
 
                 # add dummy components to establish "viewer compatibility" with bitstream data
@@ -299,7 +299,7 @@ def read_trx(file_name):
                 ])
 
             # traverse receptions of something
-            r = (x for x in trx_array if x['node_id'] == node and x['operation'] == 0 and 
+            r = (x for x in trx_array if x['node_id'] == node and x['operation'] == 0 and
                 x['trx_status:header_detected'] and not x['trx_status:timeout'])
             for trx in r:
 
@@ -388,9 +388,9 @@ def read_trx(file_name):
             x = data[-1]
             x.add_component_link(ComponentLink([x.id["schedule_gts"], x.id["destination_node_id"]], ComponentID("destination_node_key"), using=node_key))
 
-            x.add_component_link(ComponentLink([x.id["gts"]], ComponentID("gts_us"), 
+            x.add_component_link(ComponentLink([x.id["gts"]], ComponentID("gts_us"),
                 using=gts_ticks_to_us, inverse=gts_us_to_ticks))
-            x.add_component_link(ComponentLink([x.id["gts"]], ComponentID("gts_s"), 
+            x.add_component_link(ComponentLink([x.id["gts"]], ComponentID("gts_s"),
                 using=gts_ticks_to_s, inverse=gts_s_to_ticks))
 
             # add dummy components to establish "viewer compatibility" with RSSI data
@@ -408,7 +408,7 @@ def read_trx(file_name):
 
 @autolinker(product_name + " TRX Auto-Linker")
 def trx_autolinker(dc):
-    
+
     global trx_loader_info
     # print(f"{trx_loader_info=}")
 
@@ -475,7 +475,7 @@ def trx_autolinker(dc):
             if gts_anchor is None:
                 gts_anchor = x
             else:
-                links.append(ComponentLink([from_id], gts_anchor.id["gts"]))    
+                links.append(ComponentLink([from_id], gts_anchor.id["gts"]))
         from_id = x.find_component_id("schedule_gts")
         if from_id is not None:
             links.append(ComponentLink([from_id], trx.id["schedule_gts"]))
@@ -685,9 +685,9 @@ def rx_viewer_plot_data(axes, state, style, gts, gts_us, gts_s, rssi, rssi_lin, 
 
         y = rssi_lin if linear_rssi else rssi
         # x,y = squeeze(gts, y, ax1.get_xlim())
-        # ret += ax1.plot(x, y, 
-        ret += ax1.plot(gts, y, 
-            alpha=style.alpha, color=style.color, linewidth=style.linewidth, linestyle=style.linestyle, 
+        # ret += ax1.plot(x, y,
+        ret += ax1.plot(gts, y,
+            alpha=style.alpha, color=style.color, linewidth=style.linewidth, linestyle=style.linestyle,
             marker=style.marker, markersize=style.markersize
             )
 
@@ -708,11 +708,11 @@ def rx_viewer_plot_data(axes, state, style, gts, gts_us, gts_s, rssi, rssi_lin, 
         y[rx_symbol > 1] = 0.5
         y1 = y.copy()
         y[rx_error < 0] = np.nan    # save ones (with rx_error available)
-        ret += ax2.step(gts, y, '-', where='post', 
+        ret += ax2.step(gts, y, '-', where='post',
             alpha=style.alpha, color=style.color, marker='|', markersize=7
             )
         y1[rx_error >= 0] = np.nan  # unsave ones (with rx_error unavailable)
-        ret += ax2.step(gts, y1, ':', where='post', 
+        ret += ax2.step(gts, y1, ':', where='post',
             alpha=style.alpha, color=style.color, marker='|', markersize=7
             )
 
@@ -722,8 +722,8 @@ def rx_viewer_plot_data(axes, state, style, gts, gts_us, gts_s, rssi, rssi_lin, 
         y[mask] = np.nan
         mask = ~mask
         y[mask] = rx_symbol[mask]
-        ret += ax2.step(gts, y, where='post', 
-            alpha=0.5, color='red', linewidth=5, 
+        ret += ax2.step(gts, y, where='post',
+            alpha=0.5, color='red', linewidth=5,
             marker='o', markersize=style.markersize*4, mec='red', mfc=style.color #, mfcalt='red', fillstyle='top'
             )
 
@@ -756,7 +756,7 @@ def rx_viewer_plot_subset(axes, state, style, gts, gts_us, gts_s, rssi, rssi_lin
         y = np.float16(rx_symbol)
         y[rx_symbol < 0] = np.nan
         y[rx_symbol > 1] = 0.5
-        ret += ax2.plot(gts, y, 'o', 
+        ret += ax2.plot(gts, y, 'o',
             alpha=style.alpha, mec=style.color, mfc=style.color, markersize=style.markersize
             )
 

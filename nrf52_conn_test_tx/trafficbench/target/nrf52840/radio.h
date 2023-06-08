@@ -60,15 +60,12 @@
 //***** Global (Public) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
-
 
 
 //**************************************************************************************************
@@ -77,11 +74,11 @@
 // transmit acknowledgement marker
 typedef struct Tx_Ack
 {
-	const Radio_Packet		*packet;
-	uint32_t				timestamp_ref;			// ADDRESS, SFD, etc.
-	uint32_t				timestamp_end;
-	volatile uint_fast8_t	done;
-	
+    const Radio_Packet   *packet;
+    uint32_t              timestamp_ref; // ADDRESS, SFD, etc.
+    uint32_t              timestamp_end;
+    volatile uint_fast8_t done;
+
 } Tx_Ack;
 
 //**************************************************************************************************
@@ -89,29 +86,29 @@ typedef struct Tx_Ack
 // sample buffer of one RSSI recording
 typedef struct Rssi_Buffer
 {
-	// NOTE: members are ordered such that struct is packed
-	// (to save space in rssi_space, which can contain quite a few header entries)
-	
-	uint32_t		timestamp_rssi_end;		// timestamp of last sample
-	uint32_t		num_written;
-	uint32_t		num_missed;
-	uint32_t		pretrigger_time;		// stored as info for postprocessing
-	uint32_t		posttrigger_time;		// stored as info for postprocessing
-	uint8_t			size_msb;
-	union
-	{
-		uint8_t		status;
-		struct
-		{
-			uint8_t		early_readout_detected	: 1;
-			uint8_t		late_readout_detected	: 1;
-		};
-	};
-	int16_t			temperature;			// stored to enable temperature compensation
-	
-	uint32_t		_padding_[0];			// word-align samples[]
-	
-	uint8_t			samples[0];				// size follows from size_msb
+    // NOTE: members are ordered such that struct is packed
+    // (to save space in rssi_space, which can contain quite a few header entries)
+
+    uint32_t timestamp_rssi_end; // timestamp of last sample
+    uint32_t num_written;
+    uint32_t num_missed;
+    uint32_t pretrigger_time;  // stored as info for postprocessing
+    uint32_t posttrigger_time; // stored as info for postprocessing
+    uint8_t  size_msb;
+    union
+    {
+        uint8_t status;
+        struct
+        {
+            uint8_t early_readout_detected : 1;
+            uint8_t late_readout_detected : 1;
+        };
+    };
+    int16_t  temperature; // stored to enable temperature compensation
+
+    uint32_t _padding_[0]; // word-align samples[]
+
+    uint8_t  samples[0]; // size follows from size_msb
 
 } Rssi_Buffer;
 
@@ -119,15 +116,15 @@ typedef struct Rssi_Buffer
 //***** Global Variables ***************************************************************************
 
 // transmit acknowledgement marker
-extern Tx_Ack					tx_ack;
+extern Tx_Ack                tx_ack;
 
 // Rx intermediate trigger event marker
-extern volatile uint_fast8_t	rx_intermediate_trigger_event;
+extern volatile uint_fast8_t rx_intermediate_trigger_event;
 
 // rssi_space = circular buffer of Rssi_Buffer entries
-extern uint8_t					rssi_space[RSSI_SPACE_SIZE];
-extern volatile uint32_t		rssi_space_num_writing;
-extern volatile uint32_t		rssi_space_num_written_radio;
+extern uint8_t               rssi_space[RSSI_SPACE_SIZE];
+extern volatile uint32_t     rssi_space_num_writing;
+extern volatile uint32_t     rssi_space_num_written_radio;
 
 // NOTE: Theoretically, the last bytes of rssi_space (sizeof(Rssi_Buffer) + min. buffer size - 1
 // if min. buffer size > sizeof(Rssi_Buffer)) could be used for something different (e.g. scratch
@@ -144,61 +141,52 @@ ASSERT_CT_STATIC(IS_POWER_OF_2(NUM_ELEMENTS(rssi_space)), size_of_rssi_space_mus
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
-void					radio_init();
+void                 radio_init();
 
-Gpi_Fast_Tick_Native	radio_start_tx(
-							Gpi_Fast_Tick_Native	start_tick,
-							Gpi_Fast_Tick_Native	carrier_period_1,
-							Gpi_Fast_Tick_Native	carrier_period_2,
-							const Radio_Packet		*packet);
+Gpi_Fast_Tick_Native radio_start_tx(Gpi_Fast_Tick_Native start_tick,
+                                    Gpi_Fast_Tick_Native carrier_period_1,
+                                    Gpi_Fast_Tick_Native carrier_period_2,
+                                    const Radio_Packet  *packet);
 
-Gpi_Fast_Tick_Native	radio_start_rx(
-							Gpi_Fast_Tick_Native	start_tick, 
-							Gpi_Fast_Tick_Native	timeout, 
-							int_fast16_t			intermediate_trigger_pos,
-							uint8_t					intermediate_trigger_preset_content,
-							uint_fast32_t			min_rssi_buffer_size,
-							Gpi_Fast_Tick_Native	rssi_pretrigger_time,
-							Gpi_Fast_Tick_Native	rssi_posttrigger_time);
+Gpi_Fast_Tick_Native radio_start_rx(Gpi_Fast_Tick_Native start_tick, Gpi_Fast_Tick_Native timeout,
+                                    int_fast16_t         intermediate_trigger_pos,
+                                    uint8_t              intermediate_trigger_preset_content,
+                                    uint_fast32_t        min_rssi_buffer_size,
+                                    Gpi_Fast_Tick_Native rssi_pretrigger_time,
+                                    Gpi_Fast_Tick_Native rssi_posttrigger_time);
 
 // useful helper functions
 
 // update rssi_space_num_written_radio from the outside in a safe way,
 // e.g. to regain buffer space after postprocessing has finished
-void					radio_update_rssi_num_written(
-							uint32_t				rx_queue_num_read, 
-							uint32_t				rssi_space_num_written_radio);
+void                 radio_update_rssi_num_written(uint32_t rx_queue_num_read,
+                                                   uint32_t rssi_space_num_written_radio);
 
 // drop all rssi data,
 // e.g. because data has been damaged (potentially) by postprocessing
 // ATTENTION: this function must not interrupt radio_start_rx()
-void					radio_drop_rssi_space();
+void                 radio_drop_rssi_space();
 
 // generate event (-> trigger_radio_event()) at specified time.
 // can be used to utilize the timer IRQ occupied by radio.c for other purposes
 // while the radio is inactive.
-void					radio_wake_at(
-							Gpi_Fast_Tick_Native	tick);
+void                 radio_wake_at(Gpi_Fast_Tick_Native tick);
 
 // compute theoretical timestamp of reference event (-> timestamp_ref) relative to start of packet
-Gpi_Fast_Tick_Native	radio_get_ref_timestamp_offset(
-							Gpi_Radio_Mode			mode);
+Gpi_Fast_Tick_Native radio_get_ref_timestamp_offset(Gpi_Radio_Mode mode);
 
 // compute nominal packet airtime
-Gpi_Fast_Tick_Native	radio_get_packet_airtime(
-							Gpi_Radio_Mode			mode,
-							uint_fast8_t			payload_length);
+Gpi_Fast_Tick_Native radio_get_packet_airtime(Gpi_Radio_Mode mode, uint_fast8_t payload_length);
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
-
 
 
 //**************************************************************************************************

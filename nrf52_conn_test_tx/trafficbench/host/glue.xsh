@@ -8,4 +8,3 @@ echo using @(CONFIGPATH)
 
 #$GLUERC = CONFIGPATH
 glue -c @(CONFIGPATH)
-

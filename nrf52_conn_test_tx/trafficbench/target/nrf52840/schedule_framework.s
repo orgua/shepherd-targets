@@ -163,18 +163,18 @@ TICKS_PER_US = 16
 
 // open TRX instruction (with one or more transmitters)
 .macro TRX_SYNC_begin transmitter:req, timeout=0, tx_delay:req, tx_carrier_period_1=0, tx_carrier_period_2=0, rssi_pretrigger_time=0, rssi_posttrigger_time=0, rssi_buffer_size=0, rng_offset=0
-		
+
 	ensure_scope 0, 3
-	
+
 	// if outside TRX_GROUP: adopt parameter values
 	// NOTE: .subsection 0 is required (otherwise label diffs will not be absolute)
-	.subsection 0	
+	.subsection 0
 	.if ((3000b - 3999b) < 0)
 		.set .LTRX_timeout, \timeout
 		.set .LTRX_rssi_buffer_size, \rssi_buffer_size
 		.set .LTRX_rssi_pretrigger_time, \rssi_pretrigger_time
 		.set .LTRX_rssi_posttrigger_time, \rssi_posttrigger_time
-		
+
 	// if first instruction inside TRX_GROUP: adopt parameter values not provided at TRX_GROUP_begin
 	// NOTE: this is provided for compatibility and will be removed in the future
 	// (in prior versions, timeout and others were specified at first group member, not at TRX_GROUP_begin)
@@ -225,7 +225,7 @@ TICKS_PER_US = 16
 	.if (.LTRX_rssi_posttrigger_time == 0)
 		.set .LTRX_rssi_posttrigger_time, RSSI_POSTTRIGGER_TIME_DEFAULT
 	.endif
-	
+
 	.subsection 0
 	.byte	1							// opcode
 	.if ((3999b - 3000b) <= 0)			// if inside TRX_GROUP
@@ -238,7 +238,7 @@ TICKS_PER_US = 16
 		.byte	0						// group_offset -> group end / anchor (no group)
 	.endif
 	.2byte	TRX_\@ - schedule			// params_ptr
-	
+
 	.subsection 1
 	.balign 4
 	TRX_\@\():
@@ -249,11 +249,11 @@ TICKS_PER_US = 16
 	.2byte	.LTRX_rssi_pretrigger_time
 	.2byte	.LTRX_rssi_posttrigger_time
 	.2byte	\rng_offset
-	
+
 	.section dummy
 	.set .LTRX_\@_cp_offset, (1250f - 1000f)
 	.previous
-	
+
 	.byte 	1999f - 1000f				// payload_length
 	.byte 	.LTRX_rssi_buffer_size		// rssi_buffer_size_msb
 	.byte	.LTRX_\@_cp_offset			// checkpoint_offset
@@ -261,7 +261,7 @@ TICKS_PER_US = 16
 	.byte	\transmitter
 	.LTRX_\@\():
 	//.2byte	1900f - (. + 2)			// payload descriptor list size
-	
+
 	// define default labels (outside of 1000 ... 1999)
 	// each of them ensures that label exists and allows TRX_SYNC_end to check if corresponding component has been used
 	.section dummy
@@ -270,7 +270,7 @@ TICKS_PER_US = 16
 	.zero	1
 	1000:								// payload begin
 	.previous
-	
+
 .endm
 
 //**************************************************************************************************
@@ -281,7 +281,7 @@ TICKS_PER_US = 16
 	.subsection 1
 	.byte	2, 0			// end of list
 	//1900:					// descriptor list end marker
-	
+
 	.section dummy
 	1999:					// payload end marker
 
@@ -293,7 +293,7 @@ TICKS_PER_US = 16
 		.endif
 
 	.else
-	
+
 		// trigger error if payload exceeds max. size
 		.if (. - 1000b) > 255
 			.error "payload length overrun"
@@ -312,7 +312,7 @@ TICKS_PER_US = 16
 		.if (1256b - 1000b < 0)
 			.error "missing checkpoint marker"
 		.endif
-	
+
 		// if TRX_data_checkpoint_marker used
 		//.if (1256b - 1000b >= 0)
 			// trigger error if TRX_CHECKPOINT_MARKER_POS does not match
@@ -333,7 +333,7 @@ TICKS_PER_US = 16
 	1250:	// dummy checkpoint data, used to establish checkpoint_offset = 255 if there is no cp data
 	.previous
 	.subsection 0
-	
+
 .endm
 
 //**************************************************************************************************
@@ -514,7 +514,7 @@ schedule:
 
 	.subsection 1
 	.balign		4
-	
+
 schedule_end:
 
 	// check if schedule defines all mandatory constants
@@ -547,13 +547,13 @@ schedule_end:
 	//.if ((SCHEDULE_SIZE_0 + SCHEDULE_SIZE_1) > 0x10000)
 	//	.error "schedule size exceed (must not be > 0x10000)"
 	//.endif
-	
+
 schedule_options:
 
 	// layout = struct Schedule_Options
 	.2byte		TRX_PRE_DELAY
 	.2byte		TRX_POST_DELAY
 	.2byte		TRX_CHECKPOINT_MARKER_POS
-	
+
 //**************************************************************************************************
 //**************************************************************************************************

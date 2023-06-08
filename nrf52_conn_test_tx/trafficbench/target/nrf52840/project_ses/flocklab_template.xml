@@ -14,7 +14,7 @@
     * The preprocessor must be called with an option to keep C-style comments, otherwise the
     * BASE64 encoded image can be damaged (since it can contain // combinations).
     * NOTE: In consequence, all C-style comments (e.g. from included files) will be kept in the
-    * generated output (other than one might expect). An exception are comments inside macro 
+    * generated output (other than one might expect). An exception are comments inside macro
     * declarations, which is the reason why you won't see this comment block in the output
     * (as it is inside the definition of COMMENT_DUMMY). To avoid struggling and confusion with
     * this topic, we include the config header using GCC option -imacro (instead of #include),
@@ -78,7 +78,7 @@
             <offset>2</offset>
         </pinConf>
     </gpioActuationConf>
-    
+
 #if FLOCKLAB_POWER_PROFILING
     <!-- Power Profiling Service configuration -->
     <powerProfilingConf>

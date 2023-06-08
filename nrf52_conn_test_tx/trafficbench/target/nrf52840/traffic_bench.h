@@ -51,10 +51,10 @@
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include "radio.h"		// RSSISpy radio interface
+#include "radio.h" // RSSISpy radio interface
 
-#include "gpi/protothreads.h"
 #include "gpi/interrupts.h"
+#include "gpi/protothreads.h"
 
 #include <stdint.h>
 
@@ -62,18 +62,16 @@
 //***** Global (Public) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
-#define POSTPROC_SWI_INDEX		0
+#define POSTPROC_SWI_INDEX 0
 
-#define POSTPROC_IRQ			CONCAT(SWI, POSTPROC_SWI_INDEX, _EGU, POSTPROC_SWI_INDEX, _IRQn)
-#define POSTPROC_ISR_NAME		CONCAT(SWI, POSTPROC_SWI_INDEX, _EGU, POSTPROC_SWI_INDEX, _IRQHandler)
+#define POSTPROC_IRQ       CONCAT(SWI, POSTPROC_SWI_INDEX, _EGU, POSTPROC_SWI_INDEX, _IRQn)
+#define POSTPROC_ISR_NAME  CONCAT(SWI, POSTPROC_SWI_INDEX, _EGU, POSTPROC_SWI_INDEX, _IRQHandler)
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
-
 
 
 //**************************************************************************************************
@@ -82,12 +80,12 @@
 // checkpoint data (in packets containing checkpoints)
 typedef struct __attribute__((packed)) Checkpoint_Data
 {
-	uint8_t		transmitter_id;
-	uint8_t		transmitter_hop;
-	uint16_t	schedule_pc;
-	uint32_t	schedule_clock;
-	uint32_t	schedule_rng_state;
-	
+    uint8_t  transmitter_id;
+    uint8_t  transmitter_hop;
+    uint16_t schedule_pc;
+    uint32_t schedule_clock;
+    uint32_t schedule_rng_state;
+
 } Checkpoint_Data;
 
 //**************************************************************************************************
@@ -95,149 +93,149 @@ typedef struct __attribute__((packed)) Checkpoint_Data
 
 typedef enum Opcode
 {
-	opTERMINATE = 0,
-	opTRX,
-	opSLEEP,
-//	opCHANGE_RADIO_MODE,
-	opBRANCH	= 200,
-	
+    opTERMINATE = 0,
+    opTRX,
+    opSLEEP,
+    //	opCHANGE_RADIO_MODE,
+    opBRANCH = 200,
+
 } Opcode;
 
 typedef struct /*__attribute__((packed))*/ Params_SLEEP
 {
-	uint32_t		delay;
-	
+    uint32_t delay;
+
 } Params_SLEEP;
 
 typedef enum Params_TRX_Desc_Type
 {
-	TRX_DATA_END		= 0,	// end of list
-	TRX_DATA_FIXED		= 1,
-	TRX_DATA_RANDOM		= 2,
-	TRX_DATA_CHECKPOINT	= 250,
-	TRX_DATA_NO_PACKET	= 255
+    TRX_DATA_END        = 0, // end of list
+    TRX_DATA_FIXED      = 1,
+    TRX_DATA_RANDOM     = 2,
+    TRX_DATA_CHECKPOINT = 250,
+    TRX_DATA_NO_PACKET  = 255
 
 } Params_TRX_Desc_Type;
 
 typedef struct /*__attribute__((packed))*/ Params_TRX
 {
-	uint32_t		timeout;
-	uint32_t		tx_delay;
-	uint16_t		tx_carrier_period_1;
-	uint16_t		tx_carrier_period_2;
-	uint16_t		rssi_pretrigger_time;
-	uint16_t		rssi_posttrigger_time;
-	uint16_t		rng_offset;
-	uint8_t			payload_length;
-	uint8_t			rssi_buffer_size_msb;	// 0 = auto from payload_length
-	uint8_t			checkpoint_offset;		// 0xFF = no checkpoint
-	uint8_t			num_transmitters;
-	uint8_t			transmitter_ids[0];
-	//uint16_t		payload_descriptor_list_size;
-	
-	struct __attribute__((packed))
-	{
-		uint8_t			size;		// size of descriptor (not of corresponding payload chunk)
-		uint8_t			type;		// see Params_TRX_Desc_Type
-		union
-		{
-			struct __attribute__((packed))
-			{
-				uint8_t		data[0];
-				
-			}			fixed;
-			
-			struct __attribute__((packed))
-			{
-				uint8_t		num_bytes;
-				
-			}			random;
-		};
-	}				payload_descriptors[0];
-	
+    uint32_t timeout;
+    uint32_t tx_delay;
+    uint16_t tx_carrier_period_1;
+    uint16_t tx_carrier_period_2;
+    uint16_t rssi_pretrigger_time;
+    uint16_t rssi_posttrigger_time;
+    uint16_t rng_offset;
+    uint8_t  payload_length;
+    uint8_t  rssi_buffer_size_msb; // 0 = auto from payload_length
+    uint8_t  checkpoint_offset;    // 0xFF = no checkpoint
+    uint8_t  num_transmitters;
+    uint8_t  transmitter_ids[0];
+    //uint16_t		payload_descriptor_list_size;
+
+    struct __attribute__((packed))
+    {
+        uint8_t size; // size of descriptor (not of corresponding payload chunk)
+        uint8_t type; // see Params_TRX_Desc_Type
+        union
+        {
+            struct __attribute__((packed))
+            {
+                uint8_t data[0];
+
+            } fixed;
+
+            struct __attribute__((packed))
+            {
+                uint8_t num_bytes;
+
+            } random;
+        };
+    } payload_descriptors[0];
+
 } Params_TRX;
 
 typedef union Instruction_Params
 {
-	Params_SLEEP	SLEEP;
-	Params_TRX		TRX;
-	
+    Params_SLEEP SLEEP;
+    Params_TRX   TRX;
+
 } Instruction_Params;
 
 // 32-bit machine instruction
 typedef struct Schedule_Entry
 {
-	uint8_t				opcode;
-	
-	// immediate parameters
-	union __attribute__((packed))
-	{
-		//uint8_t  		params_raw[3];
-		
-		struct __attribute__((packed))
-		{
-			uint8_t		__padding__;		// for alignment
-			uint16_t	params_ptr;
-		};
+    uint8_t opcode;
 
-		struct __attribute__((packed))
-		{
-			uint8_t		__reserved__;
-			int16_t		offset;
-			
-		} BRANCH;
-		
-		struct __attribute__((packed))
-		{
-			int8_t		group_offset;
-			uint16_t	params_ptr;
-			
-		} TRX;
+    // immediate parameters
+    union __attribute__((packed))
+    {
+        //uint8_t  		params_raw[3];
 
-		//struct __attribute__((packed))
-		//{
-		//	uint8_t		num_entries;
-		//	uint16_t	__reserved__;
-			
-		//} TRX_GROUP;
-	};
-	
+        struct __attribute__((packed))
+        {
+            uint8_t  __padding__; // for alignment
+            uint16_t params_ptr;
+        };
+
+        struct __attribute__((packed))
+        {
+            uint8_t __reserved__;
+            int16_t offset;
+
+        } BRANCH;
+
+        struct __attribute__((packed))
+        {
+            int8_t   group_offset;
+            uint16_t params_ptr;
+
+        } TRX;
+
+        //struct __attribute__((packed))
+        //{
+        //	uint8_t		num_entries;
+        //	uint16_t	__reserved__;
+
+        //} TRX_GROUP;
+    };
+
 } Schedule_Entry;
 
 // static options provided in the schedule
 typedef struct Schedule_Options
 {
-	uint16_t		TRX_pre_delay;				// between schedule tick and start of packet
-	uint16_t		TRX_post_delay;				// between end of timeout and next instruction
-	int16_t			TRX_checkpoint_marker_pos;
+    uint16_t TRX_pre_delay;  // between schedule tick and start of packet
+    uint16_t TRX_post_delay; // between end of timeout and next instruction
+    int16_t  TRX_checkpoint_marker_pos;
 
 } Schedule_Options;
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
-extern uint8_t					my_node_id;
+extern uint8_t                my_node_id;
 
 // the following symbols are defined in schedule_framework.s
-extern const Schedule_Entry		schedule[];
-extern const Schedule_Entry		schedule_end;
-extern const Schedule_Options	schedule_options;
+extern const Schedule_Entry   schedule[];
+extern const Schedule_Entry   schedule_end;
+extern const Schedule_Options schedule_options;
 
 // protothread contexts
-extern struct pt				pt_context[3];
-static struct pt * const		pt_scheduler	= &pt_context[0];
-static struct pt * const		pt_postprocess	= &pt_context[1];
-static struct pt * const		pt_log			= &pt_context[2];
+extern struct pt              pt_context[3];
+static struct pt *const       pt_scheduler   = &pt_context[0];
+static struct pt *const       pt_postprocess = &pt_context[1];
+static struct pt *const       pt_log         = &pt_context[2];
 
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 // main task scheduler
-void	scheduler_start(uint8_t my_node_id);
+void scheduler_start(uint8_t my_node_id);
 
 // thread entry functions (used internally)
 PT_THREAD(execution_thread());
@@ -245,7 +243,7 @@ PT_THREAD(postproc_thread());
 PT_THREAD(log_thread());
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
@@ -253,17 +251,14 @@ PT_THREAD(log_thread());
 
 static inline void scheduler_wake_at(Gpi_Fast_Tick_Native tick)
 {
-	radio_wake_at(tick);
-	
-	// in response, trigger_radio_event() triggers the scheduler (see there)
+    radio_wake_at(tick);
+
+    // in response, trigger_radio_event() triggers the scheduler (see there)
 }
 
 //**************************************************************************************************
 
-static inline void trigger_postprocessing()
-{
-	NVIC_SetPendingIRQ(POSTPROC_IRQ);
-}
+static inline void trigger_postprocessing() { NVIC_SetPendingIRQ(POSTPROC_IRQ); }
 
 //**************************************************************************************************
 //**************************************************************************************************

@@ -51,14 +51,14 @@
 // message groups for TRACE messages (used in GPI_TRACE_MSG() calls)
 // define groups appropriate for your needs, assign one bit per group
 // values > GPI_TRACE_LOG_USER (i.e. upper bits) are reserved
-#define TRACE_INFO		GPI_TRACE_MSG_TYPE_INFO
+#define TRACE_INFO GPI_TRACE_MSG_TYPE_INFO
 
 // select active message groups, i.e., the messages to be printed (others will be dropped)
 #ifndef GPI_TRACE_BASE_SELECTION
-	#define GPI_TRACE_BASE_SELECTION	(GPI_TRACE_LOG_STANDARD | GPI_TRACE_LOG_PROGRAM_FLOW)
+  #define GPI_TRACE_BASE_SELECTION (GPI_TRACE_LOG_STANDARD | GPI_TRACE_LOG_PROGRAM_FLOW)
 #endif
 #ifndef GPI_TRACE_USER_SELECTION
-	#define GPI_TRACE_USER_SELECTION	GPI_TRACE_LOG_USER
+  #define GPI_TRACE_USER_SELECTION GPI_TRACE_LOG_USER
 #endif
 GPI_TRACE_CONFIG(traffic_bench, GPI_TRACE_BASE_SELECTION | GPI_TRACE_USER_SELECTION);
 
@@ -67,9 +67,9 @@ GPI_TRACE_CONFIG(traffic_bench, GPI_TRACE_BASE_SELECTION | GPI_TRACE_USER_SELECT
 
 #include "traffic_bench.h"
 
-#include "gpi/tools.h"
-#include "gpi/resource_check.h"
 #include "gpi/protothreads.h"
+#include "gpi/resource_check.h"
+#include "gpi/tools.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -83,39 +83,36 @@ GPI_RESOURCE_RESERVE_SHARED(NRF_EGU_SWI, POSTPROC_SWI_INDEX);
 //***** Local Typedefs and Class Declarations ******************************************************
 
 
-
 //**************************************************************************************************
 //***** Forward Declarations ***********************************************************************
-
 
 
 //**************************************************************************************************
 //***** Local (Static) Variables *******************************************************************
 
 
-
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
-uint8_t					my_node_id;
+uint8_t           my_node_id;
 
-volatile uint32_t		rx_queue_num_written_trx;
-volatile uint32_t		rx_queue_num_written_postproc;
+volatile uint32_t rx_queue_num_written_trx;
+volatile uint32_t rx_queue_num_written_postproc;
 
 // protothread contexts
-struct pt				pt_context[3];
+struct pt         pt_context[3];
 
 //**************************************************************************************************
 //***** Local Functions ****************************************************************************
 
 // communication scheduler ISR
-void PendSV_Handler()
+void              PendSV_Handler()
 {
-	GPI_TRACE_FUNCTION_FAST();
-	
-	PT_SCHEDULE(execution_thread());
-	
-	GPI_TRACE_RETURN_FAST();
+    GPI_TRACE_FUNCTION_FAST();
+
+    PT_SCHEDULE(execution_thread());
+
+    GPI_TRACE_RETURN_FAST();
 }
 
 //**************************************************************************************************
@@ -123,11 +120,11 @@ void PendSV_Handler()
 // postprocessing ISR
 void POSTPROC_ISR_NAME()
 {
-	GPI_TRACE_FUNCTION_FAST();
-	
-	PT_SCHEDULE(postproc_thread());
-	
-	GPI_TRACE_RETURN_FAST();
+    GPI_TRACE_FUNCTION_FAST();
+
+    PT_SCHEDULE(postproc_thread());
+
+    GPI_TRACE_RETURN_FAST();
 }
 
 //**************************************************************************************************
@@ -136,68 +133,69 @@ void POSTPROC_ISR_NAME()
 // main task scheduler
 void scheduler_start(uint8_t node_id)
 {
-	GPI_TRACE_FUNCTION();
-	
-	Gpi_Fast_Tick_Native	t1;
+    GPI_TRACE_FUNCTION();
 
-	// init global data
-	my_node_id						= node_id;
-	rx_queue_num_written_trx		= rx_queue_num_written_radio;
-	rx_queue_num_written_postproc	= rx_queue_num_written_trx;
+    Gpi_Fast_Tick_Native t1;
 
-	// ensure that GPI_TRACE_MODE_FLUSH != AUTO (would disturb timing and logging otherwise)
-	ASSERT_CT(GPI_TRACE_MODE_IS_NO_TRACE || GPI_TRACE_MODE_IS_FLUSH_NOAUTO, GPI_TRACE_MODE_FLUSH_AUTO_would_disturb_timing);
-	
-	// prepare PendSV exception
-	// NOTE: don't NVIC_EnableIRQ(), PendSV is always enabled (PendSV is a system exception, not an IRQ)
-	ASSERT_CT(__NVIC_PRIO_BITS >= 3);
-	NVIC_SetPriority(PendSV_IRQn, 5);
+    // init global data
+    my_node_id                    = node_id;
+    rx_queue_num_written_trx      = rx_queue_num_written_radio;
+    rx_queue_num_written_postproc = rx_queue_num_written_trx;
 
-	// prepare postprocessing interrupt
-	NVIC_SetPriority(POSTPROC_IRQ, 6);
-	NVIC_ClearPendingIRQ(POSTPROC_IRQ);
-	NVIC_EnableIRQ(POSTPROC_IRQ);
+    // ensure that GPI_TRACE_MODE_FLUSH != AUTO (would disturb timing and logging otherwise)
+    ASSERT_CT(GPI_TRACE_MODE_IS_NO_TRACE || GPI_TRACE_MODE_IS_FLUSH_NOAUTO,
+              GPI_TRACE_MODE_FLUSH_AUTO_would_disturb_timing);
 
-	// init threads
-	PT_INIT(pt_scheduler);
-	PT_INIT(pt_postprocess);
-	PT_INIT(pt_log);
+    // prepare PendSV exception
+    // NOTE: don't NVIC_EnableIRQ(), PendSV is always enabled (PendSV is a system exception, not an IRQ)
+    ASSERT_CT(__NVIC_PRIO_BITS >= 3);
+    NVIC_SetPriority(PendSV_IRQn, 5);
 
-	//// start threads to allow thread-internal initialization
-	trigger_scheduler();
-	trigger_postprocessing();
-	PT_SCHEDULE(log_thread());
+    // prepare postprocessing interrupt
+    NVIC_SetPriority(POSTPROC_IRQ, 6);
+    NVIC_ClearPendingIRQ(POSTPROC_IRQ);
+    NVIC_EnableIRQ(POSTPROC_IRQ);
 
-	// start communication scheduler (which operates self-driven from this point)
-	trigger_scheduler();
+    // init threads
+    PT_INIT(pt_scheduler);
+    PT_INIT(pt_postprocess);
+    PT_INIT(pt_log);
 
-	// main loop
-	t1 = gpi_tick_fast_native();
-	while (1)
-	{
-		// flush TRACE buffer
-		GPI_TRACE_FLUSH();
+    //// start threads to allow thread-internal initialization
+    trigger_scheduler();
+    trigger_postprocessing();
+    PT_SCHEDULE(log_thread());
 
-		// schedule threads
-		PT_SCHEDULE(log_thread());
+    // start communication scheduler (which operates self-driven from this point)
+    trigger_scheduler();
 
-		// show sign of life once in a while
-		if (gpi_tick_compare_fast_native(gpi_tick_fast_native(), t1) >= 0)
-		{
-			t1 += GPI_TICK_MS_TO_FAST(500);
-			
-			printf("Hello from main scheduler...\n");
-			#if GPI_ARCH_IS_BOARD(nRF_PCA10056)
-				gpi_led_toggle(GPI_LED_2);
-			#endif
-		}
+    // main loop
+    t1 = gpi_tick_fast_native();
+    while (1)
+    {
+        // flush TRACE buffer
+        GPI_TRACE_FLUSH();
 
-		//if (PT_WAITING == PT_SCHEDULE_STATE(log_thread()))
-		//{
-		//}
-	}
-	
-	GPI_TRACE_RETURN();
+        // schedule threads
+        PT_SCHEDULE(log_thread());
+
+        // show sign of life once in a while
+        if (gpi_tick_compare_fast_native(gpi_tick_fast_native(), t1) >= 0)
+        {
+            t1 += GPI_TICK_MS_TO_FAST(500);
+
+            printf("Hello from main scheduler...\n");
+#if GPI_ARCH_IS_BOARD(nRF_PCA10056)
+            gpi_led_toggle(GPI_LED_2);
+#endif
+        }
+
+        //if (PT_WAITING == PT_SCHEDULE_STATE(log_thread()))
+        //{
+        //}
+    }
+
+    GPI_TRACE_RETURN();
 }
 
 //**************************************************************************************************

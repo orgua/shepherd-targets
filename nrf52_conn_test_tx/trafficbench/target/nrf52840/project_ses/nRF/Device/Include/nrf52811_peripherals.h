@@ -52,7 +52,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define POWER_COUNT 1
 
 #define POWER_FEATURE_RAM_REGISTERS_PRESENT
-#define POWER_FEATURE_RAM_REGISTERS_COUNT       3
+#define POWER_FEATURE_RAM_REGISTERS_COUNT 3
 
 /* Non-Volatile Memory Controller */
 #define NVMC_PRESENT
@@ -68,9 +68,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* GPIO */
 #define GPIO_PRESENT
-#define GPIO_COUNT 1
+#define GPIO_COUNT              1
 
-#define P0_PIN_NUM 32
+#define P0_PIN_NUM              32
 
 #define P0_FEATURE_PINS_PRESENT 0xFFFFFFFFUL
 
@@ -78,11 +78,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define BPROT_PRESENT
 
 #define BPROT_REGIONS_SIZE 4096
-#define BPROT_REGIONS_NUM 48
+#define BPROT_REGIONS_NUM  48
 
 /* Radio */
 #define RADIO_PRESENT
-#define RADIO_COUNT 1
+#define RADIO_COUNT               1
 
 #define RADIO_EASYDMA_MAXCNT_SIZE 8
 #define RADIO_FEATURE_IEEE_802_15_4_PRESENT
@@ -91,7 +91,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Accelerated Address Resolver */
 #define AAR_PRESENT
-#define AAR_COUNT 1
+#define AAR_COUNT       1
 
 #define AAR_MAX_IRK_NUM 16
 
@@ -105,35 +105,35 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Peripheral to Peripheral Interconnect */
 #define PPI_PRESENT
-#define PPI_COUNT 1
+#define PPI_COUNT        1
 
-#define PPI_CH_NUM 20
+#define PPI_CH_NUM       20
 #define PPI_FIXED_CH_NUM 12
-#define PPI_GROUP_NUM 6
+#define PPI_GROUP_NUM    6
 #define PPI_FEATURE_FORKS_PRESENT
 
 /* Event Generator Unit */
 #define EGU_PRESENT
-#define EGU_COUNT 2
+#define EGU_COUNT   2
 
 #define EGU0_CH_NUM 16
 #define EGU1_CH_NUM 16
 
 /* Timer/Counter */
 #define TIMER_PRESENT
-#define TIMER_COUNT 3
+#define TIMER_COUNT     3
 
 #define TIMER0_MAX_SIZE 32
 #define TIMER1_MAX_SIZE 32
 #define TIMER2_MAX_SIZE 32
 
-#define TIMER0_CC_NUM 4
-#define TIMER1_CC_NUM 4
-#define TIMER2_CC_NUM 4
+#define TIMER0_CC_NUM   4
+#define TIMER1_CC_NUM   4
+#define TIMER2_CC_NUM   4
 
 /* Real Time Counter */
 #define RTC_PRESENT
-#define RTC_COUNT 2
+#define RTC_COUNT   2
 
 #define RTC0_CC_NUM 3
 #define RTC1_CC_NUM 4
@@ -156,26 +156,26 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Serial Peripheral Interface Master with DMA */
 #define SPIM_PRESENT
-#define SPIM_COUNT 2
+#define SPIM_COUNT                         2
 
-#define SPIM0_MAX_DATARATE  8
-#define SPIM1_MAX_DATARATE  8
+#define SPIM0_MAX_DATARATE                 8
+#define SPIM1_MAX_DATARATE                 8
 
-#define SPIM0_FEATURE_HARDWARE_CSN_PRESENT  0
-#define SPIM1_FEATURE_HARDWARE_CSN_PRESENT  0
+#define SPIM0_FEATURE_HARDWARE_CSN_PRESENT 0
+#define SPIM1_FEATURE_HARDWARE_CSN_PRESENT 0
 
-#define SPIM0_FEATURE_DCX_PRESENT  0
-#define SPIM1_FEATURE_DCX_PRESENT  0
+#define SPIM0_FEATURE_DCX_PRESENT          0
+#define SPIM1_FEATURE_DCX_PRESENT          0
 
-#define SPIM0_FEATURE_RXDELAY_PRESENT  0
-#define SPIM1_FEATURE_RXDELAY_PRESENT  0
+#define SPIM0_FEATURE_RXDELAY_PRESENT      0
+#define SPIM1_FEATURE_RXDELAY_PRESENT      0
 
-#define SPIM0_EASYDMA_MAXCNT_SIZE 14
-#define SPIM1_EASYDMA_MAXCNT_SIZE 14
+#define SPIM0_EASYDMA_MAXCNT_SIZE          14
+#define SPIM1_EASYDMA_MAXCNT_SIZE          14
 
 /* Serial Peripheral Interface Slave with DMA*/
 #define SPIS_PRESENT
-#define SPIS_COUNT 2
+#define SPIS_COUNT                2
 
 #define SPIS0_EASYDMA_MAXCNT_SIZE 14
 #define SPIS1_EASYDMA_MAXCNT_SIZE 14
@@ -186,13 +186,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Two Wire Interface Master with DMA */
 #define TWIM_PRESENT
-#define TWIM_COUNT 1
+#define TWIM_COUNT                1
 
 #define TWIM0_EASYDMA_MAXCNT_SIZE 14
 
 /* Two Wire Interface Slave with DMA */
 #define TWIS_PRESENT
-#define TWIS_COUNT 1
+#define TWIS_COUNT                1
 
 #define TWIS0_EASYDMA_MAXCNT_SIZE 14
 
@@ -202,7 +202,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Universal Asynchronous Receiver-Transmitter with DMA */
 #define UARTE_PRESENT
-#define UARTE_COUNT 1
+#define UARTE_COUNT                1
 
 #define UARTE0_EASYDMA_MAXCNT_SIZE 14
 
@@ -212,15 +212,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Successive Approximation Analog to Digital Converter */
 #define SAADC_PRESENT
-#define SAADC_COUNT 1
+#define SAADC_COUNT               1
 
 #define SAADC_EASYDMA_MAXCNT_SIZE 15
 
-#define SAADC_CH_NUM 8
+#define SAADC_CH_NUM              8
 
 /* GPIO Tasks and Events */
 #define GPIOTE_PRESENT
-#define GPIOTE_COUNT 1
+#define GPIOTE_COUNT  1
 
 #define GPIOTE_CH_NUM 8
 
@@ -233,17 +233,17 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Pulse Width Modulator */
 #define PWM_PRESENT
-#define PWM_COUNT 1
+#define PWM_COUNT                1
 
-#define PWM0_CH_NUM 4
+#define PWM0_CH_NUM              4
 
 #define PWM0_EASYDMA_MAXCNT_SIZE 15
 
 /* Pulse Density Modulator */
 #define PDM_PRESENT
-#define PDM_COUNT 1
+#define PDM_COUNT               1
 
 #define PDM_EASYDMA_MAXCNT_SIZE 15
 
 
-#endif      // _NRF52811_PERIPHERALS_H
+#endif // _NRF52811_PERIPHERALS_H

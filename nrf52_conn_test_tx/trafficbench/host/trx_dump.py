@@ -58,7 +58,7 @@ TRX_Operation = tbl.Enum({'RX' : 0, 'TX' : 1})
 
 # PyTables TRX record specification used in outfile (HDF5)
 class TRX_Record(tbl.IsDescription):
-    
+
     ident                = tbl.StringCol(40)
     node_id              = tbl.UInt16Col(dflt=-1)
     schedule_gts         = tbl.UInt32Col()
@@ -78,7 +78,7 @@ class TRX_Record(tbl.IsDescription):
         header_detected  = tbl.BoolCol()
         crc_ok           = tbl.BoolCol()
         content_ok       = tbl.BoolCol()
-    
+
     class rssi(tbl.IsDescription):
         end_lts                = tbl.UInt32Col()
         num_samples            = tbl.UInt32Col(dflt=0)
@@ -86,7 +86,7 @@ class TRX_Record(tbl.IsDescription):
         early_readout_detected = tbl.BoolCol()
         late_readout_detected  = tbl.BoolCol()
         num_samples_missed     = tbl.UInt32Col()
-    
+
     # NOTE:
     # * ident field's primary purpose is to support the human reader when looking for the source of the entry.
     #   The value is unique if the stored substring is long enough to include node_id and schedule_gts.
@@ -96,9 +96,9 @@ class TRX_Record(tbl.IsDescription):
     #   See <https://www.pytables.org/usersguide/condition_syntax.html#condition-syntax> for details.
     # * RSSI data is stored in the EArray /trx_data/rssi_data. rssi.data_anchor is a pointer into
     #   this array. We do not use a VLArray because the way data is stored in a VLArray does not compress
-    #   the real data (only control data. For details, see 
+    #   the real data (only control data. For details, see
     #   <https://www.pytables.org/usersguide/libref/homogenous_storage.html#the-vlarray-class>).
-    
+
 ####################################################################################################
 
 # CRC computation function
@@ -118,16 +118,16 @@ try:
 
     def crc(data):
         return crc_core_function(data).to_bytes(3, "big").translate(bitswap_lut)
-    
+
 except:
-    
+
     # <https://pypi.org/project/crc>
     import crc
 
     crc_calculator = crc.CrcCalculator(
         crc.Configuration(width=24, polynomial=0b11001011011, init_value=0x555555, reverse_input=True),
         table_based=True)
-    
+
     def crc(data):
         return crc_calculator.calculate_checksum(data).to_bytes(3, 'little')
 
@@ -169,15 +169,15 @@ def fletcher32(data):
 
     assert(isinstance(data, bytes))
     assert(not (len(data) & 1))
-    
+
     len_ = len(data)
     i = 0
     c0 = c1 = 0
-    
+
     while i < len_:
-        
+
         l = min(len_ - i, 360)
-        
+
         for k in range(l // 2):
             c0 += (data[i] << 8) | data[i+1]
             c1 += c0
@@ -200,13 +200,13 @@ if (args.outfile):
 #   comp_def = tbl.Filters(complevel=0)
 #   comp_def = tbl.Filters(complevel=1, complib='zlib')
     comp_def = tbl.Filters(complevel=1, complib='blosc:zstd')
-    
+
     h5file = tbl.open_file(args.outfile, mode="w", title="TRX data")
-    
+
     group = h5file.create_group("/", "trx_data", filters=comp_def)
-    
+
     trx_table = h5file.create_table(group, "trx", TRX_Record, title="TRX log records", expectedrows=args.num_lines)
-    
+
     rssi_heap = h5file.create_earray(group, "rssi_data", atom=tbl.Int8Atom(), shape=(0,),
                                      expectedrows=10000000, title="RSSI data heap")
     trx_record = trx_table.row
@@ -259,7 +259,7 @@ for b64 in args.infile:
         # TODO: print detailed error message and continue
         print("CBOR error")
         continue
-        
+
     # encapsulate data (inner CBOR format) in an extra array to parse everything at once
     data = [b'\x9f']
 
@@ -283,7 +283,7 @@ for b64 in args.infile:
     ident = b64.rstrip()
     if (len(ident) > 40):
         ident = ident[0:37] + "..."
-    
+
     (
         record_counter,
         node_id,
@@ -296,11 +296,11 @@ for b64 in args.infile:
         trx_status_field,
         packet,
         tx_delay
-        
+
     ) = data[0:11]
 
     operation = not not (trx_status_field & 0x80)
-    
+
     trx_status = {
         "timeout"         : (trx_status_field & 0x88 == 0x08),
         "header_detected" : (trx_status_field & 0x90 == 0x10),
@@ -323,7 +323,7 @@ for b64 in args.infile:
 
     # NOTE: data[-1] of RSSI data = is_valid flag
     rssi_valid = len(data) > 11 and data[-1]
-    
+
     if (rssi_valid):
         (rssi_status_field, rssi_end_lts, rssi_num_samples_missed, rssi_samples) = data[11:-1]
         # convert RSSI samples from differential format
@@ -347,14 +347,14 @@ for b64 in args.infile:
 
     # append record to outfile
     if (args.outfile):
-        
+
         # check for duplicate entries
         # NOTE: unfortunately cannot check schedule_gts inside where() call
-        # because UInt64Col evaluation is not implemented so far (PyTables 3.6.1) 
+        # because UInt64Col evaluation is not implemented so far (PyTables 3.6.1)
         x = [ x.nrow for x in trx_table.where(f"node_id == {node_id}") if x["schedule_gts"] == schedule_gts ]
         if x:
             assert False    # TODO: raise exception
-        
+
         trx_record["ident"]                      = ident
         trx_record["node_id"]                    = node_id
         trx_record["schedule_gts"]               = schedule_gts
@@ -365,7 +365,7 @@ for b64 in args.infile:
         trx_record["packet_lts_deviation"]       = ref_lts_dev
         trx_record["late_start_delay"]           = late_start_delay
         trx_record["tx_delay"]                   = tx_delay
-        
+
         # ATTENTION: Due to an issue in PyTables we cannot store binary strings directly
         # because trailing null bytes would be stripped off (for details, see
         # <https://github.com/PyTables/PyTables/issues/264>).
@@ -382,29 +382,29 @@ for b64 in args.infile:
         trx_record["trx_status/header_detected"] = trx_status["header_detected"]
         trx_record["trx_status/crc_ok"]          = trx_status["crc_ok"]
         trx_record["trx_status/content_ok"]      = trx_status["content_ok"]
-        
+
         if (rssi_valid):
             trx_record["rssi/end_lts"]                = rssi_end_lts
             trx_record["rssi/num_samples"]            = len(rssi_samples)
             trx_record["rssi/early_readout_detected"] = (rssi_status_field & 0x01)
             trx_record["rssi/late_readout_detected"]  = (rssi_status_field & 0x02)
             trx_record["rssi/num_samples_missed"]     = rssi_num_samples_missed
-            
+
             if (len(rssi_samples)):
                 trx_record["rssi/data_anchor"]        = rssi_heap.nrows
                 rssi_heap.append(rssi_samples)
-            
+
         trx_record.append()
-        
+
 #       rssi_data.flush()
 #       trx_table.flush()
-        
+
 
     # print human-readable packet dump
     if (args.logfile):
-    
+
         print(f'\n{ident}', file=args.logfile)
-    
+
         print('transmission scheduled at {:#010x} (record {}):' \
             '\n\tnode             : {}' \
             '\n\toperation        : {}' \

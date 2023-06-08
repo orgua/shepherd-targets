@@ -138,7 +138,7 @@ if (rows(testbed.nodes) > 1)
 	nodes = N(:)';
 else
 	nodes = testbed.nodes(:,1)';
-endif	
+endif
 
 f = fopen(inFile, "rb");
 s = fread(f, [1, inf], "*char");

@@ -44,7 +44,7 @@ if not patterns:
 # For this reason we avoid concatenating multiple log files and process each file for its own.
 # That said, it is not likely that concatenating two incomplete fragments results in a valid
 # record (with correct checksum), so the risk of generating wrong records is very low even with
-# concatenated files. To be absolutely safe, one could manually check the first and last lines 
+# concatenated files. To be absolutely safe, one could manually check the first and last lines
 # of the files before processing and remove broken TRX records (if present).
 
 logfile = os.path.splitext(trx_filtered)[0] + ".log"
@@ -84,4 +84,3 @@ logfile = os.path.splitext(trx_h5)[0] + ".log"
 #===================================================================================================
 
 echo "done"
-

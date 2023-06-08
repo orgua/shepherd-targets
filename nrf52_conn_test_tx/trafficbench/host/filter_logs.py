@@ -51,7 +51,7 @@ if 0:
 else:
     def warning(s):
         print("warning:", s, file=sys.stderr)
-    
+
 ####################################################################################################
 
 # define command line arguments
@@ -116,7 +116,7 @@ if args.outfile.isatty():
 if args.checksum:
 
     args.checksum_size = 4
-    
+
     args.checksum_pos = [args.checksum_pos, args.checksum_pos + args.checksum_size]
     if args.checksum_pos[1] == 0:
         args.checksum_pos[1] = None
@@ -150,15 +150,15 @@ def fletcher32(data):
 
     assert(isinstance(data, bytes))
     assert(not (len(data) & 1))
-    
+
     len_ = len(data)
     i = 0
     c0 = c1 = 0
-    
+
     while i < len_:
-        
+
         l = min(len_ - i, 360)
-        
+
         for k in range(l // 2):
             c0 += (data[i] << 8) | data[i+1]
             c1 += c0
@@ -177,18 +177,18 @@ if not args.strict:
         return
 else:
     def test_and_warn(s, start=0, end=None):
-    
+
         while True:
-            
+
             t = s[start:end]
-            
+
             if not ((BEGIN_RECORD in t) or (BEGIN_CHUNK in t) or (END_CHUNK in t) or (END_RECORD in t)):
                 break
-            
+
             p = (t.find(x) for x in (BEGIN_RECORD, BEGIN_CHUNK, END_CHUNK, END_RECORD))
             p = min((len(t) if x < 0 else x for x in p))
             p += start
-            
+
             l = line_number - s.count(b'\n', p)
             c = 1 + p - max(0, s.rfind(b'\n', 0, p))
             x = s[p - (c - 1) : s.find(b'\n', p + 1)]
@@ -205,7 +205,7 @@ else:
 #         warning(f'orphaned control characters in line {l} column {c}')
 
         return
-    
+
 ####################################################################################################
 
 # precompiled regular expressions
@@ -225,7 +225,7 @@ for line in args.infile:
     line = line.replace(b'\r\n', b'\n').replace(b'\r', b'\n')
 
     line_number += line.count(b'\n')
-    
+
     # drop everything outside records
     # NOTE: this increases performance if infile contains a lot of other stuff
     if not (len(buffer) or BEGIN_RECORD in line):
@@ -250,7 +250,7 @@ for line in args.infile:
         if p >= 0:
             test_and_warn(buffer, 0, p)
             buffer = buffer[p:]
-            
+
         # limit maximum record size
         if len(buffer) > args.max_record_size:
             l = line_number - buffer.count(b'\n')
@@ -259,7 +259,7 @@ for line in args.infile:
 
         # ATTENTION: The steps above avoid accumulation of malformed records in buffer, which is
         # important to prohibit arbitrarily large buffer size due to missing END_RECORD markers.
-        
+
         continue
 
     # parse buffered text
@@ -291,7 +291,7 @@ for line in args.infile:
                     x = re_source_id.findall(buffer, start, end)
                     if 1 != len(set(x)):
                         raise ValueError(f'inconsistent source id(s) {",".join(map(bytes.decode, x))}')
-                
+
                 # extract data chunks
                 chunk_data = []
                 pos = record_match.start(2)
@@ -310,7 +310,7 @@ for line in args.infile:
                     x = base64.b64decode(chunk_data, validate=args.strict)
                 except BaseException as err:
                     raise ValueError('BASE64 decode: ' + ';'.join(err.args))
-                
+
                 # test checksum
                 if args.checksum:
 
@@ -319,7 +319,7 @@ for line in args.infile:
                     if len(x) % 2:
                         raise ValueError('invalid data length, should be even')
                         # for fletcher32 as currently used/implemented
-                    
+
                     c1 = x[args.checksum_pos[0] : args.checksum_pos[1]]
                     if args.checksum_byteorder == 'be':
                         c1 = (c1[0] << 24) | (c1[1] << 16) | (c1[2] <<  8) | (c1[3] <<  0)
@@ -329,14 +329,14 @@ for line in args.infile:
                         assert(False)
 
                     c2 = fletcher32(x[: args.checksum_pos[0]])
-                    
+
                     if c1 != c2:
                         raise ValueError(f'checksum mismatch: {c1:#010x} != {c2:#010x}')
-                
+
             except ValueError as err:
                 l = line_number - buffer.count(b'\n', record_match.start(0))
                 warning(f'line {l}: dropping invalid record (' + ';'.join(err.args) + ')')
-                
+
             # if ok: write output text
             else:
                 args.outfile.write(args.record_spec[record_match.group(1)] + chunk_data + b'\n')
@@ -349,7 +349,7 @@ for line in args.infile:
             buffer = buffer[:record_match.start(0)] + buffer[record_match.end(0):]
         else:
             buffer = buffer[record_match.end(0):]
-            
+
         # continue with next record
         if BEGIN_RECORD in buffer:
             if not END_RECORD in buffer:

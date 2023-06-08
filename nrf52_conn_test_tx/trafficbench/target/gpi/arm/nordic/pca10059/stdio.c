@@ -48,14 +48,13 @@
 //***** Trace Settings *****************************************************************************
 
 
-
 //**************************************************************************************************
 //**** Includes ************************************************************************************
 
-#include "gpi/tools.h"
-#include "gpi/platform_spec.h"
 #include "gpi/platform.h"
+#include "gpi/platform_spec.h"
 #include "gpi/resource_check.h"
+#include "gpi/tools.h"
 
 #include <nrf.h>
 
@@ -69,16 +68,16 @@ GPI_RESOURCE_RESERVE_SHARED(NRF_UARTE, 0);
 // raise error if there is no UART connection
 // TODO: add support for other stdio implementations (e.g. SEGGER RTT)
 #ifndef _GPI_ARM_nRF_PCA10059_UART_TXD_PORT
-	#error "stdio UART is not available"
+  #error "stdio UART is not available"
 #endif
 
 // disable GPI_STDOUT_INTERRUPT_ENABLED on platforms that do not support it
 #if !(GPI_ARCH_IS_OS(NONE) && GPI_ARCH_IS_CRT(SEGGER2))
-	#undef  GPI_STDOUT_INTERRUPT_ENABLED
-	#define GPI_STDOUT_INTERRUPT_ENABLED	0
+  #undef GPI_STDOUT_INTERRUPT_ENABLED
+  #define GPI_STDOUT_INTERRUPT_ENABLED 0
 #endif
 
-#define TX_CHAIN_INDEX_MASK		(NUM_ELEMENTS(tx_chain) - 1)
+#define TX_CHAIN_INDEX_MASK (NUM_ELEMENTS(tx_chain) - 1)
 
 //**************************************************************************************************
 //***** Local Typedefs and Class Declarations ******************************************************
@@ -89,14 +88,13 @@ GPI_RESOURCE_RESERVE_SHARED(NRF_UARTE, 0);
 // for details see <https://wiki.segger.com/Embedded_Studio_Library_IO>
 struct __SEGGER_RTL_FILE_impl
 {
-	uint8_t		stub;	// only needed to enforce sizeof(FILE) > 0
+    uint8_t stub; // only needed to enforce sizeof(FILE) > 0
 };
 
 #endif
 
 //**************************************************************************************************
 //***** Forward Declarations ***********************************************************************
-
 
 
 //**************************************************************************************************
@@ -108,30 +106,32 @@ struct __SEGGER_RTL_FILE_impl
 // NOTE: These symbols are used to test if some address is in RAM or not, which is a pure
 // hardware decision. In other words, this is not dependent from software semantics (e.g.
 // if some address range is assigned to a different software component like a bootloader).
-static void * const RAM_SEGMENT_START = (void*)0x20000000;
-static void * const RAM_SEGMENT_END   = (void*)0x20040000;
+static void *const RAM_SEGMENT_START = (void *) 0x20000000;
+static void *const RAM_SEGMENT_END   = (void *) 0x20040000;
 
 //**************************************************************************************************
 
 #if GPI_STDOUT_INTERRUPT_ENABLED
 
-	ASSERT_CT_STATIC(GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS <= 32, GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS_must_not_exceed_32);
-		// value > 32 would require larger tx_buffer_free_map
+ASSERT_CT_STATIC(GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS <= 32,
+                 GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS_must_not_exceed_32);
+// value > 32 would require larger tx_buffer_free_map
 
-	ASSERT_CT_STATIC(GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE < 256, GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE_must_not_exceed_255);
-		// tx_buffer_len is uint8_t
-		
-	static char				tx_buffer[GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS][GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE];
-	static uint8_t			tx_buffer_len[NUM_ELEMENTS(tx_buffer)];
-	static uint32_t			tx_buffer_free_map	= -1u >> (32 - NUM_ELEMENTS(tx_buffer));
-	
-	static uint8_t			tx_chain[1u << (MSB(NUM_ELEMENTS(tx_buffer) - 1) + 1)];
-	static uint_fast32_t	tx_chain_num_written = 0;
-	static uint_fast32_t	tx_chain_num_read = 0;
-	
-	static uint_fast8_t		is_tx_running = 0;
+ASSERT_CT_STATIC(GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE < 256,
+                 GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE_must_not_exceed_255);
+// tx_buffer_len is uint8_t
 
-	ASSERT_CT_STATIC(IS_POWER_OF_2(NUM_ELEMENTS(tx_chain)));
+static char     tx_buffer[GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS][GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE];
+static uint8_t  tx_buffer_len[NUM_ELEMENTS(tx_buffer)];
+static uint32_t tx_buffer_free_map = -1u >> (32 - NUM_ELEMENTS(tx_buffer));
+
+static uint8_t  tx_chain[1u << (MSB(NUM_ELEMENTS(tx_buffer) - 1) + 1)];
+static uint_fast32_t tx_chain_num_written = 0;
+static uint_fast32_t tx_chain_num_read    = 0;
+
+static uint_fast8_t  is_tx_running        = 0;
+
+ASSERT_CT_STATIC(IS_POWER_OF_2(NUM_ELEMENTS(tx_chain)));
 
 #endif
 
@@ -139,10 +139,10 @@ static void * const RAM_SEGMENT_END   = (void*)0x20040000;
 
 #if GPI_ARCH_IS_OS(NONE) && GPI_ARCH_IS_CRT(SEGGER2)
 
-	// stdin, stdout, stderr file descriptors for UART stdio
-	static FILE stdin_file  = { 0 };
-	static FILE stdout_file = { 0 };
-	static FILE stderr_file = { 0 };
+// stdin, stdout, stderr file descriptors for UART stdio
+static FILE stdin_file  = {0};
+static FILE stdout_file = {0};
+static FILE stderr_file = {0};
 
 #endif
 
@@ -151,10 +151,10 @@ static void * const RAM_SEGMENT_END   = (void*)0x20040000;
 
 #if GPI_ARCH_IS_OS(NONE) && GPI_ARCH_IS_CRT(SEGGER2)
 
-	// stdin, stdout, stderr file descriptors for UART stdio
-	FILE *stdin  = &stdin_file;
-	FILE *stdout = &stdout_file;
-	FILE *stderr = &stderr_file;
+// stdin, stdout, stderr file descriptors for UART stdio
+FILE *stdin  = &stdin_file;
+FILE *stdout = &stdout_file;
+FILE *stderr = &stderr_file;
 
 #endif
 
@@ -167,42 +167,43 @@ static void * const RAM_SEGMENT_END   = (void*)0x20040000;
 // NOTE: inline to enable optimized usage inside the adapter functions (see below)
 static inline void gpi_uart_write(const void *s, unsigned int len)
 {
-	// test if data is in RAM (because EasyDMA cannot access flash)
-	#ifndef NDEBUG
-		ASSERT(s >= (void*)RAM_SEGMENT_START && s < (void*)RAM_SEGMENT_END);
-	#endif
+    // test if data is in RAM (because EasyDMA cannot access flash)
+  #ifndef NDEBUG
+    ASSERT(s >= (void *) RAM_SEGMENT_START && s < (void *) RAM_SEGMENT_END);
+  #endif
 
-	if (len < 1)
-		return;
+    if (len < 1) return;
 
-	// flush registers before activating DMA
-	// this could be relevant when function gets inlined and highly optimized
-	REORDER_BARRIER();
+    // flush registers before activating DMA
+    // this could be relevant when function gets inlined and highly optimized
+    REORDER_BARRIER();
 
-	// setup DMA
-	NRF_UARTE0->TXD.PTR = (uintptr_t)s;
-	NRF_UARTE0->TXD.MAXCNT = len;
+    // setup DMA
+    NRF_UARTE0->TXD.PTR    = (uintptr_t) s;
+    NRF_UARTE0->TXD.MAXCNT = len;
 
-	// flush CPU pipeline's write buffer
-	// NOTE: This is not really necessary here because it has been done implicitly for sure
-	// due to the short pipeline length of the Cortex-M4. We do it anyway to keep the code clean.
-	__DMB();
+    // flush CPU pipeline's write buffer
+    // NOTE: This is not really necessary here because it has been done implicitly for sure
+    // due to the short pipeline length of the Cortex-M4. We do it anyway to keep the code clean.
+    __DMB();
 
-	// wait until previous transmission has finished
-	// NOTE: TXSTARTED is used as a marker for open transmissions
-	if (NRF_UARTE0->EVENTS_TXSTARTED)
-	{
-		NRF_UARTE0->EVENTS_TXSTARTED = 0;
-		while (!(NRF_UARTE0->EVENTS_ENDTX));
-	}
+    // wait until previous transmission has finished
+    // NOTE: TXSTARTED is used as a marker for open transmissions
+    if (NRF_UARTE0->EVENTS_TXSTARTED)
+    {
+        NRF_UARTE0->EVENTS_TXSTARTED = 0;
+        while (!(NRF_UARTE0->EVENTS_ENDTX))
+            ;
+    }
 
-	// start TX
-	NRF_UARTE0->EVENTS_ENDTX = 0;
-	NRF_UARTE0->TASKS_STARTTX = 1;
+    // start TX
+    NRF_UARTE0->EVENTS_ENDTX  = 0;
+    NRF_UARTE0->TASKS_STARTTX = 1;
 
-	// wait until TX has been started and TXD.PTR and TXD.MAXCNT can be accessed again
-	// NOTE: TXD.PTR and TXD.MAXCNT are double-buffered (see spec. 4413_417 v1.2 page 511)
-	while (!(NRF_UARTE0->EVENTS_TXSTARTED));
+    // wait until TX has been started and TXD.PTR and TXD.MAXCNT can be accessed again
+    // NOTE: TXD.PTR and TXD.MAXCNT are double-buffered (see spec. 4413_417 v1.2 page 511)
+    while (!(NRF_UARTE0->EVENTS_TXSTARTED))
+        ;
 }
 
 #endif
@@ -213,23 +214,22 @@ static inline void gpi_uart_write(const void *s, unsigned int len)
 // NOTE: inline to enable optimized usage inside the adapter functions (see below)
 static inline unsigned int gpi_uart_read(void *s, unsigned int max_len)
 {
-	if (max_len < 1)
-		return max_len;
+    if (max_len < 1) return max_len;
 
-	if (max_len > 0xffff)
-		max_len = 0xffff;
-		
-	NRF_UARTE0->RXD.PTR = (uintptr_t)s;
-	NRF_UARTE0->RXD.MAXCNT = max_len;
+    if (max_len > 0xffff) max_len = 0xffff;
 
-	NRF_UARTE0->EVENTS_ENDRX = 0;
-	NRF_UARTE0->EVENTS_ERROR = 0;
-	
-	NRF_UARTE0->TASKS_STARTRX = 1;
-	
-	while (!(NRF_UARTE0->EVENTS_ENDRX));
+    NRF_UARTE0->RXD.PTR       = (uintptr_t) s;
+    NRF_UARTE0->RXD.MAXCNT    = max_len;
 
-	return (NRF_UARTE0->EVENTS_ERROR) ? 0 : max_len;
+    NRF_UARTE0->EVENTS_ENDRX  = 0;
+    NRF_UARTE0->EVENTS_ERROR  = 0;
+
+    NRF_UARTE0->TASKS_STARTRX = 1;
+
+    while (!(NRF_UARTE0->EVENTS_ENDRX))
+        ;
+
+    return (NRF_UARTE0->EVENTS_ERROR) ? 0 : max_len;
 }
 
 //**************************************************************************************************
@@ -239,30 +239,29 @@ static inline unsigned int gpi_uart_read(void *s, unsigned int max_len)
 // UART transmit ISR
 void UARTE0_UART0_IRQHandler()
 {
-	// ATTENTION: We assume that ISR cannot be interrupted by the write routine.
+    // ATTENTION: We assume that ISR cannot be interrupted by the write routine.
 
-	register uint_fast32_t	nr = tx_chain_num_read;
-	register int			i;
+    register uint_fast32_t nr = tx_chain_num_read;
+    register int           i;
 
-	// acknowledge IRQ
-	NRF_UARTE0->EVENTS_ENDTX = 0;
+    // acknowledge IRQ
+    NRF_UARTE0->EVENTS_ENDTX = 0;
 
-	// advance tx_chain_num_read, stop if done
-	if (++tx_chain_num_read == tx_chain_num_written)
-		is_tx_running = 0;
+    // advance tx_chain_num_read, stop if done
+    if (++tx_chain_num_read == tx_chain_num_written) is_tx_running = 0;
 
-	// otherwise transmit next data block
-	else
-	{
-		i = tx_chain[tx_chain_num_read & TX_CHAIN_INDEX_MASK];
-		NRF_UARTE0->TXD.PTR = (uintptr_t)&tx_buffer[i][0];
-		NRF_UARTE0->TXD.MAXCNT = tx_buffer_len[i];
-		NRF_UARTE0->TASKS_STARTTX = 1;
-	}
+    // otherwise transmit next data block
+    else
+    {
+        i                         = tx_chain[tx_chain_num_read & TX_CHAIN_INDEX_MASK];
+        NRF_UARTE0->TXD.PTR       = (uintptr_t) &tx_buffer[i][0];
+        NRF_UARTE0->TXD.MAXCNT    = tx_buffer_len[i];
+        NRF_UARTE0->TASKS_STARTTX = 1;
+    }
 
-	// release completed transmit buffer slot
-	i = tx_chain[nr & TX_CHAIN_INDEX_MASK];
-	tx_buffer_free_map |= 1u << i;
+    // release completed transmit buffer slot
+    i = tx_chain[nr & TX_CHAIN_INDEX_MASK];
+    tx_buffer_free_map |= 1u << i;
 }
 
 #endif
@@ -280,33 +279,32 @@ void UARTE0_UART0_IRQHandler()
 
 int __attribute__((weak)) __SEGGER_RTL_X_file_stat(FILE *stream)
 {
-	// stdin, stdout, and stderr are assumed to be valid
-	if (stream == stdin || stream == stdout || stream == stderr)
-		return 0;
+    // stdin, stdout, and stderr are assumed to be valid
+    if (stream == stdin || stream == stdout || stream == stderr) return 0;
 
-	else return EOF;
+    else return EOF;
 }
 
 int __attribute__((weak)) __SEGGER_RTL_X_file_bufsize(FILE *stream)
 {
-	// avoid "variable unused" warning
-	(void)stream;
+    // avoid "variable unused" warning
+    (void) stream;
 
-	return 1;
+    return 1;
 }
 
 int __attribute__((weak)) __SEGGER_RTL_X_file_unget(FILE *stream, int c)
 {
-	// avoid "variable unused" warning
-	(void)stream;
+    // avoid "variable unused" warning
+    (void) stream;
 
-	// do not provide unget functionality
-	// this could be changed if required,
-	// see <https://wiki.segger.com/Embedded_Studio_Library_IO> for an example
-	return EOF;
+    // do not provide unget functionality
+    // this could be changed if required,
+    // see <https://wiki.segger.com/Embedded_Studio_Library_IO> for an example
+    return EOF;
 }
-	
-#endif	// GPI_ARCH_IS_OS(NONE) && GPI_ARCH_IS_CRT(SEGGER2)
+
+#endif // GPI_ARCH_IS_OS(NONE) && GPI_ARCH_IS_CRT(SEGGER2)
 
 //**************************************************************************************************
 
@@ -315,12 +313,12 @@ int __attribute__((weak)) __SEGGER_RTL_X_file_unget(FILE *stream, int c)
 
 #if GPI_ARCH_IS_OS(NONE)
 
-#if GPI_ARCH_IS_CRT(SEGGER2)
+  #if GPI_ARCH_IS_CRT(SEGGER2)
 
 // Starting with SES 5.10 SEGGER included two runtime libaries: The legacy "Embedded Studio
 // Runtime Library" (GPI_ARCH_CRT_SEGGER1) and the "SEGGER Runtime Library" (GPI_ARCH_CRT_SEGGER2).
 // With SES 6.00 the legacy library has been removed (so SEGGER2 is the only remaining option),
-// and in some version <= 6.34 the Library I/O option "STD" has also been removed. To implement 
+// and in some version <= 6.34 the Library I/O option "STD" has also been removed. To implement
 // UART-based stdio, one now has to select Library I/O option "None" and provide a set of
 // __SEGGER_RTL_X_file_... functions (done here). The details can be found in
 // <https://wiki.segger.com/Embedded_Studio_Library_IO>.
@@ -332,159 +330,153 @@ int __attribute__((weak)) __SEGGER_RTL_X_file_unget(FILE *stream, int c)
 // implementation without causing conflicts
 int __attribute__((weak)) __SEGGER_RTL_X_file_write(FILE *stream, const char *s, unsigned len)
 {
-	if ((stream != stdout) && (stream != stderr))
-		return EOF;
-	
-// advanced interrupt driven implementation that enables higher level of async I/O
-#if GPI_STDOUT_INTERRUPT_ENABLED
+    if ((stream != stdout) && (stream != stderr)) return EOF;
 
-	const char* const	end = &s[len];
-	register int		ie;
-	register int		i;
+        // advanced interrupt driven implementation that enables higher level of async I/O
+    #if GPI_STDOUT_INTERRUPT_ENABLED
 
-	// process input data
-	while (s != end)
-	{
-		// NOTE: gpi_int_(un)lock() implicitly functions as a REORDER_BARRIER(),
-		// so we can save additional explicit barriers in the following
-		
-		// wait for a free slot in the transmit buffer pool
-		// ATTENTION: If is_tx_running then some slot will become free in the near future in case 
-		// buffer is full. If !is_tx_running then number of used slots <= max. number of nested calls.
-		// Hence, NUM_ELEMENTS(tx_buffer) should be configured to be >= max. number of nested calls.
-		// Otherwise this waiting loop can cause a deadlock.
-		while (!tx_buffer_free_map)
-			REORDER_BARRIER();
+    const char *const end = &s[len];
+    register int      ie;
+    register int      i;
 
-		// allocate slot in transmit buffer pool
-		{
-			ie = gpi_int_lock();
+    // process input data
+    while (s != end)
+    {
+        // NOTE: gpi_int_(un)lock() implicitly functions as a REORDER_BARRIER(),
+        // so we can save additional explicit barriers in the following
 
-			i = gpi_get_lsb(tx_buffer_free_map);
+        // wait for a free slot in the transmit buffer pool
+        // ATTENTION: If is_tx_running then some slot will become free in the near future in case
+        // buffer is full. If !is_tx_running then number of used slots <= max. number of nested calls.
+        // Hence, NUM_ELEMENTS(tx_buffer) should be configured to be >= max. number of nested calls.
+        // Otherwise this waiting loop can cause a deadlock.
+        while (!tx_buffer_free_map) REORDER_BARRIER();
 
-			// The config settings should ensure that NUM_ELEMENTS(tx_buffer) >= max. number of 
-			// nested calls (see above). To be on the safe side, we catch exceedings with an
-			// infinite loop trap. We do not use assert() because assert() probably would try
-			// to print something out, but the print stack is the origin of the problem.
-			#ifndef NDEBUG
-				while (!((i >= 0) || is_tx_running));
-			#endif
-		
-			if (i >= 0)
-				tx_buffer_free_map &= ~(1u << i);
-		
-			gpi_int_unlock(ie);
-		}
+        // allocate slot in transmit buffer pool
+        {
+            ie = gpi_int_lock();
 
-		if (i < 0)
-			continue;
+            i  = gpi_get_lsb(tx_buffer_free_map);
 
-		// copy data to buffer slot
-		// NOTE: as a side effect this ensures that data is placed in RAM, which is important for EasyDMA
-		size_t n = sizeof(tx_buffer[0]);
-		for (char *d = &tx_buffer[i][0]; (s != end) && (n > 0); n--)
-		{
-			if ('\n' == *s)
-			{
-				if (n < 2)
-					break;
-					
-				*d++ = '\r';
-				n--;
-			}
-			
-			*d++ = *s++;
-		}
-		tx_buffer_len[i] = sizeof(tx_buffer[0]) - n;
+            // The config settings should ensure that NUM_ELEMENTS(tx_buffer) >= max. number of
+            // nested calls (see above). To be on the safe side, we catch exceedings with an
+            // infinite loop trap. We do not use assert() because assert() probably would try
+            // to print something out, but the print stack is the origin of the problem.
+      #ifndef NDEBUG
+            while (!((i >= 0) || is_tx_running))
+                ;
+      #endif
 
-		// push buffer slot index to transmit chain (= Tx FIFO)
-		{
-			ie = gpi_int_lock();
-		
-			tx_chain[tx_chain_num_written++ & TX_CHAIN_INDEX_MASK] = i;
-			
-			// do not leave int lock -> if thread gets interrupted for a long time,
-			// transmission could finish inbetween (we would have to check tx_chain_num_read
-			// vs. tx_chain_num_written again, so savings in locked time would be marginal)
-			
-			// start transmitter if it is idle at present
-			// (otherwise transmission continues automatically, handled by the ISR)
-			if (!is_tx_running)
-			{
-				i = tx_chain[tx_chain_num_read & TX_CHAIN_INDEX_MASK];
-				NRF_UARTE0->TXD.PTR = (uintptr_t)&tx_buffer[i][0];
-				NRF_UARTE0->TXD.MAXCNT = tx_buffer_len[i];
-				NRF_UARTE0->TASKS_STARTTX = 1;
-				is_tx_running = 1;
-			}
-		
-			gpi_int_unlock(ie);
-		}
-	}
+            if (i >= 0) tx_buffer_free_map &= ~(1u << i);
 
-#else	// GPI_STDOUT_INTERRUPT_ENABLED
+            gpi_int_unlock(ie);
+        }
 
-	static char			crlf[] = "\r\n";	// do not use const char, must be in RAM for sure
-	const char* const	end = &s[len];
-	const char			*r;
-	unsigned int		l;
+        if (i < 0) continue;
 
-	// TXSTARTED is used as a marker for open transmissions in gpi_uart_write()
-	NRF_UARTE0->EVENTS_TXSTARTED = 0;
+        // copy data to buffer slot
+        // NOTE: as a side effect this ensures that data is placed in RAM, which is important for EasyDMA
+        size_t n = sizeof(tx_buffer[0]);
+        for (char *d = &tx_buffer[i][0]; (s != end) && (n > 0); n--)
+        {
+            if ('\n' == *s)
+            {
+                if (n < 2) break;
 
-	// if data is not in RAM, we must copy it because EasyDMA has no access to flash area
-	if (s < (char*)RAM_SEGMENT_START || s >= (char*)RAM_SEGMENT_END)
-	{
-		char c;
-		for (l = len; l-- > 0;)
-		{
-			c = *s++;
-			if (c == '\n')
-				gpi_uart_write(&crlf, 2);
-			else gpi_uart_write(&c, 1);
-		}
-	}
+                *d++ = '\r';
+                n--;
+            }
 
-	else
-	{
-		// split s into segments separated by \n
-		for (r = s; r != end;)
-		{
-			for (; r != end; r++)
-			{
-				if (*r == '\n')
-					break;
-			}
+            *d++ = *s++;
+        }
+        tx_buffer_len[i] = sizeof(tx_buffer[0]) - n;
 
-			// write current segment
-			l = (uintptr_t)r - (uintptr_t)s;
-			if (l > 0)
-				gpi_uart_write(s, l);
+        // push buffer slot index to transmit chain (= Tx FIFO)
+        {
+            ie                                                     = gpi_int_lock();
 
-			// write newline sequence
-			if (r != end)
-			{
-				gpi_uart_write(&crlf, 2);
-				r++;
-			}
+            tx_chain[tx_chain_num_written++ & TX_CHAIN_INDEX_MASK] = i;
 
-			// next segment
-			s = r;
-		}
-	}
+            // do not leave int lock -> if thread gets interrupted for a long time,
+            // transmission could finish inbetween (we would have to check tx_chain_num_read
+            // vs. tx_chain_num_written again, so savings in locked time would be marginal)
 
-	// wait until transmission has finished (so data buffer can be released for sure)
-	// NOTE: TXSTARTED is used as a marker for open transmissions
-	if (NRF_UARTE0->EVENTS_TXSTARTED)
-		while (!(NRF_UARTE0->EVENTS_ENDTX));
+            // start transmitter if it is idle at present
+            // (otherwise transmission continues automatically, handled by the ISR)
+            if (!is_tx_running)
+            {
+                i                         = tx_chain[tx_chain_num_read & TX_CHAIN_INDEX_MASK];
+                NRF_UARTE0->TXD.PTR       = (uintptr_t) &tx_buffer[i][0];
+                NRF_UARTE0->TXD.MAXCNT    = tx_buffer_len[i];
+                NRF_UARTE0->TASKS_STARTTX = 1;
+                is_tx_running             = 1;
+            }
 
-#endif	// GPI_STDOUT_INTERRUPT_ENABLED
+            gpi_int_unlock(ie);
+        }
+    }
 
-	// return len if successful
-	return len;
+    #else // GPI_STDOUT_INTERRUPT_ENABLED
+
+    static char       crlf[] = "\r\n"; // do not use const char, must be in RAM for sure
+    const char *const end    = &s[len];
+    const char       *r;
+    unsigned int      l;
+
+    // TXSTARTED is used as a marker for open transmissions in gpi_uart_write()
+    NRF_UARTE0->EVENTS_TXSTARTED = 0;
+
+    // if data is not in RAM, we must copy it because EasyDMA has no access to flash area
+    if (s < (char *) RAM_SEGMENT_START || s >= (char *) RAM_SEGMENT_END)
+    {
+        char c;
+        for (l = len; l-- > 0;)
+        {
+            c = *s++;
+            if (c == '\n') gpi_uart_write(&crlf, 2);
+            else gpi_uart_write(&c, 1);
+        }
+    }
+
+    else
+    {
+        // split s into segments separated by \n
+        for (r = s; r != end;)
+        {
+            for (; r != end; r++)
+            {
+                if (*r == '\n') break;
+            }
+
+            // write current segment
+            l = (uintptr_t) r - (uintptr_t) s;
+            if (l > 0) gpi_uart_write(s, l);
+
+            // write newline sequence
+            if (r != end)
+            {
+                gpi_uart_write(&crlf, 2);
+                r++;
+            }
+
+            // next segment
+            s = r;
+        }
+    }
+
+    // wait until transmission has finished (so data buffer can be released for sure)
+    // NOTE: TXSTARTED is used as a marker for open transmissions
+    if (NRF_UARTE0->EVENTS_TXSTARTED)
+        while (!(NRF_UARTE0->EVENTS_ENDTX))
+            ;
+
+    #endif // GPI_STDOUT_INTERRUPT_ENABLED
+
+    // return len if successful
+    return len;
 }
 
-#elif GPI_ARCH_IS_CRT(SEGGER1)
+  #elif GPI_ARCH_IS_CRT(SEGGER1)
 
 // The (old) RTL versions call __putchar(), with an additional proprietary parameter.
 // NOTE: function is declared as weak to allow the application to provide a different
@@ -493,38 +485,38 @@ int __attribute__((weak)) __SEGGER_RTL_X_file_write(FILE *stream, const char *s,
 // Hence, to ensure that putchar redirects here it is not safe to declare __putchar alone
 // (if the definition shall be weak), as this would not safely overwrite the definition from
 // thumb_crt0.s. Instead we provide (non-weak) debug_putchar() (to catch thumb_crt0.s) plus
-// weak __putchar(). This is somewhat dirty as debug_putchar() is meant to be the low-level 
+// weak __putchar(). This is somewhat dirty as debug_putchar() is meant to be the low-level
 // debug output routine and should not be overwritten in general.
 
 int __putchar(int c, __printf_tag_ptr file) __attribute__((weak, alias("debug_putchar")));
 
 int debug_putchar(int c, __printf_tag_ptr file)
 {
-	uint8_t			buf[2];
-	uint_fast8_t	len = 0;
+    uint8_t      buf[2];
+    uint_fast8_t len = 0;
 
-	// avoid "variable unused" warning
-	(void)file;
+    // avoid "variable unused" warning
+    (void) file;
 
-	// copy data to RAM buffer, convert "\n" to "\r\n"
-	if (c == '\n')
-		buf[len++] = '\r';
-	buf[len++] = c;
+    // copy data to RAM buffer, convert "\n" to "\r\n"
+    if (c == '\n') buf[len++] = '\r';
+    buf[len++]                   = c;
 
-	// TXSTARTED is used as a marker for open transmissions in gpi_uart_write()
-	NRF_UARTE0->EVENTS_TXSTARTED = 0;
+    // TXSTARTED is used as a marker for open transmissions in gpi_uart_write()
+    NRF_UARTE0->EVENTS_TXSTARTED = 0;
 
-	gpi_uart_write(buf, len);
+    gpi_uart_write(buf, len);
 
-	// wait until transmission has finished
-	while (!(NRF_UARTE0->EVENTS_ENDTX));
+    // wait until transmission has finished
+    while (!(NRF_UARTE0->EVENTS_ENDTX))
+        ;
 
-	return c;
+    return c;
 }
 
-#endif	// GPI_ARCH_IS_CRT(...)
+  #endif // GPI_ARCH_IS_CRT(...)
 
-#endif	// GPI_ARCH_IS_OS(NONE)
+#endif // GPI_ARCH_IS_OS(NONE)
 
 //**************************************************************************************************
 // getchar()
@@ -532,62 +524,63 @@ int debug_putchar(int c, __printf_tag_ptr file)
 
 #if GPI_ARCH_IS_OS(NONE)
 
-#if GPI_ARCH_IS_CRT(SEGGER2)
+  #if GPI_ARCH_IS_CRT(SEGGER2)
 
 // NOTE: function is declared as weak to allow the application to provide a different
 // implementation without causing conflicts
 int __attribute__((weak)) __SEGGER_RTL_X_file_read(FILE *stream, char *s, unsigned len)
 {
-	if (stdin != stream)
-		return EOF;
-	
-#if 1
-	len = gpi_uart_read(s, len);
-#else
-	unsigned int l = len;
-	while (l)
-	{
-		unsigned int l2 = gpi_uart_read(s, l);
-		s += l2;
-		l -= l2;
-	}
-#endif
+    if (stdin != stream) return EOF;
 
-	// return len if successful
-	return len;
+    #if 1
+    len = gpi_uart_read(s, len);
+    #else
+    unsigned int l = len;
+    while (l)
+    {
+        unsigned int l2 = gpi_uart_read(s, l);
+        s += l2;
+        l -= l2;
+    }
+    #endif
+
+    // return len if successful
+    return len;
 }
 
-#else	// GPI_ARCH_IS_CRT(SEGGER2)
+  #else // GPI_ARCH_IS_CRT(SEGGER2)
 
 // NOTE: function is declared as weak to allow the application to provide a different
 // implementation without causing conflicts
 int __attribute__((weak)) getchar()
 {
-	uint8_t	c;
+    uint8_t c;
 
-	while (!gpi_uart_read(&c, 1));
-	
-	return c;
+    while (!gpi_uart_read(&c, 1))
+        ;
+
+    return c;
 }
 
-#endif	// GPI_ARCH_IS_CRT(...)
+  #endif // GPI_ARCH_IS_CRT(...)
 
 void gpi_stdin_flush()
 {
-	uint8_t	t[8];
+    uint8_t t[8];
 
-	NRF_UARTE0->RXD.PTR = (uintptr_t)&t;
-	NRF_UARTE0->RXD.MAXCNT = 8;
+    NRF_UARTE0->RXD.PTR       = (uintptr_t) &t;
+    NRF_UARTE0->RXD.MAXCNT    = 8;
 
-	NRF_UARTE0->EVENTS_ENDRX = 0;
-	NRF_UARTE0->TASKS_FLUSHRX = 1;
-	while (!(NRF_UARTE0->EVENTS_ENDRX));
+    NRF_UARTE0->EVENTS_ENDRX  = 0;
+    NRF_UARTE0->TASKS_FLUSHRX = 1;
+    while (!(NRF_UARTE0->EVENTS_ENDRX))
+        ;
 }
 
-// getsn()
-#include "gpi/stdio_getsn.c"
+    // getsn()
+  #include "gpi/stdio_getsn.c"
 
-#endif	// GPI_ARCH_IS_OS(NONE)
+#endif // GPI_ARCH_IS_OS(NONE)
 
 //**************************************************************************************************
 //**************************************************************************************************

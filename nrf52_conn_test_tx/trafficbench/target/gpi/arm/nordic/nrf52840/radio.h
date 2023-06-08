@@ -52,20 +52,16 @@
 //***** Includes ***********************************************************************************
 
 
-
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
-
 
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
-
 
 
 //**************************************************************************************************
@@ -73,43 +69,41 @@
 
 typedef enum Gpi_Radio_Mode_tag
 {
-	INVALID			= 0,
-	IEEE_802_15_4	= 1,
-	BLE_1M			= 2,
-	BLE_2M			= 3,
-	BLE_125k		= 4,	// long range mode, Tx 125 kbit/s, Rx 125 or 500 kbit/s (automatic)
-	BLE_500k		= 5		// long range mode, Tx 500 kbit/s, Rx 125 or 500 kbit/s (automatic)
-	
+    INVALID       = 0,
+    IEEE_802_15_4 = 1,
+    BLE_1M        = 2,
+    BLE_2M        = 3,
+    BLE_125k      = 4, // long range mode, Tx 125 kbit/s, Rx 125 or 500 kbit/s (automatic)
+    BLE_500k      = 5  // long range mode, Tx 500 kbit/s, Rx 125 or 500 kbit/s (automatic)
+
 } Gpi_Radio_Mode;
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
 
-
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 // standard init functions
-void 					gpi_radio_init(Gpi_Radio_Mode mode);
-Gpi_Radio_Mode			gpi_radio_get_mode();
-unsigned int			gpi_radio_dbm_to_power_level(int dbm);
-void 					gpi_radio_set_tx_power(unsigned int pa_level);
-void					gpi_radio_set_center_frequency(uint_fast16_t frequency);
-void 					gpi_radio_set_channel(int channel);
-void					gpi_radio_ble_set_access_address(unsigned int address);
+void           gpi_radio_init(Gpi_Radio_Mode mode);
+Gpi_Radio_Mode gpi_radio_get_mode();
+unsigned int   gpi_radio_dbm_to_power_level(int dbm);
+void           gpi_radio_set_tx_power(unsigned int pa_level);
+void           gpi_radio_set_center_frequency(uint_fast16_t frequency);
+void           gpi_radio_set_channel(int channel);
+void           gpi_radio_ble_set_access_address(unsigned int address);
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
-
 
 
 //**************************************************************************************************

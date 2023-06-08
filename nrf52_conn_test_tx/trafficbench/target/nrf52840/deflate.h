@@ -51,22 +51,19 @@
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
-
 
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
-
 
 
 //**************************************************************************************************
@@ -75,81 +72,73 @@
 // compression method descriptor
 typedef struct Deflate_Method
 {
-	enum
-	{
-		NONE = 0,
-		
-		// C0 = no compression (just storage)
-		C0_FIXED,			// uncoded blocks with 16-bit LEN fields
-		C0_STREAM,			// coded blocks (think of C-strings with escape sequences)
-		
-		// C1 = symbol coding only (using code_ll, which is typically a Huffman code)
-		C1,
-		
-		// C2 = duplicate string elimination + symbol coding (standard deflate).
-		// different string search methods are optimized for different kinds of data
-		C2_DIFFERENTIAL,
-		
-	}					mode;
-	
-	const uint16_t		*code_ll;
-	const uint8_t		*clen_ll;
-	const uint16_t		*code_dist;
-	const uint8_t		*clen_dist;
-	const uint8_t		*header;
-	uint16_t			header_size;	// in bits (not bytes)
-	
+    enum
+    {
+        NONE = 0,
+
+        // C0 = no compression (just storage)
+        C0_FIXED,  // uncoded blocks with 16-bit LEN fields
+        C0_STREAM, // coded blocks (think of C-strings with escape sequences)
+
+        // C1 = symbol coding only (using code_ll, which is typically a Huffman code)
+        C1,
+
+        // C2 = duplicate string elimination + symbol coding (standard deflate).
+        // different string search methods are optimized for different kinds of data
+        C2_DIFFERENTIAL,
+
+    } mode;
+
+    const uint16_t *code_ll;
+    const uint8_t  *clen_ll;
+    const uint16_t *code_dist;
+    const uint8_t  *clen_dist;
+    const uint8_t  *header;
+    uint16_t        header_size; // in bits (not bytes)
+
 } Deflate_Method;
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
 // predefined compression method descriptors
-extern const Deflate_Method		DEFLATE_FLUSH_;
-extern const Deflate_Method		DEFLATE_C0_FIXED_;
-extern const Deflate_Method		DEFLATE_C0_STREAM_;
-extern const Deflate_Method		DEFLATE_C1_DIFF1_;
-extern const Deflate_Method		DEFLATE_C2_DIFF0_;
-extern const Deflate_Method		DEFLATE_C2_DIFF1_;
-extern const Deflate_Method		DEFLATE_C2_DIFF2_;
+extern const Deflate_Method        DEFLATE_FLUSH_;
+extern const Deflate_Method        DEFLATE_C0_FIXED_;
+extern const Deflate_Method        DEFLATE_C0_STREAM_;
+extern const Deflate_Method        DEFLATE_C1_DIFF1_;
+extern const Deflate_Method        DEFLATE_C2_DIFF0_;
+extern const Deflate_Method        DEFLATE_C2_DIFF1_;
+extern const Deflate_Method        DEFLATE_C2_DIFF2_;
 
 // these values can be directly used as method parameter when calling deflate()
-static const Deflate_Method * const		DEFLATE_FLUSH		= &DEFLATE_FLUSH_;
-static const Deflate_Method * const		DEFLATE_C0_FIXED	= &DEFLATE_C0_FIXED_;
-static const Deflate_Method * const		DEFLATE_C0_STREAM	= &DEFLATE_C0_STREAM_;
-static const Deflate_Method * const		DEFLATE_C1_DIFF1	= &DEFLATE_C1_DIFF1_;
-static const Deflate_Method * const		DEFLATE_C2_DIFF0	= &DEFLATE_C2_DIFF0_;
-static const Deflate_Method * const		DEFLATE_C2_DIFF1	= &DEFLATE_C2_DIFF1_;
-static const Deflate_Method * const		DEFLATE_C2_DIFF2	= &DEFLATE_C2_DIFF2_;
-			
+static const Deflate_Method *const DEFLATE_FLUSH     = &DEFLATE_FLUSH_;
+static const Deflate_Method *const DEFLATE_C0_FIXED  = &DEFLATE_C0_FIXED_;
+static const Deflate_Method *const DEFLATE_C0_STREAM = &DEFLATE_C0_STREAM_;
+static const Deflate_Method *const DEFLATE_C1_DIFF1  = &DEFLATE_C1_DIFF1_;
+static const Deflate_Method *const DEFLATE_C2_DIFF0  = &DEFLATE_C2_DIFF0_;
+static const Deflate_Method *const DEFLATE_C2_DIFF1  = &DEFLATE_C2_DIFF1_;
+static const Deflate_Method *const DEFLATE_C2_DIFF2  = &DEFLATE_C2_DIFF2_;
+
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 // deflate input data
 // call with dest = NULL to reset/init internal state (drops anything pending)
 // call with method = NULL to continue open block
 // call with method = DEFLATE_FLUSH to close open block and flush output buffer
-size_t		deflate(
-				void*					dest, 
-				size_t					dest_size, 
-				const void*				src, 
-				size_t					len, 
-				const Deflate_Method*	method,
-				const void*				window, 
-				size_t*					nwritten, 
-				size_t*					nread);
+size_t deflate(void *dest, size_t dest_size, const void *src, size_t len,
+               const Deflate_Method *method, const void *window, size_t *nwritten, size_t *nread);
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
-
 
 
 //**************************************************************************************************

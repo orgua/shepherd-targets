@@ -64,9 +64,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* GPIO */
 #define GPIO_PRESENT
-#define GPIO_COUNT 1
+#define GPIO_COUNT              1
 
-#define P0_PIN_NUM 32
+#define P0_PIN_NUM              32
 
 #define P0_FEATURE_PINS_PRESENT 0xFFFFFFFFUL
 
@@ -74,17 +74,17 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define BPROT_PRESENT
 
 #define BPROT_REGIONS_SIZE 4096
-#define BPROT_REGIONS_NUM 64
+#define BPROT_REGIONS_NUM  64
 
 /* Radio */
 #define RADIO_PRESENT
-#define RADIO_COUNT 1
+#define RADIO_COUNT               1
 
 #define RADIO_TXPOWER_TXPOWER_Max RADIO_TXPOWER_TXPOWER_Pos4dBm
 
 /* Accelerated Address Resolver */
 #define AAR_PRESENT
-#define AAR_COUNT 1
+#define AAR_COUNT       1
 
 #define AAR_MAX_IRK_NUM 8
 
@@ -98,27 +98,27 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Peripheral to Peripheral Interconnect */
 #define PPI_PRESENT
-#define PPI_COUNT 1
+#define PPI_COUNT        1
 
-#define PPI_CH_NUM 16
+#define PPI_CH_NUM       16
 #define PPI_FIXED_CH_NUM 12
-#define PPI_GROUP_NUM 4
+#define PPI_GROUP_NUM    4
 
 /* Timer/Counter */
 #define TIMER_PRESENT
-#define TIMER_COUNT 3
+#define TIMER_COUNT     3
 
 #define TIMER0_MAX_SIZE 32
 #define TIMER1_MAX_SIZE 16
 #define TIMER2_MAX_SIZE 16
 
-#define TIMER0_CC_NUM 4
-#define TIMER1_CC_NUM 4
-#define TIMER2_CC_NUM 4
+#define TIMER0_CC_NUM   4
+#define TIMER1_CC_NUM   4
+#define TIMER2_CC_NUM   4
 
 /* Real Time Counter */
 #define RTC_PRESENT
-#define RTC_COUNT 2
+#define RTC_COUNT   2
 
 #define RTC0_CC_NUM 3
 #define RTC1_CC_NUM 4
@@ -141,7 +141,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* Serial Peripheral Interface Slave with DMA */
 #define SPIS_PRESENT
-#define SPIS_COUNT 1
+#define SPIS_COUNT                1
 
 #define SPIS1_EASYDMA_MAXCNT_SIZE 8
 
@@ -163,15 +163,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /* GPIO Tasks and Events */
 #define GPIOTE_PRESENT
-#define GPIOTE_COUNT 1
+#define GPIOTE_COUNT  1
 
 #define GPIOTE_CH_NUM 4
 
 /* Low Power Comparator */
 #define LPCOMP_PRESENT
-#define LPCOMP_COUNT 1
+#define LPCOMP_COUNT             1
 
 #define LPCOMP_REFSEL_RESOLUTION 8
 
 
-#endif      // _NRF51802_PERIPHERALS_H
+#endif // _NRF51802_PERIPHERALS_H

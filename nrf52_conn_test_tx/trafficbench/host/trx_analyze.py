@@ -102,9 +102,9 @@ class RX_Info_Record(tbl.IsDescription):
     P_sigint                = tbl.Float32Col(dflt=np.nan)
     P_sigint_dBm            = tbl.Float32Col(dflt=np.nan)
     P_sigint_link_dBm       = tbl.Float32Col(dflt=np.nan)
-    SNR_dB                  = tbl.Float32Col(dflt=np.nan) 
-    SNR_min_dB              = tbl.Float32Col(dflt=np.nan) 
-    SNR_max_dB              = tbl.Float32Col(dflt=np.nan) 
+    SNR_dB                  = tbl.Float32Col(dflt=np.nan)
+    SNR_min_dB              = tbl.Float32Col(dflt=np.nan)
+    SNR_max_dB              = tbl.Float32Col(dflt=np.nan)
     SINR_link_dB            = tbl.Float32Col(dflt=np.nan)
 
     # markers
@@ -223,7 +223,7 @@ def warn_rssi(r):
 # split RSSI stream into noise and signal segments and estimate power values
 # ATTENTION: current implementation assumes that there is a noise segment, followed by a signal
 # segment, followed by another noise segment. This means that there is no special handling for
-# overlayed packets with different lengths or time-shifts as well as transmissions with 
+# overlayed packets with different lengths or time-shifts as well as transmissions with
 # tx_carrier_period_1/2 > 0. The results will be wrong in such cases.
 # TODO: detect mentioned situations and warn if function is used in such cases
 def split_rssi(trx):
@@ -279,7 +279,7 @@ def split_rssi(trx):
         ts_rssi_end   = rssi['end_lts']
         ts_rssi_start = ts_rssi_end - len(rssi_samples) * TICKS_PER_SAMPLE
 
-        # NOTE: 
+        # NOTE:
         # * ts_rssi_end = timestamp of last sample incl. RSSI sampling delay and PPI delay. The delays
         #   could be compensated by subtracting a small constant (which is far below TICKS_PER_SAMPLE).
         # * ts_rssi_start is aligned with sample index -1 (-> half-open interval, end - start = num. samples).
@@ -651,7 +651,7 @@ for trans in trans_table:
         rxi = rx_info_table[k]
 
         # print('\rprocessing {:3d} @ {:#010x}, {} transmitters'.format(r['node_id'], schedule_gts, len(I_tx)), end='')
-                
+
         # TODO: select method via command line param
         rx_power = np.zeros(len(I_tx))
         if True:
@@ -801,7 +801,7 @@ for trans in trans_table:
                 noise           = dB_to_linear(noise_dBm)
 
                 # signal + interference
-                sigint_now      = dB_to_linear(sum_dBm) - noise         
+                sigint_now      = dB_to_linear(sum_dBm) - noise
                 sigint_now_min  = dB_to_linear(rssi['rx_min']) - noise
                 sigint_now_max  = dB_to_linear(rssi['rx_max']) - noise
                 sigint_link     = rx_power.sum() if len(rx_power) else np.nan
@@ -830,7 +830,7 @@ for trans in trans_table:
         # reindexing operations. However, the implementation of modify_columns()
         # (in PyTables 3.6.x) contains two issues that make it slower than needed:
         # 1) It is based on numpy.rec.fromarrays(), which requires that the input
-        #    has a list-of-arrays format. This means that we cannot use an efficient 
+        #    has a list-of-arrays format. This means that we cannot use an efficient
         #    view on rxi like this (where names could be built outside the for loop):
         #       names = list(rxi.dtype.names)
         #       names.remove('schedule_gts')

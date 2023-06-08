@@ -126,7 +126,7 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 	#define NODES18(i, ...)		NODE(i) __VA_OPT__(, NODES19(__VA_ARGS__))
 	#define NODES19(i, ...)		NODE(i) __VA_OPT__(, NODES20(__VA_ARGS__))
 	#define NODES20(i, ...)		NODE(i) __VA_OPT__(_Pragma("GCC error \"NODES() size exceeded, macro needs extension (can be done easily)\""))
-#else 
+#else
 	// alternative implementation (if __VA_OPT__() is not available)
 
 	#define Nstop(...)			__VA_ARGS__
@@ -175,10 +175,10 @@ main_loop:
 		TRX_data_checkpoint
 		TRX_data_checkpoint_marker
 	TRX_end
-	
+
 	// sleep a second
 	SLEEP		1000000
-	
+
 	// another packet from node 1
 	TRX_begin			transmitter=NODE(1), tx_delay=2000, timeout=10000
 		TRX_data_fixed			0x11, 0x12, 0x13, 0x14

@@ -1,7 +1,7 @@
-# nRF using TrafficBench to survey the 
+# nRF using TrafficBench to survey the
 
 
-## TODO: 
+## TODO:
 
 - auto generate schedule (sleep, trx, repeat)
 - factor in TRX_PRE_DELAY and _POST_DELAY

@@ -7,7 +7,7 @@ crcmod >= 1.7
 #crc >= 1.2.0
 
 # xonsh shell (for details see https://xon.sh)
-# required if user wants to use helper scripts like extract_data.xsh 
+# required if user wants to use helper scripts like extract_data.xsh
 xonsh >= 0.13.1
 
 # ViTables, a plain PyTables viewer (for details see https://vitables.org)
@@ -15,8 +15,8 @@ xonsh >= 0.13.1
 ViTables >= 3.0.2
 
 # Glue data exploration framework (for details see https://glueviz.org)
-# not required, but explicitly supported 
-# limit version to 1.2.4 because 1.3.0, 1.4.0, and 1.5.0 cause trouble with 
+# not required, but explicitly supported
+# limit version to 1.2.4 because 1.3.0, 1.4.0, and 1.5.0 cause trouble with
 # session export/import together with glue_config.py
 # (
 #	1. ModuleNotFoundError: No module named 'config'
@@ -28,4 +28,3 @@ glueviz >= 1.2.0
 
 # lognplot is optionally supported by trx_dump.py, do not install it by default
 # lognplot >= 0.1.1
-

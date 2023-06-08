@@ -20,7 +20,7 @@ jobs:
       GNU_INSTALL_ROOT: "${{ github.workspace }}/gcc-arm-none-eabi-10.3-2021.10/bin/"
       # updates: https://developer.arm.com/downloads/-/gnu-rm
       SDK_LINK: https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/sdks/nrf5/binaries/nrf5_sdk_17.1.0_ddde560.zip
-      SDK_ROOT: "${{ github.workspace }}/nrf5_sdk_17.1.0_ddde560"
+      SDK_ROOT: "${{ github.workspace }}/nRF5_SDK_17.1.0_ddde560"
       # updates: https://www.nordicsemi.com/Products/Development-software/nrf5-sdk/download
       # -> the two _ROOT environment variables are important for the make-file
 
@@ -31,18 +31,18 @@ jobs:
       - name: Install dependencies 🔧
         run: sudo apt update && sudo apt install -y build-essential wget unzip
 
-      - name: Download GNU Arm Embedded Toolchain 🔽
+      - name: Download GNU ARM Embedded Toolchain 🔽
         run: "wget -q --tries 3 ${{ env.GNU_INSTALL_LINK }} --output-document=gcc-arm.tar.bz2"
         working-directory: "${{ github.workspace }}"
-      - name: Extract GCC cross-compiler ⚔
+      - name: Extract GCC ARM cross-compiler ⚔
         run: "tar -xf gcc-arm.tar.bz2"
         working-directory: "${{ github.workspace }}"
 
       - name: Download nRF5 SDK 🔽
         run: "wget -q --tries 3 ${{ env.SDK_LINK }} --output-document=sdk_nrf.zip"
         working-directory: "${{ github.workspace }}"
-      - name: Extract GCC cross-compiler ⚔
-        run: "unzip sdk_nrf.zip"
+      - name: Extract nRF5 SDK
+        run: "unzip -q sdk_nrf.zip"
         working-directory: "${{ github.workspace }}"
 
       - name: Build the project "${{ matrix.subproject }}" 🧱

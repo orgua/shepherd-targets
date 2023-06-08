@@ -11,10 +11,14 @@
 
 #define N_PINS      sizeof(pins) / sizeof(unsigned int)
 
-#define PIN_UART_TX 6
-#define PIN_UART_RX 8
+#define PIN_UART_TX 8  // P0.08
+#define PIN_UART_RX 21  // P0.21
+#define PIN_LED0 16  // P0.16 -> powered externally
+#define PIN_LED1 12  // P0.12 -> powered externally
+#define PIN_LED2 3  // P0.03 -> burns energy
 
-unsigned int pins[] = {26, 27, 28, 29, 30, 31, 32};
+// with reference to names of target-port (gpio 0:6 = 7, 8, 2, 3, 4, 5, 6)
+unsigned int pins[] = {11, 13, 4, 5, 41, 26, 35};
 
 /* Processes rising GPIO edges */
 void         gpio_consumer(struct pt *pt)
@@ -81,6 +85,23 @@ int main(void)
 
     struct pt pt_gpio_consumer = pt_init();
     struct pt pt_cmd_consumer  = pt_init();
+
+    /* Switch on pin for 100us */
+    nrf_gpio_cfg_output(PIN_LED0);
+    nrf_gpio_cfg_output(PIN_LED1);
+    nrf_gpio_pin_set(PIN_LED0);
+    nrf_gpio_pin_set(PIN_LED1);
+
+    for (uint8_t count = 0; count < 10; count++)
+    {
+        timer_reset();
+        NRF_P0->OUTCLR = (1 << PIN_LED0);
+        NRF_P0->OUTSET = (1 << PIN_LED1);
+        while (timer_now_us() < 50000);
+        NRF_P0->OUTSET = (1 << PIN_LED0);
+        NRF_P0->OUTCLR = (1 << PIN_LED1);
+        while (timer_now_us() < 150000);
+    }
 
     while (1)
     {

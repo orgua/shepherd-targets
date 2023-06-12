@@ -15,32 +15,39 @@
 
 #define V_THR_ON        3.0
 
-pt_event_t     evt_on  = pt_event_init();
-pt_event_t     evt_off = pt_event_init();
+// see shepherd_node_id.c for details
+extern const uint16_t SHEPHERD_NODE_ID;
 
-adv_pck_t      pkt;
-ble_ll_addr_t  adv_address = {.addr_bytes = {0x05, 0x04, 0x03, 0x02, 0x01, 0x00}};
+pt_event_t            evt_on  = pt_event_init();
+pt_event_t            evt_off = pt_event_init();
 
-uint8_t        some_data[] = {0x02, // lengthof thisdata
-                              0x01, (1UL << 2) | (1UL << 1),
-                              0x09, /* Length of name field */
-                              0x09, /* Type of name field */
-                              'S',  'H',
-                              'E',  'P',
-                              'H',  'E',
-                              'R',  'D',
-                              0x07,       /* Length of mnf-specific data field */
-                              0xFF,       /* Type of mnf-specific data field */
-                              0x59, 0x00, /* Nordic semiconductors */
-                              0x00, 0x00, /* Custom 4B data */
-                              0x00, 0x00};
+adv_pck_t             pkt;
+ble_ll_addr_t         adv_address = {.addr_bytes = {0x05, 0x04, 0x03, 0x02, 0x01, 0x00}};
 
-__RAMFUNC void application(struct pt *pt)
+uint8_t               some_data[] = {0x02, // lengthof thisdata
+                                     0x01, (1UL << 2) | (1UL << 1),
+                                     0x09, /* Length of name field */
+                                     0x09, /* Type of name field */
+                                     'S',  'H',
+                                     'E',  'P',
+                                     'H',  'E',
+                                     'R',  'D',
+                                     0x07,       /* Length of mnf-specific data field */
+                                     0xFF,       /* Type of mnf-specific data field */
+                                     0x59, 0x00, /* Nordic semiconductors */
+                                     0x00, 0x00, /* Custom 4B data */
+                                     0x00, 0x00};
+
+__RAMFUNC void        application(struct pt *pt)
 {
     pt_begin(pt);
 
     static volatile pt_event_t *radio_event;
     static unsigned int         counter;
+
+    /* put shepherd-node-id into packets user-data*/
+    some_data[19] = (SHEPHERD_NODE_ID >> 8) & 0xFF;
+    some_data[20] = (SHEPHERD_NODE_ID >> 0) & 0xFF;
 
     /* Enable trigger supply voltage (reaching 3.3V -> evt_on) */
     adc_init(V_THR_ON);

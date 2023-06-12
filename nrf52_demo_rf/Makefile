@@ -13,6 +13,7 @@ LINKER_SCRIPT:= linker.ld
 
 # Source files common to all targets
 SRC_FILES += \
+  shepherd_node_id.c \
   startup.c \
   main.c \
   radio.c \

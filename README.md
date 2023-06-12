@@ -39,3 +39,7 @@ Refer to [the GitHub workflow](../.github/workflows/build_nrf.yml) for how to in
 ### MSP430
 
 To build the code, you'll need the gcc toolchain for the MSP430 microcontroller series. Refer to [the GitHub workflow](../.github/workflows/build_msp.yml) for how to install the toolchain and build the project.
+
+### Controlling the Node-ID
+
+When an elf-firmware contains a ``SHEPHERD_NODE_ID`` the variable will patched with the actual target-ID before running the experiment. See the proposed [c-file](/nrf52_demo_rf/src/shepherd_node_id.c) for more information.

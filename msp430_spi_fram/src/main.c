@@ -84,49 +84,60 @@ static int gpio_init(void)
 {
 
     /* To save energy, all non-shared GPIOs are put to a defined state */
-    P1OUT  = 0x0;
-    P1DIR  = BIT0 | BIT1 | BIT2 | BIT6 | BIT7;
-    P1SEL0 = 0x0;
-    P1SEL1 = 0x0;
 
+    /* Exclude THRCTRL.H0, C2C.CS, C2C. CLK */
+    P1OUT  = 0x0;
+    P1DIR  = ~(BIT3 | BIT4 | BIT5);
+    /* Configure THRCTRL.H0 as analog input to disable input buffer */
+    P1SEL0 = BIT3;
+    P1SEL1 = BIT3;
+
+    /* Exclude C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
     P2OUT  = 0;
-    P2DIR  = BIT2 | BIT7;
+    P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
     P2SEL0 = 0x0;
     P2SEL1 = 0x0;
 
+    /* Exclude THRCTRL.H1, D5 */
     P3OUT  = 0;
-    P3DIR  = BIT0 | BIT1 | BIT2 | BIT4 | BIT5 | BIT7;
-    P3SEL0 = 0x0;
-    P3SEL1 = 0x0;
+    P3DIR  = ~(BIT3 | BIT6);
+    /* Configure THRCTRL.H1 as analog input to disable input buffer */
+    P3SEL0 = BIT3;
+    P3SEL1 = BIT3;
 
+    /* Exclude D4 */
     P4OUT  = 0;
-    P4DIR  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7;
+    P4DIR  = ~BIT6;
     P4SEL0 = 0x0;
     P4SEL1 = 0x0;
 
+    /* Exclude D10, D9, D8, D7, PWRGD_L, PWRGD_H  */
     P5OUT  = 0;
-    P5DIR  = BIT6 | BIT7;
+    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
     P5SEL0 = 0x0;
     P5SEL1 = 0x0;
 
+    /* Exclude THRCTRL.L0, SYS.SDA, SYS.SCL */
     P6OUT  = 0;
-    P6DIR  = BIT0 | BIT1 | BIT3 | BIT6 | BIT7;
+    P6DIR  = ~(BIT2 | BIT4 | BIT5);
     P6SEL0 = 0x0;
     P6SEL1 = 0x0;
 
+    /* Exclude THRCTRL.L1, RTC_INT, VCAP_SENSE */
     P7OUT  = 0;
-    P7DIR  = BIT1 | BIT2 | BIT4 | BIT6 | BIT7;
-    P7SEL0 = 0x0;
-    P7SEL1 = 0x0;
+    P7DIR  = ~(BIT0 | BIT3 | BIT5);
+    /* Configure VCAP_SENSE as analog input to disable input buffer */
+    P7SEL0 = BIT5;
+    P7SEL1 = BIT5;
 
     P8OUT  = 0;
-    P8DIR  = BIT0 | BIT1 | BIT2 | BIT3;
+    P8DIR  = 0xFF;
     P8SEL0 = 0x0;
     P8SEL1 = 0x0;
 
     PJOUT  = 0;
-    /* BIT2 is C2C.GPIO */
-    PJDIR  = BIT2 | BIT3 | BIT7;
+    /* Exclude LED_CTRL, MAX_INT D6, Take control of C2C.GPIO */
+    PJDIR  = ~(BIT0 | BIT1 | BIT6);
     PJSEL0 = 0x0;
     PJSEL1 = 0x0;
 

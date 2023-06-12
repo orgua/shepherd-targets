@@ -13,6 +13,7 @@ jobs:
         subproject:
           - nrf52_demo_rf
           - nrf52_testable
+          - nrf52_deep_sleep
           # - nrf52_conn_test_tx
 
     env:
@@ -53,4 +54,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: "${{ matrix.subproject }}"
-          path: "${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex"
+          path: "${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf"

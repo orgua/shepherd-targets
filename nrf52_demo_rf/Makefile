@@ -1,12 +1,15 @@
+ifndef SDK_ROOT
+  $(error SDK_ROOT is not set)
+endif
+ifndef GNU_INSTALL_ROOT
+  $(error GNU_INSTALL_ROOT is not set)
+endif
+
 PREFIX := $(GNU_INSTALL_ROOT)arm-none-eabi-
 PROJ_DIR := ./
 OUTPUT_DIR := _build
 SRC_DIR := src
 LINKER_SCRIPT:= linker.ld
-
-ifndef SDK_ROOT
-  $(error SDK_ROOT is not set)
-endif
 
 # Source files common to all targets
 SRC_FILES += \

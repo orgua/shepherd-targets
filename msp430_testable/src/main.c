@@ -18,50 +18,47 @@ static void gpio_init(void)
 {
     /* To save energy, all non-shared GPIOs are put to a defined state */
 
-    /* Exclude THRCTRL.H0, C2C.CS, C2C. CLK */
+    /* Exclude [THRCTRL.H0], C2C.CS, C2C. CLK */
     P1OUT  = 0x0;
-    P1DIR  = ~(BIT3 | BIT4 | BIT5);
-    /* Configure THRCTRL.H0 as analog input to disable input buffer */
-    P1SEL0 = BIT3;
-    P1SEL1 = BIT3;
+    P1DIR  = ~(BIT4 | BIT5);
+    P1SEL0 = 0u;
+    P1SEL1 = 0u;
 
     /* Exclude C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
     P2OUT  = 0;
     P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
-    P2SEL0 = 0x0;
-    P2SEL1 = 0x0;
+    P2SEL0 = 0u;
+    P2SEL1 = 0u;
 
-    /* Exclude THRCTRL.H1, D5 */
-    P3OUT  = 0;
-    P3DIR  = ~(BIT3 | BIT6);
-    /* Configure THRCTRL.H1 as analog input to disable input buffer */
-    P3SEL0 = BIT3;
-    P3SEL1 = BIT3;
+    /* Exclude [THRCTRL.H1], D5 */
+    P3OUT  = 0u;
+    P3DIR  = ~(BIT6);
+    P3SEL0 = 0u;
+    P3SEL1 = 0u;
 
     /* Exclude D4 */
     P4OUT  = 0;
-    P4DIR  = ~BIT6;
+    P4DIR  = ~(BIT6);
     P4SEL0 = 0x0;
     P4SEL1 = 0x0;
 
-    /* Exclude D10, D9, D8, D7, PWRGD_L, [PWRGD_H]  */
+    /* Exclude D10, D9, D8, D7, [PWRGD_L], PWRGD_H  */
     P5OUT  = 0;
-    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 ); // | BIT5
+    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT5);
     P5SEL0 = 0x0;
     P5SEL1 = 0x0;
 
-    /* Exclude THRCTRL.L0, SYS.SDA, SYS.SCL */
+    /* Exclude [THRCTRL.L0], SYS.SDA, SYS.SCL */
     P6OUT  = 0;
-    P6DIR  = ~(BIT2 | BIT4 | BIT5);
+    P6DIR  = ~(BIT4 | BIT5);
     P6SEL0 = 0x0;
     P6SEL1 = 0x0;
 
-    /* Exclude THRCTRL.L1, RTC_INT, VCAP_SENSE */
+    /* Exclude [THRCTRL.L1], RTC_INT, [VCAP_SENSE] */
     P7OUT  = 0;
-    P7DIR  = ~(BIT0 | BIT3 | BIT5);
-    /* Configure VCAP_SENSE as analog input to disable input buffer */
-    P7SEL0 = BIT5;
-    P7SEL1 = BIT5;
+    P7DIR  = ~(BIT3);
+    P7SEL0 = 0u;
+    P7SEL1 = 0u;
 
     P8OUT  = 0;
     P8DIR  = 0xFF;
@@ -69,10 +66,30 @@ static void gpio_init(void)
     P8SEL1 = 0x0;
 
     PJOUT  = 0;
-    /* Exclude LED_CTRL, MAX_INT D6, Take control of C2C.GPIO */
-    PJDIR  = ~(BIT0 | BIT1 | BIT6);
+    /* Exclude LED_CTRL, [MAX_INT],  D6, Take control of C2C.GPIO */
+    PJDIR  = ~(BIT0 | BIT6);
     PJSEL0 = 0x0;
     PJSEL1 = 0x0;
+}
+
+static void gpio_ext_out(const bool enable)
+{
+    if (enable)
+    {
+        P2DIR &= ~(BIT3 | BIT4 | BIT5 | BIT6);
+        P3DIR &= ~(BIT6);
+        P4DIR &= ~(BIT6);
+        P5DIR &= ~(BIT2 | BIT3);
+        PJDIR &= ~(BIT6);
+    }
+    else
+    {
+        P2DIR |= (BIT3 | BIT4 | BIT5 | BIT6);
+        P3DIR |= (BIT6);
+        P4DIR |= (BIT6);
+        P5DIR |= (BIT2 | BIT3);
+        PJDIR |= (BIT6);
+    }
 }
 
 static void gpio_ext_ctrl(const uint32_t mask)
@@ -108,6 +125,20 @@ static void gpio_ext_ctrl(const uint32_t mask)
     //else P5OUT &= ~BIT5;
 }
 
+static void gpio_led_out(const bool enable)
+{
+    if (enable)
+    {
+        P5DIR &= ~(BIT0 | BIT1);
+        PJDIR &= ~(BIT0);
+    }
+    else
+    {
+        P5DIR |= (BIT0 | BIT1);
+        PJDIR |= (BIT0);
+    }
+}
+
 static void gpio_led_ctrl(const uint32_t mask)
 {
     if (mask & BIT0) P5OUT |= BIT1;
@@ -131,34 +162,38 @@ int main(void)
 
     gpio_init();
 
-    for (uint8_t reps=0; reps < 16; reps++)
+    gpio_led_out(true);
+    for (uint8_t reps = 0; reps < 16; reps++)
     {
-        for (uint8_t led_mask=BIT1; led_mask < BIT4; led_mask <<= 1u)
+        for (uint8_t led_mask = BIT1; led_mask < BIT4; led_mask <<= 1u)
         {
             gpio_led_ctrl(led_mask);
             delay_ms(100);
         }
         gpio_led_ctrl(0);
     }
+    gpio_led_out(false);
 
-    for (uint8_t reps=0; reps < 4; reps++)
+    gpio_ext_out(true);
+    for (uint8_t reps = 0; reps < 4; reps++)
     {
-        for (uint8_t ext_mask=BIT1; ext_mask < BITA; ext_mask <<= 1u)
+        for (uint8_t ext_mask = BIT1; ext_mask < BITA; ext_mask <<= 1u)
         {
             gpio_ext_ctrl(ext_mask);
             delay_ms(100);
         }
         gpio_ext_ctrl(0);
     }
+    gpio_ext_out(false);
 
-    // TODO: enable GPIO
+    // TODO: enable and use UART
 
     /* Disable SVS */
-    PMMCTL0_H = PMMPW_H;                	// PMM Password
+    PMMCTL0_H = PMMPW_H; // PMM Password
     PMMCTL0_L &= ~SVSHE;
 
     /* turn off the PMM to allow for LPM4.5 */
-    PMMCTL0_L |= PMMREGOFF;                   // set Flag to enter LPM4.5 with LPM4 request
+    PMMCTL0_L |= PMMREGOFF; // set Flag to enter LPM4.5 with LPM4 request
 
 
     /* Wait in LPM4 until CS is high */

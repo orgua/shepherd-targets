@@ -11,9 +11,9 @@ jobs:
     strategy:
       matrix:
         subproject:
-          #- msp430_deep_sleep
+          - msp430_deep_sleep
           - msp430_spi_fram
-          #- msp430_testable
+          - msp430_testable
     env:
       MSP_GNU_LINK: https://dr-download.ti.com/software-development/ide-configuration-compiler-or-debugger/MD-LlCjWuAbzH/9.3.1.2/msp430-gcc-full-linux-x64-installer-9.3.1.2.7z
       MSP_GNU_FILE: msp430-gcc-full-linux-x64-installer-9.3.1.2.run
@@ -42,4 +42,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: "${{ matrix.subproject }}"
-        path: "${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex"
+        path: "${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf"

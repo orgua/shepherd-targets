@@ -1,6 +1,20 @@
 PREFIX := $(MSP_GNU_ROOT)/bin/msp430-elf-
 SUPPORT_FILE_DIRECTORY := $(MSP_GNU_ROOT)/include
 
+ifndef MSP_GNU_ROOT
+define GNU_ERROR_BODY
+
+*******************************************************************************
+MSP_GNU_ROOT environment variable is not set. Examples given:
+(Linux) export MSP_GNU_ROOT=/path/to/msp430-gcc/
+
+Link to gcc: https://www.ti.com/tool/MSP430-GCC-OPENSOURCE#downloads
+*******************************************************************************
+
+endef
+$(error $(GNU_ERROR_BODY))
+endif
+
 OUTPUT_DIR := _build
 SRC_DIR := src
 LINKER_SCRIPT:= linker.ld

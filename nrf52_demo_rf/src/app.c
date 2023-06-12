@@ -10,8 +10,8 @@
 #include "pt.h"
 #include "radio.h"
 
-#define GPIO_SIG_BAT_OK 7  // P0.07
-#define GPIO_LED        3  // P0.03 -> burns energy
+#define GPIO_SIG_BAT_OK 7 // P0.07
+#define GPIO_LED        3 // P0.03 -> burns energy
 
 #define V_THR_ON        3.0
 

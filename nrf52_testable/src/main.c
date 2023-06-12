@@ -12,10 +12,10 @@
 #define N_PINS      sizeof(pins) / sizeof(unsigned int)
 
 #define PIN_UART_TX 8  // P0.08
-#define PIN_UART_RX 21  // P0.21
-#define PIN_LED0 16  // P0.16 -> powered externally
-#define PIN_LED1 12  // P0.12 -> powered externally
-#define PIN_LED2 3  // P0.03 -> burns energy
+#define PIN_UART_RX 21 // P0.21
+#define PIN_LED0    16 // P0.16 -> powered externally
+#define PIN_LED1    12 // P0.12 -> powered externally
+#define PIN_LED2    3  // P0.03 -> burns energy
 
 // with reference to names of target-port (gpio 0:6 = 7, 8, 2, 3, 4, 5, 6)
 unsigned int pins[] = {11, 13, 4, 5, 41, 26, 35};
@@ -97,10 +97,12 @@ int main(void)
         timer_reset();
         NRF_P0->OUTCLR = (1 << PIN_LED0);
         NRF_P0->OUTSET = (1 << PIN_LED1);
-        while (timer_now_us() < 50000);
+        while (timer_now_us() < 50000)
+            ;
         NRF_P0->OUTSET = (1 << PIN_LED0);
         NRF_P0->OUTCLR = (1 << PIN_LED1);
-        while (timer_now_us() < 150000);
+        while (timer_now_us() < 150000)
+            ;
     }
 
     while (1)

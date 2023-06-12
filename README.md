@@ -15,14 +15,14 @@ Hardware
 - [nrf52_demo_rf](/nrf52_demo_rf): demo implementation for a simple node that sends BLE packets when energy budget allows it
 - nrf52_spi_radio: default implementation to use nRF as a radio frontend
 - [nrf52_testable](/nrf52_testable): blinks LEDs on boot and listens/answers to UART (verification after assembly)
-- nrf52_conn_test_tx: Connection Tester - TX-Unit - sends packet with every possible P_TX, loops 10x
+- [nrf52_rf_survey](/nrf52_rf_survey): Connection Tester - TX-Unit - sends packet with every possible P_TX, loops until stopped
 - [nrf52_deep_sleep](/nrf52_deep_sleep): practically turned off MCU with lowest possible consumption
 
 ### MSP430FR-Firmwares
 
 - [msp430_deep_sleep](/msp430_deep_sleep): practically turned off MCU with lowest possible consumption
 - [msp430_spi_fram](/msp430_spi_fram): default implementation to use MSP as a flash storage
-- msp430_testable: blinks LEDs on boot and listens/answers to UART (verification after assembly)
+- [msp430_testable](/msp430_testable): blinks LEDs on boot and listens/answers to UART (verification after assembly)
 
 ## Getting started
 

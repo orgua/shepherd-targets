@@ -1,4 +1,4 @@
-# nRF using TrafficBench to survey the
+# nRF using TrafficBench to survey the rf-conditions for the testbed
 
 
 ## TODO:

@@ -14,7 +14,7 @@ jobs:
           - nrf52_demo_rf
           - nrf52_testable
           - nrf52_deep_sleep
-          # - nrf52_conn_test_tx
+          # - nrf52_rf_survey
 
     env:
       GNU_INSTALL_LINK: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2

@@ -4,7 +4,7 @@ The app monitors up to eight GPIO pins for rising edges and upon detection print
 
 Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to reflect your hardware.
 
-# Functionality
+## Functionality
 
 - LEDs
     - blink / switch 10x at startup

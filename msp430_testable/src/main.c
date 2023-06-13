@@ -6,11 +6,16 @@
 static inline void delay_cycles(const uint32_t cycles)
 {
     for (uint32_t i = 0; i < cycles; i++) __no_operation();
+
 }
 
 static inline void delay_ms(const uint32_t time)
 {
-    const uint32_t cycles = time * 16000;
+    /* assumptions:
+       - boot with 5MHz / 128 = 39 kHz
+       - above loop takes 2 clock-cycles
+    */
+    const uint32_t cycles = time * 18; // 16000; -> very slow without changes
     delay_cycles(cycles);
 }
 
@@ -76,19 +81,19 @@ static void gpio_ext_out(const bool enable)
 {
     if (enable)
     {
-        P2DIR &= ~(BIT3 | BIT4 | BIT5 | BIT6);
-        P3DIR &= ~(BIT6);
-        P4DIR &= ~(BIT6);
-        P5DIR &= ~(BIT2 | BIT3);
-        PJDIR &= ~(BIT6);
-    }
-    else
-    {
         P2DIR |= (BIT3 | BIT4 | BIT5 | BIT6);
         P3DIR |= (BIT6);
         P4DIR |= (BIT6);
         P5DIR |= (BIT2 | BIT3);
         PJDIR |= (BIT6);
+    }
+    else
+    {
+        P2DIR &= ~(BIT3 | BIT4 | BIT5 | BIT6);
+        P3DIR &= ~(BIT6);
+        P4DIR &= ~(BIT6);
+        P5DIR &= ~(BIT2 | BIT3);
+        PJDIR &= ~(BIT6);
     }
 }
 
@@ -129,13 +134,13 @@ static void gpio_led_out(const bool enable)
 {
     if (enable)
     {
-        P5DIR &= ~(BIT0 | BIT1);
-        PJDIR &= ~(BIT0);
+        P5DIR |= (BIT0 | BIT1);
+        PJDIR |= (BIT0);
     }
     else
     {
-        P5DIR |= (BIT0 | BIT1);
-        PJDIR |= (BIT0);
+        P5DIR &= ~(BIT0 | BIT1);
+        PJDIR &= ~(BIT0);
     }
 }
 
@@ -165,7 +170,7 @@ int main(void)
     gpio_led_out(true);
     for (uint8_t reps = 0; reps < 16; reps++)
     {
-        for (uint8_t led_mask = BIT1; led_mask < BIT4; led_mask <<= 1u)
+        for (uint8_t led_mask = BIT0; led_mask <= BIT2; led_mask <<= 1u)
         {
             gpio_led_ctrl(led_mask);
             delay_ms(100);
@@ -177,7 +182,7 @@ int main(void)
     gpio_ext_out(true);
     for (uint8_t reps = 0; reps < 4; reps++)
     {
-        for (uint8_t ext_mask = BIT1; ext_mask < BITA; ext_mask <<= 1u)
+        for (uint8_t ext_mask = BIT0; ext_mask <= BIT8; ext_mask <<= 1u)
         {
             gpio_ext_ctrl(ext_mask);
             delay_ms(100);

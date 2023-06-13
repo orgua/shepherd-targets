@@ -11,6 +11,8 @@
 LPM4: 600nA (SVS), 400nA (no SVS), wakeup time <10us
 LPM4.5: 250nA (SVS), 45 nA (no SVS), wakeup time 250us (SVS), 400us (no SVS)
 
+- TODO: cleanup-fw - FRAM & program-storage should be wiped between runs
+
 */
 
 extern unsigned char __etext;

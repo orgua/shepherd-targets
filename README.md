@@ -24,6 +24,8 @@ Hardware
 - [msp430_spi_fram](/msp430_spi_fram): default implementation to use MSP as a flash storage
 - [msp430_testable](/msp430_testable): blinks LEDs on boot and listens/answers to UART (verification after assembly)
 
+- TODO: cleanup-fw - FRAM & program-storage should be wiped between runs
+
 ## Getting started
 
 ### nRF52

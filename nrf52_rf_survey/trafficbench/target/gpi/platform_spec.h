@@ -120,7 +120,7 @@
 //***** Global Defines and Consts ******************************************************************
 
 #define GPI_PLATFORM_PATH(file)        GPI_PLATFORM_PATH_2(GPI_PLATFORM_DIR, file)
-#define GPI_PLATFORM_PATH_2(dir, file) STRINGIFY(gpi / dir / file)
+#define GPI_PLATFORM_PATH_2(dir, file) STRINGIFY(gpi/dir/file)
 
 //**************************************************************************************************
 // detect and adopt used platform specification method
@@ -364,9 +364,9 @@
   #endif
 
   #if GPI_ARCH_IS_BOARD(TMOTE)
-    #define GPI_PLATFORM_DIR msp430 / tmote
+    #define GPI_PLATFORM_DIR msp430/tmote
   #else
-    #define GPI_PLATFORM_DIR msp430 / msp430_common
+    #define GPI_PLATFORM_DIR msp430/msp430_common
   #endif
 
   #define VA_SIZE_GRANULARITY 2
@@ -452,11 +452,11 @@ ASSERT_CT_STATIC(ALIGNMENT == 2, alignment_mismatch);
   #endif
 
   #if GPI_ARCH_IS_BOARD(nRF_PCA10056)
-    #define GPI_PLATFORM_DIR arm / nordic / pca10056
+    #define GPI_PLATFORM_DIR arm/nordic/pca10056
   #elif GPI_ARCH_IS_BOARD(nRF_PCA10059)
-    #define GPI_PLATFORM_DIR arm / nordic / pca10059
+    #define GPI_PLATFORM_DIR arm/nordic/pca10059
   #elif GPI_ARCH_IS_BOARD(TUDNES_DPP2COM)
-    #define GPI_PLATFORM_DIR arm / nordic / dpp2com
+    #define GPI_PLATFORM_DIR arm/nordic/dpp2com
   #else
     #error unknown board
         //		#define GPI_PLATFORM_DIR	arm/TODO

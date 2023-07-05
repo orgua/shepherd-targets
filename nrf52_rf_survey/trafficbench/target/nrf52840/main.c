@@ -148,69 +148,6 @@ int                   main()
     physical_node_id = SHEPHERD_NODE_ID;
     GPI_TRACE_MSG(TRACE_INFO, "SHEPHERD_NODE_ID = %u", physical_node_id);
     GPI_TRACE_FLUSH();
-
-    // if not set by testbed's programming toolchain
-    if (0 == physical_node_id)
-    {
-        // must not happen on FlockLab
-        assert((0 != physical_node_id) || !GPI_ARCH_IS_BOARD(FLOCKLAB_nRF5));
-
-        uint16_t data[2];
-
-        // in the following we assume that program runs on nRF DK nodes on developer's desk
-
-        // pressing Button 1 during bootup can be used to enforce console prompt
-        if (gpi_button_read(GPI_BUTTON(1))) data[0] = 0;
-        else
-        {
-            // read data from nRF UICR area
-            gpi_nrf_uicr_read(&data, 0, sizeof(data));
-
-            // check signature
-            if (0x55AA == data[0])
-            {
-                GPI_TRACE_MSG(TRACE_INFO, "non-volatile config is valid");
-                physical_node_id = data[1];
-            }
-            else GPI_TRACE_MSG(TRACE_INFO, "non-volatile config is invalid");
-        }
-
-        // if signature is invalid
-        while (0 == physical_node_id)
-        {
-            printf("physical_node_id not set. enter value: ");
-
-            // read from console
-            // scanf("%u", &physical_node_id);
-            char s[8];
-            physical_node_id = atoi(getsn(s, sizeof(s)));
-
-            printf("\nphysical_node_id set to %u\n", physical_node_id);
-
-            // until input value is valid
-            if (0 == physical_node_id) continue;
-
-            // store new value in UICR area
-
-            data[0] = 0x55AA;
-            data[1] = physical_node_id;
-
-            gpi_nrf_uicr_erase();
-            gpi_nrf_uicr_write(0, &data, sizeof(data));
-
-            // ATTENTION: Writing to UICR requires NVMC->CONFIG.WEN to be set which in turn
-            // invalidates the instruction cache (permanently). Besides that, UICR updates take
-            // effect only after reset (spec. 4413_417 v1.0 4.3.3 page 24). Therefore we do a soft
-            // reset after the write procedure.
-            printf("Restarting system...\n");
-            gpi_milli_sleep(100); // safety margin (e.g. to empty UART Tx FIFO)
-            NVIC_SystemReset();
-
-            break;
-        }
-    }
-
-    GPI_TRACE_FLUSH();
     printf("starting node %u ...\n", physical_node_id);
 
 // translate physical_node_id to logical node id

@@ -6,7 +6,6 @@
 static inline void delay_cycles(const uint32_t cycles)
 {
     for (uint32_t i = 0; i < cycles; i++) __no_operation();
-
 }
 
 static inline void delay_ms(const uint32_t time)

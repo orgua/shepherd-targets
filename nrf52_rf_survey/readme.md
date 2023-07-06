@@ -13,6 +13,8 @@ Current configuration
 
 - adapt schedule with the [schedule-builder-script](/schedule_builder/build.py)
 - compiling: follow the [readme](/trafficbench/README.md) of trafficbench
+  - newest studio version (tested with v7.30) is fine
+  - extra package needed (and restart studio after install) - should be automatic: CMSIS 5 5 CMSIS-CORE Support Package
 
 ## Usage
 
@@ -21,19 +23,31 @@ Current configuration
 - postprocessing, TODO
 - NOTE: first loop-cycle should be discarded
 
+## Changes compared to vanilla trafficbench
+
+- change testbed: flocklab -> shepherd
+- correct spelling
+- fix formatting
+- fix for sensitivity to include-order: added #include "traffic_bench.h" in cbor.h
+- removed node-id-magic in main.c (line 154:217)
 
 ## TODO:
 
-- factor in TRX_PRE_DELAY and _POST_DELAY
 - adapt uart-speed
 - change GPI to use correct uart-pins
 - look for other IO used by TB
+  - gpi_button_read() in main.c
+  - gpi_led_toggle() in main.c
+  - gpi_led_on() & gpi_led_off() in scheduler.c
+  - LED_SYNC, GPI_LED_2
+  - GPI_BUTTON_SIG1, GPI_BUTTON_1
 - py: filter_log.py
 - speed up loop
   - 1 ms tx-delay
   - 3 ms tx-timeout
   - 15 - 50 ms sleep
-
+  - factor in TRX_PRE_DELAY and _POST_DELAY
+- packet-content: all random data might improve prx-consistency
 
 ## Source
 

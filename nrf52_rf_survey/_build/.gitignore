@@ -1,4 +1,4 @@
 # Ignore everything in this directory
-*
+*.hex
 # Except this file
 !.gitignore

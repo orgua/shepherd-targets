@@ -41,14 +41,15 @@
 ####################################################################################################
 
 import argparse
+import base64
+import functools
 import logging
-import tables as tbl
+import numbers
+import warnings
+
 import numpy as np
 import numpy.lib.recfunctions as nprec
-import functools
-import numbers
-import base64
-import warnings
+import tables as tbl
 
 # <https://docs.python.org/3.8/howto/logging.html#logging-basic-tutorial>
 logging.basicConfig(level=logging.DEBUG)
@@ -61,72 +62,84 @@ ap = argparse.ArgumentParser(description="analyze PyTables HDF5 file")
 
 ap.add_argument("infile")
 
-ap.add_argument("--add-markers", action="append", nargs=6,
+ap.add_argument(
+    "--add-markers",
+    action="append",
+    nargs=6,
     metavar=("NAME", "TABLE", "EXPRESSION", "CONDITION", "TITLE", "NODE_ID_FIELD"),
     help="mark all entries in TABLE that fulfill CONDITION."
-        " The markers are stored in table /markers/NAME with title TITLE."
-        " EXPRESSION defines an optional numerical expression over TABLE"
-        " that gets evaluated and stored with each marker (in float64 format)."
-        " EXPRESSION must be a valid PyTables expression or an empty string."
-        " CONDITION must result in a valid PyTables where() clause."
-        " # (sharp) characters inside CONDITION are replaced by EXPRESSION,"
-        " which can be used to avoid repeating the expression term."
-        " NODE_ID_FIELD specifies the field in TABLE that is used as node_id in the marker."
-        " If NODE_ID_FIELD is left empty then the following field names will be tried"
-        " (in this order): node_id, destination_node_id."
-        )
+    " The markers are stored in table /markers/NAME with title TITLE."
+    " EXPRESSION defines an optional numerical expression over TABLE"
+    " that gets evaluated and stored with each marker (in float64 format)."
+    " EXPRESSION must be a valid PyTables expression or an empty string."
+    " CONDITION must result in a valid PyTables where() clause."
+    " # (sharp) characters inside CONDITION are replaced by EXPRESSION,"
+    " which can be used to avoid repeating the expression term."
+    " NODE_ID_FIELD specifies the field in TABLE that is used as node_id in the marker."
+    " If NODE_ID_FIELD is left empty then the following field names will be tried"
+    " (in this order): node_id, destination_node_id.",
+)
 
 # parse command line
 args = ap.parse_args()
 if args.add_markers:
-    args.add_markers = [dict(zip(['name', 'table', 'expression', 'condition', 'title', 'node_id_field'], x)) for x in args.add_markers]
+    args.add_markers = [
+        dict(
+            zip(
+                ["name", "table", "expression", "condition", "title", "node_id_field"],
+                x,
+            )
+        )
+        for x in args.add_markers
+    ]
 else:
     args.add_markers = dict()
 
 ####################################################################################################
 # PyTables record specifications
 
-Source_Uncertainty = tbl.Enum({'EXTERNAL' : 0, 'WEAK' : 1, 'STRONG' : 2})
+Source_Uncertainty = tbl.Enum({"EXTERNAL": 0, "WEAK": 1, "STRONG": 2})
+
 
 class RX_Info_Record(tbl.IsDescription):
+    schedule_gts = tbl.UInt32Col(dflt=-1, pos=0)
+    source_node_id = tbl.Int16Col(dflt=-1, pos=1)
+    destination_node_id = tbl.Int16Col(dflt=-1, pos=2)
 
-    schedule_gts            = tbl.UInt32Col(dflt=-1, pos=0)
-    source_node_id          = tbl.Int16Col(dflt=-1, pos=1)
-    destination_node_id     = tbl.Int16Col(dflt=-1, pos=2)
+    rssi_sum = tbl.Float32Col(dflt=np.nan)  # in dBm
+    rssi_sum_min = tbl.Float32Col(dflt=np.nan)  # in dBm
+    rssi_sum_max = tbl.Float32Col(dflt=np.nan)  # in dBm
+    rssi_noise = tbl.Float32Col(dflt=np.nan)  # in dBm
 
-    rssi_sum                = tbl.Float32Col(dflt=np.nan)    # in dBm
-    rssi_sum_min            = tbl.Float32Col(dflt=np.nan)    # in dBm
-    rssi_sum_max            = tbl.Float32Col(dflt=np.nan)    # in dBm
-    rssi_noise              = tbl.Float32Col(dflt=np.nan)    # in dBm
-
-    P_sigint                = tbl.Float32Col(dflt=np.nan)
-    P_sigint_dBm            = tbl.Float32Col(dflt=np.nan)
-    P_sigint_link_dBm       = tbl.Float32Col(dflt=np.nan)
-    SNR_dB                  = tbl.Float32Col(dflt=np.nan)
-    SNR_min_dB              = tbl.Float32Col(dflt=np.nan)
-    SNR_max_dB              = tbl.Float32Col(dflt=np.nan)
-    SINR_link_dB            = tbl.Float32Col(dflt=np.nan)
+    P_sigint = tbl.Float32Col(dflt=np.nan)
+    P_sigint_dBm = tbl.Float32Col(dflt=np.nan)
+    P_sigint_link_dBm = tbl.Float32Col(dflt=np.nan)
+    SNR_dB = tbl.Float32Col(dflt=np.nan)
+    SNR_min_dB = tbl.Float32Col(dflt=np.nan)
+    SNR_max_dB = tbl.Float32Col(dflt=np.nan)
+    SINR_link_dB = tbl.Float32Col(dflt=np.nan)
 
     # markers
-    is_link_measurement     = tbl.BoolCol(dflt=False)
-    num_transmitters        = tbl.Int16Col(dflt=-1)     # alternative: enum NONE / SINGLE / MULTIPLE
-    ambiguous_source        = tbl.StringCol(2)
-    source_uncertainty      = tbl.EnumCol(Source_Uncertainty, 'EXTERNAL', base='uint8')
+    is_link_measurement = tbl.BoolCol(dflt=False)
+    num_transmitters = tbl.Int16Col(
+        dflt=-1
+    )  # alternative: enum NONE / SINGLE / MULTIPLE
+    ambiguous_source = tbl.StringCol(2)
+    source_uncertainty = tbl.EnumCol(Source_Uncertainty, "EXTERNAL", base="uint8")
 
     # ranges determined by split_rssi()
     rssi_range_noise1_begin = tbl.UInt32Col(dflt=-1)
-    rssi_range_noise1_len   = tbl.Int32Col(dflt=0)
+    rssi_range_noise1_len = tbl.Int32Col(dflt=0)
     rssi_range_noise2_begin = tbl.UInt32Col(dflt=-1)
-    rssi_range_noise2_len   = tbl.Int32Col(dflt=0)
-    rssi_range_sum_begin    = tbl.UInt32Col(dflt=-1)
-    rssi_range_sum_len      = tbl.Int32Col(dflt=0)
+    rssi_range_noise2_len = tbl.Int32Col(dflt=0)
+    rssi_range_sum_begin = tbl.UInt32Col(dflt=-1)
+    rssi_range_sum_len = tbl.Int32Col(dflt=0)
 
     # oscillator frequency drift between transmitter and receiver
-    osc_drift_ppm_min           = tbl.Float32Col(dflt=np.nan)
-    osc_drift_ppm_max           = tbl.Float32Col(dflt=np.nan)
-    osc_drift_num_periods_min   = tbl.Float32Col(dflt=np.nan)
-    osc_drift_num_periods_max   = tbl.Float32Col(dflt=np.nan)
-
+    osc_drift_ppm_min = tbl.Float32Col(dflt=np.nan)
+    osc_drift_ppm_max = tbl.Float32Col(dflt=np.nan)
+    osc_drift_num_periods_min = tbl.Float32Col(dflt=np.nan)
+    osc_drift_num_periods_max = tbl.Float32Col(dflt=np.nan)
 
     # NOTE:
     # * The combination of schedule_gts and (source_/destination_)node_id
@@ -138,87 +151,108 @@ class RX_Info_Record(tbl.IsDescription):
     #   In addition, some values are also stored with linear scaling (in mW)
     #   to avoid unnecessary conversion steps and accompanying accuracy losses.
 
-class Schedule_Record(tbl.IsDescription):
 
-    schedule_gts         = tbl.UInt32Col(pos=0)
-    num_nodes            = tbl.UInt16Col(pos=1)
-    num_transmitters     = tbl.UInt16Col(pos=2)
+class Schedule_Record(tbl.IsDescription):
+    schedule_gts = tbl.UInt32Col(pos=0)
+    num_nodes = tbl.UInt16Col(pos=1)
+    num_transmitters = tbl.UInt16Col(pos=2)
+
 
 class Marker_Record(tbl.IsDescription):
+    schedule_gts = tbl.UInt32Col(dflt=-1, pos=0)
+    node_id = tbl.Int16Col(dflt=-1, pos=1)
+    expression_value = tbl.Float64Col(dflt=np.nan)
 
-    schedule_gts         = tbl.UInt32Col(dflt=-1, pos=0)
-    node_id              = tbl.Int16Col(dflt=-1, pos=1)
-    expression_value     = tbl.Float64Col(dflt=np.nan)
 
 ####################################################################################################
 # constants
 
-TICKS_PER_US            = 16
-TICKS_PER_RSSI_SAMPLE   = 16
+TICKS_PER_US = 16
+TICKS_PER_RSSI_SAMPLE = 16
 
 ####################################################################################################
+
 
 def dB_to_linear(x):
     return np.power(10.0, x / 10)
 
+
 def linear_to_dB(x):
     return np.nan if x < 0 else 10 * np.log10(x)
 
+
 ####################################################################################################
+
 
 # compute nominal packet airtime
 # TODO: make it dependent from radio mode
 def get_packet_airtime(pdu_crc_length):
+    # 	switch (gpi_radio_get_mode())
+    # 	{
+    # 		// field lengths:	PREAMBLE	ADDRESS		CI		TERM1		PDU			CRC		TERM2
+    # 		// always [bit]:				 32							(2...258)*8		24
+    # 		// 1M:				 8, 8us		 32us		0		0						 24us	0
+    # 		// 2M:				16, 8us		 16us		0		0						 12us	0
+    # 		// 125k:			80,80us		256us		2,16us	3,24us					192us	3,24us
+    # 		// 500k:			80,80us		256us		2,16us	3,24us					 48us	3, 6us
+    # 		//
+    # 		// PDU:				S0			LENGTH		S1		PAYLOAD
+    # 		// always [bit]:	8			8			0		(0...255)*8
+    #
+    # 		case BLE_1M:	airtime = GPI_TICK_US_TO_FAST( 8 +  32 +  0 +  0 +  16 +  24 +  0) + (GPI_TICK_US_TO_FAST(8) * payload_length);		break;
+    # 		case BLE_2M:	airtime = GPI_TICK_US_TO_FAST( 8 +  16 +  0 +  0 +   8 +  12 +  0) + (GPI_TICK_US_TO_FAST(4) * payload_length);		break;
+    # 		case BLE_125k:	airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 + 128 + 192 + 24) + (GPI_TICK_US_TO_FAST(64) * payload_length);	break;
+    # 		case BLE_500k:	airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 +  32 +  48 +  6) + (GPI_TICK_US_TO_FAST(16) * payload_length);	break;
+    # 	}
 
-# 	switch (gpi_radio_get_mode())
-# 	{
-# 		// field lengths:	PREAMBLE	ADDRESS		CI		TERM1		PDU			CRC		TERM2
-# 		// always [bit]:				 32							(2...258)*8		24
-# 		// 1M:				 8, 8us		 32us		0		0						 24us	0
-# 		// 2M:				16, 8us		 16us		0		0						 12us	0
-# 		// 125k:			80,80us		256us		2,16us	3,24us					192us	3,24us
-# 		// 500k:			80,80us		256us		2,16us	3,24us					 48us	3, 6us
-# 		//
-# 		// PDU:				S0			LENGTH		S1		PAYLOAD
-# 		// always [bit]:	8			8			0		(0...255)*8
-#
-# 		case BLE_1M:	airtime = GPI_TICK_US_TO_FAST( 8 +  32 +  0 +  0 +  16 +  24 +  0) + (GPI_TICK_US_TO_FAST(8) * payload_length);		break;
-# 		case BLE_2M:	airtime = GPI_TICK_US_TO_FAST( 8 +  16 +  0 +  0 +   8 +  12 +  0) + (GPI_TICK_US_TO_FAST(4) * payload_length);		break;
-# 		case BLE_125k:	airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 + 128 + 192 + 24) + (GPI_TICK_US_TO_FAST(64) * payload_length);	break;
-# 		case BLE_500k:	airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 +  32 +  48 +  6) + (GPI_TICK_US_TO_FAST(16) * payload_length);	break;
-# 	}
-
-    us =  8 +  32 +  0 +  0 +  0 + (8 * pdu_crc_length)
+    us = 8 + 32 + 0 + 0 + 0 + (8 * pdu_crc_length)
     return us * TICKS_PER_US
 
+
 ####################################################################################################
+
 
 # TODO: make it dependent from radio mode
 def get_ref_delay():
     us = 8 + 32
     return us * TICKS_PER_US
 
+
 ####################################################################################################
+
 
 def warn_rssi(r):
+    rssi = r["rssi"]
 
-    rssi = r['rssi']
-
-    if rssi['num_samples'] == 0:
-        logging.debug('{:3d} @ {:#010x} : no RSSI data available'.format(
-            r['node_id'], r['schedule_gts']))
+    if rssi["num_samples"] == 0:
+        logging.debug(
+            "{:3d} @ {:#010x} : no RSSI data available".format(
+                r["node_id"], r["schedule_gts"]
+            )
+        )
     else:
-        if rssi['early_readout_detected']:
-            logging.warning('{:3d} @ {:#010x} : RSSI early readout detected'.format(
-                r['node_id'], r['schedule_gts']))
-        if rssi['late_readout_detected']:
-            logging.warning('{:3d} @ {:#010x} : RSSI late readout detected'.format(
-                r['node_id'], r['schedule_gts']))
-        if rssi['num_samples_missed'] > 0:
-            logging.warning('{:3d} @ {:#010x} : RSSI {} sample(s) missed'.format(
-                r['node_id'], r['schedule_gts'], rssi['num_samples_missed']))
+        if rssi["early_readout_detected"]:
+            logging.warning(
+                "{:3d} @ {:#010x} : RSSI early readout detected".format(
+                    r["node_id"], r["schedule_gts"]
+                )
+            )
+        if rssi["late_readout_detected"]:
+            logging.warning(
+                "{:3d} @ {:#010x} : RSSI late readout detected".format(
+                    r["node_id"], r["schedule_gts"]
+                )
+            )
+        if rssi["num_samples_missed"] > 0:
+            logging.warning(
+                "{:3d} @ {:#010x} : RSSI {} sample(s) missed".format(
+                    r["node_id"], r["schedule_gts"], rssi["num_samples_missed"]
+                )
+            )
+
 
 ####################################################################################################
+
 
 # split RSSI stream into noise and signal segments and estimate power values
 # ATTENTION: current implementation assumes that there is a noise segment, followed by a signal
@@ -227,7 +261,6 @@ def warn_rssi(r):
 # tx_carrier_period_1/2 > 0. The results will be wrong in such cases.
 # TODO: detect mentioned situations and warn if function is used in such cases
 def split_rssi(trx):
-
     TICKS_PER_SAMPLE = TICKS_PER_RSSI_SAMPLE
 
     # guard times used to mask the rise and fall times of the RSSI measurements
@@ -239,44 +272,50 @@ def split_rssi(trx):
     # The following values have been selected based on manual evaluation of RSSI vs. bitstream plots.
     # ATTENTION: So far, the selected values have been checked only with BLE 1M mode.
     # They may need adaptations in case of other BLE modes.
-    GUARD_TICKS_NOISE_TO_START  = 20 * TICKS_PER_US
-    GUARD_TICKS_START_TO_SIGNAL = 20 * TICKS_PER_US     # skips potential overshoot (hard to say if present)
-    GUARD_TICKS_SIGNAL_TO_END   =  0 * TICKS_PER_US
-    GUARD_TICKS_END_TO_NOISE    = 35 * TICKS_PER_US
+    GUARD_TICKS_NOISE_TO_START = 20 * TICKS_PER_US
+    GUARD_TICKS_START_TO_SIGNAL = (
+        20 * TICKS_PER_US
+    )  # skips potential overshoot (hard to say if present)
+    GUARD_TICKS_SIGNAL_TO_END = 0 * TICKS_PER_US
+    GUARD_TICKS_END_TO_NOISE = 35 * TICKS_PER_US
 
     results = {
-        'rx_mean'       : np.nan,
-        'rx_min'        : np.nan,
-        'rx_max'        : np.nan,
-        'noise_mean'    : np.nan,
-        'rx_range'      : [(-1, 0)],
-        'noise_range'   : [(-1, 0)]
-        }
+        "rx_mean": np.nan,
+        "rx_min": np.nan,
+        "rx_max": np.nan,
+        "noise_mean": np.nan,
+        "rx_range": [(-1, 0)],
+        "noise_range": [(-1, 0)],
+    }
 
-    rssi = trx['rssi']
+    rssi = trx["rssi"]
 
-    if rssi['num_samples'] < 2:
+    if rssi["num_samples"] < 2:
         return results
 
-    rssi_samples = rssi_heap.read(rssi['data_anchor'], rssi['data_anchor'] + rssi['num_samples'])
+    rssi_samples = rssi_heap.read(
+        rssi["data_anchor"], rssi["data_anchor"] + rssi["num_samples"]
+    )
 
-    noise           = np.array([], dtype=np.int8)
-    signal          = np.array([])
-    noise_range     = []
-    signal_range    = []
+    noise = np.array([], dtype=np.int8)
+    signal = np.array([])
+    noise_range = []
+    signal_range = []
 
-    if rssi['num_samples_missed'] > 0:
-        logging.warning('{:3d} @ {:#010x} : unclear sample timing due to {} missed RSSI sample(s)'.format(
-            trx['node_id'], trx['schedule_gts'], rssi['num_samples_missed']))
+    if rssi["num_samples_missed"] > 0:
+        logging.warning(
+            "{:3d} @ {:#010x} : unclear sample timing due to {} missed RSSI sample(s)".format(
+                trx["node_id"], trx["schedule_gts"], rssi["num_samples_missed"]
+            )
+        )
 
-    elif trx['trx_status']['header_detected'] and not trx['trx_status']['timeout']:
-
-        packet_len    = len(trx['packet_content_raw']) // 2    # field is BASE16 encoded
-        ts_end        = trx['end_lts']
-        ts_ref        = trx['packet_lts']
-        ts_start      = ts_ref - get_ref_delay()
-        ts_start2     = ts_end - get_packet_airtime(packet_len)
-        ts_rssi_end   = rssi['end_lts']
+    elif trx["trx_status"]["header_detected"] and not trx["trx_status"]["timeout"]:
+        packet_len = len(trx["packet_content_raw"]) // 2  # field is BASE16 encoded
+        ts_end = trx["end_lts"]
+        ts_ref = trx["packet_lts"]
+        ts_start = ts_ref - get_ref_delay()
+        ts_start2 = ts_end - get_packet_airtime(packet_len)
+        ts_rssi_end = rssi["end_lts"]
         ts_rssi_start = ts_rssi_end - len(rssi_samples) * TICKS_PER_SAMPLE
 
         # NOTE:
@@ -292,18 +331,24 @@ def split_rssi(trx):
 
         # check if oscillator drift and event timing uncertainty is "acceptable"
         # TODO: fine-tune the critical value (in case of problems)
-        assert(abs(ts_start - ts_start2) < 8)
+        assert abs(ts_start - ts_start2) < 8
 
         # ATTENTION: add lts to gts rate adaptation if necessary
-        lts_to_gts = lambda x: x - trx['schedule_lts'] + trx['schedule_gts']
+        lts_to_gts = lambda x: x - trx["schedule_lts"] + trx["schedule_gts"]
 
         n = (ts_start - GUARD_TICKS_NOISE_TO_START - ts_rssi_start) // TICKS_PER_SAMPLE
         if n > 0:
             noise = np.concatenate((noise, rssi_samples[:n]))
             noise_range.append((lts_to_gts(ts_rssi_start + TICKS_PER_SAMPLE), n))
         else:
-            logging.info('{:3d} @ {:#010x} : RSSI prologue interval ({}us) < guard time ({}us)'.format(
-                trx['node_id'], trx['schedule_gts'], (ts_start - ts_rssi_start) // TICKS_PER_US, GUARD_TICKS_NOISE_TO_START // TICKS_PER_US))
+            logging.info(
+                "{:3d} @ {:#010x} : RSSI prologue interval ({}us) < guard time ({}us)".format(
+                    trx["node_id"],
+                    trx["schedule_gts"],
+                    (ts_start - ts_rssi_start) // TICKS_PER_US,
+                    GUARD_TICKS_NOISE_TO_START // TICKS_PER_US,
+                )
+            )
             # NOTE: ts_start - ts_rssi_start can be negative due to (event) timing uncertainty.
             # Specifically, if a packet starts very short after receiver ramp-up, the combination of
             # long EVENTS_READY delay (starting RSSI sampling), short EVENTS_ADDRESS delay (-> ts_ref),
@@ -313,15 +358,31 @@ def split_rssi(trx):
         n = (ts_rssi_end - (ts_end + GUARD_TICKS_END_TO_NOISE)) // TICKS_PER_SAMPLE
         if n > 0:
             noise = np.concatenate((noise, rssi_samples[-n:]))
-            noise_range.append((lts_to_gts(ts_rssi_end - (n - 1) * TICKS_PER_SAMPLE), n))
+            noise_range.append(
+                (lts_to_gts(ts_rssi_end - (n - 1) * TICKS_PER_SAMPLE), n)
+            )
         else:
-            logging.info('{:3d} @ {:#010x} : RSSI epilogue interval ({}us) < guard time ({}us)'.format(
-                trx['node_id'], trx['schedule_gts'], (ts_rssi_end - ts_end) // TICKS_PER_US, GUARD_TICKS_END_TO_NOISE // TICKS_PER_US))
+            logging.info(
+                "{:3d} @ {:#010x} : RSSI epilogue interval ({}us) < guard time ({}us)".format(
+                    trx["node_id"],
+                    trx["schedule_gts"],
+                    (ts_rssi_end - ts_end) // TICKS_PER_US,
+                    GUARD_TICKS_END_TO_NOISE // TICKS_PER_US,
+                )
+            )
 
-        n0 = max(0, ts_start + GUARD_TICKS_START_TO_SIGNAL - ts_rssi_start) // TICKS_PER_SAMPLE
-        n1 = max(0, ts_end   - GUARD_TICKS_SIGNAL_TO_END   - ts_rssi_start) // TICKS_PER_SAMPLE
+        n0 = (
+            max(0, ts_start + GUARD_TICKS_START_TO_SIGNAL - ts_rssi_start)
+            // TICKS_PER_SAMPLE
+        )
+        n1 = (
+            max(0, ts_end - GUARD_TICKS_SIGNAL_TO_END - ts_rssi_start)
+            // TICKS_PER_SAMPLE
+        )
         signal = rssi_samples[range(n0, n1)]
-        signal_range.append((lts_to_gts(ts_rssi_start + (n0 + 1) * TICKS_PER_SAMPLE), len(signal)))
+        signal_range.append(
+            (lts_to_gts(ts_rssi_start + (n0 + 1) * TICKS_PER_SAMPLE), len(signal))
+        )
 
     # the following condition is true in case of a broken packet header (for instance)
     if not noise.size or not signal.size:
@@ -339,43 +400,52 @@ def split_rssi(trx):
             n += 1
             s += y[-n]
 
-    if True:    # TODO: use commandline switch
+    if True:  # TODO: use commandline switch
         # compute mean on linear scale, i.e. arithmetic mean
         mean_ = lambda x: linear_to_dB(dB_to_linear(x).mean())
-        mean_from_hist = lambda x, y: linear_to_dB(np.dot(dB_to_linear(x), y) / np.sum(y))
+        mean_from_hist = lambda x, y: linear_to_dB(
+            np.dot(dB_to_linear(x), y) / np.sum(y)
+        )
     else:
         # compute mean on logarithmic scale, i.e. geometric mean
         mean_ = lambda x: x.mean()
         mean_from_hist = lambda x, y: np.dot(x, y) / np.sum(y)
 
     if noise.size:
-        results['noise_mean'] = mean_(noise)
+        results["noise_mean"] = mean_(noise)
     else:
-        logging.debug('{:3d} @ {:#010x} : unclear idle period, '
-            'estimating noise power from histogram (using lower {} out of {} bins)'.format(
-            trx['node_id'], trx['schedule_gts'], n, len(x)))
-        results['noise_mean'] = mean_from_hist(x[:n], y[:n])
+        logging.debug(
+            "{:3d} @ {:#010x} : unclear idle period, "
+            "estimating noise power from histogram (using lower {} out of {} bins)".format(
+                trx["node_id"], trx["schedule_gts"], n, len(x)
+            )
+        )
+        results["noise_mean"] = mean_from_hist(x[:n], y[:n])
         noise_range = [(-1, -n)]
 
     if signal.size:
-        results['rx_mean'] = mean_(signal)
-        results['rx_min']  = signal.min()
-        results['rx_max']  = signal.max()
+        results["rx_mean"] = mean_(signal)
+        results["rx_min"] = signal.min()
+        results["rx_max"] = signal.max()
     else:
-        logging.debug('{:3d} @ {:#010x} : unclear signal period, '
-            'estimating signal power from histogram (using upper {} out of {} bins)'.format(
-            trx['node_id'], trx['schedule_gts'], n, len(x)))
-        results['rx_mean'] = mean_from_hist(x[-n:], y[-n:])
+        logging.debug(
+            "{:3d} @ {:#010x} : unclear signal period, "
+            "estimating signal power from histogram (using upper {} out of {} bins)".format(
+                trx["node_id"], trx["schedule_gts"], n, len(x)
+            )
+        )
+        results["rx_mean"] = mean_from_hist(x[-n:], y[-n:])
         x = x[-n:]
         x = x[y[-n:] != 0]
-        results['rx_min']  = x.min()
-        results['rx_max']  = x.max()
+        results["rx_min"] = x.min()
+        results["rx_max"] = x.max()
         signal_range = [(-1, -n)]
 
-    results['noise_range'] = noise_range
-    results['rx_range'] = signal_range
+    results["noise_range"] = noise_range
+    results["rx_range"] = signal_range
 
     return results
+
 
 ####################################################################################################
 # open PyTables file
@@ -383,38 +453,52 @@ def split_rssi(trx):
 h5file = tbl.open_file(args.infile, mode="a")
 trx_table = h5file.root.trx_data.trx
 rssi_heap = h5file.root.trx_data.rssi_data
-TRX_Operation = trx_table.get_enum('operation')
+TRX_Operation = trx_table.get_enum("operation")
 
-if '/markers' in h5file:
-    logging.info('removing existing markers')
+if "/markers" in h5file:
+    logging.info("removing existing markers")
     h5file.root.markers._f_remove(recursive=True, force=True)
 
-if '/catalogs' in h5file:
-    logging.info('removing existing catalogs')
+if "/catalogs" in h5file:
+    logging.info("removing existing catalogs")
     h5file.root.catalogs._f_remove(recursive=True, force=True)
 
 for i in trx_table.indexedcolpathnames:
-    logging.info(f'removing index of {trx_table._v_pathname}.{i}')
+    logging.info(f"removing index of {trx_table._v_pathname}.{i}")
     trx_table.cols._f_col(i).remove_index()
 
-h5file.create_group('/', 'catalogs', title='information extracted from trx_data',
-    filters=h5file.root.trx_data._v_filters)
+h5file.create_group(
+    "/",
+    "catalogs",
+    title="information extracted from trx_data",
+    filters=h5file.root.trx_data._v_filters,
+)
 
-h5file.create_group('/', 'markers', title='interesting RX entries (markers)',
-    filters=h5file.root.trx_data._v_filters)
+h5file.create_group(
+    "/",
+    "markers",
+    title="interesting RX entries (markers)",
+    filters=h5file.root.trx_data._v_filters,
+)
 
-logging.info('creating RX info catalog')
-rx_info_table = h5file.create_table('/catalogs', 'rx_info', RX_Info_Record, title='RX actions')
+logging.info("creating RX info catalog")
+rx_info_table = h5file.create_table(
+    "/catalogs", "rx_info", RX_Info_Record, title="RX actions"
+)
 
-logging.info('creating transactions catalog')
-trans_table = h5file.create_table('/catalogs', 'transactions', Schedule_Record,
-                title='transfers grouped to transactions')
+logging.info("creating transactions catalog")
+trans_table = h5file.create_table(
+    "/catalogs",
+    "transactions",
+    Schedule_Record,
+    title="transfers grouped to transactions",
+)
 
 h5file.flush()
 
 
 # create some indexes to accelerate queries
-logging.info('creating TRX data indexes')
+logging.info("creating TRX data indexes")
 trx_table.cols.schedule_gts.create_csindex()
 trx_table.cols.node_id.create_csindex()
 trx_table.flush()
@@ -422,21 +506,23 @@ trx_table.flush()
 ####################################################################################################
 
 # scan and group TRX records
-logging.info('scanning and grouping TRX records ({} entries)'.format(trx_table.nrows))
+logging.info("scanning and grouping TRX records ({} entries)".format(trx_table.nrows))
 nodes = set()
 gts_last = -1
 n_tx = n_rx = n_skip = 0
-for row in trx_table.itersorted('schedule_gts', checkCSI=True):
-# In older versions we used the root node (= node 0) as reference (as it is always in sync),
-# like this: for row in trx_table.where("node_id == 0"): ...
-# However, doing so skips all transactions without the root node.
+for row in trx_table.itersorted("schedule_gts", checkCSI=True):
+    # In older versions we used the root node (= node 0) as reference (as it is always in sync),
+    # like this: for row in trx_table.where("node_id == 0"): ...
+    # However, doing so skips all transactions without the root node.
 
     # concurrent transfers are identified by schedule_gts
-    schedule_gts = row['schedule_gts']
+    schedule_gts = row["schedule_gts"]
 
     # skip records where node was out of sync
     if -1 == np.int32(schedule_gts):
-        logging.debug(f'skipping TRX record {row.nrow} because schedule_gts = -1 (out of sync)')
+        logging.debug(
+            f"skipping TRX record {row.nrow} because schedule_gts = -1 (out of sync)"
+        )
         n_skip += 1
         continue
 
@@ -446,51 +532,57 @@ for row in trx_table.itersorted('schedule_gts', checkCSI=True):
         continue
     gts_last = schedule_gts
 
-    I = trx_table.get_where_list(f'schedule_gts == {schedule_gts}')
+    I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
     trx = trx_table[I]
 
-    I_tx = np.flatnonzero(trx['operation'] == TRX_Operation.TX)
-    I_rx = np.flatnonzero(trx['operation'] == TRX_Operation.RX)
+    I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+    I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
     # TODO: print helpful error message, skip transaction and continue
-    assert(len(set(trx["node_id"])) == len(trx))
-    assert(len(I_tx) + len(I_rx) == len(trx))
+    assert len(set(trx["node_id"])) == len(trx)
+    assert len(I_tx) + len(I_rx) == len(trx)
 
     n_tx += len(I_tx)
-    n_rx += np.count_nonzero(trx['trx_status']['crc_ok'][I_rx])
+    n_rx += np.count_nonzero(trx["trx_status"]["crc_ok"][I_rx])
 
     # add unknown nodes
-    nodes.update(trx['node_id'])
+    nodes.update(trx["node_id"])
 
     # create rx_info entries
     if len(I_rx) > 0:
         x = rx_info_table.row
-        x['schedule_gts'] = schedule_gts
-        x['num_transmitters'] = len(I_tx)
+        x["schedule_gts"] = schedule_gts
+        x["num_transmitters"] = len(I_tx)
         x.append()
         rx_info_table.flush()
         rx_info_table.append(np.repeat(x.fetch_all_fields(), len(I_rx) - 1))
         rx_info_table.modify_column(
-            start = len(rx_info_table) - len(I_rx),
-            colname='destination_node_id',
-            column=trx[I_rx]['node_id'])
+            start=len(rx_info_table) - len(I_rx),
+            colname="destination_node_id",
+            column=trx[I_rx]["node_id"],
+        )
 
     # create transaction
     x = trans_table.row
-    x['schedule_gts']     = schedule_gts
-    x['num_nodes']        = len(trx)
-    x['num_transmitters'] = len(I_tx)
+    x["schedule_gts"] = schedule_gts
+    x["num_nodes"] = len(trx)
+    x["num_transmitters"] = len(I_tx)
     x.append()
 
 nodes = tuple(nodes)
 
-h5file.create_array('/catalogs', 'nodes', nodes)
+h5file.create_array("/catalogs", "nodes", nodes)
 h5file.flush()
 if n_skip > 0:
-    logging.info(f'skipped {n_skip} TRX record(s) because schedule_gts = -1 (out of sync)')
-logging.info('found {} nodes, {} transactions, {} transmissions, {} receptions (CRC ok)'.
-    format(len(nodes), trans_table.nrows, n_tx, n_rx))
-logging.info('creating RX info index and transactions index')
+    logging.info(
+        f"skipped {n_skip} TRX record(s) because schedule_gts = -1 (out of sync)"
+    )
+logging.info(
+    "found {} nodes, {} transactions, {} transmissions, {} receptions (CRC ok)".format(
+        len(nodes), trans_table.nrows, n_tx, n_rx
+    )
+)
+logging.info("creating RX info index and transactions index")
 rx_info_table.cols.schedule_gts.create_csindex()
 rx_info_table.cols.destination_node_id.create_csindex()
 rx_info_table.flush()
@@ -500,17 +592,16 @@ trans_table.flush()
 ####################################################################################################
 
 # accomplish link measurements
-logging.info('accomplishing link measurements')
+logging.info("accomplishing link measurements")
 n = 0
-for trans in trans_table.where('num_transmitters == 1'):
-
+for trans in trans_table.where("num_transmitters == 1"):
     schedule_gts = trans["schedule_gts"]
 
-    I = trx_table.get_where_list(f'schedule_gts == {schedule_gts}')
+    I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
     trx = trx_table[I]
 
-    I_tx = np.flatnonzero(trx['operation'] == TRX_Operation.TX)
-    I_rx = np.flatnonzero(trx['operation'] == TRX_Operation.RX)
+    I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+    I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
     # the following is ensured / has already been checked during grouping step or where-clause:
     # assert(len(set(trx["node_id"])) == len(trx))
@@ -520,58 +611,64 @@ for trans in trans_table.where('num_transmitters == 1'):
     t = trx[I_tx]
 
     for i in I_rx:
-
         r = trx[i]
 
         warn_rssi(r)
 
-        if r['trx_status']['crc_ok'] and r['packet_content_raw'] == t['packet_content_raw']:
-
+        if (
+            r["trx_status"]["crc_ok"]
+            and r["packet_content_raw"] == t["packet_content_raw"]
+        ):
             rssi = split_rssi(r)
 
-            for x in rx_info_table.where(f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'):
-            # K = rx_info_table.get_where_list(f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})')
-            # assert(len(K) == 1)
-            # k = K[0]
-            # x = rx_info_table[k]
+            for x in rx_info_table.where(
+                f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
+            ):
+                # K = rx_info_table.get_where_list(f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})')
+                # assert(len(K) == 1)
+                # k = K[0]
+                # x = rx_info_table[k]
 
-                x['source_node_id'] = t['node_id']
+                x["source_node_id"] = t["node_id"]
 
-                x['rssi_sum']       = rssi['rx_mean']
-                x['rssi_sum_min']   = rssi['rx_min']
-                x['rssi_sum_max']   = rssi['rx_max']
-                x['rssi_noise']     = rssi['noise_mean']
+                x["rssi_sum"] = rssi["rx_mean"]
+                x["rssi_sum_min"] = rssi["rx_min"]
+                x["rssi_sum_max"] = rssi["rx_max"]
+                x["rssi_noise"] = rssi["noise_mean"]
 
-                range_ = rssi['noise_range']
-                (x['rssi_range_noise1_begin'], x['rssi_range_noise1_len']) = range_[0]
+                range_ = rssi["noise_range"]
+                (x["rssi_range_noise1_begin"], x["rssi_range_noise1_len"]) = range_[0]
                 if len(range_) > 1:
-                    (x['rssi_range_noise2_begin'], x['rssi_range_noise2_len']) = range_[1]
-                    assert(len(range_) <= 2)
+                    (x["rssi_range_noise2_begin"], x["rssi_range_noise2_len"]) = range_[
+                        1
+                    ]
+                    assert len(range_) <= 2
 
-                range_ = rssi['rx_range']
-                (x['rssi_range_sum_begin'], x['rssi_range_sum_len']) = range_[0]
-                assert(len(range_) <= 1)
+                range_ = rssi["rx_range"]
+                (x["rssi_range_sum_begin"], x["rssi_range_sum_len"]) = range_[0]
+                assert len(range_) <= 1
 
-                sum_dBm    = rssi['rx_mean']
-                noise_dBm  = rssi['noise_mean']
+                sum_dBm = rssi["rx_mean"]
+                noise_dBm = rssi["noise_mean"]
 
                 if not np.isnan(sum_dBm) and not np.isnan(noise_dBm):
-
                     if sum_dBm < noise_dBm:
-                        logging.warning('{:3d} @ {:#010x} : implausible RSSI split, skipping measurement (sum = {} dBm, noise = {} dBm)'.format(
-                            r['node_id'], schedule_gts, sum_dBm, noise_dBm))
+                        logging.warning(
+                            "{:3d} @ {:#010x} : implausible RSSI split, skipping measurement (sum = {} dBm, noise = {} dBm)".format(
+                                r["node_id"], schedule_gts, sum_dBm, noise_dBm
+                            )
+                        )
                     else:
-
-                        noise      = dB_to_linear(noise_dBm)
-                        sigint     = dB_to_linear(sum_dBm) - noise
+                        noise = dB_to_linear(noise_dBm)
+                        sigint = dB_to_linear(sum_dBm) - noise
                         sigint_dBm = linear_to_dB(sigint)
 
                         # NOTE: at this place it is enough to init P_sigint (-> link measurement),
                         # the remaining fields are filled later on
-                        x['P_sigint']     = sigint
-                        x['P_sigint_dBm'] = sigint_dBm
+                        x["P_sigint"] = sigint
+                        x["P_sigint_dBm"] = sigint_dBm
 
-                        x['is_link_measurement'] = True
+                        x["is_link_measurement"] = True
 
                         n += 1
 
@@ -579,10 +676,10 @@ for trans in trans_table.where('num_transmitters == 1'):
             # rx_info_table[k] = [x]
 
 rx_info_table.flush()
-logging.info(f'found {n} receptions that can be exploited for link estimation')
+logging.info(f"found {n} receptions that can be exploited for link estimation")
 
 # estimate link matrix
-logging.info('creating link matrix')
+logging.info("creating link matrix")
 
 id_map = np.full((max(nodes) + 1,), -1, dtype=np.int32)
 for n in enumerate(nodes):
@@ -592,60 +689,69 @@ n = len(nodes)
 link_matrix = np.zeros((n, n))
 n = np.zeros((n, n), dtype=trx_table.description.schedule_gts.dtype)
 
-for x in rx_info_table.where('is_link_measurement'):
-
-    assert(not np.isnan(x['P_sigint']))
+for x in rx_info_table.where("is_link_measurement"):
+    assert not np.isnan(x["P_sigint"])
     # if np.isnan(x['P_sigint']):
     #     continue
 
-    s = id_map[x['source_node_id']]
-    d = id_map[x['destination_node_id']]
+    s = id_map[x["source_node_id"]]
+    d = id_map[x["destination_node_id"]]
 
-    link_matrix[s,d] += x['P_sigint']
-    n[s,d] += 1
+    link_matrix[s, d] += x["P_sigint"]
+    n[s, d] += 1
 
-with np.errstate(invalid='ignore'):
+with np.errstate(invalid="ignore"):
     link_matrix /= n
 
-h5file.create_carray('/catalogs', 'link_matrix', obj=link_matrix)
+h5file.create_carray("/catalogs", "link_matrix", obj=link_matrix)
 h5file.flush()
-h5file.create_carray('/catalogs', 'link_matrix_dBm', obj=10 * np.log10(link_matrix))
+h5file.create_carray("/catalogs", "link_matrix_dBm", obj=10 * np.log10(link_matrix))
 h5file.flush()
 
-print('link matrix:')
-print('       {}'.format('  '.join(map(lambda x: f'{x:4d}', nodes))))
-print('     +-{}'.format('--' * (len(nodes) - 1) + '----' * len(nodes)))
+print("link matrix:")
+print("       {}".format("  ".join(map(lambda x: f"{x:4d}", nodes))))
+print("     +-{}".format("--" * (len(nodes) - 1) + "----" * len(nodes)))
 for x in enumerate(link_matrix):
-    print('{:4d} | {}'.format(nodes[x[0]], '  '.join(map(lambda x: '    ' if np.isnan(x) else f'{x:4.0f}', 10 * np.log10(x[1])))))
+    print(
+        "{:4d} | {}".format(
+            nodes[x[0]],
+            "  ".join(
+                map(
+                    lambda x: "    " if np.isnan(x) else f"{x:4.0f}",
+                    10 * np.log10(x[1]),
+                )
+            ),
+        )
+    )
 
 ####################################################################################################
 
 # evaluate transactions and compute SINRs
-logging.info('evaluating transactions, computing SNRs and SINRs')
+logging.info("evaluating transactions, computing SNRs and SINRs")
 
 # disable auto-indexing while updating (allows for faster updates)
 # NOTE: we do not change content of indexed columns
 rx_info_table.autoindex = False
 for trans in trans_table:
-
     schedule_gts = trans["schedule_gts"]
 
-    I = trx_table.get_where_list(f'schedule_gts == {schedule_gts}')
+    I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
     trx = trx_table[I]
 
-    I_tx = np.flatnonzero(trx['operation'] == TRX_Operation.TX)
-    I_rx = np.flatnonzero(trx['operation'] == TRX_Operation.RX)
+    I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+    I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
     # the following is ensured / has already been checked during grouping step or where-clause:
     # assert(len(set(trx["node_id"])) == len(trx))
     # assert(len(I_tx) + len(I_rx) == len(trx))
 
     for i in I_rx:
-
         r = trx[i]
 
-        k = rx_info_table.get_where_list(f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})')
-        assert(len(k) == 1)
+        k = rx_info_table.get_where_list(
+            f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
+        )
+        assert len(k) == 1
         k = k[0]
 
         rxi = rx_info_table[k]
@@ -655,17 +761,27 @@ for trans in trans_table:
         # TODO: select method via command line param
         rx_power = np.zeros(len(I_tx))
         if True:
-            rx_power = link_matrix[id_map[trx['node_id'][I_tx]], id_map[r['node_id']]]
+            rx_power = link_matrix[id_map[trx["node_id"][I_tx]], id_map[r["node_id"]]]
         else:
-            assert(r['schedule_gts'].dtype == np.uint32)
-            fmap = lambda x: ( abs(np.int32(x['schedule_gts'] - np.uint32(schedule_gts))), x['P_sigint'] )
+            assert r["schedule_gts"].dtype == np.uint32
+            fmap = lambda x: (
+                abs(np.int32(x["schedule_gts"] - np.uint32(schedule_gts))),
+                x["P_sigint"],
+            )
             fmin = lambda a, b: a if a[0] <= b[0] else b
             for l, k in enumerate(I_tx):
-                x = functools.reduce(fmin, map(fmap, rx_info_table.where(
-                            'is_link_measurement'
+                x = functools.reduce(
+                    fmin,
+                    map(
+                        fmap,
+                        rx_info_table.where(
+                            "is_link_measurement"
                             f' & (destination_node_id == {r["node_id"]})'
                             f' & (source_node_id == {trx[k]["node_id"]})'
-                        )), (0x7fffffff, np.nan))
+                        ),
+                    ),
+                    (0x7FFFFFFF, np.nan),
+                )
                 rx_power[l] = x[1]
 
         rx_power_isnan = np.isnan(rx_power)
@@ -673,42 +789,61 @@ for trans in trans_table:
         S = []
         s = None
 
-        if r['trx_status']['crc_ok']:
-            S = np.flatnonzero(trx[I_tx]['packet_content_raw'] == r['packet_content_raw'])
+        if r["trx_status"]["crc_ok"]:
+            S = np.flatnonzero(
+                trx[I_tx]["packet_content_raw"] == r["packet_content_raw"]
+            )
 
         # same packet from multiple transmitters
         if len(S) > 1:
-            rxi['ambiguous_source'] = b'*'
+            rxi["ambiguous_source"] = b"*"
 
         # unsuccessful reception / no transmitters / packet from external interferer
         elif len(S) == 0:
-
             S = np.arange(len(I_tx))
 
-            if r['trx_status']['crc_ok']:
-                rxi['ambiguous_source'] = b'!!'
+            if r["trx_status"]["crc_ok"]:
+                rxi["ambiguous_source"] = b"!!"
             elif len(I_tx) > 0:
-                rxi['ambiguous_source'] = b'?'
-            elif r['trx_status']['header_detected']:
-                rxi['ambiguous_source'] = b'!'
+                rxi["ambiguous_source"] = b"?"
+            elif r["trx_status"]["header_detected"]:
+                rxi["ambiguous_source"] = b"!"
 
             # find transmitter(s) with smallest Hamming distance
             if len(I_tx) > 1:
-
                 with warnings.catch_warnings():
-                    warnings.filterwarnings('ignore', 'overflow encountered in uint_scalars')
+                    warnings.filterwarnings(
+                        "ignore", "overflow encountered in uint_scalars"
+                    )
 
-                    dst_bits = np.unpackbits(np.frombuffer(base64.b16decode(r['packet_content_raw']), dtype=np.uint8), bitorder='little')
+                    dst_bits = np.unpackbits(
+                        np.frombuffer(
+                            base64.b16decode(r["packet_content_raw"]), dtype=np.uint8
+                        ),
+                        bitorder="little",
+                    )
                     dist = np.empty(len(I_tx), dtype=np.uint32)
                     for itx in range(len(I_tx)):
-
                         t = trx[I_tx[itx]]
 
-                        src_bits = np.unpackbits(np.frombuffer(base64.b16decode(t['packet_content_raw']), dtype=np.uint8), bitorder='little')
-                        ts_shift = np.int32(r['packet_lts'] - r['schedule_lts']) - np.int32(t['packet_lts'] - t['schedule_lts'])
+                        src_bits = np.unpackbits(
+                            np.frombuffer(
+                                base64.b16decode(t["packet_content_raw"]),
+                                dtype=np.uint8,
+                            ),
+                            bitorder="little",
+                        )
+                        ts_shift = np.int32(
+                            r["packet_lts"] - r["schedule_lts"]
+                        ) - np.int32(t["packet_lts"] - t["schedule_lts"])
                         bitshift = np.int32(np.rint(ts_shift / TICKS_PER_US))
                         if bitshift < 0:
-                            src_bits = np.concatenate((np.full(min(-bitshift, len(dst_bits)), 2, np.uint8), src_bits))
+                            src_bits = np.concatenate(
+                                (
+                                    np.full(min(-bitshift, len(dst_bits)), 2, np.uint8),
+                                    src_bits,
+                                )
+                            )
                         else:
                             src_bits = src_bits[bitshift:]
 
@@ -726,46 +861,56 @@ for trans in trans_table:
         # use margin since synchronization has limited precision
         if len(S) > 1:
             with warnings.catch_warnings():
-                warnings.filterwarnings('ignore', 'overflow encountered in uint_scalars')
+                warnings.filterwarnings(
+                    "ignore", "overflow encountered in uint_scalars"
+                )
                 S1 = S
                 for itx in S1:
                     t = trx[I_tx[itx]]
-                    ts_shift = np.int32(r['packet_lts'] - r['schedule_lts']) - np.int32(t['packet_lts'] - t['schedule_lts'])
-                    if ts_shift < -10 * TICKS_PER_US:   # TODO: make this a commandline arg
+                    ts_shift = np.int32(r["packet_lts"] - r["schedule_lts"]) - np.int32(
+                        t["packet_lts"] - t["schedule_lts"]
+                    )
+                    if (
+                        ts_shift < -10 * TICKS_PER_US
+                    ):  # TODO: make this a commandline arg
                         S = np.setdiff1d(S, itx)
                     if len(S) < 2:
                         break
 
         if len(S) > 0:
-
             S1 = S
             if len(S) == 1:
                 if rx_power_isnan[S[0]]:
-                    rxi['source_uncertainty'] = Source_Uncertainty.WEAK
+                    rxi["source_uncertainty"] = Source_Uncertainty.WEAK
             else:
                 if rx_power_isnan[S].all():
-                    rxi['source_uncertainty'] = Source_Uncertainty.STRONG
+                    rxi["source_uncertainty"] = Source_Uncertainty.STRONG
                     S1 = S[0:1]
                 elif rx_power_isnan[S].any():
-                    rxi['source_uncertainty'] = Source_Uncertainty.WEAK
+                    rxi["source_uncertainty"] = Source_Uncertainty.WEAK
                     S1 = S[rx_power_isnan[S] == False]
 
             s = S1[rx_power[S1].argmax()] if len(S1) > 0 else None
             if not s is None:
-                rxi['source_node_id'] = trx[I_tx[s]]['node_id']
+                rxi["source_node_id"] = trx[I_tx[s]]["node_id"]
 
-            if (Source_Uncertainty.STRONG == rxi['source_uncertainty']) and (rxi['ambiguous_source'] in b'*!!'):
-                n = trx['node_id'][I_tx[S[rx_power_isnan[S]]]]
-                logging.debug('{:3d} @ {:#010x} : strong link power uncertainty due to missing link measurement(s) for transmitting node(s) {}'.
-                    format(r['node_id'], schedule_gts, ','.join(map(str, n))))
+            if (Source_Uncertainty.STRONG == rxi["source_uncertainty"]) and (
+                rxi["ambiguous_source"] in b"*!!"
+            ):
+                n = trx["node_id"][I_tx[S[rx_power_isnan[S]]]]
+                logging.debug(
+                    "{:3d} @ {:#010x} : strong link power uncertainty due to missing link measurement(s) for transmitting node(s) {}".format(
+                        r["node_id"], schedule_gts, ",".join(map(str, n))
+                    )
+                )
 
         # split RSSI only if not already done during link measurement processing (above)
-        if rxi['source_node_id'] >= 0:
+        if rxi["source_node_id"] >= 0:
             rssi = {
-                'rx_mean'       : rxi['rssi_sum'],
-                'rx_min'        : rxi['rssi_sum_min'],
-                'rx_max'        : rxi['rssi_sum_max'],
-                'noise_mean'    : rxi['rssi_noise'],
+                "rx_mean": rxi["rssi_sum"],
+                "rx_min": rxi["rssi_sum_min"],
+                "rx_max": rxi["rssi_sum_max"],
+                "noise_mean": rxi["rssi_noise"],
                 # 'rx_range'      : [(rxi['rssi_range_sum_begin'], rxi['rssi_range_sum_len'])],
                 # 'noise_range'   : [(rxi['rssi_range_noise1_begin'], rxi['rssi_range_noise1_len']), (rxi['rssi_range_noise2_begin'], rxi['rssi_range_noise2_len'])]
             }
@@ -773,57 +918,60 @@ for trans in trans_table:
             warn_rssi(r)
             rssi = split_rssi(r)
 
-            rxi['rssi_sum']      = rssi['rx_mean']
-            rxi['rssi_sum_min']  = rssi['rx_min']
-            rxi['rssi_sum_max']  = rssi['rx_max']
-            rxi['rssi_noise']    = rssi['noise_mean']
+            rxi["rssi_sum"] = rssi["rx_mean"]
+            rxi["rssi_sum_min"] = rssi["rx_min"]
+            rxi["rssi_sum_max"] = rssi["rx_max"]
+            rxi["rssi_noise"] = rssi["noise_mean"]
 
-            range_ = rssi['noise_range']
-            (rxi['rssi_range_noise1_begin'], rxi['rssi_range_noise1_len']) = range_[0]
+            range_ = rssi["noise_range"]
+            (rxi["rssi_range_noise1_begin"], rxi["rssi_range_noise1_len"]) = range_[0]
             if len(range_) > 1:
-                (rxi['rssi_range_noise2_begin'], rxi['rssi_range_noise2_len']) = range_[1]
-                assert(len(range_) <= 2)
+                (rxi["rssi_range_noise2_begin"], rxi["rssi_range_noise2_len"]) = range_[
+                    1
+                ]
+                assert len(range_) <= 2
 
-            range_ = rssi['rx_range']
-            (rxi['rssi_range_sum_begin'], rxi['rssi_range_sum_len']) = range_[0]
-            assert(len(range_) <= 1)
+            range_ = rssi["rx_range"]
+            (rxi["rssi_range_sum_begin"], rxi["rssi_range_sum_len"]) = range_[0]
+            assert len(range_) <= 1
 
-        sum_dBm   = rssi['rx_mean']
-        noise_dBm = rssi['noise_mean']
+        sum_dBm = rssi["rx_mean"]
+        noise_dBm = rssi["noise_mean"]
 
         if not np.isnan(sum_dBm) and not np.isnan(noise_dBm):
-
             if sum_dBm < noise_dBm:
-                logging.warning('{:3d} @ {:#010x} : implausible RSSI split, skipping measurement (sum = {} dBm, noise = {} dBm)'.format(
-                    r['node_id'], schedule_gts, sum_dBm, noise_dBm))
+                logging.warning(
+                    "{:3d} @ {:#010x} : implausible RSSI split, skipping measurement (sum = {} dBm, noise = {} dBm)".format(
+                        r["node_id"], schedule_gts, sum_dBm, noise_dBm
+                    )
+                )
             else:
-
-                noise           = dB_to_linear(noise_dBm)
+                noise = dB_to_linear(noise_dBm)
 
                 # signal + interference
-                sigint_now      = dB_to_linear(sum_dBm) - noise
-                sigint_now_min  = dB_to_linear(rssi['rx_min']) - noise
-                sigint_now_max  = dB_to_linear(rssi['rx_max']) - noise
-                sigint_link     = rx_power.sum() if len(rx_power) else np.nan
+                sigint_now = dB_to_linear(sum_dBm) - noise
+                sigint_now_min = dB_to_linear(rssi["rx_min"]) - noise
+                sigint_now_max = dB_to_linear(rssi["rx_max"]) - noise
+                sigint_link = rx_power.sum() if len(rx_power) else np.nan
 
                 # signal
                 # sig_now       = sigint_now if len(I_tx) == 1 else np.nan
-                sig_link        = rx_power[s] if not s is None else np.nan
+                sig_link = rx_power[s] if not s is None else np.nan
 
                 # interference
                 # int_now       = sigint_now - sig_now
-                int_link        = sigint_link - sig_link
+                int_link = sigint_link - sig_link
 
-                rxi['P_sigint']          = sigint_now
-                rxi['P_sigint_dBm']      = linear_to_dB(sigint_now)
-                rxi['P_sigint_link_dBm'] = linear_to_dB(sigint_link)
+                rxi["P_sigint"] = sigint_now
+                rxi["P_sigint_dBm"] = linear_to_dB(sigint_now)
+                rxi["P_sigint_link_dBm"] = linear_to_dB(sigint_link)
                 # rxi['P_sigint_diff_dB']  = abs(rxi['P_sigint_dBm'] - rxi['P_sigint_link_dBm'])
 
-                rxi['SNR_dB']        = linear_to_dB(sigint_now)     - noise_dBm
-                rxi['SNR_min_dB']    = linear_to_dB(sigint_now_min) - noise_dBm
-                rxi['SNR_max_dB']    = linear_to_dB(sigint_now_max) - noise_dBm
+                rxi["SNR_dB"] = linear_to_dB(sigint_now) - noise_dBm
+                rxi["SNR_min_dB"] = linear_to_dB(sigint_now_min) - noise_dBm
+                rxi["SNR_max_dB"] = linear_to_dB(sigint_now_max) - noise_dBm
 
-                rxi['SINR_link_dB']  = linear_to_dB(sig_link / (int_link + noise))
+                rxi["SINR_link_dB"] = linear_to_dB(sig_link / (int_link + noise))
 
         # theoretically, fastest way to update should be modify_columns(), as this
         # only updates columns that are really touched, which avoids unnecessary
@@ -853,22 +1001,24 @@ rx_info_table.reindex_dirty()
 
 # estimate oscillator drifts
 # ATTENTION: this is a very imprecise method provided only as a coarse hint that comes at no extra costs
-logging.info('estimating oscillator drifts')
-for trx in trx_table.where(f'(schedule_gts != 0xffffffff) & (operation == {TRX_Operation.RX})'):
-
+logging.info("estimating oscillator drifts")
+for trx in trx_table.where(
+    f"(schedule_gts != 0xffffffff) & (operation == {TRX_Operation.RX})"
+):
     # TODO: flatten trx_status and integrate this into where() clause
     x = trx.fetch_all_fields()
-    if not x['trx_status']['header_detected'] or x['trx_status']['timeout']:
+    if not x["trx_status"]["header_detected"] or x["trx_status"]["timeout"]:
         continue
 
-    for rxi in rx_info_table.where(f'(schedule_gts == {trx["schedule_gts"]}) & (destination_node_id == {trx["node_id"]})'):
+    for rxi in rx_info_table.where(
+        f'(schedule_gts == {trx["schedule_gts"]}) & (destination_node_id == {trx["node_id"]})'
+    ):
+        packet_len = len(trx["packet_content_raw"]) // 2  # field is BASE16 encoded
+        ts_end = trx["end_lts"]
+        ts_ref = trx["packet_lts"]
 
-        packet_len  = len(trx['packet_content_raw']) // 2    # field is BASE16 encoded
-        ts_end      = trx['end_lts']
-        ts_ref      = trx['packet_lts']
-
-        t_nom   = get_packet_airtime(packet_len) - get_ref_delay()
-        t_meas  = ts_end - ts_ref
+        t_nom = get_packet_airtime(packet_len) - get_ref_delay()
+        t_meas = ts_end - ts_ref
 
         # Let fT and fR the transmitter's and receiver's oscillator frequency, respectively.
         # With L the (fixed) number of periods that follows from the number of bits, we have
@@ -884,23 +1034,23 @@ for trx in trx_table.where(f'(schedule_gts != 0xffffffff) & (operation == {TRX_O
         df_max = (f_ratio_max - 1) * (2400e6 if f_ratio_max < 1 else 2484e6)
 
         # ticks -> seconds
-        t_meas /= (1e6 * TICKS_PER_US)
+        t_meas /= 1e6 * TICKS_PER_US
 
         # num. periods = t_mead * df
-        if df_max < 0:      # df_min <= df_max < 0
+        if df_max < 0:  # df_min <= df_max < 0
             periods_min = -df_max * t_meas
             periods_max = -df_min * t_meas
-        elif df_min < 0:    # df_min < 0 <= df_max
+        elif df_min < 0:  # df_min < 0 <= df_max
             periods_min = 0
             periods_max = max(-df_min, df_max) * t_meas
-        else:               # 0 <= df_min <= df_max
+        else:  # 0 <= df_min <= df_max
             periods_min = df_min * t_meas
             periods_max = df_max * t_meas
 
-        rxi['osc_drift_ppm_min'] = (f_ratio_min - 1) * 1e6
-        rxi['osc_drift_ppm_max'] = (f_ratio_max - 1) * 1e6
-        rxi['osc_drift_num_periods_min'] = periods_min
-        rxi['osc_drift_num_periods_max'] = periods_max
+        rxi["osc_drift_ppm_min"] = (f_ratio_min - 1) * 1e6
+        rxi["osc_drift_ppm_max"] = (f_ratio_max - 1) * 1e6
+        rxi["osc_drift_num_periods_min"] = periods_min
+        rxi["osc_drift_num_periods_max"] = periods_max
         rxi.update()
 
 rx_info_table.flush()
@@ -909,40 +1059,41 @@ rx_info_table.flush()
 
 # create markers
 for desc in args.add_markers:
-
-    where_clause = desc['condition'].replace('#', '(' + desc['expression'] + ')')
+    where_clause = desc["condition"].replace("#", "(" + desc["expression"] + ")")
 
     logging.info(f'creating markers: {desc["name"]} (where {where_clause})')
 
-    source_table = h5file.get_node('/', desc['table'])
+    source_table = h5file.get_node("/", desc["table"])
 
-    node_id_field = desc['node_id_field']
+    node_id_field = desc["node_id_field"]
     if not node_id_field:
-        for n in ['node_id', 'destination_node_id']:
+        for n in ["node_id", "destination_node_id"]:
             if n in source_table.colnames:
                 node_id_field = n
                 break
-    assert(node_id_field)
+    assert node_id_field
 
-    marker_table = h5file.create_table('/markers', desc['name'], Marker_Record, title=desc['title'])
+    marker_table = h5file.create_table(
+        "/markers", desc["name"], Marker_Record, title=desc["title"]
+    )
     marker_table._f_setattr("TABLE", source_table._v_pathname)
     marker_table._f_setattr("NODE_ID_FIELD", node_id_field)
     marker_table._f_setattr("CONDITION", where_clause)
-    marker_table._f_setattr("EXPRESSION", desc['expression'])
+    marker_table._f_setattr("EXPRESSION", desc["expression"])
     marker_table.flush()
 
     # generate markers
     m = marker_table.row
     for x in source_table.where(where_clause):
-        m['schedule_gts'] = x['schedule_gts']
-        m['node_id']      = x[node_id_field]
+        m["schedule_gts"] = x["schedule_gts"]
+        m["node_id"] = x[node_id_field]
         m.append()
     marker_table.flush()
 
     # compute expression for marked records
     x = source_table.read_where(where_clause)
     x = dict([(n, x[n]) for n in x.dtype.names])
-    expr = tbl.Expr(desc['expression'], uservars=x)
+    expr = tbl.Expr(desc["expression"], uservars=x)
     expr.set_output(marker_table.cols.expression_value)
     expr.eval()
     del x, expr
@@ -953,19 +1104,18 @@ for desc in args.add_markers:
 # print transactions
 # TODO: only if requested (command-line) or in another script
 UNCERT = {
-    Source_Uncertainty.EXTERNAL : '',
-    Source_Uncertainty.WEAK     : '(?)',
-    Source_Uncertainty.STRONG   : '?'
+    Source_Uncertainty.EXTERNAL: "",
+    Source_Uncertainty.WEAK: "(?)",
+    Source_Uncertainty.STRONG: "?",
 }
 for trans in trans_table:
-
     schedule_gts = trans["schedule_gts"]
 
-    I = trx_table.get_where_list(f'schedule_gts == {schedule_gts}')
+    I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
     trx = trx_table[I]
 
-    I_tx = np.flatnonzero(trx['operation'] == TRX_Operation.TX)
-    I_rx = np.flatnonzero(trx['operation'] == TRX_Operation.RX)
+    I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+    I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
     # the following is ensured / has already been checked during grouping step or where-clause:
     # assert(len(set(trx["node_id"])) == len(trx))
@@ -973,49 +1123,73 @@ for trans in trans_table:
 
     print(f"\ntransaction at {schedule_gts:#010x}:")
 
-    actions = [('-', '')] * len(trx)
-    SNRs    = [(None, None)] * len(trx)
-    SINRs   = [('', '')] * len(trx)
+    actions = [("-", "")] * len(trx)
+    SNRs = [(None, None)] * len(trx)
+    SINRs = [("", "")] * len(trx)
 
     for i in I_tx:
-        actions[i] = ('Tx', '')
+        actions[i] = ("Tx", "")
 
     for i in I_rx:
-
         r = trx[i]
 
-        rxi = rx_info_table.read_where(f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})')
-        assert(len(rxi) == 1)
+        rxi = rx_info_table.read_where(
+            f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
+        )
+        assert len(rxi) == 1
         rxi = rxi[0]
 
-        m = rxi['ambiguous_source'].decode()
-        if m not in '?!!':
-            m += UNCERT[rxi['source_uncertainty']]
+        m = rxi["ambiguous_source"].decode()
+        if m not in "?!!":
+            m += UNCERT[rxi["source_uncertainty"]]
 
-        if not r['trx_status']['header_detected']:
-            actions[i] = ('', '')
+        if not r["trx_status"]["header_detected"]:
+            actions[i] = ("", "")
         else:
+            s = rxi["source_node_id"]
+            actions[i] = (s if s >= 0 else "", m)
 
-            s = rxi['source_node_id']
-            actions[i] = (s if s >= 0 else '', m)
+            if not r["trx_status"]["crc_ok"]:
+                actions[i] = ("(",) + actions[i] + (")",)
 
-            if not r['trx_status']['crc_ok']:
-                actions[i] = ('(',) + actions[i] + (')',)
+        if not np.isnan(rxi["SNR_dB"]):
+            SNRs[i] = (rxi["SNR_min_dB"], rxi["SNR_dB"], rxi["SNR_max_dB"])
 
-        if not np.isnan(rxi['SNR_dB']):
-            SNRs[i] = (rxi['SNR_min_dB'], rxi['SNR_dB'], rxi['SNR_max_dB'])
-
-        x = rxi['SINR_link_dB']
+        x = rxi["SINR_link_dB"]
         if not np.isnan(x):
             SINRs[i] = (x, m)
 
-    fmt  = lambda c : ' | '.join(map(lambda x: '{:^6}'.format(x), c))
-    fmtx = lambda c : ' | '.join(map(lambda x: '{:^6}'.format(''.join(map(str, x))), c))
-    print('\tnode:          {}'.format(fmt(trx['node_id'])))
-    print('\treceive from:  {}'.format(fmtx(actions)))
-    print('\tSINR (link):   {}'.format(fmtx(map(lambda x: (f'{x[0]:5.1f}', x[1]) if isinstance(x[0], numbers.Number) else x, SINRs))))
-    print('\tSNR (mean):    {}'.format(fmt(map(lambda x: f'{x[1]:5.1f}' if not x[0] is None else '', SNRs))))
-    print('\tSNR (min:max): {}'.format(fmt(map(lambda x: f'{x[0]:1.0f}:{x[2]:1.0f}' if not x[0] is None else '', SNRs))))
+    fmt = lambda c: " | ".join(map(lambda x: "{:^6}".format(x), c))
+    fmtx = lambda c: " | ".join(map(lambda x: "{:^6}".format("".join(map(str, x))), c))
+    print("\tnode:          {}".format(fmt(trx["node_id"])))
+    print("\treceive from:  {}".format(fmtx(actions)))
+    print(
+        "\tSINR (link):   {}".format(
+            fmtx(
+                map(
+                    lambda x: (f"{x[0]:5.1f}", x[1])
+                    if isinstance(x[0], numbers.Number)
+                    else x,
+                    SINRs,
+                )
+            )
+        )
+    )
+    print(
+        "\tSNR (mean):    {}".format(
+            fmt(map(lambda x: f"{x[1]:5.1f}" if not x[0] is None else "", SNRs))
+        )
+    )
+    print(
+        "\tSNR (min:max): {}".format(
+            fmt(
+                map(
+                    lambda x: f"{x[0]:1.0f}:{x[2]:1.0f}" if not x[0] is None else "",
+                    SNRs,
+                )
+            )
+        )
+    )
 
 ####################################################################################################
 

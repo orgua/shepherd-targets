@@ -1,3 +1,4 @@
+
 	TRX_begin			transmitter=NODE(SHP_ID_PLACEHOLDER), tx_delay=2000, timeout=5000
 		// payload content:
 		TRX_data_fixed			0x01, 0x02, 0x03, 0x04		// 4 bytes with fixed content

@@ -76,7 +76,7 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 // node ID mapping
 // for details see schedule_template.inc
 
-#include "config.h"		// -> BUILD_CONFIG_IS(), config_flocklab.h
+#include "config.h"		// -> BUILD_CONFIG_IS()
 
 #if !BUILD_CONFIG_IS(Release_FlockLab)
 	#define NODE(i)			i
@@ -147,6 +147,12 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 //***** Schedule Program ***************************************************************************
 
 main_loop:
+
+	// sleep 5 seconds
+	SLEEP		5000000
+
+measurement_loop:
+
 	TRX_begin			transmitter=NODE(0), tx_delay=2000, timeout=5000
 		// payload content:
 		TRX_data_fixed			0x01, 0x02, 0x03, 0x04		// 4 bytes with fixed content
@@ -157,11 +163,11 @@ main_loop:
 		// ATTENTION: TRX_data_checkpoint_marker is mandatory and must match
 		// TRX_CHECKPOINT_MARKER_POS (also if packet does not contain a checkpoint)
 		// Bluetooth 1MBit, ~ 10 Byte overhead
-        // TODO: all random data might be
 	TRX_end
 
-	// sleep a second, TODO: reduce later
+	// sleep a second
 	SLEEP		1000000
+
 	TRX_begin			transmitter=NODE(1), tx_delay=2000, timeout=5000
 		// payload content:
 		TRX_data_fixed			0x01, 0x02, 0x03, 0x04		// 4 bytes with fixed content
@@ -172,11 +178,11 @@ main_loop:
 		// ATTENTION: TRX_data_checkpoint_marker is mandatory and must match
 		// TRX_CHECKPOINT_MARKER_POS (also if packet does not contain a checkpoint)
 		// Bluetooth 1MBit, ~ 10 Byte overhead
-        // TODO: all random data might be
 	TRX_end
 
-	// sleep a second, TODO: reduce later
+	// sleep a second
 	SLEEP		1000000
+
 	TRX_begin			transmitter=NODE(2), tx_delay=2000, timeout=5000
 		// payload content:
 		TRX_data_fixed			0x01, 0x02, 0x03, 0x04		// 4 bytes with fixed content
@@ -187,11 +193,11 @@ main_loop:
 		// ATTENTION: TRX_data_checkpoint_marker is mandatory and must match
 		// TRX_CHECKPOINT_MARKER_POS (also if packet does not contain a checkpoint)
 		// Bluetooth 1MBit, ~ 10 Byte overhead
-        // TODO: all random data might be
 	TRX_end
 
-	// sleep a second, TODO: reduce later
+	// sleep a second
 	SLEEP		1000000
+
 	TRX_begin			transmitter=NODE(3), tx_delay=2000, timeout=5000
 		// payload content:
 		TRX_data_fixed			0x01, 0x02, 0x03, 0x04		// 4 bytes with fixed content
@@ -202,11 +208,11 @@ main_loop:
 		// ATTENTION: TRX_data_checkpoint_marker is mandatory and must match
 		// TRX_CHECKPOINT_MARKER_POS (also if packet does not contain a checkpoint)
 		// Bluetooth 1MBit, ~ 10 Byte overhead
-        // TODO: all random data might be
 	TRX_end
 
-	// sleep a second, TODO: reduce later
+	// sleep a second
 	SLEEP		1000000
+
 	TRX_begin			transmitter=NODE(4), tx_delay=2000, timeout=5000
 		// payload content:
 		TRX_data_fixed			0x01, 0x02, 0x03, 0x04		// 4 bytes with fixed content
@@ -217,13 +223,13 @@ main_loop:
 		// ATTENTION: TRX_data_checkpoint_marker is mandatory and must match
 		// TRX_CHECKPOINT_MARKER_POS (also if packet does not contain a checkpoint)
 		// Bluetooth 1MBit, ~ 10 Byte overhead
-        // TODO: all random data might be
 	TRX_end
 
-	// sleep a second, TODO: reduce later
+	// sleep a second
 	SLEEP		1000000
+
 	// next loop iteration
-	BRANCH		main_loop  // 10 ~ us
+	BRANCH		measurement_loop  // ~ 10 us
 
 	// never reached because of endless loop above
 	TERMINATE

@@ -1,5 +1,6 @@
+
 	// next loop iteration
-	BRANCH		main_loop  // 10 ~ us
+	BRANCH		measurement_loop  // ~ 10 us
 
 	// never reached because of endless loop above
 	TERMINATE

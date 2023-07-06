@@ -148,5 +148,7 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 
 main_loop:
 
-    // sleep 5 seconds
-    SLEEP		5000000
+	// sleep 5 seconds
+	SLEEP		5000000
+
+measurement_loop:

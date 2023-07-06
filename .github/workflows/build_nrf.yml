@@ -67,8 +67,8 @@ jobs:
       SEGGER_UNPACK: "${{ github.workspace }}/arm_segger_embedded_studio_v730_linux_x64/"
       SEGGER_PATH: "${{ github.workspace }}/segger_studio"
       # updates: https://www.segger.com/downloads/embedded-studio/
-      PROJECT_FILE: "${{ github.workspace }}/shepherd-targets/nrf52_rf_survey/trafficbench/target/nrf52840/project_ses/TrafficBench.emProject"
-      PROJECT_ELF: "${{ github.workspace }}/shepherd-targets/nrf52_rf_survey/trafficbench/target/nrf52840/project_ses/Output/Release/Exe/TrafficBench.elf"
+      PROJECT_FILE: "${{ github.workspace }}/nrf52_rf_survey/trafficbench/target/nrf52840/project_ses/TrafficBench.emProject"
+      PROJECT_ELF: "${{ github.workspace }}/nrf52_rf_survey/trafficbench/target/nrf52840/project_ses/Output/Release/Exe/TrafficBench.elf"
 
     steps:
       - name: Checkout 🛎️

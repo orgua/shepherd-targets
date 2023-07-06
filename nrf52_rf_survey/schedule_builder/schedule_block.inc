@@ -8,8 +8,7 @@
 		// ATTENTION: TRX_data_checkpoint_marker is mandatory and must match
 		// TRX_CHECKPOINT_MARKER_POS (also if packet does not contain a checkpoint)
 		// Bluetooth 1MBit, ~ 10 Byte overhead
-        // TODO: all random data might be
 	TRX_end
 
-	// sleep a second, TODO: reduce later
+	// sleep a second
 	SLEEP		1000000

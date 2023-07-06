@@ -76,7 +76,7 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 // node ID mapping
 // for details see schedule_template.inc
 
-#include "config.h"		// -> BUILD_CONFIG_IS(), config_flocklab.h
+#include "config.h"		// -> BUILD_CONFIG_IS()
 
 #if !BUILD_CONFIG_IS(Release_FlockLab)
 	#define NODE(i)			i
@@ -147,3 +147,6 @@ RSSI_POSTTRIGGER_TIME_DEFAULT	= 100
 //***** Schedule Program ***************************************************************************
 
 main_loop:
+
+    // sleep 5 seconds
+    SLEEP		5000000

@@ -1,5 +1,17 @@
 <!DOCTYPE CrossStudio_Project_File>
 <solution Name="TrafficBench" target="8" version="2">
+  <configuration
+    Name="Debug"
+    c_preprocessor_definitions="DEBUG"
+    gcc_debugging_level="Level 3"
+    gcc_omit_frame_pointer="Yes"
+    gcc_optimization_level="None" />
+  <configuration
+    Name="Release"
+    c_preprocessor_definitions="NDEBUG"
+    gcc_debugging_level="Level 2"
+    gcc_omit_frame_pointer="Yes"
+    gcc_optimization_level="Level 2 balanced" />
   <project Name="TrafficBench">
     <configuration
       CMSIS_CORE="Yes"
@@ -42,6 +54,14 @@
       target_reset_script="Reset();"
       target_script_file="$(ProjectDir)/nRF_Target.js"
       target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
+    <configuration
+      Name="Debug"
+      linker_additional_options="--keep-section=.rodata.gpi_resource_check" />
+    <configuration Name="Release" linker_output_format="hex" />
+    <folder Name="Config Files">
+      <file file_name="config.h" />
+      <file file_name="schedule.inc" />
+    </folder>
     <folder Name="Device Files">
       <file file_name="nRF/Device/Include/nrf.h" />
       <file file_name="nRF/Device/Include/nrf52840.h" />
@@ -53,66 +73,35 @@
       </file>
     </folder>
     <folder Name="Script Files">
+      <file file_name="nRF52840_xxAA_MemoryMap.xml">
+        <configuration Name="Common" file_type="Memory Map" />
+      </file>
       <file file_name="nRF/Scripts/nRF_Target.js">
         <configuration Name="Common" file_type="Reset Script" />
       </file>
       <file file_name="ses_nrf52840_xxaa.icf">
         <configuration Name="Common" file_type="Linker Script" />
       </file>
-      <file file_name="nRF52840_xxAA_MemoryMap.xml">
-        <configuration Name="Common" file_type="Memory Map" />
-      </file>
     </folder>
     <folder Name="Source Files">
       <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
-      <file file_name="../main.c" />
-      <file file_name="../shepherd_node_id.c" />
-      <file file_name="../../gpi/gpi.c" />
-      <file file_name="../radio.c" />
-      <file file_name="../traffic_bench.c" />
-      <file file_name="../scheduler.c" />
-      <file file_name="../postprocessing.c" />
-      <file file_name="../logging.c" />
       <file file_name="../deflate.c" />
+      <file file_name="../../gpi/gpi.c" />
+      <file file_name="../logging.c" />
+      <file file_name="../main.c" />
+      <file file_name="../postprocessing.c" />
+      <file file_name="../radio.c" />
       <file file_name="../schedule_framework.s" />
+      <file file_name="../scheduler.c" />
+      <file file_name="../shepherd_node_id.c" />
+      <file file_name="../traffic_bench.c" />
     </folder>
     <folder Name="System Files">
       <file file_name="SEGGER_THUMB_Startup.s" />
-      <file file_name="nRF/Device/Startup/ses_startup_nrf_common.s" />
       <file file_name="nRF/Device/Startup/ses_startup_nrf52840.s">
         <configuration Name="Common" file_type="Assembly" />
       </file>
-    </folder>
-    <configuration
-      Name="Debug"
-      linker_additional_options="--keep-section=.rodata.gpi_resource_check" />
-    <folder Name="Config Files">
-      <file file_name="config.h" />
-      <file file_name="schedule.inc" />
-      <file file_name="config_flocklab.h" />
-    </folder>
-    <configuration
-      Name="Release_FlockLab"
-      c_preprocessor_undefinitions="CONFIG_GPIO_AS_PINRESET"
-      gcc_optimization_level="Level 2 for speed"
-      post_build_command="bash flocklab_postprocess.sh &quot;$(OutDir)&quot; &quot;$(SolutionName)&quot; &quot;$(ProjectDir)&quot; &quot;$(CC1)&quot; &quot;$(OBJCOPY)&quot;"
-      post_build_command_control="Always Run" />
-    <folder Name="FlockLab Build Files">
-      <file file_name="flocklab_postprocess.sh" />
-      <file file_name="flocklab_template.xml" />
+      <file file_name="nRF/Device/Startup/ses_startup_nrf_common.s" />
     </folder>
   </project>
-  <configuration
-    Name="Debug"
-    c_preprocessor_definitions="DEBUG"
-    gcc_debugging_level="Level 3"
-    gcc_omit_frame_pointer="Yes"
-    gcc_optimization_level="None" />
-  <configuration
-    Name="Release"
-    c_preprocessor_definitions="NDEBUG"
-    gcc_debugging_level="Level 2"
-    gcc_omit_frame_pointer="Yes"
-    gcc_optimization_level="Level 2 balanced" />
-  <configuration Name="Release_FlockLab" />
 </solution>

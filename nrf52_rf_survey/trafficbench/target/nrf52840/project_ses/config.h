@@ -8,18 +8,12 @@
 //**************************************************************************************************
 // GPI configuration
 
-#if BUILD_CONFIG_IS(Release_FlockLab)
-  #include "config_flocklab.h"
-  #define GPI_ARCH_PLATFORM        (GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB | GPI_ARCH_CRT_SEGGER2)
-  #define GPI_STDOUT_UART_BAUDRATE FLOCKLAB_UART_BAUDRATE
-#else
-  #define GPI_ARCH_PLATFORM                        (GPI_ARCH_BOARD_nRF_PCA10056 | GPI_ARCH_CRT_SEGGER2)
-  #define GPI_STDOUT_UART_BAUDRATE                 230400
-  #define GPI_ARM_NRF_STDOUT_UART_FLOWCONTROL_MODE 3
+#define GPI_ARCH_PLATFORM                        (GPI_ARCH_BOARD_nRF_PCA10056 | GPI_ARCH_CRT_SEGGER2)
+#define GPI_STDOUT_UART_BAUDRATE                 230400
+#define GPI_ARM_NRF_STDOUT_UART_FLOWCONTROL_MODE 3
 // ATTENTION: 460800 is not totally safe even with flow control
 // (I guess that the DK's interface MCU deactivates CTS too late
 // (not enough buffer space left for data transmitted in between))
-#endif
 
 #define GPI_ARM_INTLOCK_PRIORITY             1
 #define GPI_ARM_NRF_FAST_CLOCK_TIMER         4
@@ -63,13 +57,8 @@
 //**************************************************************************************************
 // application settings
 
-#if BUILD_CONFIG_IS(Release_FlockLab)
-  #define BLE_RADIO_CHANNEL (FLOCKLAB_RADIO_CHANNEL)
-  #define ROOT_NODE_ID      FLOCKLAB_ROOT_NODE
-#else
-  #define BLE_RADIO_CHANNEL (-1)
-  #define ROOT_NODE_ID      1
-#endif
+#define BLE_RADIO_CHANNEL (-1)
+#define ROOT_NODE_ID      1
 
 #define RX_QUEUE_SIZE                             128          //256		// num. entries
 #define RSSI_SPACE_SIZE                           (128 * 1024) // bytes

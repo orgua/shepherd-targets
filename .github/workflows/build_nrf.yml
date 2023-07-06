@@ -6,7 +6,7 @@ on:
   workflow_call:
 
 jobs:
-  build:
+  build_gcc:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -14,7 +14,6 @@ jobs:
           - nrf52_demo_rf
           - nrf52_testable
           - nrf52_deep_sleep
-          # - nrf52_rf_survey
 
     env:
       GNU_INSTALL_LINK: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
@@ -55,3 +54,52 @@ jobs:
         with:
           name: "${{ matrix.subproject }}"
           path: "${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf"
+
+  build_segger:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        subproject:
+          - nrf52_rf_survey
+
+    env:
+      SEGGER_LINK: https://www.segger.com/downloads/embedded-studio/Setup_EmbeddedStudio_ARM_v730_linux_x64.tar.gz
+      SEGGER_UNPACK: "${{ github.workspace }}/arm_segger_embedded_studio_v730_linux_x64/"
+      SEGGER_PATH: "${{ github.workspace }}/segger_studio/bin/"
+      # updates: https://www.segger.com/downloads/embedded-studio/
+      PROJECT_FILE: "${{ github.workspace }}/shepherd-targets/nrf52_rf_survey/trafficbench/target/nrf52840/project_ses/TrafficBench.emProject"
+      PROJECT_ELF: "${{ github.workspace }}/shepherd-targets/nrf52_rf_survey/trafficbench/target/nrf52840/project_ses/Output/Release/Exe/TrafficBench.elf"
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install dependencies 🔧
+        run: sudo apt update && sudo apt install -y build-essential wget unzip
+
+      - name: Download Segger Embedded Studio 🔽
+        run: "wget -q --tries 3 ${{ env.SEGGER_LINK }} --output-document=segger_studio.tar.gz"
+        working-directory: "${{ github.workspace }}"
+      - name: Extract Archive ⚔
+        run: "tar -xf segger_studio.tar.gz"
+        working-directory: "${{ github.workspace }}"
+      - name: Install Studio
+        run: "yes 'yes' | ./install_segger_embedded_studio --copy-files-to ${{ env.SEGGER_PATH }}"
+        working-directory: "${{ env.SEGGER_UNPACK }}"
+      - name: Update Package-Manager
+        run: "./pkg update"
+        working-directory: "${{ env.SEGGER_PATH }}"
+      - name: Install CMSIS-Core Package ⚔
+        run: "yes 'y' | ./pkg install CMSIS-CORE_V5"
+        working-directory: "${{ env.SEGGER_PATH }}"
+
+      - name: Build the project "${{ matrix.subproject }}" 🧱
+        run: "./emBuild -config 'Release' ${{ env.PROJECT_FILE }}"
+        working-directory: "${{ env.SEGGER_PATH }}"
+
+      - name: Upload artifacts to github 🔼
+        uses: actions/upload-artifact@v3
+        with:
+          name: "${{ matrix.subproject }}"
+          path: "${{ env.PROJECT_ELF }}"
+

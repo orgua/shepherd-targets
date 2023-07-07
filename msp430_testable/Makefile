@@ -23,7 +23,8 @@ LINKER_SCRIPT:= linker.ld
 DEVICE  = MSP430FR5962
 
 CSRC_FILES += \
-  main.c
+  main.c \
+  shepherd_node_id.c \
 
 OBJ_FILES = $(CSRC_FILES:.c=.o)
 

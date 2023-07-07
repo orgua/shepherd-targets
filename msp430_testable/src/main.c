@@ -3,7 +3,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-static inline void delay_cycles(const uint32_t cycles)
+// see shepherd_node_id.c for details
+extern const uint16_t SHEPHERD_NODE_ID;
+
+static inline void    delay_cycles(const uint32_t cycles)
 {
     for (uint32_t i = 0; i < cycles; i++) __no_operation();
 }
@@ -167,7 +170,8 @@ int main(void)
     gpio_init();
 
     gpio_led_out(true);
-    for (uint8_t reps = 0; reps < 16; reps++)
+    uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;
+    for (uint32_t reps = 0; reps < rep_sum; reps++)
     {
         for (uint8_t led_mask = BIT0; led_mask <= BIT2; led_mask <<= 1u)
         {

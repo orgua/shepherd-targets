@@ -1,6 +1,6 @@
 # Msp430 Testable
 
-The firmware toggles all 3 LEDs 16 times for 100 ms and does the same for the 10 external GPIO (4 times).
+The firmware toggles all 3 LEDs >8 times (reacts to SHEPHERD_NODE_ID) for 100 ms and does the same for the 10 external GPIO (4 times).
 
 ## Functionality
 

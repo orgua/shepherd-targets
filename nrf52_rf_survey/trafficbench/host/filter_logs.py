@@ -44,8 +44,13 @@ import base64
 import logging
 import re
 import sys
-from io import BufferedReader, BufferedWriter
-from typing import Optional, List, Dict, Union, BinaryIO
+from io import BufferedReader
+from io import BufferedWriter
+from typing import BinaryIO
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
 
 logger: logging.Logger = logging.getLogger("filter")
 logger.setLevel(logging.INFO)
@@ -55,7 +60,7 @@ logger.addHandler(logging.NullHandler())
 
 
 def fletcher32(data: bytes) -> int:
-    """ compute Fletcher-32 checksum
+    """compute Fletcher-32 checksum
     :param data:
     :return:
     """
@@ -83,7 +88,14 @@ def fletcher32(data: bytes) -> int:
 ####################################################################################################
 
 
-def test_and_warn(line_number: int, ctrl_chars: List[bytes], text: bytes, pos_start: int = 0, pos_end: Optional[int] = None, strict: bool = True) -> None:
+def test_and_warn(
+    line_number: int,
+    ctrl_chars: List[bytes],
+    text: bytes,
+    pos_start: int = 0,
+    pos_end: Optional[int] = None,
+    strict: bool = True,
+) -> None:
     """
     test text and warn if it contains any special control characters (in case --strict is enabled)
 
@@ -109,7 +121,7 @@ def test_and_warn(line_number: int, ctrl_chars: List[bytes], text: bytes, pos_st
 
         l = line_number - text.count(b"\n", pos_new)
         c = 1 + pos_new - max(0, text.rfind(b"\n", 0, pos_new))
-        x = text[pos_new - (c - 1): text.find(b"\n", pos_new + 1)]
+        x = text[pos_new - (c - 1) : text.find(b"\n", pos_new + 1)]
         logger.warning(
             f"line {l} column {c}: orphaned control character {hex(text[pos_new])} in segment {x}"
         )
@@ -121,24 +133,25 @@ def test_and_warn(line_number: int, ctrl_chars: List[bytes], text: bytes, pos_st
 
 
 def filter_logfile(
-        infile: Union[BufferedReader, BinaryIO],
-        outfile: Union[BufferedWriter, BinaryIO],
-        unbuffered: bool = False,
-        control_chars: Optional[List[bytes]] = None,
-        max_record_size: int = 256 * 1024,
-        source_id_pattern: Optional[str] = None,
-        record_spec: Optional[Dict[bytes, bytes]] = None,
-        checksum: bool = True,
-        checksum_min_len: int = 4,
-        checksum_pos: Optional[List[int]] = None,
-        checksum_byteorder: str = "be",
-        strict: bool = True,
-        ) -> None:
-
+    infile: Union[BufferedReader, BinaryIO],
+    outfile: Union[BufferedWriter, BinaryIO],
+    unbuffered: bool = False,
+    control_chars: Optional[List[bytes]] = None,
+    max_record_size: int = 256 * 1024,
+    source_id_pattern: Optional[str] = None,
+    record_spec: Optional[Dict[bytes, bytes]] = None,
+    checksum: bool = True,
+    checksum_min_len: int = 4,
+    checksum_pos: Optional[List[int]] = None,
+    checksum_byteorder: str = "be",
+    strict: bool = True,
+) -> None:
     # special control characters
     if control_chars is None:
         BEGIN_RECORD = b"\x01"  # start of record = SOH (ASCII "Start of Header")
-        END_RECORD = b"\x17"  # end of record = NOW ETB, was EOT (ASCII "End of Transmission")
+        END_RECORD = (
+            b"\x17"  # end of record = NOW ETB, was EOT (ASCII "End of Transmission")
+        )
         BEGIN_CHUNK = b"\x02"  # start of chunk = STX (ASCII "Start of Text")
         END_CHUNK = b"\x03"  # end of chunk = ETX (ASCII "End of Text")
         control_chars = [BEGIN_RECORD, END_RECORD, BEGIN_CHUNK, END_CHUNK]
@@ -181,7 +194,7 @@ def filter_logfile(
         # drop everything outside records
         # NOTE: this increases performance if infile contains a lot of other stuff
         if not (len(buffer) or BEGIN_RECORD in line):
-            test_and_warn(line_number, control_chars, line, strict = strict)
+            test_and_warn(line_number, control_chars, line, strict=strict)
             continue
 
         # append line to buffer
@@ -193,13 +206,13 @@ def filter_logfile(
             # ATTENTION: this is important for the record size check below to work right
             p = buffer.find(BEGIN_RECORD)
             if p > 0:
-                test_and_warn(line_number, control_chars, buffer, 0, p, strict = strict)
+                test_and_warn(line_number, control_chars, buffer, 0, p, strict=strict)
                 buffer = buffer[p:]
 
             # if there are multiple BEGIN_RECORD markers (without END_RECORD): keep only the last one
             p = buffer.rfind(BEGIN_RECORD, p + 1)
             if p >= 0:
-                test_and_warn(line_number, control_chars, buffer, 0, p, strict = strict)
+                test_and_warn(line_number, control_chars, buffer, 0, p, strict=strict)
                 buffer = buffer[p:]
 
             # limit maximum record size
@@ -226,12 +239,19 @@ def filter_logfile(
                 p = buffer.rfind(BEGIN_RECORD)
                 if re_source_id:
                     p = buffer.rfind(b"\n", 0, p) + 1
-                test_and_warn(line_number, control_chars, buffer, 0, p, strict = strict)
+                test_and_warn(line_number, control_chars, buffer, 0, p, strict=strict)
                 buffer = buffer[p:]
                 break
 
             # check text before record
-            test_and_warn(line_number, control_chars, buffer, 0, record_match.start(0), strict = strict)
+            test_and_warn(
+                line_number,
+                control_chars,
+                buffer,
+                0,
+                record_match.start(0),
+                strict=strict,
+            )
 
             # if current record type has to be processed
             if record_match.group(1) in record_spec:
@@ -252,12 +272,26 @@ def filter_logfile(
                     for chunk_match in re_chunk.finditer(record_match.group(2)):
                         chunk_data.append(chunk_match.group(1))
                         # check text between last and current chunk
-                        test_and_warn(line_number, control_chars, buffer, pos, chunk_match.start(1), strict = strict)
+                        test_and_warn(
+                            line_number,
+                            control_chars,
+                            buffer,
+                            pos,
+                            chunk_match.start(1),
+                            strict=strict,
+                        )
                         pos = record_match.start(2) + chunk_match.end(1) + 1
                     chunk_data = b"".join(chunk_data)
 
                     # check text between last chunk and end of record
-                    test_and_warn(line_number, control_chars, buffer, pos, record_match.end(2), strict = strict)
+                    test_and_warn(
+                        line_number,
+                        control_chars,
+                        buffer,
+                        pos,
+                        record_match.end(2),
+                        strict=strict,
+                    )
 
                     # test encoding
                     try:
@@ -277,21 +311,35 @@ def filter_logfile(
 
                         c1 = x[checksum_pos[0] : checksum_pos[1]]
                         if checksum_byteorder == "be":
-                            c1 = (c1[0] << 24) | (c1[1] << 16) | (c1[2] << 8) | (c1[3] << 0)
+                            c1 = (
+                                (c1[0] << 24)
+                                | (c1[1] << 16)
+                                | (c1[2] << 8)
+                                | (c1[3] << 0)
+                            )
                         elif checksum_byteorder == "le":
-                            c1 = (c1[0] << 0) | (c1[1] << 8) | (c1[2] << 16) | (c1[3] << 24)
+                            c1 = (
+                                (c1[0] << 0)
+                                | (c1[1] << 8)
+                                | (c1[2] << 16)
+                                | (c1[3] << 24)
+                            )
                         else:
                             assert False
 
                         c2 = fletcher32(x[: checksum_pos[0]])
 
                         if c1 != c2:
-                            raise ValueError(f"checksum mismatch: {c1:#010x} != {c2:#010x}")
+                            raise ValueError(
+                                f"checksum mismatch: {c1:#010x} != {c2:#010x}"
+                            )
 
                 except ValueError as err:
                     l = line_number - buffer.count(b"\n", record_match.start(0))
                     logger.warning(
-                        f"line {l}: dropping invalid record (" + ";".join(err.args) + ")"
+                        f"line {l}: dropping invalid record ("
+                        + ";".join(err.args)
+                        + ")"
                     )
 
                 # if ok: write output text
@@ -315,19 +363,21 @@ def filter_logfile(
                     break
             else:
                 # explicitly drop garbage to re-enable the fast dropping step in the outer loop (see above)
-                test_and_warn(line_number, control_chars, buffer, strict = strict)
+                test_and_warn(line_number, control_chars, buffer, strict=strict)
                 buffer = b""
                 break
+
 
 ####################################################################################################
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     # define command line arguments
     # (see <https://docs.python.org/3.8/howto/argparse.html> for details)
 
-    ap = argparse.ArgumentParser(description="extract special data records from log files")
+    ap = argparse.ArgumentParser(
+        description="extract special data records from log files"
+    )
 
     ap.add_argument(
         "infile",
@@ -457,8 +507,8 @@ if __name__ == '__main__':
             args.checksum_pos[1] = None
 
         if args.checksum_pos[0] < 0:
-            args.checksum_min_len = - args.checksum_pos[0]
-            if - args.checksum_pos[0] < checksum_size:
+            args.checksum_min_len = -args.checksum_pos[0]
+            if -args.checksum_pos[0] < checksum_size:
                 ap.error(
                     f"checksum-position is invalid with respect to checksum-size ({args.checksum_pos[0]} vs. {checksum_size})"
                 )

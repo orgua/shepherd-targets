@@ -3,9 +3,8 @@ import os
 from pathlib import Path
 
 import chromalog
-
-from trafficbench.host.filter_logs import filter_logfile
 import tables as tbl
+from trafficbench.host.filter_logs import filter_logfile
 
 # CONFIG
 file_input_stem = "traffic_"
@@ -19,7 +18,9 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.NullHandler())
 
 
-def get_files(start_path: Path, stem: str, suffix: str, recursion_depth: int = 0) -> list:
+def get_files(
+    start_path: Path, stem: str, suffix: str, recursion_depth: int = 0
+) -> list:
     if recursion_depth == 0:
         suffix = suffix.lower().split(".")[-1]
     dir_items = os.scandir(start_path)
@@ -42,7 +43,9 @@ def get_files(start_path: Path, stem: str, suffix: str, recursion_depth: int = 0
     return files
 
 
-files_in = get_files(Path(__file__).parent, stem=file_input_stem, suffix=file_input_suffix)
+files_in = get_files(
+    Path(__file__).parent, stem=file_input_stem, suffix=file_input_suffix
+)
 with open(file_log, "wb") as outfile:
     pass
 for file in files_in:

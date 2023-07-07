@@ -5,7 +5,15 @@ name = "pypi"
 
 [packages]
 pre-commit = "*"
+# trafficbench
 shepherd-core = {extras = ["elf"], version = "*"}
+# Trafficbench host-scripts
+numpy = "*"
+tables = "*"
+cbor2 = "*"
+crcmod = "*"
+xonsh = "*"
+vitables = "*"
 
 [dev-packages]
 

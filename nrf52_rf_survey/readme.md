@@ -4,10 +4,10 @@ Trafficbench is configured to let each node send a packet. The other nodes liste
 
 Current configuration
 
-- each node sends ~ 34 bytes via 1 MBit Bluetooth (~300 us)
+- loop - one node after the other talks - the others listen
+- each node sends ~ 34 bytes via 1 MBit Bluetooth (~300 us airtime), PTx = 0 dBm
 - the other nodes listen and capture for 5 ms (+ 500 us pre- & post-delay)
 - sleep 1 s before next node begins
-- repeat loop indefinitely
 
 ## Installation
 
@@ -36,13 +36,19 @@ Current configuration
 
 - adapt uart-speed
 - change GPI to use correct uart-pins
+- vary send-power (?)
 - look for other IO used by TB
   - gpi_button_read() in main.c
   - gpi_led_toggle() in main.c
   - gpi_led_on() & gpi_led_off() in scheduler.c
   - LED_SYNC, GPI_LED_2
   - GPI_BUTTON_SIG1, GPI_BUTTON_1
-- py: filter_log.py
+- disable flow control (readme warns about it) to just stream uart
+- disable putton press to start (just node 1?)
+- py: 
+  - filter_log.py and more
+  - make code usable by other py-code
+  - modularize + make testable
 - speed up loop
   - 1 ms tx-delay
   - 3 ms tx-timeout

@@ -31,6 +31,11 @@ Current configuration
 - fix for sensitivity to include-order: added #include "traffic_bench.h" in cbor.h
 - removed node-id-magic in main.c (line 154:217)
 - transformed py-scripts to be more accessible
+- back-log for main-repo
+  - update studio-version
+  - cmsis warning
+  - main links
+
 
 ## TODO:
 

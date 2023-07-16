@@ -1,5 +1,3 @@
-
-
 def fletcher32(data: bytes) -> int:
     """compute Fletcher-32 checksum
     :param data:
@@ -27,7 +25,7 @@ def fletcher32(data: bytes) -> int:
 
 
 def test_checksum(data: bytes, position: list, byteorder: str, min_length: int) -> None:
-    """ raises exception on mismatch
+    """raises exception on mismatch
 
     :param data:
     :param position:
@@ -36,34 +34,20 @@ def test_checksum(data: bytes, position: list, byteorder: str, min_length: int) 
     :return:
     """
     if len(data) < min_length:
-        raise ValueError(
-            "invalid data length, checksum position out of range"
-        )
+        raise ValueError("invalid data length, checksum position out of range")
     if len(data) % 2:
         raise ValueError("invalid data length, should be even")
         # for fletcher32 as currently used/implemented
 
-    c1 = data[position[0]: position[1]]
+    c1 = data[position[0] : position[1]]
     if byteorder == "be":
-        c1 = (
-                (c1[0] << 24)
-                | (c1[1] << 16)
-                | (c1[2] << 8)
-                | (c1[3] << 0)
-        )
+        c1 = (c1[0] << 24) | (c1[1] << 16) | (c1[2] << 8) | (c1[3] << 0)
     elif byteorder == "le":
-        c1 = (
-                (c1[0] << 0)
-                | (c1[1] << 8)
-                | (c1[2] << 16)
-                | (c1[3] << 24)
-        )
+        c1 = (c1[0] << 0) | (c1[1] << 8) | (c1[2] << 16) | (c1[3] << 24)
     else:
         assert False
 
     c2 = fletcher32(data[: position[0]])
 
     if c1 != c2:
-        raise ValueError(
-            f"checksum mismatch: {c1:#010x} != {c2:#010x}"
-        )
+        raise ValueError(f"checksum mismatch: {c1:#010x} != {c2:#010x}")

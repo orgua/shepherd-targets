@@ -435,5 +435,3 @@ if __name__ == "__main__":
     arg_dict.pop("append_to")
     arg_dict.pop("checksum_type")  # TODO: not handled
     filter_logfile(**arg_dict)
-
-####################################################################################################

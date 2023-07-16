@@ -1,44 +1,9 @@
 #!/usr/bin/env python3
-####################################################################################################
-#
-#   Copyright (c) 2021 - 2022, Networked Embedded Systems Lab, TU Dresden
-#   All rights reserved.
-#
-#   Redistribution and use in source and binary forms, with or without
-#   modification, are permitted provided that the following conditions are met:
-#       * Redistributions of source code must retain the above copyright
-#         notice, this list of conditions and the following disclaimer.
-#       * Redistributions in binary form must reproduce the above copyright
-#         notice, this list of conditions and the following disclaimer in the
-#         documentation and/or other materials provided with the distribution.
-#       * Neither the name of the NES Lab or TU Dresden nor the
-#         names of its contributors may be used to endorse or promote products
-#         derived from this software without specific prior written permission.
-#
-#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-#   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-#   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-#   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
-#   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-#   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-#   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-#   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-####################################################################################################
-#
-#   @file                   filter_logs.py
-#
-#   @brief                  extract special data records from log files
-#
-#   @version                $Id$
-#   @date                   TODO
-#
-#   @author                 Carsten Herrmann
-#
-####################################################################################################
+"""
+Extract special data records from log files
 
+Author: Carsten Herrmann
+"""
 import argparse
 import base64
 import logging
@@ -52,38 +17,11 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+from ._checksum import test_checksum
+
 logger: logging.Logger = logging.getLogger("filter")
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.NullHandler())
-
-####################################################################################################
-
-
-def fletcher32(data: bytes) -> int:
-    """compute Fletcher-32 checksum
-    :param data:
-    :return:
-    """
-    assert isinstance(data, bytes)
-    assert not (len(data) & 1)
-
-    len_ = len(data)
-    i = 0
-    c0 = c1 = 0
-
-    while i < len_:
-        l = min(len_ - i, 360)
-
-        for k in range(l // 2):
-            c0 += (data[i] << 8) | data[i + 1]
-            c1 += c0
-            i += 2
-
-        c0 %= 0xFFFF
-        c1 %= 0xFFFF
-
-    return (c1 << 16) | c0
-
 
 ####################################################################################################
 
@@ -147,13 +85,15 @@ def filter_logfile(
     strict: bool = True,
 ) -> None:
     # special control characters
-    if control_chars is None:
-        BEGIN_RECORD = b"\x01"  # start of record = SOH (ASCII "Start of Header")
-        END_RECORD = (
-            b"\x17"  # end of record = NOW ETB, was EOT (ASCII "End of Transmission")
-        )
-        BEGIN_CHUNK = b"\x02"  # start of chunk = STX (ASCII "Start of Text")
-        END_CHUNK = b"\x03"  # end of chunk = ETX (ASCII "End of Text")
+    if control_chars is None:  # TODO: move higher up - data-model?
+        # start of record = SOH (ASCII "Start of Header")
+        BEGIN_RECORD = b"\x01"
+        # end of record = ETB, was EOT (ASCII "End of Transmission")
+        END_RECORD = b"\x17"
+        # start of chunk = STX (ASCII "Start of Text")
+        BEGIN_CHUNK = b"\x02"
+        # end of chunk = ETX (ASCII "End of Text")
+        END_CHUNK = b"\x03"
         control_chars = [BEGIN_RECORD, END_RECORD, BEGIN_CHUNK, END_CHUNK]
     else:
         BEGIN_RECORD = control_chars[0]
@@ -183,7 +123,7 @@ def filter_logfile(
     # process infile
     buffer = b""
     line_number = 1
-    for line in infile:
+    for line in infile:  # TODO: put content in separate FN?
         # replace stand-alone \r by \n
         # NOTE: common text viewers / editors do the same,
         # so this step is important to be consistent with displayed line numbers
@@ -301,38 +241,9 @@ def filter_logfile(
 
                     # test checksum
                     if checksum:
-                        if len(x) < checksum_min_len:
-                            raise ValueError(
-                                "invalid data length, checksum position out of range"
-                            )
-                        if len(x) % 2:
-                            raise ValueError("invalid data length, should be even")
-                            # for fletcher32 as currently used/implemented
-
-                        c1 = x[checksum_pos[0] : checksum_pos[1]]
-                        if checksum_byteorder == "be":
-                            c1 = (
-                                (c1[0] << 24)
-                                | (c1[1] << 16)
-                                | (c1[2] << 8)
-                                | (c1[3] << 0)
-                            )
-                        elif checksum_byteorder == "le":
-                            c1 = (
-                                (c1[0] << 0)
-                                | (c1[1] << 8)
-                                | (c1[2] << 16)
-                                | (c1[3] << 24)
-                            )
-                        else:
-                            assert False
-
-                        c2 = fletcher32(x[: checksum_pos[0]])
-
-                        if c1 != c2:
-                            raise ValueError(
-                                f"checksum mismatch: {c1:#010x} != {c2:#010x}"
-                            )
+                        test_checksum(
+                            x, checksum_pos, checksum_byteorder, checksum_min_len
+                        )
 
                 except ValueError as err:
                     l = line_number - buffer.count(b"\n", record_match.start(0))

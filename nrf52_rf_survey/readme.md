@@ -31,10 +31,7 @@ Current configuration
 - fix for sensitivity to include-order: added #include "traffic_bench.h" in cbor.h
 - removed node-id-magic in main.c (line 154:217)
 - transformed py-scripts to be more accessible
-- back-log for main-repo
-  - update studio-version
-  - cmsis warning
-  - main links
+
 
 
 ## TODO:
@@ -50,7 +47,7 @@ Current configuration
   - GPI_BUTTON_SIG1, GPI_BUTTON_1
 - disable flow control (readme warns about it) to just stream uart
 - disable putton press to start (just node 1?)
-- py: 
+- py:
   - filter_log.py and more
   - make code usable by other py-code
   - modularize + make testable

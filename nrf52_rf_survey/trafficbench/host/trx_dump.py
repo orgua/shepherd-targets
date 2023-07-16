@@ -1,47 +1,15 @@
 #!/usr/bin/env python3
-####################################################################################################
-#
-#   Copyright (c) 2021 - 2022, Networked Embedded Systems Lab, TU Dresden
-#   All rights reserved.
-#
-#   Redistribution and use in source and binary forms, with or without
-#   modification, are permitted provided that the following conditions are met:
-#       * Redistributions of source code must retain the above copyright
-#         notice, this list of conditions and the following disclaimer.
-#       * Redistributions in binary form must reproduce the above copyright
-#         notice, this list of conditions and the following disclaimer in the
-#         documentation and/or other materials provided with the distribution.
-#       * Neither the name of the NES Lab or TU Dresden nor the
-#         names of its contributors may be used to endorse or promote products
-#         derived from this software without specific prior written permission.
-#
-#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-#   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-#   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-#   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
-#   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-#   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-#   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-#   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-####################################################################################################
-#
-#   @file                   trx_dump.py
-#
-#   @brief                  read BASE64-encoded TRX records from input and (i) export them to a
-#                           PyTables HDF5 file, (ii) print a human-readable packet dump, and/or
-#                           (iii) send the packets to lognplot. All options (i) to (iii) can be
-#                           enabled or disabled individually.
-#
-#   @version                $Id$
-#   @date                   TODO
-#
-#   @author                 Carsten Herrmann
-#
-####################################################################################################
+""" TODO: WIP - nonfunctional ATM
+Read BASE64-encoded TRX records from input and
 
+(i) export them to a PyTables HDF5 file,
+(ii) print a human-readable packet dump, and/or
+(iii) send the packets to lognplot.
+
+All options (i) to (iii) can be enabled or disabled individually.
+
+Author: Carsten Herrmann
+"""
 import argparse
 import base64
 import io
@@ -51,6 +19,9 @@ import zlib
 
 import cbor2
 import tables as tbl
+
+from ._checksum import fletcher32
+from ._crc import calc_crc
 
 ####################################################################################################
 # PyTables format definitions
@@ -103,148 +74,87 @@ class TRX_Record(tbl.IsDescription):
 
 ####################################################################################################
 
-# CRC computation function
-# polynomial: x^24 + x^10 + x^9 + x^6 + x^4 + x^3 + x + 1
-# TODO: test which variant is faster (should be crcmod, at least with C extension)
-try:
-    # <https://pypi.org/project/crcmod>
-    # <http://crcmod.sourceforge.net>
-    import crcmod
+if __name__ == "__main__":
+    # define command line arguments
+    # (see <https://docs.python.org/3.8/howto/argparse.html> for details)
 
-    crc_core_function = crcmod.mkCrcFun(0b1000000000000011001011011, 0xAAAAAA, True, 0)
-
-    bitswap = lambda x: (x * 0x0202020202 & 0x010884422010) % 1023
-
-    bitswap_lut = bytes.maketrans(
-        bytes(range(0, 256)), bytes(bitswap(x) for x in range(0, 256))
+    ap = argparse.ArgumentParser(
+        description="decode TRX messages and import them into PyTables HDF5 file"
+    )
+    ap.add_argument(
+        "infile",
+        type=argparse.FileType("r"),
+        nargs="?",
+        default=sys.stdin,
+        help="use - to read from stdin",
+    )
+    ap.add_argument(
+        "-d", "--logfile", type=argparse.FileType("w"), help="use - to write to stdout"
+    )
+    ap.add_argument("-o", "--outfile")
+    ap.add_argument(
+        "-l",
+        "--num-lines",
+        type=int,
+        default=None,
+        help="number of lines (= number of records) in INFILE. can improve performance if provided",
+    )
+    ap.add_argument(
+        "--rssi-dump-max",
+        type=int,
+        default=20,
+        metavar="LEN",
+        help="max. #samples dumped in LOGFILE",
+    )
+    ap.add_argument(
+        "--rssi-test-samples",
+        action="store_true",
+        help="test if RSSI samples result in a sawtooth signal (useful for debugging)",
+    )
+    x = ap.add_argument_group(
+        "lognplot options", "can be used to enable realtime data plotting with lognplot"
+    )
+    x.add_argument(
+        "--lognplot-host",
+        type=str,
+        metavar="HOST",
+        default=None,
+        help='hostname of lognplot server, e.g. "localhost" or "127.0.0.1". default = disabled',
+    )
+    x.add_argument(
+        "--lognplot-port",
+        type=int,
+        metavar="PORT",
+        default=12345,
+        help="TCP port of lognplot server. default = 12345",
+    )
+    x.add_argument(
+        "--lognplot-bin-gain",
+        type=float,
+        metavar="MUL",
+        default=1,
+        help="gain of binary data output. output value = MUL * input + OFS * node_id",
+    )
+    x.add_argument(
+        "--lognplot-bin-offset",
+        type=float,
+        metavar="OFS",
+        default=0,
+        help="offset of binary data output. output value = MUL * input + OFS * node_id",
     )
 
-    def crc(data):
-        return crc_core_function(data).to_bytes(3, "big").translate(bitswap_lut)
+    # parse command line
+    args = ap.parse_args()
+    if args.rssi_dump_max < 20:
+        ap.error("argument --rssi-dump-max: invalid value (must be >= 20)")
 
-except:
-    # <https://pypi.org/project/crc>
-    import crc
-
-    crc_calculator = crc.CrcCalculator(
-        crc.Configuration(
-            width=24, polynomial=0b11001011011, init_value=0x555555, reverse_input=True
-        ),
-        table_based=True,
-    )
-
-    def crc(data):
-        return crc_calculator.calculate_checksum(data).to_bytes(3, "little")
-
-
-####################################################################################################
-# handle command line
-# (see <https://docs.python.org/3.8/howto/argparse.html> for details)
-
-# define command line arguments
-ap = argparse.ArgumentParser(
-    description="decode TRX messages and import them into PyTables HDF5 file"
-)
-ap.add_argument(
-    "infile",
-    type=argparse.FileType("r"),
-    nargs="?",
-    default=sys.stdin,
-    help="use - to read from stdin",
-)
-ap.add_argument(
-    "-d", "--logfile", type=argparse.FileType("w"), help="use - to write to stdout"
-)
-ap.add_argument("-o", "--outfile")
-ap.add_argument(
-    "-l",
-    "--num-lines",
-    type=int,
-    default=None,
-    help="number of lines (= number of records) in INFILE. can improve performance if provided",
-)
-ap.add_argument(
-    "--rssi-dump-max",
-    type=int,
-    default=20,
-    metavar="LEN",
-    help="max. #samples dumped in LOGFILE",
-)
-ap.add_argument(
-    "--rssi-test-samples",
-    action="store_true",
-    help="test if RSSI samples result in a sawtooth signal (useful for debugging)",
-)
-x = ap.add_argument_group(
-    "lognplot options", "can be used to enable realtime data plotting with lognplot"
-)
-x.add_argument(
-    "--lognplot-host",
-    type=str,
-    metavar="HOST",
-    default=None,
-    help='hostname of lognplot server, e.g. "localhost" or "127.0.0.1". default = disabled',
-)
-x.add_argument(
-    "--lognplot-port",
-    type=int,
-    metavar="PORT",
-    default=12345,
-    help="TCP port of lognplot server. default = 12345",
-)
-x.add_argument(
-    "--lognplot-bin-gain",
-    type=float,
-    metavar="MUL",
-    default=1,
-    help="gain of binary data output. output value = MUL * input + OFS * node_id",
-)
-x.add_argument(
-    "--lognplot-bin-offset",
-    type=float,
-    metavar="OFS",
-    default=0,
-    help="offset of binary data output. output value = MUL * input + OFS * node_id",
-)
-
-# parse command line
-args = ap.parse_args()
-if args.rssi_dump_max < 20:
-    ap.error("argument --rssi-dump-max: invalid value (must be >= 20)")
-
-# determine expected number of rows
-if args.num_lines is None:
-    if args.infile.seekable():
-        args.num_lines = sum(1 for _ in args.infile)
-        args.infile.seek(0)
-    else:
-        args.num_lines = 10000
-
-####################################################################################################
-
-
-# compute Fletcher-32 checksum
-def fletcher32(data):
-    assert isinstance(data, bytes)
-    assert not (len(data) & 1)
-
-    len_ = len(data)
-    i = 0
-    c0 = c1 = 0
-
-    while i < len_:
-        l = min(len_ - i, 360)
-
-        for k in range(l // 2):
-            c0 += (data[i] << 8) | data[i + 1]
-            c1 += c0
-            i += 2
-
-        c0 %= 0xFFFF
-        c1 %= 0xFFFF
-
-    return (c1 << 16) | c0
-
+    # determine expected number of rows
+    if args.num_lines is None:
+        if args.infile.seekable():
+            args.num_lines = sum(1 for _ in args.infile)
+            args.infile.seek(0)
+        else:
+            args.num_lines = 10000
 
 ####################################################################################################
 
@@ -382,7 +292,7 @@ for b64 in args.infile:
 
     # if transmitter: compute CRC
     if "TX" == TRX_Operation(operation):
-        packet = packet[0:-3] + crc(packet[0:-3])
+        packet = packet[0:-3] + calc_crc(packet[0:-3])
 
     # NOTE: data[-1] of RSSI data = is_valid flag
     rssi_valid = len(data) > 11 and data[-1]

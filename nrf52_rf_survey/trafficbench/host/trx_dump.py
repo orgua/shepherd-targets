@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" TODO: WIP - nonfunctional ATM
+"""
 Read BASE64-encoded TRX records from input and
 
 (i) export them to a PyTables HDF5 file,
@@ -24,7 +24,7 @@ import cbor2
 from ._checksum import fletcher32
 from ._crc import calc_crc
 from ._file_database import FileWriter
-from ._file_database import TrxOperation
+from ._table_records import TRxOperation
 
 
 def dump_trx(
@@ -119,7 +119,7 @@ def dump_trx(
         schedule_gts += h << 32
 
         # if transmitter: compute CRC
-        if "TX" == TrxOperation(operation):
+        if "TX" == TRxOperation(operation):
             packet = packet[0:-3] + calc_crc(packet[0:-3])
 
         # NOTE: data[-1] of RSSI data = is_valid flag
@@ -231,7 +231,7 @@ def dump_trx(
             print(
                 f"transmission scheduled at {schedule_gts:#010x} (record {record_counter}):"
                 f"\n\tnode             : {node_id}"
-                f"\n\toperation        : {TrxOperation(operation)}"
+                f"\n\toperation        : {TRxOperation(operation)}"
                 f"\n\tschedule ts.     : {schedule_lts:#010x}"
                 f"\n\tlate start delay : {late_start_delay}"
                 f"\n\ttransmit delay   : {tx_delay}"

@@ -1,26 +1,12 @@
 import glob
-import logging
 import sys
-import threading
 from pathlib import Path
 from time import sleep
 from time import time
-from typing import List
 
-import chromalog
 import serial
 
-# CONFIG
-
-duration_s = 60
-baud_rate = 230400
-log_path = Path(__file__).parent / "traffic.log"
-
-
-chromalog.basicConfig(format="%(message)s")
-logger: logging.Logger = logging.getLogger("Receiver")
-logger.setLevel(logging.INFO)
-logger.addHandler(logging.NullHandler())
+from ._logger import logger
 
 
 def serial_port_list() -> list:
@@ -85,26 +71,3 @@ def serial_receive(
             uart_port,
         )
     logger.debug("[UartMonitor] ended itself")
-
-
-if __name__ == "__main__":
-    ports = serial_port_list()
-    logger.info("Available Ports: %s (will all be logged)", ports)
-
-    uart_threads: List[threading.Thread] = []
-    for port in ports:
-        uart_thread = threading.Thread(
-            target=serial_receive,
-            args=(
-                port,
-                log_path,
-                duration_s,
-                baud_rate,
-            ),
-            daemon=True,
-        )
-        uart_thread.start()
-        uart_threads.append(uart_thread)
-
-    for uart_thread in uart_threads:
-        uart_thread.join()

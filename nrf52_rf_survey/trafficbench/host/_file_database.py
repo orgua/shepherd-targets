@@ -3,51 +3,7 @@ from typing import Optional
 
 import tables as tbl
 
-# PyTables format definitions
-TrxOperation = tbl.Enum({"RX": 0, "TX": 1})
-
-
-# PyTables TRX record specification used in outfile (HDF5)
-class TrxRecord(tbl.IsDescription):
-    ident = tbl.StringCol(40)
-    node_id = tbl.UInt16Col(dflt=-1)
-    schedule_gts = tbl.UInt32Col()
-    schedule_lts = tbl.UInt32Col()
-    operation = tbl.EnumCol(TrxOperation, "RX", base="uint8")
-    late_start_delay = tbl.UInt16Col()
-    tx_delay = tbl.UInt32Col()
-    packet_lts = tbl.UInt32Col()
-    packet_lts_deviation = tbl.Int16Col()
-    end_lts = tbl.UInt32Col()
-    packet_content_raw = tbl.StringCol(260 * 2)  # BASE16 encoded (= hex string)
-    #   packet_content_raw   = tbl.StringCol(260 * 4 // 3 + 5)    # BASE64 encoded
-    #   packet_content_raw   = tbl.StringCol(260)
-
-    class TrxStatus(tbl.IsDescription):
-        timeout = tbl.BoolCol()
-        header_detected = tbl.BoolCol()
-        crc_ok = tbl.BoolCol()
-        content_ok = tbl.BoolCol()
-
-    class Rssi(tbl.IsDescription):
-        end_lts = tbl.UInt32Col()
-        num_samples = tbl.UInt32Col(dflt=0)
-        data_anchor = tbl.UInt64Col()
-        early_readout_detected = tbl.BoolCol()
-        late_readout_detected = tbl.BoolCol()
-        num_samples_missed = tbl.UInt32Col()
-
-    # NOTE:
-    # * ident field's primary purpose is to support the human reader when looking for the source of the entry.
-    #   The value is unique if the stored substring is long enough to include node_id and schedule_gts.
-    # * schedule_gts can be used to find corresponding entries from different nodes.
-    # * If datatype of schedule_gts needs to be extended, then use Int64.
-    #   Do not use UInt64 because this is not supported in PyTable's in-kernel queries (PyTables 3.6.1).
-    #   See <https://www.pytables.org/usersguide/condition_syntax.html#condition-syntax> for details.
-    # * RSSI data is stored in the EArray /trx_data/rssi_data. rssi.data_anchor is a pointer into
-    #   this array. We do not use a VLArray because the way data is stored in a VLArray does not compress
-    #   the real data (only control data. For details, see
-    #   <https://www.pytables.org/usersguide/libref/homogenous_storage.html#the-vlarray-class>).
+from ._table_records import TRxRecord
 
 
 class FileWriter:
@@ -81,7 +37,7 @@ class FileWriter:
         group = self.h5file.create_group("/", "trx_data", filters=comp_def)
 
         self.trx_table = self.h5file.create_table(
-            group, "trx", TrxRecord, title="TRX log records", expectedrows=num_lines
+            group, "trx", TRxRecord, title="TRX log records", expectedrows=num_lines
         )
 
         self.rssi_heap = self.h5file.create_earray(

@@ -41,6 +41,7 @@
 ####################################################################################################
 
 import base64
+from typing import Union
 
 import matplotlib as mpl
 import numpy as np
@@ -53,14 +54,20 @@ from glue.core.component_id import ComponentID
 from glue.core.component_link import ComponentLink
 from glue.core.subset import RangeSubsetState
 
+from ._table_records import TRxOperation
+from ._unit_conversion import const_nan
+from ._unit_conversion import gts_s_to_ticks
+from ._unit_conversion import gts_ticks_to_s
+from ._unit_conversion import gts_ticks_to_us
+from ._unit_conversion import gts_us_to_ticks
+from ._unit_conversion import power_dBm_to_W
+from ._unit_conversion import power_W_to_dBm
+
 ####################################################################################################
 
 product_name = "TrafficBench"
 
 trx_loader_info = {"markers": {}}
-
-# PyTables enum types
-TRX_Operation = tbl.Enum({"RX": 0, "TX": 1})
 
 # set TeX system used to save plots in PDF and PGF format
 mpl.rcParams["pgf.texsystem"] = "pdflatex"
@@ -92,50 +99,19 @@ def flatten_dtype(dtype, sep="_", prefix=""):
 # conversion functions, can be used as link functions
 
 
-def power_db_to_linear(power_dB):
-    return 10.0 ** (power_dB * 0.1)
-
-
-def power_linear_to_db(power):
-    return 10.0 * np.log10(power)
-
-
-def gts_ticks_to_us(gts):
-    TICKS_PER_US = 16
-    return gts / TICKS_PER_US
-
-
-def gts_us_to_ticks(gts):
-    TICKS_PER_US = 16
-    return np.int64(np.rint(gts * TICKS_PER_US))
-
-
-def gts_ticks_to_s(gts):
-    return gts_ticks_to_us(gts) / 1e6
-
-
-def gts_s_to_ticks(gts):
-    return gts_us_to_ticks(gts * 1e6)
-
-
-# can be used to generate "unavailable" components (e.g. to enable "mixed" plots as in rx_viewer)
-def const_nan(x):
-    return np.full(x.shape, np.nan, dtype=np.float16)
-
-
 ####################################################################################################
 # helper functions used for gts + node_id links
 
 
 def src_id(id, op):
     x = id.astype(np.int16, copy=True)
-    x[op != TRX_Operation.TX] = -1
+    x[op != TRxOperation.TX] = -1
     return x
 
 
 def dst_id(id, op):
     x = id.astype(np.int16, copy=True)
-    x[op != TRX_Operation.RX] = -1
+    x[op != TRxOperation.RX] = -1
     return x
 
 
@@ -170,7 +146,7 @@ def read_trx(file_name):
     data = []
     with tbl.open_file(file_name, mode="r") as h5file:
         # check enum types
-        assert TRX_Operation == h5file.root.trx_data.trx.get_enum("operation")
+        assert TRxOperation == h5file.root.trx_data.trx.get_enum("operation")
 
         path_to_label = {
             "/trx_data/trx": "trx",
@@ -340,8 +316,8 @@ def read_trx(file_name):
                     ComponentLink(
                         [xx.id["rssi_dBm"]],
                         ComponentID("rssi_mW"),
-                        using=power_db_to_linear,
-                        inverse=power_linear_to_db,
+                        using=power_dBm_to_W,
+                        inverse=power_W_to_dBm,
                     )
                 )
                 xx.add_component_link(

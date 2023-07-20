@@ -2,7 +2,7 @@ from typing import Union
 
 import numpy as np
 
-from ._constants import TICKS_PER_US
+from .constants import TICKS_PER_US
 
 
 def get_packet_airtime(pdu_crc_length: Union[int, float, np.nditer]):

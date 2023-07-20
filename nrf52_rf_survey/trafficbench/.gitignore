@@ -4,6 +4,12 @@
 # RSSISpy repo used to merge RSSISpy updates
 target/rssispy/
 
+# py-specific
+.eggs/
+build/
+dist/
+*.egg-info/
+__pycache__
 
 # files
 README_internal.txt

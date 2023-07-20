@@ -6,7 +6,7 @@ from time import time
 
 import serial
 
-from ._logger import logger
+from .logger import logger
 
 
 def serial_port_list() -> list:

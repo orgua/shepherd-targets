@@ -17,25 +17,28 @@ import itertools
 import sys
 import zlib
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import cbor2
 
-from ._checksum import fletcher32
-from ._crc import calc_crc
-from ._file_database import FileWriter
-from ._table_records import TRxOperation
+from .checksum import fletcher32
+from .crc import calc_crc
+from .file_database import FileWriter
+from .table_records import TRxOperation
 
 
 def dump_trx(
-    infile: io.TextIOWrapper,
+    infile: Union[io.TextIOWrapper, Path],
     outfile: Optional[Path],
-    logfile: io.TextIOWrapper,
-    num_lines: Optional[int],
-    rssi_dump_max: int,
-    rssi_test_samples: bool,
-    lognclient,  # TODO
+    logfile: Optional[io.TextIOWrapper] = None,
+    num_lines: Optional[int] = 10_000,
+    rssi_dump_max: int = 20,
+    rssi_test_samples: bool = False,
+    lognclient = None,  # TODO
 ) -> None:
+    if isinstance(infile, Path):
+        infile = open(infile, "r")
+
     # create outfile
     if outfile:
         file_db = FileWriter(outfile, num_lines)

@@ -6,24 +6,21 @@ Author: Carsten Herrmann
 """
 import argparse
 import base64
-import logging
 import re
 import sys
 from io import BufferedReader
 from io import BufferedWriter
+from pathlib import Path
 from typing import BinaryIO
 from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Union
 
-from ._checksum import test_checksum
+from .filesystem import get_files
 
-logger: logging.Logger = logging.getLogger("filter")
-logger.setLevel(logging.INFO)
-logger.addHandler(logging.NullHandler())
-
-####################################################################################################
+from .checksum import test_checksum
+from .logger import logger
 
 
 def test_and_warn(
@@ -67,10 +64,57 @@ def test_and_warn(
         pos_start = pos_new + 1
 
 
-####################################################################################################
-
-
 def filter_logfile(
+    infile: Union[BufferedReader, BinaryIO, Path],
+    outfile: Union[BufferedWriter, BinaryIO, Path],
+    unbuffered: bool = False,
+    control_chars: Optional[List[bytes]] = None,
+    max_record_size: int = 256 * 1024,
+    source_id_pattern: Optional[str] = None,
+    record_spec: Optional[Dict[bytes, bytes]] = None,
+    checksum: bool = True,
+    checksum_min_len: int = 4,
+    checksum_pos: Optional[List[int]] = None,
+    checksum_byteorder: str = "be",
+    strict: bool = True,
+) -> None:
+    """
+    """
+    if isinstance(infile, Path) and infile.is_dir():
+        files_in = get_files(infile, "", ".log")
+    else:
+        files_in = [infile]
+
+    if isinstance(outfile, Path):
+        if outfile.exists():
+            outfile = open(outfile, "ab")
+        else:
+            outfile = open(outfile, "wb")
+        # TODO: add contextlib for both files and clean exit-strategy
+        # TODO: remove pre-open of files, just take in paths
+
+    for file_in in files_in:
+        if isinstance(file_in, Path):
+            logger.info("Filtering %s", file_in.name)
+            file_in = open(file_in, "rb")
+
+        _filter_logfile(
+            file_in,
+            outfile,
+            unbuffered,
+            control_chars,
+            max_record_size,
+            source_id_pattern,
+            record_spec,
+            checksum,
+            checksum_min_len,
+            checksum_pos,
+            checksum_byteorder,
+            strict,
+        )
+
+
+def _filter_logfile(
     infile: Union[BufferedReader, BinaryIO],
     outfile: Union[BufferedWriter, BinaryIO],
     unbuffered: bool = False,

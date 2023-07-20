@@ -3,7 +3,7 @@ from typing import Optional
 
 import tables as tbl
 
-from ._table_records import TRxRecord
+from .table_records import TRXRecord
 
 
 class FileWriter:
@@ -37,7 +37,7 @@ class FileWriter:
         group = self.h5file.create_group("/", "trx_data", filters=comp_def)
 
         self.trx_table = self.h5file.create_table(
-            group, "trx", TRxRecord, title="TRX log records", expectedrows=num_lines
+            group, "trx", TRXRecord, title="TRX log records", expectedrows=num_lines
         )
 
         self.rssi_heap = self.h5file.create_earray(

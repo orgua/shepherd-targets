@@ -22,6 +22,14 @@ def power_W_to_dBm(power_W: Union[float, np.ndarray]) -> Union[float, np.ndarray
     return 10.0 * np.log10(power_W)  # TODO: is it safe for val<0
 
 
+def dB_to_factor(value_dB: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    pass  # TODO
+
+
+def factor_to_dB(value_lin: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    pass
+
+
 def gts_ticks_to_us(gts: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     TICKS_PER_US = 16
     return gts / TICKS_PER_US

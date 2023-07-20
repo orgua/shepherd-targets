@@ -1,12 +1,12 @@
 import numpy as np
 
-from ._airtime import get_packet_airtime
-from ._airtime import get_ref_delay
-from ._constants import TICKS_PER_RSSI_SAMPLE
-from ._constants import TICKS_PER_US
-from ._logger import logger
-from ._unit_conversion import power_dBm_to_W
-from ._unit_conversion import power_W_to_dBm
+from .airtime import get_packet_airtime
+from .airtime import get_ref_delay
+from .constants import TICKS_PER_RSSI_SAMPLE
+from .constants import TICKS_PER_US
+from .logger import logger
+from .unit_conversion import power_dBm_to_W
+from .unit_conversion import power_W_to_dBm
 
 
 def warn_rssi(r):  # TODO: hint interface
@@ -39,13 +39,20 @@ def warn_rssi(r):  # TODO: hint interface
             )
 
 
-# split RSSI stream into noise and signal segments and estimate power values
-# ATTENTION: current implementation assumes that there is a noise segment, followed by a signal
-# segment, followed by another noise segment. This means that there is no special handling for
-# overlayed packets with different lengths or time-shifts as well as transmissions with
-# tx_carrier_period_1/2 > 0. The results will be wrong in such cases.
-# TODO: detect mentioned situations and warn if function is used in such cases
-def split_rssi(trx):  # TODO: hint interface
+def split_rssi(trx, rssi_heap):  # TODO: hint interface
+    """
+    split RSSI stream into noise and signal segments and estimate power values
+    ATTENTION: current implementation assumes that there is a noise segment, followed by a signal
+    segment, followed by another noise segment. This means that there is no special handling for
+    overlayed packets with different lengths or time-shifts as well as transmissions with
+    tx_carrier_period_1/2 > 0. The results will be wrong in such cases.
+    TODO: detect mentioned situations and warn if function is used in such cases
+
+    :param trx:
+    :param rssi_heap:
+    :return:
+    """
+
     TICKS_PER_SAMPLE = TICKS_PER_RSSI_SAMPLE
 
     # guard times used to mask the rise and fall times of the RSSI measurements

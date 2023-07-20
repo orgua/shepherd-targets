@@ -2,9 +2,9 @@ import threading
 from pathlib import Path
 from typing import List
 
-from ._logger import logger
-from ._serial import serial_port_list
-from ._serial import serial_receive
+from .logger import logger
+from .serial import serial_port_list
+from .serial import serial_receive
 
 # CONFIG, TODO: CLI
 

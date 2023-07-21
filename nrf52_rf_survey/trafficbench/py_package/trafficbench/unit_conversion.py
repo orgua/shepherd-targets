@@ -3,23 +3,13 @@ from typing import Union
 import numpy as np
 
 
-def dB_to_linear(value_dB: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    return np.power(
-        10.0, value_dB / 10
-    )  # TODO: the first two are redundant to the others
-
-
-def linear_to_dB(value_linear: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    # TODO: this is not working on array
-    return np.nan if value_linear < 0 else 10 * np.log10(value_linear)
-
-
-def power_dBm_to_W(power_dB: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    return 10.0 ** (power_dB * 0.1)
+def power_dBm_to_W(power_dBm: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+    return np.power(10.0, power_dBm * 0.1)
 
 
 def power_W_to_dBm(power_W: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    return 10.0 * np.log10(power_W)  # TODO: is it safe for val<0
+    # this is safe for power < 0 (gets replaced by .nan)
+    return 10.0 * np.log10(power_W)
 
 
 def dB_to_factor(value_dB: Union[float, np.ndarray]) -> Union[float, np.ndarray]:

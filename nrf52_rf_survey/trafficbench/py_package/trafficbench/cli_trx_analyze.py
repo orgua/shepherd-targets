@@ -15,11 +15,15 @@ from typing import Optional
 import numpy as np
 import tables as tbl
 
+from .airtime import get_packet_airtime
+from .airtime import get_ref_delay
+from .constants import TICKS_PER_US
 from .logger import logger
 from .rssi import split_rssi
 from .rssi import warn_rssi
 from .table_records import RxInfoRecord
 from .table_records import ScheduleRecord
+from .table_records import SourceUncertainty
 from .unit_conversion import power_dBm_to_W
 from .unit_conversion import power_W_to_dBm
 
@@ -33,7 +37,6 @@ def analyze_trx(file_name: Path, markers: Optional[dict] = None) -> None:
 
     if markers is None:
         markers = {}
-
 
     if "/markers" in h5file:
         logger.info("removing existing markers")
@@ -243,8 +246,8 @@ def analyze_trx(file_name: Path, markers: Optional[dict] = None) -> None:
                                 )
                             )
                         else:
-                            noise = power_dBm_to_W(noise_dBm)
-                            sigint = power_dBm_to_W(sum_dBm) - noise
+                            noise_W = power_dBm_to_W(noise_dBm)
+                            sigint = power_dBm_to_W(sum_dBm) - noise_W
                             sigint_dBm = power_W_to_dBm(sigint)
 
                             # NOTE: at this place it is enough to init P_sigint (-> link measurement),
@@ -540,12 +543,12 @@ def analyze_trx(file_name: Path, markers: Optional[dict] = None) -> None:
                         )
                     )
                 else:
-                    noise = dB_to_linear(noise_dBm)
+                    noise_W = power_dBm_to_W(noise_dBm)
 
                     # signal + interference
-                    sigint_now = dB_to_linear(sum_dBm) - noise
-                    sigint_now_min = dB_to_linear(rssi["rx_min"]) - noise
-                    sigint_now_max = dB_to_linear(rssi["rx_max"]) - noise
+                    sigint_now = power_dBm_to_W(sum_dBm) - noise_W
+                    sigint_now_min = power_dBm_to_W(rssi["rx_min"]) - noise_W
+                    sigint_now_max = power_dBm_to_W(rssi["rx_max"]) - noise_W
                     sigint_link = rx_power.sum() if len(rx_power) else np.nan
 
                     # signal
@@ -557,15 +560,17 @@ def analyze_trx(file_name: Path, markers: Optional[dict] = None) -> None:
                     int_link = sigint_link - sig_link
 
                     rxi["P_sigint"] = sigint_now
-                    rxi["P_sigint_dBm"] = linear_to_dB(sigint_now)
-                    rxi["P_sigint_link_dBm"] = linear_to_dB(sigint_link)
+                    rxi["P_sigint_dBm"] = power_W_to_dBm(sigint_now)
+                    rxi["P_sigint_link_dBm"] = power_W_to_dBm(sigint_link)
                     # rxi['P_sigint_diff_dB']  = abs(rxi['P_sigint_dBm'] - rxi['P_sigint_link_dBm'])
 
-                    rxi["SNR_dB"] = linear_to_dB(sigint_now) - noise_dBm
-                    rxi["SNR_min_dB"] = linear_to_dB(sigint_now_min) - noise_dBm
-                    rxi["SNR_max_dB"] = linear_to_dB(sigint_now_max) - noise_dBm
+                    rxi["SNR_dB"] = power_W_to_dBm(sigint_now) - noise_dBm
+                    rxi["SNR_min_dB"] = power_W_to_dBm(sigint_now_min) - noise_dBm
+                    rxi["SNR_max_dB"] = power_W_to_dBm(sigint_now_max) - noise_dBm
 
-                    rxi["SINR_link_dB"] = linear_to_dB(sig_link / (int_link + noise))
+                    rxi["SINR_link_dB"] = power_W_to_dBm(
+                        sig_link / (int_link + noise_W)
+                    )
 
             # theoretically, fastest way to update should be modify_columns(), as this
             # only updates columns that are really touched, which avoids unnecessary

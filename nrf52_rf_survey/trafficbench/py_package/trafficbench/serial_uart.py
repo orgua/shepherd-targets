@@ -1,13 +1,15 @@
 import glob
 import sys
+import threading
 from pathlib import Path
 from time import sleep
 from time import time
-
+from typing import Union, List, Optional, Annotated
 import serial
+import typer
 
 from .logger import logger
-
+from .cli_proto import app
 
 def serial_port_list() -> list:
     """Lists serial port names
@@ -38,9 +40,9 @@ def serial_port_list() -> list:
     return result
 
 
-def serial_receive(
-    uart_port: str, file_path: Path, duration: int, baudrate: int
-) -> None:
+def receive_serial_thread(file_path: Path,
+                          uart_port: str, duration: int, baudrate: int,
+                          ) -> None:
     file_path = file_path.with_stem(file_path.stem + "_" + uart_port)
     try:
         with serial.Serial(uart_port, baudrate, timeout=0) as uart, open(
@@ -71,3 +73,41 @@ def serial_receive(
             uart_port,
         )
     logger.debug("[UartMonitor] ended itself")
+
+
+@app.command("receive")
+def receive_serial(
+        file_path: Annotated[Path, typer.Argument(help="Directory or file-name (will add port to stem)")],
+        serial_ports: Annotated[Optional[List[str]], typer.Option(help="will capture every port when omitted")] = None,
+        duration_s: Annotated[int, typer.Option(help="how long to capture")] = 600,
+        baud_rate: Annotated[int, typer.Option(help="of serial port")] = 230_400
+) -> None:
+    """ collect logs from trafficbench-nodes
+    """
+    if isinstance(file_path, Path) and file_path.is_dir():
+        file_path = file_path / "trafficbench.log"
+
+    if serial_ports is None:
+        serial_ports = serial_port_list()
+    if isinstance(serial_ports, str):
+        serial_ports = [serial_ports]
+
+    logger.info("Receiving Ports: %s", serial_ports)
+
+    uart_threads: List[threading.Thread] = []
+    for port in serial_ports:
+        uart_thread = threading.Thread(
+            target=receive_serial_thread,
+            args=(
+                file_path,
+                port,
+                duration_s,
+                baud_rate,
+            ),
+            daemon=True,
+        )
+        uart_thread.start()
+        uart_threads.append(uart_thread)
+
+    for uart_thread in uart_threads:
+        uart_thread.join()

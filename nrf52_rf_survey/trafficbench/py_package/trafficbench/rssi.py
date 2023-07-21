@@ -206,7 +206,7 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
     if noise.size:
         results["noise_mean"] = mean_(noise)
     else:
-        logging.debug(
+        logger.debug(
             "{:3d} @ {:#010x} : unclear idle period, "
             "estimating noise power from histogram (using lower {} out of {} bins)".format(
                 trx["node_id"], trx["schedule_gts"], n, len(x)
@@ -220,7 +220,7 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
         results["rx_min"] = signal.min()
         results["rx_max"] = signal.max()
     else:
-        logging.debug(
+        logger.debug(
             "{:3d} @ {:#010x} : unclear signal period, "
             "estimating signal power from histogram (using upper {} out of {} bins)".format(
                 trx["node_id"], trx["schedule_gts"], n, len(x)

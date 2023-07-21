@@ -17,7 +17,8 @@ import itertools
 import sys
 import zlib
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 
 import cbor2
 
@@ -34,7 +35,7 @@ def dump_trx(
     num_lines: Optional[int] = 10_000,
     rssi_dump_max: int = 20,
     rssi_test_samples: bool = False,
-    lognclient = None,  # TODO
+    lognclient=None,  # TODO
 ) -> None:
     if isinstance(infile, Path):
         infile = open(infile, "r")
@@ -119,7 +120,7 @@ def dump_trx(
         x = gts_high[node_id]
         h = x[1] + (schedule_gts < x[0])
         gts_high[node_id] = (schedule_gts, h)
-        schedule_gts += h << 32
+        schedule_gts += h << 32  # TODO: bug? this is feed into a uint32-container
 
         # if transmitter: compute CRC
         if "TX" == TRxOperation(operation):
@@ -137,6 +138,7 @@ def dump_trx(
             ) = data[11:-1]
             # convert RSSI samples from differential format
             x = memoryview(rssi_samples).cast("b").tolist()
+            # TODO: what is done and tested here?
             rssi_samples = [-x for x in itertools.accumulate(x)]
             if rssi_test_samples:
                 i = [i for i in range(2, len(x)) if x[i] != 1]
@@ -147,6 +149,7 @@ def dump_trx(
                     print(
                         f"warning: {node_id} @ {schedule_gts:#010x} : RSSI sample test failed at position(s) {i}"
                     )
+        # TODO: shouldn't an invalid rssi skip the whole iteration?
 
         # check and update record_counter
         if node_id in record_counters:
@@ -176,6 +179,10 @@ def dump_trx(
             ]
             if x:
                 assert False  # TODO: raise exception
+
+            if schedule_gts >= 2**32:
+                # print("dropped a record - because of prior Operation (high part gts)")
+                schedule_gts = schedule_gts % 2**32
 
             file_db.trx_record["ident"] = ident
             file_db.trx_record["node_id"] = node_id

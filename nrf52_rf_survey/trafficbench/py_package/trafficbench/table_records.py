@@ -5,6 +5,22 @@ import tables as tbl
 TRxOperation = tbl.Enum({"RX": 0, "TX": 1})
 
 
+class TRXStatus(tbl.IsDescription):
+    timeout = tbl.BoolCol()
+    header_detected = tbl.BoolCol()
+    crc_ok = tbl.BoolCol()
+    content_ok = tbl.BoolCol()
+
+
+class Rssi(tbl.IsDescription):
+    end_lts = tbl.UInt32Col()
+    num_samples = tbl.UInt32Col(dflt=0)
+    data_anchor = tbl.UInt64Col()
+    early_readout_detected = tbl.BoolCol()
+    late_readout_detected = tbl.BoolCol()
+    num_samples_missed = tbl.UInt32Col()
+
+
 class TRXRecord(tbl.IsDescription):
     """PyTables TRX record specification used in outfile (HDF5)
 
@@ -35,19 +51,8 @@ class TRXRecord(tbl.IsDescription):
     #   packet_content_raw   = tbl.StringCol(260 * 4 // 3 + 5)    # BASE64 encoded
     #   packet_content_raw   = tbl.StringCol(260)
 
-    class TRXStatus(tbl.IsDescription):
-        timeout = tbl.BoolCol()
-        header_detected = tbl.BoolCol()
-        crc_ok = tbl.BoolCol()
-        content_ok = tbl.BoolCol()
-
-    class Rssi(tbl.IsDescription):
-        end_lts = tbl.UInt32Col()
-        num_samples = tbl.UInt32Col(dflt=0)
-        data_anchor = tbl.UInt64Col()
-        early_readout_detected = tbl.BoolCol()
-        late_readout_detected = tbl.BoolCol()
-        num_samples_missed = tbl.UInt32Col()
+    trx_status = TRXStatus()
+    rssi = Rssi()
 
 
 SourceUncertainty = tbl.Enum({"EXTERNAL": 0, "WEAK": 1, "STRONG": 2})

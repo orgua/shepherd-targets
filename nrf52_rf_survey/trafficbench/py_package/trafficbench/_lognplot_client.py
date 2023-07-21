@@ -7,7 +7,7 @@ TICKS_PER_S = 16_000_000
 
 # TODO: check if CRC bits have big-endian bitorder
 header_bits = [0.5] * (
-        8 + 32
+    8 + 32
 )  # preamble + access address, value 0.5 = unknown (only timing)
 pdu_bits = [
     (
@@ -22,9 +22,7 @@ pdu_bits = [
     )
     for x in packet
 ]
-pdu_bits = [
-    0.0 if not x else 1.0 for x in itertools.chain.from_iterable(pdu_bits)
-]
+pdu_bits = [0.0 if not x else 1.0 for x in itertools.chain.from_iterable(pdu_bits)]
 # pdu_bits = np.unpackbits(np.frombuffer(packet, dtype=np.uint8), bitorder='little')
 
 # choose dummy timestamps in case no packet has been detected
@@ -43,7 +41,7 @@ if not trx_status["crc_ok"]:
     dt = TICKS_PER_BIT / TICKS_PER_S
 else:
     ts_header_begin = ts_pdu_begin - (
-            len(header_bits) * (ts_pdu_end - ts_pdu_begin)
+        len(header_bits) * (ts_pdu_end - ts_pdu_begin)
     ) / len(pdu_bits)
     dt = ((ts_pdu_end - ts_pdu_begin) / len(pdu_bits)) / TICKS_PER_S
 ts_header_begin = np.uint32(ts_header_begin)

@@ -17,11 +17,10 @@ from typing import List
 from typing import Optional
 from typing import Union
 
-from .filesystem import get_files
-
 from .checksum import test_checksum
+from .filesystem import get_files
 from .logger import logger
-
+from .cli_proto import app
 
 def test_and_warn(
     line_number: int,
@@ -64,21 +63,23 @@ def test_and_warn(
         pos_start = pos_new + 1
 
 
+@app.command("filter-log")
 def filter_logfile(
-    infile: Union[BufferedReader, BinaryIO, Path],
-    outfile: Union[BufferedWriter, BinaryIO, Path],
+    infile: Path,  # TODO
+    outfile: Path,  # TODO
     unbuffered: bool = False,
-    control_chars: Optional[List[bytes]] = None,
+    control_chars: Optional[List[str]] = None,  # TODO
     max_record_size: int = 256 * 1024,
     source_id_pattern: Optional[str] = None,
-    record_spec: Optional[Dict[bytes, bytes]] = None,
+    #record_spec: Optional[Dict[str, str]] = None,  # TODO
     checksum: bool = True,
     checksum_min_len: int = 4,
     checksum_pos: Optional[List[int]] = None,
     checksum_byteorder: str = "be",
     strict: bool = True,
+    overwrite_outfile: bool = False,
 ) -> None:
-    """
+    """ Extract special data records from log files
     """
     if isinstance(infile, Path) and infile.is_dir():
         files_in = get_files(infile, "", ".log")
@@ -86,7 +87,7 @@ def filter_logfile(
         files_in = [infile]
 
     if isinstance(outfile, Path):
-        if outfile.exists():
+        if outfile.exists() and not overwrite_outfile:
             outfile = open(outfile, "ab")
         else:
             outfile = open(outfile, "wb")
@@ -105,7 +106,7 @@ def filter_logfile(
             control_chars,
             max_record_size,
             source_id_pattern,
-            record_spec,
+            None, #record_spec,
             checksum,
             checksum_min_len,
             checksum_pos,

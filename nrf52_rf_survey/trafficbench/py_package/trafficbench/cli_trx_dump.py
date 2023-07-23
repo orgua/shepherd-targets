@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Read BASE64-encoded TRX records from input and
 
@@ -10,41 +9,93 @@ All options (i) to (iii) can be enabled or disabled individually.
 
 Author: Carsten Herrmann
 """
-import argparse
 import base64
 import io
 import itertools
 import sys
 import zlib
 from pathlib import Path
-from typing import Optional
-from typing import Union
+from typing import Optional, Annotated, List
 
 import cbor2
+import typer
 
+from .cli_proto import app
 from .checksum import fletcher32
 from .crc import calc_crc
 from .file_database import FileWriter
 from .table_records import TRxOperation
 
 
+# FN used by lognclient-code
+def bin_out(x: float, node_id: int, gain: float = 1, offset: float = 0) -> float:
+    return x * gain + node_id * offset
+
+
+def bin_list_out(x: List[float], node_id: int, gain: float = 1, offset: float = 0) -> List[float]:
+    return [bin_out(x_elem, node_id, gain, offset) for x_elem in x]
+
+
+dump_h = {
+    # NOTE: used as long as typer can't read this from fn-docstring
+    # https://github.com/tiangolo/typer/pull/436
+    "inf": "file-name or omit to read from stdin",
+    "out": "resulting .h5-file, or omit to skip writing",
+    "log": "file-name or omit to write to stdout",
+    "num": "number of records in INFILE. can improve performance if provided",
+    "rdm": "max #samples dumped in LOGFILE",
+    "rts": "test if RSSI samples result in a sawtooth signal (useful for debugging)",
+    "lcl": "can be used to enable realtime data plotting with lognplot",
+    "lch": 'hostname of lognplot server, e.g. "localhost" or "127.0.0.1"',
+    "lcp": "TCP port of lognplot server",
+    "lcg": "gain of binary data output. output value = MUL * input + OFS * node_id",
+    "lco": "offset of binary data output. output value = MUL * input + OFS * node_id",
+
+}
+
+
+@app.command("dump")
 def dump_trx(
-    infile: Union[io.TextIOWrapper, Path],
-    outfile: Optional[Path],
-    logfile: Optional[io.TextIOWrapper] = None,
-    num_lines: Optional[int] = 10_000,
-    rssi_dump_max: int = 20,
-    rssi_test_samples: bool = False,
-    lognclient=None,  # TODO
+    infile: Annotated[Optional[Path], typer.Argument(help=dump_h["inf"])] = None,
+    outfile: Annotated[Optional[Path], typer.Argument(help=dump_h["out"])] = None,
+    logfile: Annotated[Optional[Path], typer.Option(help=dump_h["log"])] = None,
+    num_lines: Annotated[int, typer.Option(help=dump_h["num"])] = 10_000,
+    rssi_dump_max: Annotated[int, typer.Option(help=dump_h["rdm"], min=20)] = 20,
+    rssi_test_samples: Annotated[bool, typer.Option(help=dump_h["rts"])] = False,
+    # lognclient: Annotated[bool, typer.Option(help=dump_h["lcl"])] = False,
+    logn_host: Annotated[Optional[str], typer.Option(help=dump_h["lch"])] = None,
+    logn_port: Annotated[int, typer.Option(help=dump_h["lcp"])] = 12345,
+    logn_bin_gain: Annotated[float, typer.Option(help=dump_h["lcg"])] = 1,
+    logn_bin_offset: Annotated[float, typer.Option(help=dump_h["lco"])] = 0,
 ) -> None:
+    """ decode TRX messages and import them into PyTables HDF5 file (.b64 -> .h5)
+    """
+
     if isinstance(infile, Path):
         infile = open(infile, "r")
+    else:
+        infile = sys.stdin
 
     # create outfile
     if outfile:
         file_db = FileWriter(outfile, num_lines)
     else:
         file_db = None
+
+    if logfile:
+        logfile = open(logfile, "w")
+    else:
+        logfile = sys.stdout
+
+    if logn_host:
+        # import modules only if needed (may be not installed)
+        import numpy as np
+        from lognplot.client import LognplotTcpClient
+        lognclient = LognplotTcpClient(logn_host, logn_port)
+        lognclient.connect()
+    else:
+        lognclient = None
+
 
     # process infile
     record_counters = {}
@@ -369,7 +420,7 @@ def dump_trx(
                     f"N{node_id} bitstream",
                     (ts_header_begin / TICKS_PER_S) + (dt / 2),
                     dt,
-                    bin_list_out(x, node_id),
+                    bin_list_out(x, node_id, logn_bin_gain, logn_bin_offset),
                 )
 
             # send RSSI data
@@ -396,130 +447,11 @@ def dump_trx(
             lognclient.send_sample_batch(
                 f"N{node_id} operation",
                 [
-                    (ts_sched, bin_out(operation, node_id)),
-                    (ts_end, bin_out(operation, node_id)),
+                    (ts_sched, bin_out(operation, node_id, logn_bin_gain, logn_bin_offset)),
+                    (ts_end, bin_out(operation, node_id, logn_bin_gain, logn_bin_offset)),
                 ],
             )
             lognclient.send_sample_batch(
                 f"N{node_id} status",
                 [(ts_sched, trx_status_field), (ts_end, trx_status_field)],
             )
-
-
-####################################################################################################
-
-
-if __name__ == "__main__":
-    # define command line arguments
-    # (see <https://docs.python.org/3.8/howto/argparse.html> for details)
-
-    a_prs = argparse.ArgumentParser(
-        description="decode TRX messages and import them into PyTables HDF5 file"
-    )
-    a_prs.add_argument(
-        "infile",
-        type=argparse.FileType("r"),
-        nargs="?",
-        default=sys.stdin,
-        help="use - to read from stdin",
-    )
-    a_prs.add_argument(
-        "-d", "--logfile", type=argparse.FileType("w"), help="use - to write to stdout"
-    )
-    a_prs.add_argument(
-        "-o",
-        "--outfile",
-        type=Path,
-    )
-    a_prs.add_argument(
-        "-l",
-        "--num-lines",
-        type=int,
-        default=None,
-        help="number of lines (= number of records) in INFILE. can improve performance if provided",
-    )
-    a_prs.add_argument(
-        "--rssi-dump-max",
-        type=int,
-        default=20,
-        metavar="LEN",
-        help="max. #samples dumped in LOGFILE",
-    )
-    a_prs.add_argument(
-        "--rssi-test-samples",
-        action="store_true",
-        help="test if RSSI samples result in a sawtooth signal (useful for debugging)",
-    )
-    a_grp = a_prs.add_argument_group(
-        "lognplot options", "can be used to enable realtime data plotting with lognplot"
-    )
-    a_grp.add_argument(
-        "--lognplot-host",
-        type=str,
-        metavar="HOST",
-        default=None,
-        help='hostname of lognplot server, e.g. "localhost" or "127.0.0.1". default = disabled',
-    )
-    a_grp.add_argument(
-        "--lognplot-port",
-        type=int,
-        metavar="PORT",
-        default=12345,
-        help="TCP port of lognplot server. default = 12345",
-    )
-    a_grp.add_argument(
-        "--lognplot-bin-gain",
-        type=float,
-        metavar="MUL",
-        default=1,
-        help="gain of binary data output. output value = MUL * input + OFS * node_id",
-    )
-    a_grp.add_argument(
-        "--lognplot-bin-offset",
-        type=float,
-        metavar="OFS",
-        default=0,
-        help="offset of binary data output. output value = MUL * input + OFS * node_id",
-    )
-
-    # parse command line
-    args = a_prs.parse_args()
-    if args.rssi_dump_max < 20:
-        a_prs.error("argument --rssi-dump-max: invalid value (must be >= 20)")
-
-    # determine expected number of rows
-    if args.num_lines is None and args.infile.seekable():
-        args.num_lines = sum(1 for _ in args.infile)  # TODO: WHAT? inefficient
-        args.infile.seek(0)
-    else:
-        args.num_lines = 10_000
-
-    # init lognplot client
-    if args.lognplot_host is None:
-        lognclient = None
-    else:
-        # import modules only if needed (may be not installed)
-        import numpy as np
-        from lognplot.client import LognplotTcpClient
-
-        lognclient = LognplotTcpClient(
-            hostname=args.lognplot_host, port=args.lognplot_port
-        )
-        lognclient.connect()
-
-        bin_out = (
-            lambda x, node_id: x * args.lognplot_bin_gain
-            + node_id * args.lognplot_bin_offset
-        )
-        bin_list_out = lambda x, node_id: [bin_out(xx, node_id) for xx in x]
-        # TODO: cleanup
-
-    dump_trx(
-        args.infile,
-        args.outfile,
-        args.logfile,
-        args.num_lines,
-        args.rssi_dump_max,
-        args.rssi_test_samples,
-        lognclient,
-    )

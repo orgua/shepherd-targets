@@ -1,3 +1,13 @@
+from enum import Enum
+
+
+class ByteOrder(str, Enum):
+    be = "be"
+    big_endian = "be"
+    le = "le"
+    little_endian = "le"
+
+
 def fletcher32(data: bytes) -> int:
     """compute Fletcher-32 checksum
     :param data:
@@ -24,7 +34,9 @@ def fletcher32(data: bytes) -> int:
     return (c1 << 16) | c0
 
 
-def test_checksum(data: bytes, position: list, byteorder: str, min_length: int) -> None:
+def test_checksum(
+    data: bytes, position: list, byteorder: ByteOrder.big_endian, min_length: int
+) -> None:
     """raises exception on mismatch
 
     :param data:

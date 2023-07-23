@@ -1,0 +1,1678 @@
+     13.119.894 radio.c(860)              radio_start               armed radio, start time buffer: 442us
+     13.120.383 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+Hello from main scheduler...
+     21.335.168 radio.c(603)              RADIO_IRQHandler_         packet received
+     21.335.202 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     21.335.208 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 8214822, #written = 8214822, TIMER3 = 8214822
+
+21347987 TRX:
+nwBZAEMZAAAYAhoFuk8AGhRYGT0aFFi3/RoUWMb9OX+DGQAAGDBZAB4AGQECAwRVAIgAAQADAABPugUFAAoABQYHCAgcNl0A/xrdAOc5
+
+     21.335.212 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     21.335.216 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     21.335.222 scheduler.c(965)          receive                   Rx done [0], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 0000001c/0000001c
+     21.335.225 scheduler.c(1028)         receive                   checkpoint available
+     21.335.228 scheduler.c(1033)         receive                   selecting new clock master: node 1 (0 hops from root)
+     21.335.236 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x00000000, local = 0x1458b7fd, g2l = 1:00000000, l2g = 1:00000000
+     21.335.239 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     21.335.245 scheduler.c(1188)         execution_thread          resynchronize schedule: PC = 3, tick = 0x05ba4f00 (6006000us)
+     21.335.253 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x05ba4f00, local = 0x1458193d, g2l = 1:00000000, l2g = 1:00000000
+     21.335.260 scheduler.c(800)          receive                   Rx dry run at 21332871us/0x1458387d (global 0x05ba6e40/6006500us), timeout 5000us
+     21.335.264 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     21.335.276 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x05bbc600 (6012000us), RNG 0x00880055
+     21.335.281 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     21.335.288 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [0]
+     21.335.292 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x0000001c, nw_pp 0x00000000, nw_radio 0x0000001c, buf 0x00000000, buf_size 0x00004
+     21.335.295 postprocessing.c(285)     postproc_thread           4 samples available (nw_end 0x007d5926)
+     21.335.298 postprocessing.c(292)     postproc_thread           4 posttrigger samples available
+     21.335.301 postprocessing.c(304)     postproc_thread           cutting 4 posttrigger samples
+     21.335.305 postprocessing.c(340)     postproc_thread           lacking 326 samples to fulfill pre-/posttrigger time
+     21.335.309 postprocessing.c(371)     postproc_thread           postprocessing 0 samples, dst_buf 0x00000
+     21.335.314 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x0000001c, nw_pp 0x00000018, nw_radio 0x00000018
+     21.347.982 logging.c(620)            log_thread                log packet [0]
+Hello from main scheduler...
+Hello from main scheduler...
+     22.336.375 scheduler.c(1524)         execution_thread          continue execution
+     22.336.379 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x06afea00 (7012000us), RNG 0x00880055
+     22.336.395 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+22348749 TRX:
+nwBZAEUZAAEYAhoGr+oAGhVNtD0aFU5S/RoVTmH9GQAAGQAAGIBZAB4AGQECAwRRBAoKAgEFAADqrwZVAIgABQYHCAgAAAAZfQD/GhuUGFY=
+
+     22.336.407 scheduler.c(690)          transmit                  start Tx [1] at 22340871us/0x154e507d (global 0x06b08640 / 7012500 + 2000 us), timeout 5000us
+     22.336.416 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     22.340.873 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     22.341.160 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     22.341.168 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     22.341.172 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     22.342.375 scheduler.c(1524)         execution_thread          continue execution
+     22.342.379 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x06b16100 (7018000us), RNG 0x0a0a0451
+     22.342.384 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     22.348.746 logging.c(620)            log_thread                log packet [1]
+Hello from main scheduler...
+Hello from main scheduler...
+     23.342.375 scheduler.c(1524)         execution_thread          continue execution
+     23.342.379 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x07a58500 (8018000us), RNG 0x0a0a0451
+     23.342.395 scheduler.c(822)          receive                   start Rx [2] at 23344871us/0x16436e7d (global 0x07a5a440/8018500us), timeout 5000us
+
+23357542 TRX:
+nwBZADgZAAIYAhoHpYUAGhZDTz0aFU5SVRoWQ23nGWRYGQAAGAhZAAUAABw2XQAAGhZEpwYaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/65zC2jSQZu2SQIo0RJtCNWqUEMi1Q7s0kR2IUVKk50UIlJVTdAmChE0TdEmICWh0JZUkjYRCbRFaLVNpRqRBhFogwAolEAlDdA2GgWpVICkmihFCiQSaatoogAIhII0KYqWIhhUWiRSkkZDSrFHEwGlsaOJGhRCokpTodFGpKldCaFCmiBaECTaUglAA5qm2iRpU0VoUqVpmgYdKI0GJU0BAogSUk0VIAKFakRTRKUJJU1J0oaWakpEIRpopGkRUIUK1RABKqFFUiSFAKV0KIimEEShoVREJVKJpg0l2hJBAmiqUlUqSoKEFKqIRlABTauRppAqTSBFSgOkWvj/AP8AWQABAf8ao9DmBA==
+
+     23.342.403 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000018, nw_hot 0x00000430
+     23.342.413 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     23.342.417 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     23.342.421 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     23.344.881 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     23.349.879 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     23.349.885 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     23.349.889 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     23.349.892 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     23.349.900 scheduler.c(965)          receive                   Rx done [2], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00000430/00000430
+     23.349.905 scheduler.c(1450)         execution_thread          clock deviation: +25688 (1605us)
+     23.349.910 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x07a6fc00 (8024000us), RNG 0x80805151
+     23.349.915 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     23.349.922 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [2]
+     23.349.926 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00000430, nw_pp 0x00000018, nw_radio 0x00000430, buf 0x00000018, buf_size 0x00400
+     23.349.928 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     23.349.932 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     23.349.935 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x00018
+     23.350.007 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00000430, nw_pp 0x0000042c, nw_radio 0x0000042c
+     23.357.539 logging.c(620)            log_thread                log packet [2]
+     23.358.837 deflate.c(796)            deflate                   close block
+     23.358.841 deflate.c(818)            deflate                   finalize chunk
+     23.358.844 deflate.c(822)            deflate                   flush buffer
+     23.359.735 logging.c(732)            log_thread                compression ratio: 1020 -> 283 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     24.348.375 scheduler.c(1524)         execution_thread          continue execution
+     24.348.379 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x089b2000 (9024000us), RNG 0x80805151
+     24.348.396 scheduler.c(822)          receive                   start Rx [3] at 24350871us/0x1739097d (global 0x089b3f40/9024500us), timeout 5000us
+
+24363541 TRX:
+nwBZADgZAAMYAhoImyAAGhc46j0aFU5SVRoXOQjnOTanGQAAGAhZAAUAABw2XQAAGhc6QgYaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+K5za4ACEaWUVLRUta1UQ5OgQRWCDDSaSgugQoASlKACURIN0WikBSLSVpRoogQQQIKKvVAMiqAAUCLSCFooaKCCJCDRCrVXQgXVBoRGKRF0KGi0ImRXkUKigCYoJaCkFZpQSFMkEIVKQZMUNC1EEiVaKY1GSZRqgiKqACqStpAy0BCqkYS2ARGtNBQVEqXQEJo2aUGkSQuNAhKNSkVTqFSAhFShpKTZSYjQtKptAk3TtEPQ0kSJpqGkmiZKVCoilNI0QRUM1crQAkBSAqlqVIWKKKlSkYiiRKJSRQO0GhFoRCPaNggqjbRIoWJAlQyKakCBQCUU/j8A/wBZAAEBAFgA/xpouHPG
+
+     24.348.403 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000042c, nw_hot 0x00000844
+     24.348.413 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     24.348.418 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     24.348.422 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     24.350.881 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     24.355.879 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     24.355.885 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     24.355.889 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     24.355.892 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     24.355.900 scheduler.c(965)          receive                   Rx done [3], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00000844/00000844
+     24.355.905 scheduler.c(1450)         execution_thread          clock deviation: -13992 (-874us)
+     24.355.910 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x089c9700 (9030000us), RNG 0xa0ae1117
+     24.355.915 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     24.355.922 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [3]
+     24.355.926 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00000844, nw_pp 0x0000042c, nw_radio 0x00000844, buf 0x0000042c, buf_size 0x00400
+     24.355.928 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     24.355.932 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     24.355.935 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x0042c
+     24.356.007 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00000844, nw_pp 0x00000840, nw_radio 0x00000840
+     24.363.538 logging.c(620)            log_thread                log packet [3]
+     24.364.836 deflate.c(796)            deflate                   close block
+     24.364.840 deflate.c(818)            deflate                   finalize chunk
+     24.364.843 deflate.c(822)            deflate                   flush buffer
+     24.365.434 logging.c(732)            log_thread                compression ratio: 1020 -> 276 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     25.354.375 scheduler.c(1524)         execution_thread          continue execution
+     25.354.380 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x0990bb00 (10030000us), RNG 0xa0ae1117
+     25.354.385 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x0990bba0 (10030010us), RNG 0xa0ae1117
+
+25368689 TRX:
+nwBZADgZAAQYAhoJkLugGhguhd0aFU5SVRoYLqSHGS24GQAAGAhZAAUAABw2XQAAGhgv3aYaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAq5za1BRJNhVBCrSFGFPK6ppaKJVZECHBAqkUQ1KoNWkCG00BUolkUorLaQGJSqaNkJJNG0FpQAIAgIaRYkgRewkpaRJI1qVpimBFCRttFBJUYamjUiVJgy0JUjTJiUlaBWNICgJQKhmr5DQUGiqYmhQpFCNUkkCmijsAgrSRFENUoPsDLQVUkA0pBHVqGg1jQgNbQjVBEoj1ShoKBQR1YikUqqEJG1SraSlaUiptCI0JEmpakoGLTSNyE4KQYtG2IkUaaIaAKhCEUlpVEECGlWBoIjYU6lIIEpT1SC7hqCRVpBG2lBNpUSrRIQGAsKeQglARVOhUUA0ClQTAjCU0v8PAP8AWQABAQBYAP8aJuUfFQ==
+
+     25.354.402 scheduler.c(822)          receive                   start Rx [4] at 25356881us/0x182ea51d (global 0x0990dae0/10030510us), timeout 5000us
+     25.354.409 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000840, nw_hot 0x00000c58
+     25.354.419 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     25.354.424 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     25.354.428 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     25.356.891 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     25.361.889 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     25.361.895 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     25.361.899 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     25.361.902 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     25.361.910 scheduler.c(965)          receive                   Rx done [4], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00000c58/00000c58
+     25.361.915 scheduler.c(1450)         execution_thread          clock deviation: +11704 (731us)
+     25.361.920 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x099232a0 (10036010us), RNG 0x00d81167
+     25.361.925 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     25.361.932 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [4]
+     25.361.936 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00000c58, nw_pp 0x00000840, nw_radio 0x00000c58, buf 0x00000840, buf_size 0x00400
+     25.361.938 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     25.361.942 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     25.361.945 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x00840
+     25.362.017 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00000c58, nw_pp 0x00000c54, nw_radio 0x00000c54
+     25.368.687 logging.c(620)            log_thread                log packet [4]
+     25.369.985 deflate.c(796)            deflate                   close block
+     25.369.991 deflate.c(818)            deflate                   finalize chunk
+     25.369.994 deflate.c(822)            deflate                   flush buffer
+     25.370.884 logging.c(732)            log_thread                compression ratio: 1020 -> 286 (72% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     26.360.385 scheduler.c(1524)         execution_thread          continue execution
+     26.360.389 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x0a8656a0 (11036010us), RNG 0x00d81167
+     26.360.406 scheduler.c(822)          receive                   start Rx [5] at 26362881us/0x1924401d (global 0x0a8675e0/11036510us), timeout 5000us
+
+26375394 TRX:
+nwBZAFEZAAUYAhoKhlagGhkkIN0aGSS+txoZJM23OQDlGQAAGHBZAB4AGQECAwSLU66kAQADAKBWhgpnEdgABQYHCAgIQIsAABoZJNQmGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHOuc8soNSARLUlpISiSFkBSNJokKW1RUVX2I/93xBGHL+sR2xpJRMZJVVEAAEAaFAAAKQAAAACAKAAAoASNCiAKRAEAAAAAqEgBAECAAgAAAIDAOE8HHnTAeMA0TqO0qKQJoKE60KACECqiUSgKotLo/wcA/wBZAAEBAFgA/xr3x6ME
+
+     26.360.413 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000c54, nw_hot 0x0000106c
+     26.360.423 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     26.360.428 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     26.360.431 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     26.362.891 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     26.365.166 radio.c(603)              RADIO_IRQHandler_         packet received
+     26.365.255 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     26.365.261 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2369, #written = 2369, TIMER3 = 2369
+     26.365.265 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     26.365.268 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     26.365.275 scheduler.c(965)          receive                   Rx done [5], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 0000106c/0000106c
+     26.365.281 scheduler.c(1020)         receive                   content ok
+     26.365.283 scheduler.c(1028)         receive                   checkpoint available
+     26.365.286 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     26.365.296 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x0a86f560, local = 0x1924beb7, g2l = 0:ffffd013, l2g = 1:00002fec
+     26.365.300 scheduler.c(1450)         execution_thread          clock deviation: -230 (-14us)
+     26.365.304 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     26.365.311 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [5]
+     26.365.315 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x0000106c, nw_pp 0x00000c54, nw_radio 0x0000106c, buf 0x00000c54, buf_size 0x00400
+     26.365.318 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x00000941)
+     26.365.321 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     26.365.324 postprocessing.c(304)     postproc_thread           cutting 1 posttrigger samples
+     26.365.329 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     26.365.334 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x00c54
+     26.365.366 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x0000106c, nw_pp 0x00000e50, nw_radio 0x00000e50
+     26.366.370 scheduler.c(1524)         execution_thread          continue execution
+     26.366.375 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x0a87cda0 (11042010us), RNG 0xa4ae538b
+     26.366.379 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     26.375.391 logging.c(620)            log_thread                log packet [5]
+     26.376.357 deflate.c(796)            deflate                   close block
+     26.376.361 deflate.c(818)            deflate                   finalize chunk
+     26.376.365 deflate.c(822)            deflate                   flush buffer
+     26.376.512 logging.c(732)            log_thread                compression ratio: 484 -> 143 (71% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     27.366.368 scheduler.c(1524)         execution_thread          continue execution
+     27.366.372 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x0b7bf1a0 (12042010us), RNG 0xa4ae538b
+     27.366.388 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+27378784 TRX:
+nwBZAEUZAAYYAhoLe/GgGhoZuskaGhpZiRoaGmiJGQAAGQAAGIBZAB4AGQECAwSJcQXVAgEFAKDxewuLU66kBQYHCAgAAAAZfQD/GvTmLyA=
+
+     27.366.400 scheduler.c(690)          transmit                  start Tx [6] at 27370864us/0x1a1a5709 (global 0x0b7c8de0 / 12042510 + 2000 us), timeout 5000us
+     27.366.408 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     27.370.866 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     27.371.152 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     27.371.161 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     27.371.165 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     27.372.367 scheduler.c(1524)         execution_thread          continue execution
+     27.372.372 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x0b7d68a0 (12048010us), RNG 0xd5057189
+     27.372.376 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     27.378.781 logging.c(620)            log_thread                log packet [6]
+Hello from main scheduler...
+Hello from main scheduler...
+     28.372.365 scheduler.c(1524)         execution_thread          continue execution
+     28.372.369 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x0c718ca0 (13048010us), RNG 0xd5057189
+     28.372.385 scheduler.c(822)          receive                   start Rx [7] at 28374861us/0x1b0f74db (global 0x0c71abe0/13048510us), timeout 5000us
+
+28387616 TRX:
+nwBZADgZAAcYAhoMcYygGhsPVZsaGhpY4RobD3RFGWSGGQAAGAhZAAUAAAhAiwAAGhsQrWQaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/K5zK2k0otHQIiUNKKgqUaKABpFooxlC7FFNlA5ttSIUFURFQwQQFSlpJLtqaXRQNGkUkaRKSjWkAEAlgVSirWp1gFSjhEA1okKAQlpCqxUpoQFJWgWqipRCEK00RKOCIoNoKgWKApUGAiApUaKphg4FGtGoVooQqKAKoU2BJpQohqYJINHStI0CFQjAQCFAI9GqJkFKCykgAYWkikIEVASpFIKG0O6kaSpACaGloWgkQmk1WgJIIy2ppIHSNG2JigxplQgkoTtRSAUp7KKCEFqVYog2jZCmqWpChag0rVRVoAhACaFNaNoACB20gQCFpkU6NKKa0IZQsf9/AP8AWQABAQBYAP8aWHMl3g==
+
+     28.372.393 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000e50, nw_hot 0x00001268
+     28.372.402 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     28.372.407 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     28.372.411 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     28.374.871 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     28.379.868 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     28.379.875 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     28.379.879 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     28.379.882 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     28.379.890 scheduler.c(965)          receive                   Rx done [7], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00001268/00001268
+     28.379.895 scheduler.c(1450)         execution_thread          clock deviation: +25734 (1608us)
+     28.379.900 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x0c7303a0 (13054010us), RNG 0xea09b58c
+     28.379.905 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     28.379.912 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [7]
+     28.379.915 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00001268, nw_pp 0x00000e50, nw_radio 0x00001268, buf 0x00000e50, buf_size 0x00400
+     28.379.918 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     28.379.921 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     28.379.925 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x00e50
+     28.379.996 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00001268, nw_pp 0x00001264, nw_radio 0x00001264
+     28.387.613 logging.c(620)            log_thread                log packet [7]
+     28.388.911 deflate.c(796)            deflate                   close block
+     28.388.915 deflate.c(818)            deflate                   finalize chunk
+     28.388.918 deflate.c(822)            deflate                   flush buffer
+     28.389.809 logging.c(732)            log_thread                compression ratio: 1020 -> 280 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     29.378.362 scheduler.c(1524)         execution_thread          continue execution
+     29.378.366 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x0d6727a0 (14054010us), RNG 0xea09b58c
+     29.378.383 scheduler.c(822)          receive                   start Rx [8] at 29380858us/0x1c050fad (global 0x0d6746e0/14054510us), timeout 5000us
+
+29393615 TRX:
+nwBZADgZAAgYAhoNZyegGhwE8G0aGhpY4RocBQ8XOTZLGQAAGAhZAAUAAAhAiwAAGhwGSDYaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+a5zC01EkUZloJCoKo2iaRqiVDUEAaRK0nSoBlGoBlRIhQKDBhSktEIR2SMUiRIItKIKhIYGVCK0KQNKWjQJVaIAUpUopSWVAIZI20BpoIEBLUSqlRKapgokCgAQqpSIKEmiWoVIIQLapKHRAGnaaKTZ0RShbYKmSSkhpCoNaNJKqqQ10JSgCkFIgbSkaKOaSCPSQkpBSIGUSEEpGgYI0XagAbtAiZJQJGigdo2gaVSgVcJQUUhQRDSapqVBSaCNBkJFoW1ERSgVKtASStM0EFFAIxQBAhp7S4NAo6EhRdpIU9JUkyjVIA0FCimhKQFpFVIilFJImv8PAP8AWQABAf8aMBRGaA==
+
+     29.378.390 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001264, nw_hot 0x0000167c
+     29.378.400 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     29.378.405 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     29.378.409 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     29.380.868 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     29.385.866 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     29.385.872 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     29.385.876 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     29.385.879 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     29.385.887 scheduler.c(965)          receive                   Rx done [8], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 0000167c/0000167c
+     29.385.892 scheduler.c(1450)         execution_thread          clock deviation: -13900 (-868us)
+     29.385.897 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x0d689ea0 (14060010us), RNG 0x8debe7e2
+     29.385.902 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     29.385.909 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [8]
+     29.385.913 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x0000167c, nw_pp 0x00001264, nw_radio 0x0000167c, buf 0x00001264, buf_size 0x00400
+     29.385.915 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     29.385.919 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     29.385.922 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x01264
+     29.385.994 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x0000167c, nw_pp 0x00001678, nw_radio 0x00001678
+     29.393.612 logging.c(620)            log_thread                log packet [8]
+     29.394.910 deflate.c(796)            deflate                   close block
+     29.394.914 deflate.c(818)            deflate                   finalize chunk
+     29.394.919 deflate.c(822)            deflate                   flush buffer
+     29.395.508 logging.c(732)            log_thread                compression ratio: 1020 -> 277 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     30.384.359 scheduler.c(1524)         execution_thread          continue execution
+     30.384.363 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x0e5cc2a0 (15060010us), RNG 0x8debe7e2
+     30.384.369 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x0e5cc340 (15060020us), RNG 0x8debe7e2
+
+30398673 TRX:
+nwBZADgZAAkYAhoOXMNAGhz6i98aGhpY4Roc+qqJGS5CGQAAGAhZAAUAAAhAiwAAGhz746gaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAq5za0pTRNKoaqg00pSm0EBBOrQabYI0KukApVBFpAZNQ6WIhkZaEmkUirSBCpGKKqCiAUQIVZTQFCgqkkI19lTbaCokJQkplJBWqLREQLQ0JAoITUo1gqKIphox0GgoVJNEq9JUSiOVQkIaVPa0EZoSBU0lIJpqGjSGYtBWaQBAUZUgRaISaFNARRpEBRWQ0lAU0lBSGpoGaQoSTalEqUSqwJ4CNAKSBlVSUCWBRipKGlFtNGmbJkCoJloEVREi0dKIDnYEClQTBWlJqNIBBCJQImlbUJoiTZtQYKBIo6USBU0rkEglkqoqNDSCtAFDQ9tGGxUCqaYRNNGSlpJE+/8BAP8AWQABAQBYAP8aUcluTQ==
+
+     30.384.386 scheduler.c(822)          receive                   start Rx [9] at 30386865us/0x1cfaab1f (global 0x0e5ce280/15060520us), timeout 5000us
+     30.384.393 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001678, nw_hot 0x00001a90
+     30.384.403 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     30.384.408 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     30.384.412 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     30.386.875 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     30.391.873 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     30.391.879 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     30.391.883 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     30.391.886 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     30.391.894 scheduler.c(965)          receive                   Rx done [9], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00001a90/00001a90
+     30.391.899 scheduler.c(1450)         execution_thread          clock deviation: +11842 (740us)
+     30.391.904 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x0e5e3a40 (15066020us), RNG 0xa3810ce2
+     30.391.909 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     30.391.916 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [9]
+     30.391.920 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00001a90, nw_pp 0x00001678, nw_radio 0x00001a90, buf 0x00001678, buf_size 0x00400
+     30.391.923 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     30.391.926 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     30.391.929 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x01678
+     30.392.001 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00001a90, nw_pp 0x00001a8c, nw_radio 0x00001a8c
+     30.398.670 logging.c(620)            log_thread                log packet [9]
+     30.399.971 deflate.c(796)            deflate                   close block
+     30.399.975 deflate.c(818)            deflate                   finalize chunk
+     30.399.979 deflate.c(822)            deflate                   flush buffer
+     30.400.867 logging.c(732)            log_thread                compression ratio: 1020 -> 286 (72% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     31.390.366 scheduler.c(1524)         execution_thread          continue execution
+     31.390.371 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x0f525e40 (16066020us), RNG 0xa3810ce2
+     31.390.387 scheduler.c(822)          receive                   start Rx [10] at 31392863us/0x1df045f1 (global 0x0f527d80/16066520us), timeout 5000us
+
+31405429 TRX:
+nwBZAFEZAAoYAhoPUl5AGh3wJrEaHfDFbRod8NRtOQADGQAAGHBZAB4AGQECAwRgZEXlAQADAEBeUg/iDIGjBQYHCAhH8m0AABod8Nq6GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHiucysKpCGNClQT2oBCCG0AlQKIPVGU2pcj/nfkEUesy5GbJBJxQKqKAmgAIBUKAIAUQKUBIAWg0jSkACWgUgJNBSCNAgAAAAAAgCgAAAIUAJqGABoFgGGepwMOmqcDhmkeI1oU0NIkrdKBCLFLRVVAECopTWn/PwD/AFkAAQH/GrExXUU=
+
+     31.390.394 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001a8c, nw_hot 0x00001ea4
+     31.390.404 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     31.390.409 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     31.390.413 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     31.392.872 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     31.395.159 radio.c(603)              RADIO_IRQHandler_         packet received
+     31.395.250 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     31.395.257 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     31.395.260 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     31.395.264 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     31.395.270 scheduler.c(965)          receive                   Rx done [10], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 00001ea4/00001ea4
+     31.395.276 scheduler.c(1020)         receive                   content ok
+     31.395.279 scheduler.c(1028)         receive                   checkpoint available
+     31.395.284 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     31.395.291 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x0f52fd00, local = 0x1df0c56d, g2l = 0:ffffcf38, l2g = 1:000030c7
+     31.395.295 scheduler.c(1450)         execution_thread          clock deviation: -4 (0us)
+     31.395.299 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     31.395.307 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [10]
+     31.395.310 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00001ea4, nw_pp 0x00001a8c, nw_radio 0x00001ea4, buf 0x00001a8c, buf_size 0x00400
+     31.395.313 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     31.395.316 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     31.395.319 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     31.395.326 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     31.395.329 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x01a8c
+     31.395.362 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00001ea4, nw_pp 0x00001c88, nw_radio 0x00001c88
+     31.396.366 scheduler.c(1524)         execution_thread          continue execution
+     31.396.370 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x0f53d540 (16072020us), RNG 0xe5456460
+     31.396.375 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     31.405.426 logging.c(620)            log_thread                log packet [10]
+     31.406.396 deflate.c(796)            deflate                   close block
+     31.406.401 deflate.c(818)            deflate                   finalize chunk
+     31.406.404 deflate.c(822)            deflate                   flush buffer
+     31.406.557 logging.c(732)            log_thread                compression ratio: 484 -> 148 (70% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     32.396.363 scheduler.c(1524)         execution_thread          continue execution
+     32.396.367 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x1047f940 (17072020us), RNG 0xe5456460
+     32.396.383 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+32408780 TRX:
+nwBZAEUZAAsYAhoQR/lAGh7lwX4aHuZgPhoe5m8+GQAAGQAAGIBZAB4AGQECAwRBFdJaAgEFAED5RxBgZEXlBQYHCAgAAAAZfQD/Gqq1ups=
+
+     32.396.395 scheduler.c(690)          transmit                  start Tx [11] at 32400859us/0x1ee65dbe (global 0x10489580 / 17072520 + 2000 us), timeout 5000us
+     32.396.404 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     32.400.861 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     32.401.148 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     32.401.156 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     32.401.160 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     32.402.363 scheduler.c(1524)         execution_thread          continue execution
+     32.402.367 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x10497040 (17078020us), RNG 0x5ad21541
+     32.402.372 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     32.408.778 logging.c(620)            log_thread                log packet [11]
+Hello from main scheduler...
+Hello from main scheduler...
+     33.402.360 scheduler.c(1524)         execution_thread          continue execution
+     33.402.364 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x113d9440 (18078020us), RNG 0x5ad21541
+     33.402.381 scheduler.c(822)          receive                   start Rx [12] at 33404856us/0x1fdb7b8f (global 0x113db380/18078520us), timeout 5000us
+
+33417656 TRX:
+nwBZADgZAAwYAhoRPZRAGh/bXFAaHuZflhof23r5GWSHGQAAGAhZAAUAAEfybQAAGh/ctBgaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/q5zq1CNAZqqkFQVTTtA0UhTVYRSokFQQRCkQlpUA2hFaHQgUrFTNTSFoGkEFIY2UUpURRLaqigBlJAKioQUqTZUQ7OnDSISbShpNaCCCmgFqkIqaggBlYpW0hQNqaZNJQGIlFTbhmgqTRNNocigVQKhKAECSKNUqEaKVFMqmiINTbJrQEAUihCAglJNgAYiFKKiCSrS7ClBDaItABoNoCgoUUIJagglQCvSIkCThqZUELSIqEIaiZSoNKimWkNFKYgAKGkUDUVESVqDgko1BA2poQqVpEgrKi2RaktTSoEkUY1KQRq0ErQKwhCk1aTaBFQNWiFNlTSNIKT1/wEA/wBZAAEBAFgA/xoQyIBo
+
+     33.402.388 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001c88, nw_hot 0x000020a0
+     33.402.398 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     33.402.403 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     33.402.406 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     33.404.866 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     33.409.864 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     33.409.870 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     33.409.874 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     33.409.877 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     33.409.885 scheduler.c(965)          receive                   Rx done [12], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000020a0/000020a0
+     33.409.890 scheduler.c(1450)         execution_thread          clock deviation: +25735 (1608us)
+     33.409.895 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x113f0b40 (18084020us), RNG 0x77782371
+     33.409.900 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     33.409.907 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [12]
+     33.409.911 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000020a0, nw_pp 0x00001c88, nw_radio 0x000020a0, buf 0x00001c88, buf_size 0x00400
+     33.409.914 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     33.409.917 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     33.409.920 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x01c88
+     33.409.992 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000020a0, nw_pp 0x0000209c, nw_radio 0x0000209c
+     33.417.653 logging.c(620)            log_thread                log packet [12]
+     33.418.952 deflate.c(796)            deflate                   close block
+     33.418.957 deflate.c(818)            deflate                   finalize chunk
+     33.418.960 deflate.c(822)            deflate                   flush buffer
+     33.419.849 logging.c(732)            log_thread                compression ratio: 1020 -> 282 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     34.408.357 scheduler.c(1524)         execution_thread          continue execution
+     34.408.362 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x12332f40 (19084020us), RNG 0x77782371
+     34.408.378 scheduler.c(822)          receive                   start Rx [13] at 34410854us/0x20d11661 (global 0x12334e80/19084520us), timeout 5000us
+
+34423654 TRX:
+nwBZADgZAA0YAhoSMy9AGiDQ9yEaHuZflhog0RXLOTZKGQAAGAhZAAUAAEfybQAAGiDSTuoaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/q5zKyI0BTUoohqqkoqijR2oIdXQUEikaQYdpGkLNC0RjVakARoNFaJKGqkWiTRFaRQCGiSlraEVElQ1IimKpgCQRjQaVIJqqk3RCDSRKgqS0kihqQwUmmaXBpLQqqahKdKAIoSqhKINWkKhoiGEIa0KUEEQLVRUQDS0CumQArIXaQMVqIChKQ1BgUikgapGUzq0LU0DJA1FiLQgLUqEJgIAUUqalNBQFFRABooKpZoIQqSFDqUqqKiiJA2gIGkoGiCNXRioAgUCokjaokg0AoWGpkiFlKQVraTVIEVLQ6BJ0SAlACFRsDcNjRSghkAgKdqmJNomyqDZVYj0/wMA/wBZAAEBAFgA/xq97NQe
+
+     34.408.385 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000209c, nw_hot 0x000024b4
+     34.408.395 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     34.408.400 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     34.408.404 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     34.410.863 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     34.415.861 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     34.415.867 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     34.415.871 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     34.415.875 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     34.415.882 scheduler.c(965)          receive                   Rx done [13], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000024b4/000024b4
+     34.415.887 scheduler.c(1450)         execution_thread          clock deviation: -13899 (-868us)
+     34.415.892 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x1234a640 (19090020us), RNG 0x5d91fb84
+     34.415.897 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     34.415.904 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [13]
+     34.415.908 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000024b4, nw_pp 0x0000209c, nw_radio 0x000024b4, buf 0x0000209c, buf_size 0x00400
+     34.415.911 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     34.415.914 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     34.415.917 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x0209c
+     34.415.989 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000024b4, nw_pp 0x000024b0, nw_radio 0x000024b0
+     34.423.652 logging.c(620)            log_thread                log packet [13]
+     34.424.950 deflate.c(796)            deflate                   close block
+     34.424.955 deflate.c(818)            deflate                   finalize chunk
+     34.424.958 deflate.c(822)            deflate                   flush buffer
+     34.425.848 logging.c(732)            log_thread                compression ratio: 1020 -> 282 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     35.414.354 scheduler.c(1524)         execution_thread          continue execution
+     35.414.359 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x1328ca40 (20090020us), RNG 0x5d91fb84
+     35.414.364 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x1328cae0 (20090030us), RNG 0x5d91fb84
+
+35428670 TRX:
+nwBZADgZAA4YAhoTKMrgGiHGkpIaHuZflhohxrE8GS5EGQAAGAhZAAUAAEfybQAAGiHH6lsaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+a5zq6RIW6LRRBOValopUElViGqgoRU0CUFU0qIQhZQdJagIiUqKAoEUKbSBpE2SVlGyQyLVRBSJskMFKSnaaGoAmhYphAJCaUVJoEVTUKpRQZNEA6qQEAJKCFEoCEAlbQoQaEiroUOjogiaRgiqEo0CIlSh0RIQ0UoUoCWaIkAFRDRUSZqmGqSaRpBGU5Q2Q0tDI2lSKq1EqaIhIY0CaaApGgpSIk2FAEVTVEOTUqADRaqp0A6iNAINRBqlVIlUSZNGdaBCS6JJUCoVAKSiiAqlaRrSajQQqkhTDaSAagOEFBJEUREKCSmgSVoqRVECURVC0aRp4P8DAP8AWQABAf8aVUd7ig==
+
+     35.414.381 scheduler.c(822)          receive                   start Rx [14] at 35416861us/0x21c6b1d2 (global 0x1328ea20/20090530us), timeout 5000us
+     35.414.388 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000024b0, nw_hot 0x000028c8
+     35.414.398 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     35.414.403 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     35.414.407 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     35.416.870 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     35.421.868 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     35.421.874 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     35.421.878 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     35.421.882 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     35.421.889 scheduler.c(965)          receive                   Rx done [14], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000028c8/000028c8
+     35.421.894 scheduler.c(1450)         execution_thread          clock deviation: +11844 (740us)
+     35.421.899 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x132a41e0 (20096030us), RNG 0xafa64238
+     35.421.904 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     35.421.911 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [14]
+     35.421.915 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000028c8, nw_pp 0x000024b0, nw_radio 0x000028c8, buf 0x000024b0, buf_size 0x00400
+     35.421.918 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     35.421.921 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     35.421.925 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x024b0
+     35.421.996 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000028c8, nw_pp 0x000028c4, nw_radio 0x000028c4
+     35.428.667 logging.c(620)            log_thread                log packet [14]
+     35.429.964 deflate.c(796)            deflate                   close block
+     35.429.968 deflate.c(818)            deflate                   finalize chunk
+     35.429.972 deflate.c(822)            deflate                   flush buffer
+     35.430.563 logging.c(732)            log_thread                compression ratio: 1020 -> 277 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     36.420.362 scheduler.c(1524)         execution_thread          continue execution
+     36.420.366 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x141e65e0 (21096030us), RNG 0xafa64238
+     36.420.382 scheduler.c(822)          receive                   start Rx [15] at 36422858us/0x22bc4ca3 (global 0x141e8520/21096530us), timeout 5000us
+
+36435426 TRX:
+nwBZAFEZAA8YAhoUHmXgGiK8LWMaIrzMJRoivNslGQACGQAAGHBZAB4AGQECAwSmaHPAAQADAOBlHhQ4QqavBQYHCAh/hM4AABoivOFsGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHauc1slbaWQIkKTEigdqCoFTYFEQkEVtNHDDz3iiMOW9ch1iyQRB1KlUAAERQBQQBRBAQBEARBFCkGFQgoAAECgAgCiUACiCABKlBQABEBFAQSAAgCGaZ7Ggw6YDpiGeRyCVKWVljQIKICmVOggNCWiCklK/z8A/wBZAAEB/xrbXNWO
+
+     36.420.390 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000028c4, nw_hot 0x00002cdc
+     36.420.399 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     36.420.404 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     36.420.408 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     36.422.866 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     36.425.154 radio.c(603)              RADIO_IRQHandler_         packet received
+     36.425.245 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     36.425.252 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     36.425.255 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     36.425.259 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     36.425.265 scheduler.c(965)          receive                   Rx done [15], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 00002cdc/00002cdc
+     36.425.271 scheduler.c(1020)         receive                   content ok
+     36.425.274 scheduler.c(1028)         receive                   checkpoint available
+     36.425.279 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     36.425.286 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x141f04a0, local = 0x22bccc25, g2l = 0:ffffcfa2, l2g = 1:0000305d
+     36.425.290 scheduler.c(1450)         execution_thread          clock deviation: +2 (0us)
+     36.425.294 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     36.425.302 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [15]
+     36.425.305 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00002cdc, nw_pp 0x000028c4, nw_radio 0x00002cdc, buf 0x000028c4, buf_size 0x00400
+     36.425.308 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     36.425.311 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     36.425.314 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     36.425.321 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     36.425.324 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x028c4
+     36.425.357 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00002cdc, nw_pp 0x00002ac0, nw_radio 0x00002ac0
+     36.426.361 scheduler.c(1524)         execution_thread          continue execution
+     36.426.366 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x141fdce0 (21102030us), RNG 0xc07368a6
+     36.426.370 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     36.435.423 logging.c(620)            log_thread                log packet [15]
+     36.436.392 deflate.c(796)            deflate                   close block
+     36.436.396 deflate.c(818)            deflate                   finalize chunk
+     36.436.400 deflate.c(822)            deflate                   flush buffer
+     36.436.553 logging.c(732)            log_thread                compression ratio: 484 -> 146 (70% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     37.426.359 scheduler.c(1524)         execution_thread          continue execution
+     37.426.363 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x151400e0 (22102030us), RNG 0xc07368a6
+     37.426.379 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+37438777 TRX:
+nwBZAEUZABAYAhoVFADgGiOxyDcaI7Jm9xojsnX3GQAAGQAAGIBZAB4AGQECAwRDSTlTAgEFAOAAFBWmaHPABQYHCAgAAAAZfQD/GlXV2ws=
+
+     37.426.391 scheduler.c(690)          transmit                  start Tx [16] at 37430855us/0x23b26477 (global 0x15149d20 / 22102530 + 2000 us), timeout 5000us
+     37.426.400 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     37.430.857 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     37.431.143 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     37.431.152 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     37.431.156 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     37.432.358 scheduler.c(1524)         execution_thread          continue execution
+     37.432.363 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x151577e0 (22108030us), RNG 0x53394943
+     37.432.367 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     37.438.774 logging.c(620)            log_thread                log packet [16]
+Hello from main scheduler...
+Hello from main scheduler...
+     38.432.356 scheduler.c(1524)         execution_thread          continue execution
+     38.432.360 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x16099be0 (23108030us), RNG 0x53394943
+     38.432.376 scheduler.c(822)          receive                   start Rx [17] at 38434852us/0x24a78248 (global 0x1609bb20/23108530us), timeout 5000us
+
+38447652 TRX:
+nwBZADgZABEYAhoWCZvgGiSnYwgaI7JmTxokp4GyGWSHGQAAGAhZAAUAAH+EzgAAGiSoutEaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBA65zO0WbotJoUKIi1UCFBqUKhCglQhSQKFUipGTXtA1EgQJDNRSFDghBGm1ESbRiaDSaklJSDaVDYZdURChVYqCaQgDaNqFJUaQhVaEI0YSCBLtqSpCAEohUI0PTHUUTaUsjUkIlKRWqgdJGKFIpGVqEaGVPhQIIAE0qQUmU7E0lrRRBQ5Wo0AE0pRpJBZE2LWmRkqBUSIUSafaglAJJVdMG0kCKRhIVTROqKEEbiSYlhRBtmlZoJXsKIIY2DQVNoDQiWiTaaCWqUlFtSogiFRClhkY0alAloVCqpAaiSiGJFkFDEdVUAo0OjZICFCQtNQgNKClBqhrSBI0WITQtAen/BwD/AFkAAQH/Guc72rM=
+
+     38.432.384 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002ac0, nw_hot 0x00002ed8
+     38.432.393 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     38.432.398 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     38.432.402 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     38.434.862 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     38.439.859 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     38.439.866 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     38.439.869 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     38.439.873 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     38.439.881 scheduler.c(965)          receive                   Rx done [17], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00002ed8/00002ed8
+     38.439.885 scheduler.c(1450)         execution_thread          clock deviation: +25735 (1608us)
+     38.439.891 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x160b12e0 (23114030us), RNG 0xb83253f7
+     38.439.895 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     38.439.903 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [17]
+     38.439.906 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00002ed8, nw_pp 0x00002ac0, nw_radio 0x00002ed8, buf 0x00002ac0, buf_size 0x00400
+     38.439.909 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     38.439.912 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     38.439.916 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x02ac0
+     38.439.987 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00002ed8, nw_pp 0x00002ed4, nw_radio 0x00002ed4
+     38.447.650 logging.c(620)            log_thread                log packet [17]
+     38.448.951 deflate.c(796)            deflate                   close block
+     38.448.957 deflate.c(818)            deflate                   finalize chunk
+     38.448.960 deflate.c(822)            deflate                   flush buffer
+     38.449.847 logging.c(732)            log_thread                compression ratio: 1020 -> 287 (72% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     39.438.353 scheduler.c(1524)         execution_thread          continue execution
+     39.438.357 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x16ff36e0 (24114030us), RNG 0xb83253f7
+     39.438.373 scheduler.c(822)          receive                   start Rx [18] at 39440849us/0x259d1d1a (global 0x16ff5620/24114530us), timeout 5000us
+
+39453646 TRX:
+nwBZADgZABIYAhoW/zbgGiWc/doaI7JmTxolnRyEOTZKGQAAGAhZAAUAAH+EzgAAGiWeVaMaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+K5zK4VIIGibRhtSpBQNDUUlSqCVQtqQVEqgpCSNShWtiKAB0BAtSNqkSBRIg0YoaEohAGkEVBBNm6ZQEgAapa0g0AaBIg0tJBVCSNtICyBoUYhQkTaQokgTipJQKqASpUQqEBVVNC2gkTSiSLVBEIa20QKpIZRK2jTQNJG2UiKkGqUJbTAoQpoqoKLRGoAqaTRRkVJUI0BVoioIqlRVIAlpQUiREpoSRUFSmmikaRQB0KIgUUlVA61IE60kFKoqoQwtEWlaEtpKkSakGiSNHU2LIEgL0UaKplpIIpBoRREKSLUEVBoVCFoEkYJUNUQpoKEijSYN/H8A/wBZAAEBAFgA/xoR32LZ
+
+     39.438.381 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002ed4, nw_hot 0x000032ec
+     39.438.391 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     39.438.395 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     39.438.399 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     39.440.859 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     39.445.856 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     39.445.863 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     39.445.867 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     39.445.870 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     39.445.878 scheduler.c(965)          receive                   Rx done [18], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000032ec/000032ec
+     39.445.882 scheduler.c(1450)         execution_thread          clock deviation: -13899 (-868us)
+     39.445.888 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x1700ade0 (24120030us), RNG 0x0341addd
+     39.445.893 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     39.445.900 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [18]
+     39.445.903 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000032ec, nw_pp 0x00002ed4, nw_radio 0x000032ec, buf 0x00002ed4, buf_size 0x00400
+     39.445.906 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     39.445.909 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     39.445.913 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x02ed4
+     39.445.985 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000032ec, nw_pp 0x000032e8, nw_radio 0x000032e8
+     39.453.644 logging.c(620)            log_thread                log packet [18]
+     39.454.940 deflate.c(796)            deflate                   close block
+     39.454.944 deflate.c(818)            deflate                   finalize chunk
+     39.454.947 deflate.c(822)            deflate                   flush buffer
+     39.455.540 logging.c(732)            log_thread                compression ratio: 1020 -> 276 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     40.444.350 scheduler.c(1524)         execution_thread          continue execution
+     40.444.354 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x17f4d1e0 (25120030us), RNG 0x0341addd
+     40.444.360 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x17f4d280 (25120040us), RNG 0x0341addd
+
+40458662 TRX:
+nwBZADgZABMYAhoX9NKAGiaSmUwaI7JmTxomkrf1GS5EGQAAGAhZAAUAAH+EzgAAGiaT8RQaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+a5za1IpUhQBQEpDtLRAgQ5UkKIGaQZNdmkVqWipJASQtgZpoCpSbRNSEI1GmqpUBRopGqkKVGKgQCsAhGiLJipFq5JGgyikETRKVVRUpIhUiVJUokoCTROCaLVpCqEQBYhQKUlaCgJSmgaJUCl7ikbStEqTpEKlmhQUCKEpIBVFISCNQhMFqCICQKRUiiqSCIpUGlq0Q6WiUCIC0UKKUqRJNSoqREOBNgIUqaRQokOkUFJUoBGKNimyE0O1qolBow0ERdMUKpFqoAlJQ4soRLRI24amAUihCEAbCVBNYQBN00TLUAqhImilUgJ0AFUSChogNI1QlP8PAP8AWQABAf8aU8yriQ==
+
+     40.444.376 scheduler.c(822)          receive                   start Rx [19] at 40446856us/0x2692b88b (global 0x17f4f1c0/25120540us), timeout 5000us
+     40.444.384 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000032e8, nw_hot 0x00003700
+     40.444.394 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     40.444.398 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     40.444.402 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     40.446.866 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     40.451.863 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     40.451.870 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     40.451.874 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     40.451.877 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     40.451.885 scheduler.c(965)          receive                   Rx done [19], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00003700/00003700
+     40.451.890 scheduler.c(1450)         execution_thread          clock deviation: +11844 (740us)
+     40.451.895 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x17f64980 (25126040us), RNG 0x02090627
+     40.451.900 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     40.451.907 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [19]
+     40.451.910 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00003700, nw_pp 0x000032e8, nw_radio 0x00003700, buf 0x000032e8, buf_size 0x00400
+     40.451.913 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     40.451.916 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     40.451.920 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x032e8
+     40.451.992 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00003700, nw_pp 0x000036fc, nw_radio 0x000036fc
+     40.458.659 logging.c(620)            log_thread                log packet [19]
+     40.459.954 deflate.c(796)            deflate                   close block
+     40.459.960 deflate.c(818)            deflate                   finalize chunk
+     40.459.963 deflate.c(822)            deflate                   flush buffer
+     40.460.555 logging.c(732)            log_thread                compression ratio: 1020 -> 277 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     41.450.357 scheduler.c(1524)         execution_thread          continue execution
+     41.450.361 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x18ea6d80 (26126040us), RNG 0x02090627
+     41.450.378 scheduler.c(822)          receive                   start Rx [20] at 41452853us/0x2788535d (global 0x18ea8cc0/26126540us), timeout 5000us
+
+41465422 TRX:
+nwBZAFEZABQYAhoY6m2AGieINB0aJ4jS3RoniOHdGQAAGQAAGHBZAB4AGQECAwThCu8fAQADAIBt6hgnBgkCBQYHCAidAlkAABoniOgmGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHeuc5vSFEGjNNIoImkBNKhQTVtkqCrRQCG1HX7o4cvhy3rktkkikQOiqigAEIoAKgpIQSgAgCgpAAhQAAAAAIAAKUoKICihAVRUKiVQKQAQgIoCAAAAKZJ5OvCAg+bxgGGaJSlEQUMRaamWgCgKBJKGZhcl4f8DAP8AWQABAQBYAP8aQlZwoQ==
+
+     41.450.385 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000036fc, nw_hot 0x00003b14
+     41.450.395 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     41.450.400 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     41.450.403 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     41.452.862 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     41.455.150 radio.c(603)              RADIO_IRQHandler_         packet received
+     41.455.241 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     41.455.247 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     41.455.251 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     41.455.254 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     41.455.261 scheduler.c(965)          receive                   Rx done [20], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 00003b14/00003b14
+     41.455.267 scheduler.c(1020)         receive                   content ok
+     41.455.269 scheduler.c(1028)         receive                   checkpoint available
+     41.455.274 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     41.455.282 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x18eb0c40, local = 0x2788d2dd, g2l = 0:ffffcfa2, l2g = 1:0000305d
+     41.455.286 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     41.455.290 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     41.455.297 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [20]
+     41.455.301 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00003b14, nw_pp 0x000036fc, nw_radio 0x00003b14, buf 0x000036fc, buf_size 0x00400
+     41.455.304 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     41.455.307 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     41.455.310 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     41.455.315 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     41.455.320 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x036fc
+     41.455.353 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00003b14, nw_pp 0x000038f8, nw_radio 0x000038f8
+     41.456.357 scheduler.c(1524)         execution_thread          continue execution
+     41.456.361 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x18ebe480 (26132040us), RNG 0x1fef0ae1
+     41.456.366 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     41.465.419 logging.c(620)            log_thread                log packet [20]
+     41.466.388 deflate.c(796)            deflate                   close block
+Hello from main scheduler...
+     41.466.392 deflate.c(818)            deflate                   finalize chunk
+     41.466.396 deflate.c(822)            deflate                   flush buffer
+     41.466.543 logging.c(732)            log_thread                compression ratio: 484 -> 147 (70% reduction)
+Hello from main scheduler...
+     42.456.354 scheduler.c(1524)         execution_thread          continue execution
+     42.456.358 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x19e00880 (27132040us), RNG 0x1fef0ae1
+     42.456.374 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+42468773 TRX:
+nwBZAEUZABUYAhoZ4AiAGih9zu8aKH5trxoofnyvGQAAGQAAGIBZAB4AGQECAwTD4dWjAgEFAIAI4BnhCu8fBQYHCAgAAAAZfQD/GnAZ2W8=
+
+     42.456.386 scheduler.c(690)          transmit                  start Tx [21] at 42460850us/0x287e6b2f (global 0x19e0a4c0 / 27132540 + 2000 us), timeout 5000us
+     42.456.395 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     42.460.852 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     42.461.139 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     42.461.148 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     42.461.152 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     42.462.354 scheduler.c(1524)         execution_thread          continue execution
+     42.462.358 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x19e17f80 (27138040us), RNG 0xa3d5e1c3
+     42.462.363 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     42.468.771 logging.c(620)            log_thread                log packet [21]
+Hello from main scheduler...
+Hello from main scheduler...
+     43.462.351 scheduler.c(1524)         execution_thread          continue execution
+     43.462.355 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x1ad5a380 (28138040us), RNG 0xa3d5e1c3
+     43.462.372 scheduler.c(822)          receive                   start Rx [22] at 43464848us/0x29738900 (global 0x1ad5c2c0/28138540us), timeout 5000us
+
+43477645 TRX:
+nwBZADgZABYYAhoa1aOAGilzacAaKH5tBxopc4hqGWSHGQAAGAhZAAUAAJ0CWQAAGil0wYkaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBBK5zsygxoNVImyZKUTGAnUZKEIoqRNOQhjQACkjLoKR0kD0ViCoaKAElVIJoCUCKpjUIGkpRQYO0ARolhQhtkQRNCRWRoGlbABWilApDI2gTVDWJApUUbWNoEwrpwJ5qJC1RjUaHUCFUK6qSViANFA2lg1IhCJK2qRooMKiGJoJdVAfaANUgmrZAgCbSJlqpJjRNlBIqNKIkpYGh9kBogtIE0agmSItUWkDSJA12JUQatAollbRIYqcJpZISUaKhkJICRQ2oJpFoUZUdTYQ2NKIJQBSUpirSQDWhQahqoMkelQAaaVtDiVRVSkRppEmlpKSQogDRhGiFNKSilDRK2iIF/j8A/wBZAAEBAFgA/xp6GNWz
+
+     43.462.379 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000038f8, nw_hot 0x00003d10
+     43.462.389 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     43.462.394 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     43.462.397 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     43.464.857 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     43.469.855 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     43.469.861 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     43.469.865 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     43.469.869 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     43.469.876 scheduler.c(965)          receive                   Rx done [22], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00003d10/00003d10
+     43.469.881 scheduler.c(1450)         execution_thread          clock deviation: +25735 (1608us)
+     43.469.886 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x1ad71a80 (28144040us), RNG 0x53143fcb
+     43.469.891 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     43.469.898 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [22]
+     43.469.902 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00003d10, nw_pp 0x000038f8, nw_radio 0x00003d10, buf 0x000038f8, buf_size 0x00400
+     43.469.905 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     43.469.908 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     43.469.911 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x038f8
+     43.469.983 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00003d10, nw_pp 0x00003d0c, nw_radio 0x00003d0c
+     43.477.642 logging.c(620)            log_thread                log packet [22]
+     43.478.944 deflate.c(796)            deflate                   close block
+     43.478.948 deflate.c(818)            deflate                   finalize chunk
+     43.478.951 deflate.c(822)            deflate                   flush buffer
+     43.479.840 logging.c(732)            log_thread                compression ratio: 1020 -> 288 (72% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     44.468.348 scheduler.c(1524)         execution_thread          continue execution
+     44.468.353 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x1bcb3e80 (29144040us), RNG 0x53143fcb
+     44.468.369 scheduler.c(822)          receive                   start Rx [23] at 44470845us/0x2a6923d2 (global 0x1bcb5dc0/29144540us), timeout 5000us
+
+44483643 TRX:
+nwBZADgZABcYAhobyz6AGippBJIaKH5tBxoqaSM8OTZKGQAAGAhZAAUAAJ0CWQAAGipqXFsaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/q5zawWGsKdCERpVGilKDUpaBqKRttEdkjQl6VBNU6mmmqJKQEpIIyQlhYCCkDbQFkpAKCqVJFGxFwSQtjo0aVIFKpUGNFJKAQgaUdCUEgZopGkbBUqiAqEggbSgRDUkihRQqaBJSVUHEKkUbYQCCQUlUBqpglACDKWCQhpFkYIAIAoFQNIUIES1qlWiA6FNioqgUpLQNFqiJEkb1RZCCKoNNE1UhYSKJpWoaFNKGipAtBFaLZRGIyJSIkVlKKgSFQiyA6nShAZBQ3Zp2oHQKk0RUkgjEaVtBJIWKWJXos1QSiStkLaRIok2pJK0RalEJY02oGiqAQAVxKDi/wMA/wBZAAEBAFgA/xq3AknF
+
+     44.468.377 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00003d0c, nw_hot 0x00004124
+     44.468.386 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     44.468.391 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     44.468.395 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     44.470.854 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     44.475.852 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     44.475.858 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     44.475.862 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     44.475.866 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     44.475.873 scheduler.c(965)          receive                   Rx done [23], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00004124/00004124
+     44.475.878 scheduler.c(1450)         execution_thread          clock deviation: -13899 (-868us)
+     44.475.883 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x1bccb580 (29150040us), RNG 0xe398fe6e
+     44.475.888 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     44.475.895 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [23]
+     44.475.899 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00004124, nw_pp 0x00003d0c, nw_radio 0x00004124, buf 0x00003d0c, buf_size 0x00400
+     44.475.902 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     44.475.905 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     44.475.909 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x03d0c
+     44.475.980 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00004124, nw_pp 0x00004120, nw_radio 0x00004120
+     44.483.640 logging.c(620)            log_thread                log packet [23]
+     44.484.938 deflate.c(796)            deflate                   close block
+     44.484.943 deflate.c(818)            deflate                   finalize chunk
+     44.484.946 deflate.c(822)            deflate                   flush buffer
+     44.485.836 logging.c(732)            log_thread                compression ratio: 1020 -> 282 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     45.474.345 scheduler.c(1524)         execution_thread          continue execution
+     45.474.350 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x1cc0d980 (30150040us), RNG 0xe398fe6e
+     45.474.355 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x1cc0da20 (30150050us), RNG 0xe398fe6e
+
+45488658 TRX:
+nwBZADgZABgYAhocwNogGiteoAQaKH5tBxorXr6tGS5EGQAAGAhZAAUAAJ0CWQAAGitf98waAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+65zK6QpoFWCAAmaGpTQJlDaUDRV0QFhLxSNklCkiZIoqoQ09oEqBKQBQDQ0qEapQqQgVASQoimFCNoENVSEalpRoTRRUaTSCEBpVATVUAQDBBRNS5NWJE3TpmikDQ2NNAm0qhmCEqKlqRRJCaAhKEG1gpSGQpNSJBRJSzUamoo0IU3bQEGHaqKIVAlUaDRoRYJWSQSQFlIQQJNSTXei2WmDJqREQROQKiGUSFNNFTqAoIiSIESbSqMKQdFUUYhQGgEpGiRVEUoJBVHSpFI0QprGLgShbRsVSII2QkpFpRWDUkiSalAUCm0iaJoQFUopSsog0RQQQLSl/j8A/wBZAAEB/xqDssB3
+
+     45.474.372 scheduler.c(822)          receive                   start Rx [24] at 45476852us/0x2b5ebf43 (global 0x1cc0f960/30150550us), timeout 5000us
+     45.474.380 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004120, nw_hot 0x00004538
+     45.474.389 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     45.474.394 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     45.474.398 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     45.476.861 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     45.481.859 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     45.481.866 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     45.481.869 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     45.481.873 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     45.481.880 scheduler.c(965)          receive                   Rx done [24], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00004538/00004538
+     45.481.885 scheduler.c(1450)         execution_thread          clock deviation: +11844 (740us)
+     45.481.890 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x1cc25120 (30156050us), RNG 0xd5bbdc20
+     45.481.895 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     45.481.902 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [24]
+     45.481.906 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00004538, nw_pp 0x00004120, nw_radio 0x00004538, buf 0x00004120, buf_size 0x00400
+     45.481.909 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     45.481.912 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     45.481.916 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x04120
+     45.481.987 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00004538, nw_pp 0x00004534, nw_radio 0x00004534
+     45.488.655 logging.c(620)            log_thread                log packet [24]
+     45.489.953 deflate.c(796)            deflate                   close block
+     45.489.957 deflate.c(818)            deflate                   finalize chunk
+     45.489.960 deflate.c(822)            deflate                   flush buffer
+Hello from main scheduler...
+     45.490.850 logging.c(732)            log_thread                compression ratio: 1020 -> 279 (73% reduction)
+Hello from main scheduler...
+     46.480.353 scheduler.c(1524)         execution_thread          continue execution
+     46.480.357 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x1db67520 (31156050us), RNG 0xd5bbdc20
+     46.480.373 scheduler.c(822)          receive                   start Rx [25] at 46482849us/0x2c545a15 (global 0x1db69460/31156550us), timeout 5000us
+
+46495414 TRX:
+nwBZAFEZABkYAhodtnUgGixUOtUaLFTZlRosVOiVGQAAGQAAGHBZAB4AGQECAwQJqkfXAQADACB1th0g3LvVBQYHCAgeSeUAABosVO7eGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHeuc+umKJqQDpISqUrsUQWtqCgNgA4qUc0eVWI7/LDDjzh8WY9cN0kicUBUFQUAUiBApQApSAEAkCIogABQAAAAABAUAAAAgACg0lAAACAAlQIQKJAKDWgyT9OBB83TAcM4j1RQSEOQlmoKpBSkQopAqgyqUv4/AP8AWQABAQBYAP8aD2I4HA==
+
+     46.480.381 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004534, nw_hot 0x0000494c
+     46.480.390 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     46.480.395 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     46.480.399 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     46.482.858 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     46.485.145 radio.c(603)              RADIO_IRQHandler_         packet received
+     46.485.236 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     46.485.243 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     46.485.246 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     46.485.250 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     46.485.256 scheduler.c(965)          receive                   Rx done [25], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 0000494c/0000494c
+     46.485.262 scheduler.c(1020)         receive                   content ok
+     46.485.267 scheduler.c(1028)         receive                   checkpoint available
+     46.485.270 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     46.485.277 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x1db713e0, local = 0x2c54d995, g2l = 0:ffffcfa2, l2g = 1:0000305d
+     46.485.282 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     46.485.286 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     46.485.293 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [25]
+     46.485.296 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x0000494c, nw_pp 0x00004534, nw_radio 0x0000494c, buf 0x00004534, buf_size 0x00400
+     46.485.299 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     46.485.302 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     46.485.306 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     46.485.312 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     46.485.315 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x04534
+Hello from main scheduler...
+     46.485.348 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x0000494c, nw_pp 0x00004730, nw_radio 0x00004730
+     46.486.352 scheduler.c(1524)         execution_thread          continue execution
+     46.486.357 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x1db7ec20 (31162050us), RNG 0xd747aa09
+     46.486.361 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     46.495.412 logging.c(620)            log_thread                log packet [25]
+     46.496.380 deflate.c(796)            deflate                   close block
+     46.496.384 deflate.c(818)            deflate                   finalize chunk
+     46.496.388 deflate.c(822)            deflate                   flush buffer
+     46.496.540 logging.c(732)            log_thread                compression ratio: 484 -> 147 (70% reduction)
+Hello from main scheduler...
+     47.486.350 scheduler.c(1524)         execution_thread          continue execution
+     47.486.354 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x1eac1020 (32162050us), RNG 0xd747aa09
+     47.486.369 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+47498766 TRX:
+nwBZAEUZABoYAhoerBAgGi1J1acaLUp0ZxotSoNnGQAAGQAAGIBZAB4AGQECAwSfFmanAgEFACAQrB4JqkfXBQYHCAgAAAAZfQD/GndXe+4=
+
+     47.486.382 scheduler.c(690)          transmit                  start Tx [26] at 47490846us/0x2d4a71e7 (global 0x1eacac60 / 32162550 + 2000 us), timeout 5000us
+     47.486.390 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     47.490.848 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     47.491.134 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     47.491.143 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     47.491.147 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     47.492.349 scheduler.c(1524)         execution_thread          continue execution
+     47.492.354 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x1ead8720 (32168050us), RNG 0xa766169f
+     47.492.358 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     47.498.763 logging.c(620)            log_thread                log packet [26]
+Hello from main scheduler...
+Hello from main scheduler...
+     48.492.347 scheduler.c(1524)         execution_thread          continue execution
+     48.492.351 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x1fa1ab20 (33168050us), RNG 0xa766169f
+     48.492.367 scheduler.c(822)          receive                   start Rx [27] at 48494843us/0x2e3f8fb8 (global 0x1fa1ca60/33168550us), timeout 5000us
+
+48507641 TRX:
+nwBZADgZABsYAhofoasgGi4/cHgaLUpzvxouP48iGWSHGQAAGAhZAAUAAB5J5QAAGi5AyEEaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5zG5AigFa7R0sAiYqiSpKWSggoBDSBAhXSUAACKgRFGZo00iDd97YoipAY7LRaRFqaqJRBCtKClKZpGJRWpENaBVGKJmWINGhbopq0KpJqASmIVLRkyBCaCIgilRJFRRCgVJNKK0qaStEmIkUqaSFKQkUpaQqV0ABphdBGY2iqRKqhaRUElaQqQTVFUg2kEE2jxSAtENGiBCBNNaBSSBEaUIQGqsqAoEiFIK20RKNAo0QKSgxUaKqKUMigSkIQe1o6QJVWmghaBqKhqkEoQTStkFKFVJC0AzStpEJbKmkjoZqSaKJpiRQNQIqQqmqkKElFRKsIFIRUhRbRCFL7/wcA/wBZAAEB/xrInuMS
+
+     48.492.375 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004730, nw_hot 0x00004b48
+     48.492.385 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     48.492.389 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     48.492.393 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     48.494.854 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     48.499.850 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     48.499.857 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     48.499.860 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     48.499.864 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     48.499.872 scheduler.c(965)          receive                   Rx done [27], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00004b48/00004b48
+     48.499.876 scheduler.c(1450)         execution_thread          clock deviation: +25735 (1608us)
+     48.499.882 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x1fa32220 (33174050us), RNG 0x48c0391f
+     48.499.886 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     48.499.894 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [27]
+     48.499.897 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00004b48, nw_pp 0x00004730, nw_radio 0x00004b48, buf 0x00004730, buf_size 0x00400
+     48.499.900 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     48.499.903 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     48.499.907 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x04730
+Hello from main scheduler...
+     48.499.978 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00004b48, nw_pp 0x00004b44, nw_radio 0x00004b44
+     48.507.638 logging.c(620)            log_thread                log packet [27]
+     48.508.939 deflate.c(796)            deflate                   close block
+     48.508.944 deflate.c(818)            deflate                   finalize chunk
+     48.508.948 deflate.c(822)            deflate                   flush buffer
+     48.509.835 logging.c(732)            log_thread                compression ratio: 1020 -> 285 (73% reduction)
+Hello from main scheduler...
+     49.498.344 scheduler.c(1524)         execution_thread          continue execution
+     49.498.348 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x20974620 (34174050us), RNG 0x48c0391f
+     49.498.365 scheduler.c(822)          receive                   start Rx [28] at 49500840us/0x2f352a8a (global 0x20976560/34174550us), timeout 5000us
+
+49513639 TRX:
+nwBZADgZABwYAhogl0YgGi81C0oaLUpzvxovNSn0OTZKGQAAGAhZAAUAAB5J5QAAGi82YxMaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/K5zGyUogoZWlKEtAFINVWmCSmi0oYYGKBqBqCoUCiEFAQIigEiKpk01UGkkrQbSCoDs0VACkAapkkabEg0qaUkKVCONJm2ECE21pdHQAknTBikiCgUgDZSmIUVDVIoAFU1CtQlB2tCktAFUQEVD0ZSICg2tSKUUNCmkSUGJakiUAEoRkZIC2qRSGqQpNEQjFSopRbRQaAhEtZIaSkADkEZCQxuiLS2VNJoibbUQCpJKDK0iqgKIQdJWZU+p0gySCg0GoKDVRIsikobQSoUEilJtozQgAZHu0MQeQpGmRYIURRNEgUiFEog2JKopElT2iqa7kjYRCrTR4P8DAP8AWQABAQBYAP8aEGMTTA==
+
+     49.498.372 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004b44, nw_hot 0x00004f5c
+     49.498.382 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     49.498.386 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     49.498.390 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     49.500.850 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     49.505.847 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     49.505.854 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     49.505.858 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     49.505.861 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     49.505.869 scheduler.c(965)          receive                   Rx done [28], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00004f5c/00004f5c
+     49.505.873 scheduler.c(1450)         execution_thread          clock deviation: -13899 (-868us)
+     49.505.879 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x2098bd20 (34180050us), RNG 0x7e040ae2
+     49.505.884 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     49.505.891 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [28]
+     49.505.894 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00004f5c, nw_pp 0x00004b44, nw_radio 0x00004f5c, buf 0x00004b44, buf_size 0x00400
+     49.505.897 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     49.505.900 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     49.505.904 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x04b44
+Hello from main scheduler...
+     49.505.975 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00004f5c, nw_pp 0x00004f58, nw_radio 0x00004f58
+     49.513.637 logging.c(620)            log_thread                log packet [28]
+     49.514.933 deflate.c(796)            deflate                   close block
+     49.514.939 deflate.c(818)            deflate                   finalize chunk
+     49.514.942 deflate.c(822)            deflate                   flush buffer
+     49.515.832 logging.c(732)            log_thread                compression ratio: 1020 -> 280 (73% reduction)
+Hello from main scheduler...
+     50.504.341 scheduler.c(1524)         execution_thread          continue execution
+     50.504.345 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x218ce120 (35180050us), RNG 0x7e040ae2
+     50.504.351 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x218ce1c0 (35180060us), RNG 0x7e040ae2
+
+50518655 TRX:
+nwBZADgZAB0YAhohjOHAGjAqprwaLUpzvxowKsVlGS5EGQAAGAhZAAUAAB5J5QAAGjAr/oQaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+65za/ZUaChCRdEgBShCRaJVqUCJCh0CVEUUFClIG4A0NEC0IQXVgEYBIkKQlkKqVCAaQUMjmqKhBqWhlXZAE4W0UQGSXWhKpGiTFrshqGhpAgAUaCTRKKUkKE0TiULTkqpGDERaKqEoNFIpoTQSaZVC0qZJSbRB04EGqTZVIBCFUiBKRKGSgkQKmsIeadJh14AKgAYqAkAbZSAKTao0FYgglEpVmkoUJNJEq4091YihaBDVpGmKAqU6EAQa0ZQWpJUoUIQSVQoQRZCkVY3SBEKaMpCiGpoiWoJomqaABkQoDalGgiLVpAGkgpYmjQKaRgoI2qGhTSAN/x8A/wBZAAEB/xqJXZ3u
+
+     50.504.367 scheduler.c(822)          receive                   start Rx [29] at 50506847us/0x302ac5fb (global 0x218d0100/35180560us), timeout 5000us
+     50.504.375 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004f58, nw_hot 0x00005370
+     50.504.385 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     50.504.389 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     50.504.393 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     50.506.857 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     50.511.854 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     50.511.861 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     50.511.865 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     50.511.868 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     50.511.876 scheduler.c(965)          receive                   Rx done [29], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00005370/00005370
+     50.511.881 scheduler.c(1450)         execution_thread          clock deviation: +11844 (740us)
+     50.511.886 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x218e58c0 (35186060us), RNG 0xdc912d42
+     50.511.891 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     50.511.898 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [29]
+     50.511.901 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00005370, nw_pp 0x00004f58, nw_radio 0x00005370, buf 0x00004f58, buf_size 0x00400
+     50.511.904 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     50.511.907 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+Hello from main scheduler...
+     50.511.911 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x04f58
+     50.511.982 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00005370, nw_pp 0x0000536c, nw_radio 0x0000536c
+     50.518.652 logging.c(620)            log_thread                log packet [29]
+     50.519.949 deflate.c(796)            deflate                   close block
+     50.519.955 deflate.c(818)            deflate                   finalize chunk
+     50.519.958 deflate.c(822)            deflate                   flush buffer
+     50.520.847 logging.c(732)            log_thread                compression ratio: 1020 -> 279 (73% reduction)
+Hello from main scheduler...
+     51.510.348 scheduler.c(1524)         execution_thread          continue execution
+     51.510.352 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x22827cc0 (36186060us), RNG 0xdc912d42
+     51.510.369 scheduler.c(822)          receive                   start Rx [30] at 51512844us/0x312060cd (global 0x22829c00/36186560us), timeout 5000us
+
+51525411 TRX:
+nwBZAFEZAB4YAhoignzAGjEgQY0aMSDgTxoxIO9PGQACGQAAGHBZAB4AGQECAwThxRYlAQADAMB8giJCLZHcBQYHCAhNBcsAABoxIPWWGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHWuc3MkVUMpDVWJFCoBRIGUiDY0FBWtVMie7fBDjzjy8GU9ctskkciYUZWiAAgK0VBSgBREAQCIAgAAABQBAACAAAUAAAAAAAA0AAABlBQABAqAQJN5mqaD5umAaZiHQdtUIm1CS0C1oEQFhQ6kqjQi2kb4/wD/AFkAAQEAWAD/GoBuyEM=
+
+     51.510.376 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000536c, nw_hot 0x00005784
+     51.510.386 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     51.510.391 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     51.510.394 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     51.512.854 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     51.515.141 radio.c(603)              RADIO_IRQHandler_         packet received
+     51.515.232 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     51.515.238 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     51.515.242 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     51.515.245 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     51.515.252 scheduler.c(965)          receive                   Rx done [30], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 00005784/00005784
+     51.515.258 scheduler.c(1020)         receive                   content ok
+     51.515.260 scheduler.c(1028)         receive                   checkpoint available
+     51.515.266 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     51.515.273 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x22831b80, local = 0x3120e04f, g2l = 0:ffffd00d, l2g = 1:00002ff2
+     51.515.277 scheduler.c(1450)         execution_thread          clock deviation: +2 (0us)
+     51.515.281 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     51.515.288 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [30]
+Hello from main scheduler...
+     51.515.292 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00005784, nw_pp 0x0000536c, nw_radio 0x00005784, buf 0x0000536c, buf_size 0x00400
+     51.515.295 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     51.515.298 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     51.515.301 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     51.515.307 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     51.515.311 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x0536c
+     51.515.344 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00005784, nw_pp 0x00005568, nw_radio 0x00005568
+     51.516.348 scheduler.c(1524)         execution_thread          continue execution
+     51.516.352 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x2283f3c0 (36192060us), RNG 0x2516c5e1
+     51.516.357 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     51.525.408 logging.c(620)            log_thread                log packet [30]
+     51.526.377 deflate.c(796)            deflate                   close block
+     51.526.381 deflate.c(818)            deflate                   finalize chunk
+     51.526.386 deflate.c(822)            deflate                   flush buffer
+     51.526.532 logging.c(732)            log_thread                compression ratio: 484 -> 145 (71% reduction)
+Hello from main scheduler...
+     52.516.346 scheduler.c(1524)         execution_thread          continue execution
+     52.516.350 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x237817c0 (37192060us), RNG 0x2516c5e1
+     52.516.365 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+52528762 TRX:
+nwBZAEUZAB8YAhojeBfAGjIV3GEaMhZ7IRoyFoohGQAAGQAAGIBZAB4AGQECAwT+sLDQAgEFAMAXeCPhxRYlBQYHCAgAAAAZfQD/GjG5vtM=
+
+     52.516.378 scheduler.c(690)          transmit                  start Tx [31] at 52520842us/0x321678a1 (global 0x2378b400 / 37192560 + 2000 us), timeout 5000us
+     52.516.386 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     52.520.844 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     52.521.130 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     52.521.139 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     52.521.143 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     52.522.345 scheduler.c(1524)         execution_thread          continue execution
+     52.522.349 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x23798ec0 (37198060us), RNG 0xd0b0b0fe
+     52.522.354 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     52.528.759 logging.c(620)            log_thread                log packet [31]
+Hello from main scheduler...
+Hello from main scheduler...
+     53.522.342 scheduler.c(1524)         execution_thread          continue execution
+     53.522.347 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x246db2c0 (38198060us), RNG 0xd0b0b0fe
+     53.522.363 scheduler.c(822)          receive                   start Rx [32] at 53524839us/0x330b9673 (global 0x246dd200/38198560us), timeout 5000us
+
+53537638 TRX:
+nwBZADgZACAYAhokbbLAGjMLdzMaMhZ6eRozC5XdGWSGGQAAGAhZAAUAAE0FywAAGjMMzvwaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5zK9KUIiVSgDRNU00RtFFKaJSoSIMGqUhoFC1QiESlQ0ulAdkNAoWKgqIqDEkpFQ1D2g5pWtoQEFLQVJuGFAFIVVMqgpJo0xRIhIICkCpSKdGkxdBSGiLZU0nLADSEahpoqCZlaKLSSorS2EWBVNOUpCFF0NAokippQCO7MigqEBrQCC2iKmnaKEkJJFXSNAWViqQFtCqVhEg1GgolADVUNLQi7EBJIwLaRigQlUYkVbVnUJqopqGhUQkUVJCSljQlSGhpNaJE04hqSgqUgACFpG2aagJoCGigg2irgpAClIAgrSpNVRAEaCokUagSoIRUpKlqiqGECgo1pKFa/x8A/wBZAAEB/xo9F0a+
+
+     53.522.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005568, nw_hot 0x00005980
+     53.522.380 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     53.522.385 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     53.522.389 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     53.524.849 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     53.529.846 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     53.529.853 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     53.529.856 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     53.529.860 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     53.529.867 scheduler.c(965)          receive                   Rx done [32], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00005980/00005980
+     53.529.872 scheduler.c(1450)         execution_thread          clock deviation: +25734 (1608us)
+     53.529.877 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x246f29c0 (38204060us), RNG 0x3db757e2
+Hello from main scheduler...
+     53.529.882 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     53.529.889 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [32]
+     53.529.893 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00005980, nw_pp 0x00005568, nw_radio 0x00005980, buf 0x00005568, buf_size 0x00400
+     53.529.896 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     53.529.899 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     53.529.903 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x05568
+     53.529.974 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00005980, nw_pp 0x0000597c, nw_radio 0x0000597c
+     53.537.635 logging.c(620)            log_thread                log packet [32]
+     53.538.937 deflate.c(796)            deflate                   close block
+     53.538.942 deflate.c(818)            deflate                   finalize chunk
+     53.538.945 deflate.c(822)            deflate                   flush buffer
+     53.539.832 logging.c(732)            log_thread                compression ratio: 1020 -> 285 (73% reduction)
+Hello from main scheduler...
+     54.528.339 scheduler.c(1524)         execution_thread          continue execution
+     54.528.344 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x25634dc0 (39204060us), RNG 0x3db757e2
+     54.528.360 scheduler.c(822)          receive                   start Rx [33] at 54530836us/0x34013145 (global 0x25636d00/39204560us), timeout 5000us
+
+54543636 TRX:
+nwBZADgZACEYAholY03AGjQBEgUaMhZ6eRo0ATCvOTZLGQAAGAhZAAUAAE0FywAAGjQCac4aAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+q5zy1Sl1SJCEOypIWkotJWGkhClJE0BEDoAWgzRtgBCaQRUBIoQoEI1kIZQikCTpqiIpK2iadAAaUJppUVqEKlKVRNUJIpW05Q00GhhaBAEVAUYqtIgqKoKJFQZok1BUgqFUMKuaWQoIEFJSKGqJKmiUjQlEhSlqhGkpBEF0SghaVJVsTeIFKTRClJBVRSAIIWCAARQRROSPaVQkUpTUdAS6UAaUSlUK0BJNRJKaCRU0aGAyk6ilBTZpQmBgkIY2hRISkNTDSWEpqGiTUFTSdAomhRoKKqShhDaNIa2SCFFIQE00qCFilZKIRhoEBQxUBUUCRBVKfL/AQD/AFkAAQEAWAD/GqMEr4I=
+
+     54.528.368 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000597c, nw_hot 0x00005d94
+     54.528.377 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     54.528.382 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     54.528.386 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     54.530.845 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     54.535.843 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     54.535.850 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     54.535.853 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     54.535.857 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     54.535.865 scheduler.c(965)          receive                   Rx done [33], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00005d94/00005d94
+     54.535.869 scheduler.c(1450)         execution_thread          clock deviation: -13900 (-868us)
+     54.535.875 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x2564c4c0 (39210060us), RNG 0xf6179ebe
+Hello from main scheduler...
+     54.535.879 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     54.535.886 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [33]
+     54.535.890 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00005d94, nw_pp 0x0000597c, nw_radio 0x00005d94, buf 0x0000597c, buf_size 0x00400
+     54.535.893 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     54.535.896 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     54.535.900 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x0597c
+     54.535.971 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00005d94, nw_pp 0x00005d90, nw_radio 0x00005d90
+     54.543.633 logging.c(620)            log_thread                log packet [33]
+     54.544.932 deflate.c(796)            deflate                   close block
+     54.544.936 deflate.c(818)            deflate                   finalize chunk
+     54.544.939 deflate.c(822)            deflate                   flush buffer
+     54.545.529 logging.c(732)            log_thread                compression ratio: 1020 -> 278 (73% reduction)
+Hello from main scheduler...
+     55.534.337 scheduler.c(1524)         execution_thread          continue execution
+     55.534.341 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x2658e8c0 (40210060us), RNG 0xf6179ebe
+     55.534.347 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x2658e960 (40210070us), RNG 0xf6179ebe
+
+55548651 TRX:
+nwBZADgZACIYAhomWOlgGjT2rXcaMhZ6eRo09swhGS5CGQAAGAhZAAUAAE0FywAAGjT4BUAaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA8a5zK0hQjQZlKGlBGjuqkUiqlIZQLZoBRSMaINK0TRVKGqkkKBUgCjRAI0gqgCpohEapoGhKlAiiSFNo0FABabSBVKUqkaYNTVoGRBUKJRAKjVApoSmAgLRRkBSkhSghqhUgKpRQqUgDpFRTaROBooiKImlFFdkFMYhU2rQJShMKKahooAgABaqJSppUARUJDVqVpoIElJKGUoTQJlUhAJRCGgUQ0mgqTVFCVEpFG1UVGhEkUrShgUYUCggQFexSEJAGmkZFEVANVFCRKqKIIiVISpsiFYiSQpqStEg1RaUhBKgIDRVtACRUU6CSAhD9/wD/AFkAAQH/GitzV0M=
+
+     55.534.363 scheduler.c(822)          receive                   start Rx [34] at 55536843us/0x34f6ccb7 (global 0x265908a0/40210570us), timeout 5000us
+     55.534.371 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005d90, nw_hot 0x000061a8
+     55.534.380 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     55.534.385 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     55.534.389 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     55.536.853 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     55.541.850 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     55.541.857 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     55.541.860 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     55.541.864 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     55.541.872 scheduler.c(965)          receive                   Rx done [34], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000061a8/000061a8
+     55.541.876 scheduler.c(1450)         execution_thread          clock deviation: +11842 (740us)
+Hello from main scheduler...
+     55.541.882 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x265a6060 (40216070us), RNG 0x5fe3b8d5
+     55.541.886 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     55.541.893 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [34]
+     55.541.897 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000061a8, nw_pp 0x00005d90, nw_radio 0x000061a8, buf 0x00005d90, buf_size 0x00400
+     55.541.900 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     55.541.903 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     55.541.907 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x05d90
+     55.541.978 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000061a8, nw_pp 0x000061a4, nw_radio 0x000061a4
+     55.548.648 logging.c(620)            log_thread                log packet [34]
+     55.549.941 deflate.c(796)            deflate                   close block
+     55.549.947 deflate.c(818)            deflate                   finalize chunk
+     55.549.950 deflate.c(822)            deflate                   flush buffer
+     55.550.542 logging.c(732)            log_thread                compression ratio: 1020 -> 269 (74% reduction)
+Hello from main scheduler...
+     56.540.344 scheduler.c(1524)         execution_thread          continue execution
+     56.540.348 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x274e8460 (41216070us), RNG 0x5fe3b8d5
+     56.540.364 scheduler.c(822)          receive                   start Rx [35] at 56542840us/0x35ec6789 (global 0x274ea3a0/41216570us), timeout 5000us
+
+56555407 TRX:
+nwBZAFEZACMYAhonToRgGjXsSEkaNeznBxo17PYHOQABGQAAGHBZAB4AGQECAwRbG9sWAQADAGCETifVuONfBQYHCAgk2jQAABo17PxSGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHiuc0tAIqFpmqHVFkKaUkkLKASkkWpQhRS6HX7oEUccvq5HbJskEhlNpQoFAABEAQAAgEJoAAIQhUalAIBKCTQVaEgBBJUCAKQAAKACQNMAAQpAARABABjmaTrgoHk6YJjmUbVCqCZJqlVIBSrVIFChCU2VopD/DwD/AFkAAQH/GjKxfVk=
+
+     56.540.372 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000061a4, nw_hot 0x000065bc
+     56.540.382 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     56.540.386 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     56.540.390 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     56.542.850 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     56.545.137 radio.c(603)              RADIO_IRQHandler_         packet received
+     56.545.227 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     56.545.234 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     56.545.238 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     56.545.241 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     56.545.247 scheduler.c(965)          receive                   Rx done [35], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 000065bc/000065bc
+     56.545.253 scheduler.c(1020)         receive                   content ok
+Hello from main scheduler...
+     56.545.256 scheduler.c(1028)         receive                   checkpoint available
+     56.545.261 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     56.545.268 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x274f2320, local = 0x35ece707, g2l = 0:ffffcfa2, l2g = 1:0000305d
+     56.545.273 scheduler.c(1450)         execution_thread          clock deviation: -2 (0us)
+     56.545.277 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     56.545.284 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [35]
+     56.545.288 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000065bc, nw_pp 0x000061a4, nw_radio 0x000065bc, buf 0x000061a4, buf_size 0x00400
+     56.545.291 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     56.545.294 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     56.545.297 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     56.545.303 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     56.545.307 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x061a4
+     56.545.340 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000065bc, nw_pp 0x000063a0, nw_radio 0x000063a0
+     56.546.343 scheduler.c(1524)         execution_thread          continue execution
+     56.546.348 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x274ffb60 (41222070us), RNG 0x16db1b5b
+     56.546.352 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     56.555.405 logging.c(620)            log_thread                log packet [35]
+     56.556.374 deflate.c(796)            deflate                   close block
+     56.556.378 deflate.c(818)            deflate                   finalize chunk
+     56.556.381 deflate.c(822)            deflate                   flush buffer
+     56.556.534 logging.c(732)            log_thread                compression ratio: 484 -> 148 (70% reduction)
+Hello from main scheduler...
+     57.546.341 scheduler.c(1524)         execution_thread          continue execution
+     57.546.345 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x28441f60 (42222070us), RNG 0x16db1b5b
+     57.546.361 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+57558759 TRX:
+nwBZAEUZACQYAhooRB9gGjbh4xkaNuKB2Ro24pDZGQAAGQAAGIBZAB4AGQECAwRZ7QWXAgEFAGAfRChbG9sWBQYHCAgAAAAZfQD/GtJjHFM=
+
+     57.546.373 scheduler.c(690)          transmit                  start Tx [36] at 57550837us/0x36e27f59 (global 0x2844bba0 / 42222570 + 2000 us), timeout 5000us
+     57.546.381 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     57.550.839 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     57.551.125 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     57.551.134 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     57.551.138 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     57.552.340 scheduler.c(1524)         execution_thread          continue execution
+     57.552.345 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x28459660 (42228070us), RNG 0x9705ed59
+     57.552.349 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     57.558.756 logging.c(620)            log_thread                log packet [36]
+Hello from main scheduler...
+Hello from main scheduler...
+     58.552.338 scheduler.c(1524)         execution_thread          continue execution
+     58.552.342 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x2939ba60 (43228070us), RNG 0x9705ed59
+     58.552.358 scheduler.c(822)          receive                   start Rx [37] at 58554834us/0x37d79d2a (global 0x2939d9a0/43228570us), timeout 5000us
+
+58567634 TRX:
+nwBZADgZACUYAhopObpgGjfXfeoaNuKBMRo315yUGWSHGQAAGAhZAAUAACTaNAAAGjfY1bMaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAK5zy3SQXUjbJi1EQyqlaEkVCSoMRWkaJE1AqpEWQkuBFoloA6ohkEYz0ESitAKpaoNIo4nQRluQ6FAUQjUKQpIdVIVkF1I1VJOmgUZTCgGkqVIC0uqeQiJCJVVoSCptNEhRFIFqCFIpOoAOLdUAiCYlohgKBZQSBpRGpRBCadKBlFJNGlXYI4lBqlEFjQYqJaHagBQSimoahDRREaWaJq0KUEibREnTQbSl0TQlJWhSQItKoKGAAIgqFDo0hKiioBkyQKOlqIjSKA0QAlqkVSUREAqCdKhUW9JQJETVQKkUEVApoAgVlBoQCSi0KZIGJVWgKQgdUiWkioYmTcP/BwD/AFkAAQEAWAD/GsaeWXg=
+
+     58.552.366 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000063a0, nw_hot 0x000067b8
+     58.552.376 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     58.552.380 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     58.552.384 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     58.554.844 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     58.559.841 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     58.559.848 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     58.559.852 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     58.559.855 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+Hello from main scheduler...
+     58.559.863 scheduler.c(965)          receive                   Rx done [37], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000067b8/000067b8
+     58.559.867 scheduler.c(1450)         execution_thread          clock deviation: +25735 (1608us)
+     58.559.873 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x293b3160 (43234070us), RNG 0x5721ce19
+     58.559.878 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     58.559.885 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [37]
+     58.559.888 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000067b8, nw_pp 0x000063a0, nw_radio 0x000067b8, buf 0x000063a0, buf_size 0x00400
+     58.559.891 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     58.559.894 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     58.559.898 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x063a0
+     58.559.969 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000067b8, nw_pp 0x000067b4, nw_radio 0x000067b4
+     58.567.631 logging.c(620)            log_thread                log packet [37]
+     58.568.930 deflate.c(796)            deflate                   close block
+     58.568.934 deflate.c(818)            deflate                   finalize chunk
+     58.568.938 deflate.c(822)            deflate                   flush buffer
+     58.569.827 logging.c(732)            log_thread                compression ratio: 1020 -> 284 (73% reduction)
+Hello from main scheduler...
+     59.558.335 scheduler.c(1524)         execution_thread          continue execution
+     59.558.339 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x2a2f5560 (44234070us), RNG 0x5721ce19
+     59.558.356 scheduler.c(822)          receive                   start Rx [38] at 59560831us/0x38cd37fc (global 0x2a2f74a0/44234570us), timeout 5000us
+
+59573628 TRX:
+nwBZADgZACYYAhoqL1VgGjjNGLwaNuKBMRo4zTdmOTZKGQAAGAhZAAUAACTaNAAAGjjOcIUaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+q5zS2lCI9WiUglA2lAkaSStVhOqCCpRiGhaUaGtEqiKIjFUIClSFJEKaBskLQ0VRUgJYKBB00qrqKAxFE2VkEYI0exCVRUwBNW0kApJU5QmaQqpPUAQSjXVhiQqTZpAaEML0lSloYHQhF1AaYpESQGUigGQQkFKKymUhDZKCKKVQBWokAYgFUVoSVOoCBRCUJJCoSQUiFaDEI2iKYJKE4BopSRVkIqmKKRISIGEPaVJFaGKoAmNJoWGBgWSqhQVaBopaYc2pIkWBUGgamhpSBqkjYoWQKNBIEVRIEhIUxqaKIUGNSg00hSNRkCqSqSNAoaqBoKUxB7/HwD/AFkAAQEAWAD/GrrzvVw=
+
+     59.558.363 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000067b4, nw_hot 0x00006bcc
+     59.558.373 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     59.558.378 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     59.558.382 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     59.560.842 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     59.565.839 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+Hello from main scheduler...
+     59.565.845 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     59.565.849 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     59.565.852 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     59.565.860 scheduler.c(965)          receive                   Rx done [38], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00006bcc/00006bcc
+     59.565.865 scheduler.c(1450)         execution_thread          clock deviation: -13899 (-868us)
+     59.565.870 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x2a30cc60 (44240070us), RNG 0xc9c6e130
+     59.565.875 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     59.565.882 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [38]
+     59.565.886 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00006bcc, nw_pp 0x000067b4, nw_radio 0x00006bcc, buf 0x000067b4, buf_size 0x00400
+     59.565.888 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     59.565.892 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     59.565.895 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x067b4
+     59.565.967 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00006bcc, nw_pp 0x00006bc8, nw_radio 0x00006bc8
+     59.573.625 logging.c(620)            log_thread                log packet [38]
+     59.574.923 deflate.c(796)            deflate                   close block
+     59.574.928 deflate.c(818)            deflate                   finalize chunk
+     59.574.931 deflate.c(822)            deflate                   flush buffer
+     59.575.521 logging.c(732)            log_thread                compression ratio: 1020 -> 278 (73% reduction)
+Hello from main scheduler...
+     60.564.332 scheduler.c(1524)         execution_thread          continue execution
+     60.564.336 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x2b24f060 (45240070us), RNG 0xc9c6e130
+     60.564.342 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x2b24f100 (45240080us), RNG 0xc9c6e130
+
+60578643 TRX:
+nwBZADgZACcYAhorJPEAGjnCtC4aNuKBMRo5wtLXGS5EGQAAGAhZAAUAACTaNAAAGjnEC/YaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5za9oSkoRdkZJdpGhaQxUtQFJCpaQhBSGAtgbADlIhaREoNEKSalMlJaRJow00jTRUQ1KUEoQ0KCmlAVSa0hA0aAQFKZFUmg5aFW2kLQqphDaiVEo0hKAoEo1SHSoKhIamIUm7E6EFbVNJSZQiAiApoZVEKUVIC0mlqBQIqhFNyB6kidKGNk2RCKRppZWARisFRSqaVNMQ0lCppvYQqIDUUAqRlBQNTRUog0IqFKhAKwxaokKkKpUiJICd7NpEQxJVqoHQiJ2CRumQUKkGRDWDSGm0UQWJ0lYqTYnQBkkhBSBotaUNqRhClDSAtIoAgJBqChJpmoJUQJMSKTQV/f8A/wBZAAEB/xqRqO+C
+
+     60.564.359 scheduler.c(822)          receive                   start Rx [39] at 60566838us/0x39c2d36d (global 0x2b251040/45240580us), timeout 5000us
+     60.564.366 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00006bc8, nw_hot 0x00006fe0
+     60.564.376 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     60.564.380 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     60.564.384 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     60.566.848 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+Hello from main scheduler...
+     60.571.846 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     60.571.852 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     60.571.856 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     60.571.859 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     60.571.867 scheduler.c(965)          receive                   Rx done [39], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00006fe0/00006fe0
+     60.571.872 scheduler.c(1450)         execution_thread          clock deviation: +11844 (740us)
+     60.571.877 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x2b266800 (45246080us), RNG 0x9e48b84a
+     60.571.882 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     60.571.889 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [39]
+     60.571.893 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00006fe0, nw_pp 0x00006bc8, nw_radio 0x00006fe0, buf 0x00006bc8, buf_size 0x00400
+     60.571.895 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     60.571.899 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     60.571.902 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x06bc8
+     60.571.974 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00006fe0, nw_pp 0x00006fdc, nw_radio 0x00006fdc
+     60.578.641 logging.c(620)            log_thread                log packet [39]
+     60.579.938 deflate.c(796)            deflate                   close block
+     60.579.943 deflate.c(818)            deflate                   finalize chunk
+     60.579.946 deflate.c(822)            deflate                   flush buffer
+     60.580.838 logging.c(732)            log_thread                compression ratio: 1020 -> 285 (73% reduction)
+Hello from main scheduler...
+     61.570.339 scheduler.c(1524)         execution_thread          continue execution
+     61.570.344 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x2c1a8c00 (46246080us), RNG 0x9e48b84a
+     61.570.360 scheduler.c(822)          receive                   start Rx [40] at 61572835us/0x3ab86e3f (global 0x2c1aab40/46246580us), timeout 5000us
+
+61585404 TRX:
+nwBZAFEZACgYAhosGowAGjq4Tv8aOrjtvxo6uPy/GQAAGQAAGHBZAB4AGQECAwS2lwfIAQADAACMGixKuEieBQYHCAjRtrIAABo6uQMIGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHquc9sq1aRVpElJAw2aCEppmlBaaQhEEVE7rIcfdsQRhy/rkesmSSIOpEqhABCKABoKiCJoCgCEAgBBCiBFSQEAAAiACkoAgEIoAAAAAAiACgUAAADAMM3TgQceMM3jeMAQUalS1Ui0hippFCRNog1alYaqDJoq6f8HAP8AWQABAf8aQ0f5mA==
+
+     61.570.367 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00006fdc, nw_hot 0x000073f4
+     61.570.377 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     61.570.382 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     61.570.386 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     61.572.845 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     61.575.132 radio.c(603)              RADIO_IRQHandler_         packet received
+Hello from main scheduler...
+     61.575.223 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     61.575.229 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     61.575.233 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     61.575.237 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     61.575.243 scheduler.c(965)          receive                   Rx done [40], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 000073f4/000073f4
+     61.575.249 scheduler.c(1020)         receive                   content ok
+     61.575.252 scheduler.c(1028)         receive                   checkpoint available
+     61.575.256 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     61.575.264 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x2c1b2ac0, local = 0x3ab8edbf, g2l = 0:ffffcfa2, l2g = 1:0000305d
+     61.575.268 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     61.575.272 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     61.575.279 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [40]
+     61.575.283 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000073f4, nw_pp 0x00006fdc, nw_radio 0x000073f4, buf 0x00006fdc, buf_size 0x00400
+     61.575.286 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     61.575.289 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     61.575.292 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     61.575.297 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     61.575.302 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x06fdc
+     61.575.335 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000073f4, nw_pp 0x000071d8, nw_radio 0x000071d8
+     61.576.339 scheduler.c(1524)         execution_thread          continue execution
+     61.576.343 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x2c1c0300 (46252080us), RNG 0xc80797b6
+     61.576.348 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     61.585.401 logging.c(620)            log_thread                log packet [40]
+     61.586.369 deflate.c(796)            deflate                   close block
+     61.586.373 deflate.c(818)            deflate                   finalize chunk
+     61.586.377 deflate.c(822)            deflate                   flush buffer
+     61.586.532 logging.c(732)            log_thread                compression ratio: 484 -> 150 (70% reduction)
+Hello from main scheduler...
+     62.576.336 scheduler.c(1524)         execution_thread          continue execution
+     62.576.341 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x2d102700 (47252080us), RNG 0xc80797b6
+     62.576.356 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+62588751 TRX:
+nwBZAEUZACkYAhotECcAGjut6dEaO66IkRo7rpeRGQAAGQAAGIBZAB4AGQECAwRdGaLaAgEFAAAnEC22lwfIBQYHCAgAAAAZfQD/Gl8OzQw=
+
+     62.576.369 scheduler.c(690)          transmit                  start Tx [41] at 62580833us/0x3bae8611 (global 0x2d10c340 / 47252580 + 2000 us), timeout 5000us
+     62.576.377 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     62.580.835 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     62.581.121 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     62.581.130 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     62.581.134 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+Hello from main scheduler...
+     62.582.336 scheduler.c(1524)         execution_thread          continue execution
+     62.582.340 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x2d119e00 (47258080us), RNG 0xdaa2195d
+     62.582.345 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     62.588.748 logging.c(620)            log_thread                log packet [41]
+Hello from main scheduler...
+     63.582.333 scheduler.c(1524)         execution_thread          continue execution
+     63.582.338 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x2e05c200 (48258080us), RNG 0xdaa2195d
+     63.582.354 scheduler.c(822)          receive                   start Rx [42] at 63584830us/0x3ca3a3e2 (global 0x2e05e140/48258580us), timeout 5000us
+
+63597626 TRX:
+nwBZADgZACoYAhouBcIAGjyjhKIaO66H6Ro8o6NMGWSHGQAAGAhZAAUAANG2sgAAGjyk3GsaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBCK5zK02hpKkiSaXZoRVpA2iTVENRFZKCRAVtEQqNNB1SlUKC0pDSoECTptEoEdJKJVFSAE2JqJJCWhG0IU3TVIqKDqm0mjQFoaKgiqaVIASENCTNropGSkJqlxJDNSjQQDWFNAgtoBmENoUioSVD22hIE9JUuiMkSqSqQSqlohAUaRoUQ6NAdWjTRFq0QAQqIqgkVUWqBB0YuksUaRWCKAlISzRJtVQBTUmTpGhCKEUUDaJoNK0oJQhFh0agUdKAVkBIaLTsTWFA01CipGmCNgRomygphoIkpaQdNFU0u5CmgCEaRUkFbdKAKg1RSZSkKEUr0CQqKU1KpKKyNw0V2qAEoUnRiP5/AP8AWQABAQBYAP8aAY8SXg==
+
+     63.582.361 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000071d8, nw_hot 0x000075f0
+     63.582.371 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     63.582.376 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+Hello from main scheduler...
+     63.582.380 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     63.584.839 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     63.589.837 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     63.589.843 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     63.589.847 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     63.589.851 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     63.589.858 scheduler.c(965)          receive                   Rx done [42], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 000075f0/000075f0
+     63.589.863 scheduler.c(1450)         execution_thread          clock deviation: +25735 (1608us)
+     63.589.868 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x2e073900 (48264080us), RNG 0x88d11c7d
+     63.589.873 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     63.589.880 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [42]
+     63.589.884 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x000075f0, nw_pp 0x000071d8, nw_radio 0x000075f0, buf 0x000071d8, buf_size 0x00400
+     63.589.887 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     63.589.890 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     63.589.894 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x071d8
+     63.589.965 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x000075f0, nw_pp 0x000075ec, nw_radio 0x000075ec
+     63.597.623 logging.c(620)            log_thread                log packet [42]
+     63.598.925 deflate.c(796)            deflate                   close block
+     63.598.931 deflate.c(818)            deflate                   finalize chunk
+     63.598.934 deflate.c(822)            deflate                   flush buffer
+     63.599.862 logging.c(732)            log_thread                compression ratio: 1020 -> 292 (72% reduction)
+Hello from main scheduler...
+     64.588.331 scheduler.c(1524)         execution_thread          continue execution
+     64.588.335 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x2efb5d00 (49264080us), RNG 0x88d11c7d
+     64.588.351 scheduler.c(822)          receive                   start Rx [43] at 64590827us/0x3d993eb4 (global 0x2efb7c40/49264580us), timeout 5000us
+
+64603625 TRX:
+nwBZADgZACsYAhou+10AGj2ZH3QaO66H6Ro9mT4eOTZKGQAAGAhZAAUAANG2sgAAGj2adz0aAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5zG1SoNFohotBQ0YYStCAgmqaopgQFaEhUVFqtgEojkBSgoYk0TUVFm2oGQItGqEQhDZWmiaqk0RRtIm1KpZBQlUQjya6pFgIlqpqkHVIFpCVSTdFI0GijZE9DCgBAJIUmDSkae1EJVQISUlHRaNOCSNqkVApqQCFpAyVIlGrSljSpQpoUTVK0BApUJVIIggRoWqi2KSkJUZSkaNoI0hAoRKhkp6KigrSJStEUoVVA0pCSAKoaQtqBqoimEKpRAS1UhwaaNFUVKQWQJJHYS3aJIFVFUIDoDgmSVlGDIa1CQ6NpBRXNUAVICoVEKqhSSqRBqSBFIVFBIUAqjWj0/wMA/wBZAAEB/xq5tcwE
+
+     64.588.359 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000075ec, nw_hot 0x00007a04
+     64.588.368 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     64.588.373 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+Hello from main scheduler...
+     64.588.377 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     64.590.837 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     64.595.834 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     64.595.841 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     64.595.844 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     64.595.848 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     64.595.856 scheduler.c(965)          receive                   Rx done [43], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00007a04/00007a04
+     64.595.860 scheduler.c(1450)         execution_thread          clock deviation: -13899 (-868us)
+     64.595.865 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x2efcd400 (49270080us), RNG 0xded23aa3
+     64.595.870 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     64.595.877 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [43]
+     64.595.881 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00007a04, nw_pp 0x000075ec, nw_radio 0x00007a04, buf 0x000075ec, buf_size 0x00400
+     64.595.884 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     64.595.887 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     64.595.891 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x075ec
+     64.595.962 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00007a04, nw_pp 0x00007a00, nw_radio 0x00007a00
+     64.603.622 logging.c(620)            log_thread                log packet [43]
+     64.604.923 deflate.c(796)            deflate                   close block
+     64.604.927 deflate.c(818)            deflate                   finalize chunk
+     64.604.931 deflate.c(822)            deflate                   flush buffer
+     64.605.819 logging.c(732)            log_thread                compression ratio: 1020 -> 285 (73% reduction)
+Hello from main scheduler...
+     65.594.328 scheduler.c(1524)         execution_thread          continue execution
+     65.594.332 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x2ff0f800 (50270080us), RNG 0xded23aa3
+     65.594.338 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x2ff0f8a0 (50270090us), RNG 0xded23aa3
+
+65608640 TRX:
+nwBZADgZACwYAhov8PigGj6OuuYaO66H6Ro+jtmPGS5EGQAAGAhZAAUAANG2sgAAGj6QEq4aAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+q5zK6kOOwkhRVOpgiiUNNVIlcLQAKCBCIg2pS2UgESjgYQibUgBUZAGGtBGghTSXRSkaYsIFBFNGhpoCkBDVQOSKoCmdEAjNYRKSwNSiCLSBihAmiItKgDF0EAaGoVIFUIpaKIk1aSN0AhKKCgkpaCpSEsCUigpBSmEVKKiAOyRRJWUQpqmgNI0TRMYFEWANmmECpVoG01aiSpNMVSraYkSZI8kTdNSTRoEjZZIoyoIpGkljapUUCCGloZIA6CFhKYpqDYiSFKxK0Ug1TQg2TWRKFJFRLXQSFWTSlERKIIikDalIVSDhEZLKIBQoiIVChIoGqGJaun/BwD/AFkAAQEAWAD/GrugcPw=
+
+     65.594.354 scheduler.c(822)          receive                   start Rx [44] at 65596834us/0x3e8eda25 (global 0x2ff117e0/50270590us), timeout 5000us
+     65.594.362 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00007a00, nw_hot 0x00007e18
+     65.594.371 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+Hello from main scheduler...
+     65.594.376 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     65.594.380 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     65.596.843 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     65.601.841 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     65.601.848 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     65.601.851 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     65.601.855 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     65.601.863 scheduler.c(965)          receive                   Rx done [44], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00007e18/00007e18
+     65.601.867 scheduler.c(1450)         execution_thread          clock deviation: +11844 (740us)
+     65.601.873 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x2ff26fa0 (50276090us), RNG 0x93af9b1a
+     65.601.877 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     65.601.884 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [44]
+     65.601.888 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00007e18, nw_pp 0x00007a00, nw_radio 0x00007e18, buf 0x00007a00, buf_size 0x00400
+     65.601.891 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     65.601.894 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     65.601.898 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x07a00
+     65.601.969 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00007e18, nw_pp 0x00007e14, nw_radio 0x00007e14
+     65.608.637 logging.c(620)            log_thread                log packet [44]
+     65.609.937 deflate.c(796)            deflate                   close block
+     65.609.941 deflate.c(818)            deflate                   finalize chunk
+     65.609.945 deflate.c(822)            deflate                   flush buffer
+     65.610.533 logging.c(732)            log_thread                compression ratio: 1020 -> 278 (73% reduction)
+Hello from main scheduler...
+     66.600.335 scheduler.c(1524)         execution_thread          continue execution
+     66.600.339 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x30e693a0 (51276090us), RNG 0x93af9b1a
+     66.600.355 scheduler.c(822)          receive                   start Rx [45] at 66602831us/0x3f8474f7 (global 0x30e6b2e0/51276590us), timeout 5000us
+
+66615396 TRX:
+nwBZAFEZAC0YAhow5pOgGj+EVbcaP4T0eRo/hQN5GQACGQAAGHBZAB4AGQECAwRRTbJHAQADAKCT5jAam6+TBQYHCAimTEkAABo/hQnAGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHWuc+uAlqaQKA0kqEqKBFSrCghNA9oBpKyHH3r4cti6HrlukkTigKgqCgCEQoCGAlIQBQAgSipIoQAAAAAAAIIKgAIgoAIqKoiCAgBAACoFAACAKKlknqYDD5qneRzHDIGKRqRKFPtABKWVkoRGC6VQEOT/AwD/AFkAAQEAWAD/GlnFXzc=
+
+     66.600.363 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00007e14, nw_hot 0x0000822c
+     66.600.372 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     66.600.377 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+Hello from main scheduler...
+     66.600.381 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     66.602.841 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     66.605.128 radio.c(603)              RADIO_IRQHandler_         packet received
+     66.605.218 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     66.605.225 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     66.605.229 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     66.605.232 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     66.605.238 scheduler.c(965)          receive                   Rx done [45], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 0000822c/0000822c
+     66.605.244 scheduler.c(1020)         receive                   content ok
+     66.605.249 scheduler.c(1028)         receive                   checkpoint available
+     66.605.252 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     66.605.259 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x30e73260, local = 0x3f84f479, g2l = 0:ffffd00d, l2g = 1:00002ff2
+     66.605.264 scheduler.c(1450)         execution_thread          clock deviation: +2 (0us)
+     66.605.268 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     66.605.275 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [45]
+     66.605.279 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x0000822c, nw_pp 0x00007e14, nw_radio 0x0000822c, buf 0x00007e14, buf_size 0x00400
+     66.605.281 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     66.605.284 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     66.605.288 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     66.605.294 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     66.605.297 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x07e14
+     66.605.331 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x0000822c, nw_pp 0x00008010, nw_radio 0x00008010
+     66.606.335 scheduler.c(1524)         execution_thread          continue execution
+     66.606.339 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x30e80aa0 (51282090us), RNG 0x47b24d51
+     66.606.343 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     66.615.393 logging.c(620)            log_thread                log packet [45]
+     66.616.361 deflate.c(796)            deflate                   close block
+     66.616.366 deflate.c(818)            deflate                   finalize chunk
+     66.616.370 deflate.c(822)            deflate                   flush buffer
+     66.616.515 logging.c(732)            log_thread                compression ratio: 484 -> 145 (71% reduction)
+Hello from main scheduler...
+     67.606.332 scheduler.c(1524)         execution_thread          continue execution
+     67.606.336 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x31dc2ea0 (52282090us), RNG 0x47b24d51
+     67.606.352 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+67618747 TRX:
+nwBZAEUZAC4YAhox3C6gGkB58IsaQHqPSxpAep5LGQAAGQAAGIBZAB4AGQECAwTjyr3MAgEFAKAu3DFRTbJHBQYHCAgAAAAZfQD/Grvdu4g=
+
+     67.606.364 scheduler.c(690)          transmit                  start Tx [46] at 67610828us/0x407a8ccb (global 0x31dccae0 / 52282590 + 2000 us), timeout 5000us
+     67.606.373 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     67.610.830 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+Hello from main scheduler...
+     67.611.116 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     67.611.125 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     67.611.129 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     67.612.332 scheduler.c(1524)         execution_thread          continue execution
+     67.612.336 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x31dda5a0 (52288090us), RNG 0xccbdcae3
+     67.612.340 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     67.618.744 logging.c(620)            log_thread                log packet [46]
+Hello from main scheduler...
+     68.612.329 scheduler.c(1524)         execution_thread          continue execution
+     68.612.333 scheduler.c(1262)         execution_thread          schedule at 0007, tick 0x32d1c9a0 (53288090us), RNG 0xccbdcae3
+     68.612.350 scheduler.c(822)          receive                   start Rx [47] at 68614825us/0x416faa9d (global 0x32d1e8e0/53288590us), timeout 5000us
+
+68627623 TRX:
+nwBZADgZAC8YAhoy0cmgGkFvi10aQHqOoxpBb6oHGWSGGQAAGAhZAAUAAKZMSQAAGkFw4yYaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5zm1RRTTSlSRs0UWUApaQgrQTSKkUaISCqpI2qhGgoidKUkEBpKkmUViqlTVoAAkEj1Si7gFSjaZLSatMkIiFVlTR7FEmjlVZDFNKCJIpokxahUYRGBYmqhiZUREmpoQWiCa1S0hQIA0olqYKShkqJIkJQSIpqCpJIWxoUg0ppDZAmKgpUgzSNSqkQ2hRqqKZJgGoHpEhJWiVIo1QEVJqSNkRbSAVppRJEoKUKURKiNLQAIqm0VGtQUikAoaIJQrRJ2moUiDRt0lApAQ0ACS1tpAoaRTQlBKqCQIqmINA0kUZLg4YBktJCpWGPIiAltAFNRTUSVSqCpNBAVUHU/wcA/wBZAAEB/xr24g/S
+
+Hello from main scheduler...
+     68.612.357 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008010, nw_hot 0x00008428
+     68.612.367 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     68.612.371 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
+     68.612.375 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
+     68.614.835 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     68.619.833 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     68.619.839 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     68.619.843 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     68.619.846 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     68.619.854 scheduler.c(965)          receive                   Rx done [47], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00008428/00008428
+     68.619.859 scheduler.c(1450)         execution_thread          clock deviation: +25734 (1608us)
+     68.619.864 scheduler.c(1262)         execution_thread          schedule at 0008, tick 0x32d340a0 (53294090us), RNG 0xc5bf1dfa
+     68.619.869 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     68.619.876 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [47]
+     68.619.880 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00008428, nw_pp 0x00008010, nw_radio 0x00008428, buf 0x00008010, buf_size 0x00400
+     68.619.882 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     68.619.886 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     68.619.889 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x08010
+     68.619.961 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00008428, nw_pp 0x00008424, nw_radio 0x00008424
+     68.627.620 logging.c(620)            log_thread                log packet [47]
+     68.628.921 deflate.c(796)            deflate                   close block
+     68.628.925 deflate.c(818)            deflate                   finalize chunk
+     68.628.929 deflate.c(822)            deflate                   flush buffer
+     68.629.817 logging.c(732)            log_thread                compression ratio: 1020 -> 285 (73% reduction)
+Hello from main scheduler...
+     69.618.326 scheduler.c(1524)         execution_thread          continue execution
+     69.618.330 scheduler.c(1262)         execution_thread          schedule at 0009, tick 0x33c764a0 (54294090us), RNG 0xc5bf1dfa
+     69.618.347 scheduler.c(822)          receive                   start Rx [48] at 69620822us/0x4265456f (global 0x33c783e0/54294590us), timeout 5000us
+
+69633621 TRX:
+nwBZADgZADAYAhozx2SgGkJlJi8aQHqOoxpCZUTZOTZLGQAAGAhZAAUAAKZMSQAAGkJmffgaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/65z62hUA42WnSCQaFGU0GgjdpAQgTRoaIOdRiVRAA2oRpLq0BJoUoQ2NIJAm1YTFCQpUqqpJI2CSKuRKG062EEoUiUJ0FSotgFSjTTSVElDh6JUitRQLWAgSCHVaAAhpC2CVBEKjSIhGm2iFa0iSAXVhDSkKhUltFGhUZUmQAhBKURRhEoKaVpIiSiBRqtBglQppBJNSwoJSVtBU6WChqCSpiREo01bSFWpaEIKES1EaWhIiYIKSbSGUiQNtFWpotGkEQpIQ4qkkLSaEjGoUhVNCaqBMABNKzTVVqJJQ4OUlA4CYA9NQ1SgmqaNNFSJqIYSRFFAFEoA0pCCAv8fAP8AWQABAf8aHsp0/Q==
+
+Hello from main scheduler...
+     69.618.354 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008424, nw_hot 0x0000883c
+     69.618.364 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     69.618.369 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
+     69.618.373 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
+     69.620.833 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     69.625.830 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     69.625.836 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     69.625.840 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     69.625.843 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     69.625.851 scheduler.c(965)          receive                   Rx done [48], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 0000883c/0000883c
+     69.625.856 scheduler.c(1450)         execution_thread          clock deviation: -13900 (-868us)
+     69.625.861 scheduler.c(1262)         execution_thread          schedule at 000a, tick 0x33c8dba0 (54300090us), RNG 0x4a6acc94
+     69.625.866 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     69.625.873 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [48]
+     69.625.877 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x0000883c, nw_pp 0x00008424, nw_radio 0x0000883c, buf 0x00008424, buf_size 0x00400
+     69.625.880 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     69.625.883 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     69.625.886 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x08424
+     69.625.958 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x0000883c, nw_pp 0x00008838, nw_radio 0x00008838
+     69.633.618 logging.c(620)            log_thread                log packet [48]
+     69.634.917 deflate.c(796)            deflate                   close block
+     69.634.922 deflate.c(818)            deflate                   finalize chunk
+     69.634.925 deflate.c(822)            deflate                   flush buffer
+     69.635.814 logging.c(732)            log_thread                compression ratio: 1020 -> 283 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     70.624.323 scheduler.c(1524)         execution_thread          continue execution
+     70.624.328 scheduler.c(1262)         execution_thread          schedule at 000b, tick 0x34bcffa0 (55300090us), RNG 0x4a6acc94
+     70.624.333 scheduler.c(1262)         execution_thread          schedule at 0001, tick 0x34bd0040 (55300100us), RNG 0x4a6acc94
+
+70638636 TRX:
+nwBZADgZADEYAho0vQBAGkNawaEaQHqOoxpDWuBLGS5CGQAAGAhZAAUAAKZMSQAAGkNcGWoaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/q5zawItQlGiEtVINSCaFk2BSGtQSCCoJm0UKaEUVGmigQQpDSAgaatCdhGaRgraAdIWqYbQUFF0QAGJoKigUCUgpEipDHsqKqDtjoRISSjQkNKkaqApog1SGjSgkkKlBKRAJC00Ii3sRCiKKCGSFJqWqGhIqxH2lNAEaaCoUB0KadJCU0ikRQVUiTQqpCiGqjSQltBUUkpK2kaAVFQZKKAkpFpKBJoUAtEA0SahLY020oY0DdXEoKJVJAVpQ0DTUjQSaAsNgbRIpYIojRoCJQWioUgjhFaapG2kBY0WDWgkCJoqUZpqNESq0oogmg6KoGmrEVRIaROKARqE+v8A/wBZAAEBAFgA/xqUBZA5
+
+     70.624.350 scheduler.c(822)          receive                   start Rx [49] at 70626830us/0x435ae0e1 (global 0x34bd1f80/55300600us), timeout 5000us
+     70.624.357 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008838, nw_hot 0x00008c50
+     70.624.367 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
+     70.624.372 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
+     70.624.376 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 0
+     70.626.839 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     70.631.837 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     70.631.843 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 5003, #written = 5003, TIMER3 = 5003
+     70.631.847 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     70.631.851 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     70.631.858 scheduler.c(965)          receive                   Rx done [49], header detected: 0, CRC ok: 0, timeout reached: 1, RSSI space hot/radio: 00008c50/00008c50
+     70.631.863 scheduler.c(1450)         execution_thread          clock deviation: +11842 (740us)
+     70.631.868 scheduler.c(1262)         execution_thread          schedule at 0002, tick 0x34be7740 (55306100us), RNG 0x114f3947
+     70.631.873 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     70.631.880 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [49]
+     70.631.884 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00008c50, nw_pp 0x00008838, nw_radio 0x00008c50, buf 0x00008838, buf_size 0x00400
+     70.631.887 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000138b)
+     70.631.890 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     70.631.893 postprocessing.c(371)     postproc_thread           postprocessing 1020 samples, dst_buf 0x08838
+     70.631.965 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00008c50, nw_pp 0x00008c4c, nw_radio 0x00008c4c
+     70.638.634 logging.c(620)            log_thread                log packet [49]
+     70.639.932 deflate.c(796)            deflate                   close block
+     70.639.936 deflate.c(818)            deflate                   finalize chunk
+     70.639.940 deflate.c(822)            deflate                   flush buffer
+     70.640.830 logging.c(732)            log_thread                compression ratio: 1020 -> 282 (73% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     71.630.330 scheduler.c(1524)         execution_thread          continue execution
+     71.630.335 scheduler.c(1262)         execution_thread          schedule at 0003, tick 0x35b29b40 (56306100us), RNG 0x114f3947
+     71.630.351 scheduler.c(822)          receive                   start Rx [50] at 71632827us/0x44507bb3 (global 0x35b2ba80/56306600us), timeout 5000us
+
+71645393 TRX:
+nwBZAFEZADIYAho1sptAGkRQXHMaRFD7MRpEUQoxOQABGQAAGHBZAB4AGQECAwS8dAu9AQADAECbsjVHOU8RBQYHCAhNAQ8AABpEURB8GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHquc7MQAUI0qIhGUpqWKKmmaDTSimBHSaLZke3w/x1xxOHLeuS6SZKIcRprXUEABIARVIEiFFEAAKSkUQBACgAAAABAoKQAAEgJCkAAgEoBgAAKAGgIBSCgGeZpOuCgeTpgGOdRmiqlWoiGpBI1AIVoKGgRJUlUmv5/AP8AWQABAf8aychzEQ==
+
+     71.630.359 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008c4c, nw_hot 0x00009064
+     71.630.368 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
+     71.630.373 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 1)
+     71.630.377 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 1
+     71.632.836 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     71.635.123 radio.c(603)              RADIO_IRQHandler_         packet received
+     71.635.214 radio.c(738)              TIMER4_IRQHandler_        Rx done, disabling radio
+     71.635.221 radio.c(770)              TIMER4_IRQHandler_        RSSI ISR monitoring #expected = 2383, #written = 2383, TIMER3 = 2383
+     71.635.224 radio.c(773)              TIMER4_IRQHandler_        RSSI ISR monitoring CC =   3  14  11  15
+     71.635.228 radio.c(776)              TIMER4_IRQHandler_        RSSI ISR monitoring EV =   1   0   1   0
+     71.635.234 scheduler.c(965)          receive                   Rx done [50], header detected: 1, CRC ok: 1, timeout reached: 0, RSSI space hot/radio: 00009064/00009064
+     71.635.240 scheduler.c(1020)         receive                   content ok
+     71.635.245 scheduler.c(1028)         receive                   checkpoint available
+     71.635.248 scheduler.c(1045)         receive                   clock master received (node 1, 0 hops from root), updating reference
+     71.635.255 scheduler.c(223)          tick_reference_update     tick reference update: global = 0x35b33a00, local = 0x4450fb31, g2l = 0:ffffcfa2, l2g = 1:0000305d
+     71.635.259 scheduler.c(1450)         execution_thread          clock deviation: -2 (0us)
+     71.635.264 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     71.635.271 postprocessing.c(197)     postproc_thread           postprocessing Rx packet [50]
+     71.635.274 postprocessing.c(260)     postproc_thread           RSSI space: nw_hot 0x00009064, nw_pp 0x00008c4c, nw_radio 0x00009064, buf 0x00008c4c, buf_size 0x00400
+     71.635.277 postprocessing.c(285)     postproc_thread           1024 samples available (nw_end 0x0000094f)
+     71.635.280 postprocessing.c(292)     postproc_thread           103 posttrigger samples available
+     71.635.284 postprocessing.c(304)     postproc_thread           cutting 3 posttrigger samples
+     71.635.290 postprocessing.c(336)     postproc_thread           cutting >= 537 pretrigger samples
+     71.635.293 postprocessing.c(371)     postproc_thread           postprocessing 484 samples, dst_buf 0x08c4c
+     71.635.326 postprocessing.c(865)     postproc_thread           postproc done, RSSI space: nw_hot 0x00009064, nw_pp 0x00008e48, nw_radio 0x00008e48
+     71.636.330 scheduler.c(1524)         execution_thread          continue execution
+     71.636.334 scheduler.c(1262)         execution_thread          schedule at 0004, tick 0x35b41240 (56312100us), RNG 0xbd0b74bc
+     71.636.339 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     71.645.390 logging.c(620)            log_thread                log packet [50]
+     71.646.361 deflate.c(796)            deflate                   close block
+     71.646.365 deflate.c(818)            deflate                   finalize chunk
+     71.646.369 deflate.c(822)            deflate                   flush buffer
+     71.646.525 logging.c(732)            log_thread                compression ratio: 484 -> 150 (70% reduction)
+Hello from main scheduler...
+Hello from main scheduler...
+     72.636.327 scheduler.c(1524)         execution_thread          continue execution
+     72.636.332 scheduler.c(1262)         execution_thread          schedule at 0005, tick 0x36a83640 (57312100us), RNG 0xbd0b74bc
+     72.636.347 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
+
+72648744 TRX:
+nwBZAEUZADMYAho2qDZAGkVF90MaRUaWAxpFRqUDGQAAGQAAGIBZAB4AGQECAwQBNCQhAgEFAEA2qDa8dAu9BQYHCAgAAAAZfQD/Gi4FKWI=
+
+     72.636.360 scheduler.c(690)          transmit                  start Tx [51] at 72640824us/0x45469383 (global 0x36a8d280 / 57312600 + 2000 us), timeout 5000us
+     72.636.368 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
+     72.640.826 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
+     72.641.112 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
+     72.641.121 scheduler.c(1450)         execution_thread          clock deviation: +0 (0us)
+     72.641.125 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     72.642.327 scheduler.c(1524)         execution_thread          continue execution
+     72.642.331 scheduler.c(1262)         execution_thread          schedule at 0006, tick 0x36a9ad40 (57318100us), RNG 0x21243401
+     72.642.336 scheduler.c(1519)         execution_thread          pause execution (sleep)...
+     72.648.741 logging.c(620)            log_thread                log packet [51]
+Hello from main scheduler...

@@ -4,12 +4,16 @@ import threading
 from pathlib import Path
 from time import sleep
 from time import time
-from typing import Union, List, Optional, Annotated
+from typing import Annotated
+from typing import List
+from typing import Optional
+
 import serial
 import typer
 
-from .logger import logger
 from .cli_proto import app
+from .logger import logger
+
 
 def serial_port_list() -> list:
     """Lists serial port names
@@ -40,9 +44,12 @@ def serial_port_list() -> list:
     return result
 
 
-def receive_serial_thread(file_path: Path,
-                          uart_port: str, duration: int, baudrate: int,
-                          ) -> None:
+def receive_serial_thread(
+    file_path: Path,
+    uart_port: str,
+    duration: int,
+    baudrate: int,
+) -> None:
     file_path = file_path.with_stem(file_path.stem + "_" + uart_port)
     try:
         with serial.Serial(uart_port, baudrate, timeout=0) as uart, open(
@@ -75,15 +82,28 @@ def receive_serial_thread(file_path: Path,
     logger.debug("[UartMonitor] ended itself")
 
 
+receive_h = {
+    # NOTE: used as long as typer can't read this from fn-docstring
+    # https://github.com/tiangolo/typer/pull/436
+    "fp": "Directory or file-name (will add port to stem)",
+    "sp": "will capture every port when omitted",
+    "du": "how long to capture",
+    "br": "of serial port",
+}
+
+
 @app.command("receive")
 def receive_serial(
-        file_path: Annotated[Path, typer.Argument(help="Directory or file-name (will add port to stem)")],
-        serial_ports: Annotated[Optional[List[str]], typer.Option(help="will capture every port when omitted")] = None,
-        duration_s: Annotated[int, typer.Option(help="how long to capture")] = 600,
-        baud_rate: Annotated[int, typer.Option(help="of serial port")] = 230_400
+    file_path: Annotated[
+        Path, typer.Argument(help=receive_h["fp"])
+    ],
+    serial_ports: Annotated[
+        Optional[List[str]], typer.Option(help=receive_h["sp"])
+    ] = None,
+    duration_s: Annotated[int, typer.Option(help=receive_h["du"])] = 600,
+    baud_rate: Annotated[int, typer.Option(help=receive_h["br"], min=9_600)] = 230_400,
 ) -> None:
-    """ collect logs from trafficbench-nodes
-    """
+    """collect logs from trafficbench-nodes (uart -> .log)"""
     if isinstance(file_path, Path) and file_path.is_dir():
         file_path = file_path / "trafficbench.log"
 

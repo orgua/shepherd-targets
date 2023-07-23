@@ -1,26 +1,29 @@
-#!/usr/bin/env python3
 """
 Extract special data records from log files
 
 Author: Carsten Herrmann
 """
-import argparse
 import base64
 import re
 import sys
 from io import BufferedReader
 from io import BufferedWriter
 from pathlib import Path
+from typing import Annotated
 from typing import BinaryIO
 from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Union
 
+import typer
+
+from .checksum import ByteOrder
 from .checksum import test_checksum
+from .cli_proto import app, exit_stack
 from .filesystem import get_files
 from .logger import logger
-from .cli_proto import app
+
 
 def test_and_warn(
     line_number: int,
@@ -63,36 +66,122 @@ def test_and_warn(
         pos_start = pos_new + 1
 
 
+filter_h = {
+    # NOTE: used as long as typer can't read this from fn-docstring
+    # https://github.com/tiangolo/typer/pull/436
+    # TODO: maybe add typer.Option(help= ... )
+    "inf": "Directory (for many .log), file-name or omit to read from stdin",
+    "out": "resulting .b64-file, or omit to write to stdout",
+    "buf": "disable output buffering (flush after every record)",
+    "cch": "special markers, comma separated list of four 2-digit hex numbers representing "
+           "BEGIN_RECORD, END_RECORD, BEGIN_CHUNK, END_CHUNK (in this order)",
+    "mrz": "maximum allowed record size. "
+           "avoids accumulation of arbitrarily large segments in case of missing END_RECORD markers",
+    "sip": "check if all lines making a record stem from the same source, "
+           "use if input contains intermixed data from different sources. "
+           "PATTERN is a regular expression that extracts a line's source id",
+    "rsp": "extract records of a specific type (multiple definitions allowed). "
+           "ID is the identifier of the record type in the input stream. "
+    "PREFIX will be prepended to each entry of this type in the output stream (use "
+    " if PREFIX should be omitted).",
+    "csu": "test & drop record if invalid",
+    "csp": "position inside data. negative values specify position relative to the end",
+    "cst": "type of checksum",
+    "csb": "le = little-endian, be = big-endian",
+    "str": "show warnings if control characters appear at unusual places during parsing. "
+           "makes processing slower",
+    "a2o": "OUTFILE is opened in append mode (keep existing content)",
+}
+
+
 @app.command("filter-log")
 def filter_logfile(
-    infile: Path,  # TODO
-    outfile: Path,  # TODO
-    unbuffered: bool = False,
-    control_chars: Optional[List[str]] = None,  # TODO
-    max_record_size: int = 256 * 1024,
-    source_id_pattern: Optional[str] = None,
-    #record_spec: Optional[Dict[str, str]] = None,  # TODO
-    checksum: bool = True,
-    checksum_min_len: int = 4,
-    checksum_pos: Optional[List[int]] = None,
-    checksum_byteorder: str = "be",
-    strict: bool = True,
-    overwrite_outfile: bool = False,
+    infile: Annotated[Optional[Path], typer.Argument(help=filter_h["inf"])] = None,
+    outfile: Annotated[Optional[Path], typer.Argument(help=filter_h["out"])] = None,
+    unbuffered: Annotated[bool, typer.Option(help=filter_h["buf"])] = False,
+    control_chars: Annotated[Optional[List[str]], typer.Option(help=filter_h["cch"])] = None,
+    max_record_size: Annotated[
+        int,
+        typer.Option(help=filter_h["mrz"]),
+    ] = 256
+    * 1024,
+    source_id_pattern: Annotated[
+        Optional[str],
+        typer.Option(help=filter_h["sip"]),
+    ] = None,
+    # record_spec: Annotated[Optional[Dict[str, str]], typer.Option(help="")] = None,
+    # TODO: https://typer.tiangolo.com/tutorial/multiple-values/multiple-options/
+    record_spec: Annotated[Optional[List[str]], typer.Option(help=filter_h["rsp"])] = None,
+    checksum: Annotated[bool, typer.Option(help=filter_h["csu"])] = True,
+    checksum_min_len: Annotated[int, typer.Option(help="")] = 4,
+    checksum_pos: Annotated[
+        int,
+        typer.Option(help=filter_h["csp"]),
+    ] = -4,
+    checksum_type: Annotated[str, typer.Option(help=filter_h["cst"])] = "fletcher32",
+    checksum_byteorder: Annotated[
+        ByteOrder, typer.Option(help=filter_h["csb"])
+    ] = ByteOrder.big_endian,
+    strict: Annotated[
+        bool,
+        typer.Option(help=filter_h["str"]),
+    ] = True,
+    append_data: Annotated[
+        bool,
+        typer.Option(help=filter_h["a2o"]),
+    ] = False,
 ) -> None:
-    """ Extract special data records from log files
-    """
-    if isinstance(infile, Path) and infile.is_dir():
+    """Extract special data records from log files (.log -> .b64)"""
+    stack = exit_stack()
+
+    if infile is None:
+        files_in = [sys.stdin.buffer]
+    elif isinstance(infile, Path) and infile.is_dir():
         files_in = get_files(infile, "", ".log")
     else:
         files_in = [infile]
 
-    if isinstance(outfile, Path):
-        if outfile.exists() and not overwrite_outfile:
-            outfile = open(outfile, "ab")
+    if outfile is None:
+        outfile = sys.stdout.buffer
+    elif outfile.exists() and append_data:
+        outfile = open(outfile, "ab")
+        stack.enter_context(outfile)
+    else:
+        outfile = open(outfile, "wb")
+        stack.enter_context(outfile)
+    if outfile.isatty():
+        # automatically enable unbuffered mode if outfile is a TTY stream
+        unbuffered = True
+
+    if isinstance(control_chars, str):
+        control_chars = control_chars.split(sep=",")
+    if isinstance(control_chars, list):
+        control_chars = [bytes.fromhex(char) for char in control_chars]
+
+    if record_spec:
+        record_spec = {_id.encode(): prefix.encode() for _id, prefix in record_spec}
+    else:
+        record_spec = {b"TRX": b""}
+
+    if checksum:
+        checksum_size: int = 4
+        checksum_pos = [checksum_pos, checksum_pos + checksum_size]
+
+        if checksum_pos[1] == 0:
+            checksum_pos[1] = None
+        if checksum_pos[0] < 0:
+            checksum_min_len = -checksum_pos[0]
+            if -checksum_pos[0] < checksum_size:
+                logger.error(
+                    "checksum-position is invalid with respect to checksum-size (%d vs. %d)",
+                    checksum_pos[0],
+                    checksum_size
+                )
         else:
-            outfile = open(outfile, "wb")
-        # TODO: add contextlib for both files and clean exit-strategy
-        # TODO: remove pre-open of files, just take in paths
+            checksum_min_len = checksum_pos[1]
+
+    if checksum_type != "fletcher32":
+        raise RuntimeError("Only fletcher32 implemented ATM")
 
     for file_in in files_in:
         if isinstance(file_in, Path):
@@ -106,7 +195,7 @@ def filter_logfile(
             control_chars,
             max_record_size,
             source_id_pattern,
-            None, #record_spec,
+            record_spec,
             checksum,
             checksum_min_len,
             checksum_pos,
@@ -126,7 +215,7 @@ def _filter_logfile(
     checksum: bool = True,
     checksum_min_len: int = 4,
     checksum_pos: Optional[List[int]] = None,
-    checksum_byteorder: str = "be",
+    checksum_byteorder: ByteOrder = ByteOrder.big_endian,
     strict: bool = True,
 ) -> None:
     # special control characters
@@ -147,6 +236,7 @@ def _filter_logfile(
         END_CHUNK = control_chars[3]
 
     if record_spec is None:
+        # TODO: duplicate above
         record_spec = {b"TRX": b""}
 
     if checksum_pos is None:
@@ -322,161 +412,3 @@ def _filter_logfile(
                 test_and_warn(line_number, control_chars, buffer, strict=strict)
                 buffer = b""
                 break
-
-
-####################################################################################################
-
-
-if __name__ == "__main__":
-    # define command line arguments
-    # (see <https://docs.python.org/3.8/howto/argparse.html> for details)
-
-    ap = argparse.ArgumentParser(
-        description="extract special data records from log files"
-    )
-
-    ap.add_argument(
-        "infile",
-        type=argparse.FileType("rb"),
-        nargs="?",
-        default=sys.stdin.buffer,
-        help="default = stdin (or use - to read from stdin)",
-    )
-    group = ap.add_mutually_exclusive_group()
-    group.add_argument(
-        "-o",
-        "--outfile",
-        type=argparse.FileType("wb"),
-        default=None,
-        help="default = stdout (or use - to write to stdout)",
-    )
-    group.add_argument(
-        "-a",
-        "--append-to",
-        metavar="OUTFILE",
-        type=argparse.FileType("ab"),
-        default=sys.stdout.buffer,
-        help="same as -o, but OUTFILE is opened in append mode (keep existing content)",
-    )
-
-    ap.add_argument(
-        "-r",
-        "--record-spec",
-        nargs=2,
-        metavar=("ID", "PREFIX"),
-        default=[],
-        action="append",
-        help="extract records of a specific type (multiple definitions allowed). "
-        "ID is the identifier of the record type in the input stream. "
-        "PREFIX will be prepended to each entry of this type in the output stream "
-        '(use "" if PREFIX should be omitted).',
-    )
-
-    group = ap.add_mutually_exclusive_group()
-    group.add_argument(
-        "--strict",
-        action="store_true",
-        default=True,
-        help="parse input more strictly, show warnings if control characters appear at unusual places. "
-        "makes processing slower. default = on",
-    )
-    group.add_argument("--no-strict", dest="strict", action="store_false")
-
-    ap.add_argument(
-        "-c",
-        "--checksum",
-        action="store_true",
-        help="test checksum, drop record if invalid",
-    )
-    ap.add_argument(
-        "--checksum-type",
-        choices=("fletcher32",),
-        default="fletcher32",
-        help="type of checksum, default = fletcher32",
-    )
-    ap.add_argument(
-        "--checksum-position",
-        metavar="POS",
-        dest="checksum_pos",
-        type=int,
-        default=-4,
-        help="position of checksum inside data. negative values specify position relative to the end. default = -4",
-    )
-    ap.add_argument(
-        "--checksum-byteorder",
-        choices=("le", "be"),
-        default="be",
-        help="le = little-endian, be = big-endian (default)",
-    )
-
-    ap.add_argument(
-        "--check-source-id",
-        metavar="PATTERN",
-        dest="source_id_pattern",
-        help="check if all lines making a record stem from the same source. "
-        "PATTERN is a regular expression that extracts a line's source id. "
-        "use this option if input contains intermixed data from different sources.",
-    )
-
-    ap.add_argument(
-        "--control-chars",
-        help="control characters used as the special markers. "
-        "CONTROL_CHARS is a comma separated list of four 2-digit hex numbers representing "
-        "BEGIN_RECORD, END_RECORD, BEGIN_CHUNK, END_CHUNK  (in this order). default=01,04,02,03 (i.e. SOH, EOT, STX, ETX)",
-    )
-
-    ap.add_argument(
-        "--max-record-size",
-        type=int,
-        default=256 * 1024,
-        help="maximum allowed record size. default = 256KB. "
-        "prohibits accumulation of arbitrarily large segments in case of missing END_RECORD markers.",
-    )
-
-    ap.add_argument(
-        "-u",
-        "--unbuffered",
-        action="store_true",
-        help="disable output buffering (flush after every record)",
-    )
-
-    # parse command line
-    args = ap.parse_args()
-
-    if args.outfile is None:
-        args.outfile = args.append_to
-
-    if not len(args.record_spec):
-        ap.error("no record type defined (would generate empty output)")
-
-    args.record_spec = dict([(x[0].encode(), x[1].encode()) for x in args.record_spec])
-
-    # automatically enable unbuffered mode if outfile is a TTY stream
-    if args.outfile.isatty():
-        args.unbuffered = True
-
-    if args.checksum:
-        checksum_size: int = 4
-
-        args.checksum_pos = [args.checksum_pos, args.checksum_pos + checksum_size]
-        if args.checksum_pos[1] == 0:
-            args.checksum_pos[1] = None
-
-        if args.checksum_pos[0] < 0:
-            args.checksum_min_len = -args.checksum_pos[0]
-            if -args.checksum_pos[0] < checksum_size:
-                ap.error(
-                    f"checksum-position is invalid with respect to checksum-size ({args.checksum_pos[0]} vs. {checksum_size})"
-                )
-        else:
-            args.checksum_min_len = args.checksum_pos[1]
-
-    if isinstance(args.control_chars, (str, bytes)):
-        # string to list of strings
-        hex_chars = args.control_chars.split(sep=",")
-        args.control_chars = [bytes.fromhex(char) for char in hex_chars]
-
-    arg_dict = args.__dict__
-    arg_dict.pop("append_to")
-    arg_dict.pop("checksum_type")  # TODO: not handled
-    filter_logfile(**arg_dict)

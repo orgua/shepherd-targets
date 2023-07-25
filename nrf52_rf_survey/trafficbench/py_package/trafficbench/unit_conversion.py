@@ -2,6 +2,8 @@ from typing import Union
 
 import numpy as np
 
+from .constants import TICKS_PER_US
+
 
 def power_dBm_to_W(power_dBm: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return np.power(10.0, power_dBm * 0.1)
@@ -21,7 +23,6 @@ def factor_to_dB(value_lin: Union[float, np.ndarray]) -> Union[float, np.ndarray
 
 
 def gts_ticks_to_us(gts: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
-    TICKS_PER_US = 16
     return gts / TICKS_PER_US
 
 

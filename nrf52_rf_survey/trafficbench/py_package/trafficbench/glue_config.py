@@ -53,14 +53,15 @@ from glue.core.component_id import ComponentID
 from glue.core.component_link import ComponentLink
 from glue.core.subset import RangeSubsetState
 
-from ._table_records import TRxOperation
-from ._unit_conversion import const_nan
-from ._unit_conversion import gts_s_to_ticks
-from ._unit_conversion import gts_ticks_to_s
-from ._unit_conversion import gts_ticks_to_us
-from ._unit_conversion import gts_us_to_ticks
-from ._unit_conversion import power_dBm_to_W
-from ._unit_conversion import power_W_to_dBm
+from .constants import TICKS_PER_RSSI_SAMPLE
+from .table_records import TRxOperation
+from .unit_conversion import const_nan
+from .unit_conversion import gts_s_to_ticks
+from .unit_conversion import gts_ticks_to_s
+from .unit_conversion import gts_ticks_to_us
+from .unit_conversion import gts_us_to_ticks
+from .unit_conversion import power_dBm_to_W
+from .unit_conversion import power_W_to_dBm
 
 ####################################################################################################
 
@@ -86,12 +87,12 @@ def flatten_dtype(dtype, sep="_", prefix=""):
         desc = []
         for name in dtype.names:
             (type_, _) = dtype.fields[name]
-            name = prefix + name
+            name2 = prefix + name
             if type_.names is None:
                 #                 assert(type_.alignment == 1)
-                desc.append((name, type_))
+                desc.append((name2, type_))
             else:
-                desc.extend(flatten_dtype(type_, prefix=name + sep))
+                desc.extend(flatten_dtype(type_, prefix=name2 + sep))
     return desc if prefix else np.dtype(desc)
 
 
@@ -249,7 +250,6 @@ def read_trx(file_name):
         # import RSSI data
 
         trx_rssi = trx_array[trx_array["rssi:num_samples"] > 0]
-        TICKS_PER_SAMPLE = 16
 
         # read samples, add anchor_offset field
         x = h5file.root.trx_data.rssi_data.read()
@@ -299,7 +299,7 @@ def read_trx(file_name):
                         tt["schedule_gts"]
                         + tt["rssi:end_lts"]
                         - tt["schedule_lts"]
-                        + (np.arange(-k, 0) + 1) * TICKS_PER_SAMPLE
+                        + (np.arange(-k, 0) + 1) * TICKS_PER_RSSI_SAMPLE
                     )
                     xx["destination_node_key"] = node_key(tt["schedule_gts"], n)
                     nused += k
@@ -560,9 +560,6 @@ def read_trx(file_name):
 
 @autolinker(product_name + " TRX Auto-Linker")
 def trx_autolinker(dc):
-    global trx_loader_info
-    # print(f"{trx_loader_info=}")
-
     toc = dict(zip(dc.labels, range(len(dc.labels))))
 
     # use "nodes" to test if file has been analyzed (-> trx_analyze.py)

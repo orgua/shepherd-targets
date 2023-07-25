@@ -51,9 +51,6 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
     :param rssi_heap:
     :return:
     """
-
-    TICKS_PER_SAMPLE = TICKS_PER_RSSI_SAMPLE
-
     # guard times used to mask the rise and fall times of the RSSI measurements
     # The slew rate is limited by a low-pass filter in nRF52840's RSSI sampling block (single-pole
     # IIR filter with 15us settling time) [4413_417 v1.2 pp. 313 (6.20.8) and 359 (6.20.15.9)].
@@ -108,18 +105,18 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
         ts_start = ts_ref - get_ref_delay()
         ts_start2 = ts_end - get_packet_airtime(packet_len)
         ts_rssi_end = rssi["end_lts"]
-        ts_rssi_start = ts_rssi_end - len(rssi_samples) * TICKS_PER_SAMPLE
+        ts_rssi_start = ts_rssi_end - len(rssi_samples) * TICKS_PER_RSSI_SAMPLE
 
         # NOTE:
         # * ts_rssi_end = timestamp of last sample incl. RSSI sampling delay and PPI delay. The delays
-        #   could be compensated by subtracting a small constant (which is far below TICKS_PER_SAMPLE).
+        #   could be compensated by subtracting a small constant (which is far below TICKS_PER_RSSI_SAMPLE).
         # * ts_rssi_start is aligned with sample index -1 (-> half-open interval, end - start = num. samples).
-        #   Hence, the timestamp of rssi_samples[0] is ts_rssi_start + TICKS_PER_SAMPLE.
-        # * ts_rssi_end - ts_rssi_start is a multiple of TICKS_PER_SAMPLE,
-        #   i.e. integer division by TICKS_PER_SAMPLE is accurate.
+        #   Hence, the timestamp of rssi_samples[0] is ts_rssi_start + TICKS_PER_RSSI_SAMPLE.
+        # * ts_rssi_end - ts_rssi_start is a multiple of TICKS_PER_RSSI_SAMPLE,
+        #   i.e. integer division by TICKS_PER_RSSI_SAMPLE is accurate.
         # * noise_range and signal_range timestamps represent sample timestamps. Hence, if a range
-        #   starts at rssi_samples[i] then range.begin = ts_rssi_start + (i + 1) * TICKS_PER_SAMPLE.
-        #   If it starts at rssi_samples[-i] then range.begin = ts_rssi_end - (i - 1) * TICKS_PER_SAMPLE.
+        #   starts at rssi_samples[i] then range.begin = ts_rssi_start + (i + 1) * TICKS_PER_RSSI_SAMPLE.
+        #   If it starts at rssi_samples[-i] then range.begin = ts_rssi_end - (i - 1) * TICKS_PER_RSSI_SAMPLE.
 
         # check if oscillator drift and event timing uncertainty is "acceptable"
         # TODO: fine-tune the critical value (in case of problems)
@@ -130,10 +127,12 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
         def lts_to_gts(value: float):
             return value - trx["schedule_lts"] + trx["schedule_gts"]
 
-        n = (ts_start - GUARD_TICKS_NOISE_TO_START - ts_rssi_start) // TICKS_PER_SAMPLE
+        n = (
+            ts_start - GUARD_TICKS_NOISE_TO_START - ts_rssi_start
+        ) // TICKS_PER_RSSI_SAMPLE
         if n > 0:
             noise = np.concatenate((noise, rssi_samples[:n]))
-            noise_range.append((lts_to_gts(ts_rssi_start + TICKS_PER_SAMPLE), n))
+            noise_range.append((lts_to_gts(ts_rssi_start + TICKS_PER_RSSI_SAMPLE), n))
         else:
             logger.info(
                 "%3d @ %010x : RSSI prologue interval (%f us) < guard time (%f us)",
@@ -148,11 +147,11 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
             # and high oscillator drift (causing get_ref_delay() > real ref_delay and in consequence
             # computed ts_start < real ts_start) can lead to ts_start < ts_rssi_start.
 
-        n = (ts_rssi_end - (ts_end + GUARD_TICKS_END_TO_NOISE)) // TICKS_PER_SAMPLE
+        n = (ts_rssi_end - (ts_end + GUARD_TICKS_END_TO_NOISE)) // TICKS_PER_RSSI_SAMPLE
         if n > 0:
             noise = np.concatenate((noise, rssi_samples[-n:]))
             noise_range.append(
-                (lts_to_gts(ts_rssi_end - (n - 1) * TICKS_PER_SAMPLE), n)
+                (lts_to_gts(ts_rssi_end - (n - 1) * TICKS_PER_RSSI_SAMPLE), n)
             )
         else:
             logger.info(
@@ -165,15 +164,15 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
 
         n0 = (
             max(0, ts_start + GUARD_TICKS_START_TO_SIGNAL - ts_rssi_start)
-            // TICKS_PER_SAMPLE
+            // TICKS_PER_RSSI_SAMPLE
         )
         n1 = (
             max(0, ts_end - GUARD_TICKS_SIGNAL_TO_END - ts_rssi_start)
-            // TICKS_PER_SAMPLE
+            // TICKS_PER_RSSI_SAMPLE
         )
         signal = rssi_samples[range(n0, n1)]
         signal_range.append(
-            (lts_to_gts(ts_rssi_start + (n0 + 1) * TICKS_PER_SAMPLE), len(signal))
+            (lts_to_gts(ts_rssi_start + (n0 + 1) * TICKS_PER_RSSI_SAMPLE), len(signal))
         )
 
     # the following condition is true in case of a broken packet header (for instance)

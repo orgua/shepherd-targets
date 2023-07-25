@@ -5,6 +5,7 @@ and add result data to the same file
 Author: Carsten Herrmann
 """
 import base64
+import functools
 import numbers
 import warnings
 from pathlib import Path
@@ -98,9 +99,9 @@ def analyze_trx(
         filters=h5file.root.trx_data._v_filters,
     )
 
-    for i in trx_table.indexedcolpathnames:
-        logger.info("removing index of %s.%s", trx_table._v_pathname, i)
-        trx_table.cols._f_col(i).remove_index()
+    for idx in trx_table.indexedcolpathnames:
+        logger.info("removing index of %s.%s", trx_table._v_pathname, idx)
+        trx_table.cols._f_col(idx).remove_index()
 
     logger.info("creating RX info catalog")
     rx_info_table = h5file.create_table(
@@ -156,40 +157,40 @@ def analyze_trx(
         indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
         trx = trx_table[indexes]
 
-        I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
-        I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
+        indexes_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+        indexes_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
         # TODO: print helpful error message, skip transaction and continue
         if (len(set(trx["node_id"])) != len(trx)) or (
-            len(I_tx) + len(I_rx) != len(trx)
+            len(indexes_tx) + len(indexes_rx) != len(trx)
         ):
             raise AssertionError()
 
-        n_tx += len(I_tx)
-        n_rx += np.count_nonzero(trx["trx_status"]["crc_ok"][I_rx])
+        n_tx += len(indexes_tx)
+        n_rx += np.count_nonzero(trx["trx_status"]["crc_ok"][indexes_rx])
 
         # add unknown nodes
         nodes.update(trx["node_id"])
 
         # create rx_info entries
-        if len(I_rx) > 0:
+        if len(indexes_rx) > 0:
             x = rx_info_table.row
             x["schedule_gts"] = schedule_gts
-            x["num_transmitters"] = len(I_tx)
+            x["num_transmitters"] = len(indexes_tx)
             x.append()
             rx_info_table.flush()
-            rx_info_table.append(np.repeat(x.fetch_all_fields(), len(I_rx) - 1))
+            rx_info_table.append(np.repeat(x.fetch_all_fields(), len(indexes_rx) - 1))
             rx_info_table.modify_column(
-                start=len(rx_info_table) - len(I_rx),
+                start=len(rx_info_table) - len(indexes_rx),
                 colname="destination_node_id",
-                column=trx[I_rx]["node_id"],
+                column=trx[indexes_rx]["node_id"],
             )
 
         # create transaction
         x = trans_table.row
         x["schedule_gts"] = schedule_gts
         x["num_nodes"] = len(trx)
-        x["num_transmitters"] = len(I_tx)
+        x["num_transmitters"] = len(indexes_tx)
         x.append()
 
     nodes = tuple(nodes)
@@ -225,18 +226,18 @@ def analyze_trx(
         indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
         trx = trx_table[indexes]
 
-        I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
-        I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
+        indexes_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+        indexes_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
         # the following is ensured / has already been checked during grouping step or where-clause:
         # assert(len(set(trx["node_id"])) == len(trx))
         # assert(len(I_tx) + len(I_rx) == len(trx))
         # assert(len(I_tx) == 1)
 
-        t = trx[I_tx]
+        t = trx[indexes_tx]
 
-        for i in I_rx:
-            r = trx[i]
+        for idx in indexes_rx:
+            r = trx[idx]
 
             warn_rssi(r)
 
@@ -365,15 +366,15 @@ def analyze_trx(
         indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
         trx = trx_table[indexes]
 
-        I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
-        I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
+        indexes_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+        indexes_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
         # the following is ensured / has already been checked during grouping step or where-clause:
         # assert(len(set(trx["node_id"])) == len(trx))
         # assert(len(I_tx) + len(I_rx) == len(trx))
 
-        for i in I_rx:
-            r = trx[i]
+        for idx in indexes_rx:
+            r = trx[idx]
 
             k = rx_info_table.get_where_list(
                 f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
@@ -387,10 +388,10 @@ def analyze_trx(
             # print('\rprocessing {:3d} @ {:#010x}, {} transmitters'.format(r['node_id'], schedule_gts, len(I_tx)), end='')
 
             # TODO: select method via command line param
-            rx_power = np.zeros(len(I_tx))
+            rx_power = np.zeros(len(indexes_tx))
             if True:
                 rx_power = link_matrix[
-                    id_map[trx["node_id"][I_tx]], id_map[r["node_id"]]
+                    id_map[trx["node_id"][indexes_tx]], id_map[r["node_id"]]
                 ]
             else:
                 if r["schedule_gts"].dtype != np.uint32:
@@ -405,7 +406,7 @@ def analyze_trx(
                 def fmin(a, b):
                     return a if a[0] <= b[0] else b
 
-                for l, k in enumerate(I_tx):
+                for l, k in enumerate(indexes_tx):
                     x = functools.reduce(
                         fmin,
                         map(
@@ -427,7 +428,7 @@ def analyze_trx(
 
             if r["trx_status"]["crc_ok"]:
                 S = np.flatnonzero(
-                    trx[I_tx]["packet_content_raw"] == r["packet_content_raw"]
+                    trx[indexes_tx]["packet_content_raw"] == r["packet_content_raw"]
                 )
 
             # same packet from multiple transmitters
@@ -436,17 +437,17 @@ def analyze_trx(
 
             # unsuccessful reception / no transmitters / packet from external interferer
             elif len(S) == 0:
-                S = np.arange(len(I_tx))
+                S = np.arange(len(indexes_tx))
 
                 if r["trx_status"]["crc_ok"]:
                     rxi["ambiguous_source"] = b"!!"
-                elif len(I_tx) > 0:
+                elif len(indexes_tx) > 0:
                     rxi["ambiguous_source"] = b"?"
                 elif r["trx_status"]["header_detected"]:
                     rxi["ambiguous_source"] = b"!"
 
                 # find transmitter(s) with smallest Hamming distance
-                if len(I_tx) > 1:
+                if len(indexes_tx) > 1:
                     with warnings.catch_warnings():
                         warnings.filterwarnings(
                             "ignore", "overflow encountered in uint_scalars"
@@ -459,9 +460,9 @@ def analyze_trx(
                             ),
                             bitorder="little",
                         )
-                        dist = np.empty(len(I_tx), dtype=np.uint32)
-                        for itx in range(len(I_tx)):
-                            t = trx[I_tx[itx]]
+                        dist = np.empty(len(indexes_tx), dtype=np.uint32)
+                        for itx in range(len(indexes_tx)):
+                            t = trx[indexes_tx[itx]]
 
                             src_bits = np.unpackbits(
                                 np.frombuffer(
@@ -507,7 +508,7 @@ def analyze_trx(
                     )
                     S1 = S
                     for itx in S1:
-                        t = trx[I_tx[itx]]
+                        t = trx[indexes_tx[itx]]
                         ts_shift = np.int32(
                             r["packet_lts"] - r["schedule_lts"]
                         ) - np.int32(t["packet_lts"] - t["schedule_lts"])
@@ -533,12 +534,12 @@ def analyze_trx(
 
                 s = S1[rx_power[S1].argmax()] if len(S1) > 0 else None
                 if s is not None:
-                    rxi["source_node_id"] = trx[I_tx[s]]["node_id"]
+                    rxi["source_node_id"] = trx[indexes_tx[s]]["node_id"]
 
                 if (SourceUncertainty.STRONG == rxi["source_uncertainty"]) and (
                     rxi["ambiguous_source"] in b"*!!"
                 ):
-                    n = trx["node_id"][I_tx[S[rx_power_isnan[S]]]]
+                    n = trx["node_id"][indexes_tx[S[rx_power_isnan[S]]]]
                     logger.debug(
                         "%3d @ %010x : strong link power uncertainty due to missing link measurement(s) for transmitting node(s) %s",
                         r["node_id"],
@@ -766,8 +767,8 @@ def analyze_trx(
         indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
         trx = trx_table[indexes]
 
-        I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
-        I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
+        indexes_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
+        indexes_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
         # the following is ensured / has already been checked during grouping step or where-clause:
         # assert(len(set(trx["node_id"])) == len(trx))
@@ -779,11 +780,11 @@ def analyze_trx(
         SNRs = [(None, None)] * len(trx)
         SINRs = [("", "")] * len(trx)
 
-        for i in I_tx:
-            actions[i] = ("Tx", "")
+        for idx in indexes_tx:
+            actions[idx] = ("Tx", "")
 
-        for i in I_rx:
-            r = trx[i]
+        for idx in indexes_rx:
+            r = trx[idx]
 
             rxi = rx_info_table.read_where(
                 f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
@@ -797,20 +798,20 @@ def analyze_trx(
                 m += UNCERT[rxi["source_uncertainty"]]
 
             if not r["trx_status"]["header_detected"]:
-                actions[i] = ("", "")
+                actions[idx] = ("", "")
             else:
                 s = rxi["source_node_id"]
-                actions[i] = (s if s >= 0 else "", m)
+                actions[idx] = (s if s >= 0 else "", m)
 
                 if not r["trx_status"]["crc_ok"]:
-                    actions[i] = ("(",) + actions[i] + (")",)
+                    actions[idx] = ("(",) + actions[idx] + (")",)
 
             if not np.isnan(rxi["SNR_dB"]):
-                SNRs[i] = (rxi["SNR_min_dB"], rxi["SNR_dB"], rxi["SNR_max_dB"])
+                SNRs[idx] = (rxi["SNR_min_dB"], rxi["SNR_dB"], rxi["SNR_max_dB"])
 
             x = rxi["SINR_link_dB"]
             if not np.isnan(x):
-                SINRs[i] = (x, m)
+                SINRs[idx] = (x, m)
 
         def fmt(c):
             return " | ".join([f"{x:^6}" for x in c])

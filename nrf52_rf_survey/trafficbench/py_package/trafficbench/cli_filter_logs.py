@@ -195,10 +195,12 @@ def filter_logfile(
     for file_in in files_in:
         if isinstance(file_in, Path):
             logger.info("Filtering %s", file_in.name)
-            file_in = open(file_in, "rb")
+            file_rh = open(file_in, "rb")
+        else:
+            file_rh = file_in
 
         _filter_logfile(
-            file_in,
+            file_rh,
             outfile,
             unbuffered,
             control_chars,
@@ -267,11 +269,11 @@ def _filter_logfile(
     # process infile
     buffer = b""
     line_number = 1
-    for line in infile:  # TODO: put content in separate FN?
+    for line_raw in infile:  # TODO: put content in separate FN?
         # replace stand-alone \r by \n
         # NOTE: common text viewers / editors do the same,
         # so this step is important to be consistent with displayed line numbers
-        line = line.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+        line = line_raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
 
         line_number += line.count(b"\n")
 

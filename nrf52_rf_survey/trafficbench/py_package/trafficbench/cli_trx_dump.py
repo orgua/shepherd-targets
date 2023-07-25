@@ -24,6 +24,8 @@ import typer
 
 from .checksum import fletcher32
 from .cli_proto import app
+from .constants import TICKS_PER_BIT
+from .constants import TICKS_PER_S
 from .crc import calc_crc
 from .file_database import FileWriter
 from .logger import logger
@@ -367,9 +369,6 @@ def dump_trx(
             # see
             # <https://github.com/windelbouwman/lognplot>
             # <https://lognplot.readthedocs.io/en/latest/reference/misc.html>
-
-            TICKS_PER_BIT = 16
-            TICKS_PER_S = 16_000_000
 
             # TODO: check if CRC bits have big-endian bitorder
             header_bits = [0.5] * (8 + 32)

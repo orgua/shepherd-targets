@@ -20,7 +20,8 @@ import typer
 
 from .checksum import ByteOrder
 from .checksum import test_checksum
-from .cli_proto import app, exit_stack
+from .cli_proto import app
+from .cli_proto import exit_stack
 from .filesystem import get_files
 from .logger import logger
 
@@ -74,14 +75,14 @@ filter_h = {
     "out": "resulting .b64-file, or omit to write to stdout",
     "buf": "disable output buffering (flush after every record)",
     "cch": "special markers, comma separated list of four 2-digit hex numbers representing "
-           "BEGIN_RECORD, END_RECORD, BEGIN_CHUNK, END_CHUNK (in this order)",
+    "BEGIN_RECORD, END_RECORD, BEGIN_CHUNK, END_CHUNK (in this order)",
     "mrz": "maximum allowed record size. "
-           "avoids accumulation of arbitrarily large segments in case of missing END_RECORD markers",
+    "avoids accumulation of arbitrarily large segments in case of missing END_RECORD markers",
     "sip": "check if all lines making a record stem from the same source, "
-           "use if input contains intermixed data from different sources. "
-           "PATTERN is a regular expression that extracts a line's source id",
+    "use if input contains intermixed data from different sources. "
+    "PATTERN is a regular expression that extracts a line's source id",
     "rsp": "extract records of a specific type (multiple definitions allowed). "
-           "ID is the identifier of the record type in the input stream. "
+    "ID is the identifier of the record type in the input stream. "
     "PREFIX will be prepended to each entry of this type in the output stream (use "
     " if PREFIX should be omitted).",
     "csu": "test & drop record if invalid",
@@ -89,7 +90,7 @@ filter_h = {
     "cst": "type of checksum",
     "csb": "le = little-endian, be = big-endian",
     "str": "show warnings if control characters appear at unusual places during parsing. "
-           "makes processing slower",
+    "makes processing slower",
     "a2o": "OUTFILE is opened in append mode (keep existing content)",
 }
 
@@ -99,7 +100,9 @@ def filter_logfile(
     infile: Annotated[Optional[Path], typer.Argument(help=filter_h["inf"])] = None,
     outfile: Annotated[Optional[Path], typer.Argument(help=filter_h["out"])] = None,
     unbuffered: Annotated[bool, typer.Option(help=filter_h["buf"])] = False,
-    control_chars: Annotated[Optional[List[str]], typer.Option(help=filter_h["cch"])] = None,
+    control_chars: Annotated[
+        Optional[List[str]], typer.Option(help=filter_h["cch"])
+    ] = None,
     max_record_size: Annotated[
         int,
         typer.Option(help=filter_h["mrz"]),
@@ -111,7 +114,9 @@ def filter_logfile(
     ] = None,
     # record_spec: Annotated[Optional[Dict[str, str]], typer.Option(help="")] = None,
     # TODO: https://typer.tiangolo.com/tutorial/multiple-values/multiple-options/
-    record_spec: Annotated[Optional[List[str]], typer.Option(help=filter_h["rsp"])] = None,
+    record_spec: Annotated[
+        Optional[List[str]], typer.Option(help=filter_h["rsp"])
+    ] = None,
     checksum: Annotated[bool, typer.Option(help=filter_h["csu"])] = True,
     checksum_min_len: Annotated[int, typer.Option(help="")] = 4,
     checksum_pos: Annotated[
@@ -175,7 +180,7 @@ def filter_logfile(
                 logger.error(
                     "checksum-position is invalid with respect to checksum-size (%d vs. %d)",
                     checksum_pos[0],
-                    checksum_size
+                    checksum_size,
                 )
         else:
             checksum_min_len = checksum_pos[1]

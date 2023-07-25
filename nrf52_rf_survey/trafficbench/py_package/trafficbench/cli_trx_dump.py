@@ -15,13 +15,15 @@ import itertools
 import sys
 import zlib
 from pathlib import Path
-from typing import Optional, Annotated, List
+from typing import Annotated
+from typing import List
+from typing import Optional
 
 import cbor2
 import typer
 
-from .cli_proto import app
 from .checksum import fletcher32
+from .cli_proto import app
 from .crc import calc_crc
 from .file_database import FileWriter
 from .table_records import TRxOperation
@@ -32,7 +34,9 @@ def bin_out(x: float, node_id: int, gain: float = 1, offset: float = 0) -> float
     return x * gain + node_id * offset
 
 
-def bin_list_out(x: List[float], node_id: int, gain: float = 1, offset: float = 0) -> List[float]:
+def bin_list_out(
+    x: List[float], node_id: int, gain: float = 1, offset: float = 0
+) -> List[float]:
     return [bin_out(x_elem, node_id, gain, offset) for x_elem in x]
 
 
@@ -50,7 +54,6 @@ dump_h = {
     "lcp": "TCP port of lognplot server",
     "lcg": "gain of binary data output. output value = MUL * input + OFS * node_id",
     "lco": "offset of binary data output. output value = MUL * input + OFS * node_id",
-
 }
 
 
@@ -68,8 +71,7 @@ def dump_trx(
     logn_bin_gain: Annotated[float, typer.Option(help=dump_h["lcg"])] = 1,
     logn_bin_offset: Annotated[float, typer.Option(help=dump_h["lco"])] = 0,
 ) -> None:
-    """ decode TRX messages and import them into PyTables HDF5 file (.b64 -> .h5)
-    """
+    """decode TRX messages and import them into PyTables HDF5 file (.b64 -> .h5)"""
 
     if isinstance(infile, Path):
         infile = open(infile, "r")
@@ -91,11 +93,11 @@ def dump_trx(
         # import modules only if needed (may be not installed)
         import numpy as np
         from lognplot.client import LognplotTcpClient
+
         lognclient = LognplotTcpClient(logn_host, logn_port)
         lognclient.connect()
     else:
         lognclient = None
-
 
     # process infile
     record_counters = {}
@@ -447,8 +449,14 @@ def dump_trx(
             lognclient.send_sample_batch(
                 f"N{node_id} operation",
                 [
-                    (ts_sched, bin_out(operation, node_id, logn_bin_gain, logn_bin_offset)),
-                    (ts_end, bin_out(operation, node_id, logn_bin_gain, logn_bin_offset)),
+                    (
+                        ts_sched,
+                        bin_out(operation, node_id, logn_bin_gain, logn_bin_offset),
+                    ),
+                    (
+                        ts_end,
+                        bin_out(operation, node_id, logn_bin_gain, logn_bin_offset),
+                    ),
                 ],
             )
             lognclient.send_sample_batch(

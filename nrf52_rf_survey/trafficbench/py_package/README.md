@@ -19,8 +19,8 @@ pip3 install .
 
 ### Additional Options
 
-- `glue`: 
-- `lognplot`: 
+- `glue`:
+- `lognplot`:
 - `dev`: all tools used for development
 - `test`: environment to run unittests
 
@@ -36,7 +36,7 @@ pip3 install .[all]
 
 ### CLI
 
-Examples 
+Examples
 
 ```shell
 trafficbench --help
@@ -47,8 +47,8 @@ trafficbench receive --help
 
 see [examples](./examples)
 
-## TODO 
+## TODO
 
 - further break down long fn
-- some kind of streaming-functionality -> a set of generators? 
+- some kind of streaming-functionality -> a set of generators?
   - uart -> filter -> dump -> analyze

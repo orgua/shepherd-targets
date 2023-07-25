@@ -21,7 +21,8 @@ Hello from main scheduler...
 
 11586428 TRX:
 nwBZADgZAAAYARoExLQAGgsJgK4a////ZBoLCZ9YOSAJGQAAGAhZAAUAAAAAAAAAGgsK2HgaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+K5zm0qTlkAbAok0TRVo0JaiKkFBEFCIpFHQEkU0KakUEoI0UW1UoAJooEpEaKOSaqhUKJoUKBKFgkYTiAJoEGlpKK1qkoSkDVEtpCmoJtKmJZBUpVFBCDQaiKpKGiqNEqoAaCMVCIVUGoSwt0RFNSFFRRBFolSDpkiQaBQKUTSgKEM0aIgUgFKQChUlQmRXSlJB9gqh2gCFVFNAOiBQJZqmEUVa0jQtaBIVaBpKKhDVSlENgYQGSCFtU0oghZQkaicBBQZVDTRKpJA2aBItbWjQUImWkBKUNmk0hiKkStIAVTQKQYCqlJBQKI02aUBIWqJAVFL2/w8A/wBZAAEBAFgA/xqDMORH
-Hello from main scheduler...
+
+Hello from main scheduler...
      11.571.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000000, nw_hot 0x00000418
      11.571.300 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      11.571.304 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -54,7 +55,8 @@ Hello from main scheduler...
 
 12589633 TRX:
 nwBZAEUZAAEYARoFuk8AGgv/G64aC/+6bhoL/8luGQAAGQAAGIBZAB4AGQECAwRVAIgAAQADAABPugUFAAoABQYHCAgAAAAZfQD/GiT5Vhc=
-     12.577.294 scheduler.c(690)          transmit                  start Tx [1] at 12581758us/0x0bffb7ee (global 0x05baeb40 / 6006500 + 2000 us), timeout 5000us
+
+     12.577.294 scheduler.c(690)          transmit                  start Tx [1] at 12581758us/0x0bffb7ee (global 0x05baeb40 / 6006500 + 2000 us), timeout 5000us
      12.577.303 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      12.581.760 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      12.582.047 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -72,7 +74,8 @@ Hello from main scheduler...
 
 13598197 TRX:
 nwBZAFEZAAIYARoGr+oAGgz0tq4aDPVVnBoM9WScGQAuGQAAGHBZAB4AGQECAwRRBAoKAgEFAADqrwZVAIgABQYHCAhzfYMAABoM9Wr3GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAH+ucxtAUm0VUYomAGmASHVHounQwtA2qCIdsh522BFHHL6sR66bJBFhoqApAAEVAKAQioACkBI0AAANMI1qLQUKEE0FFSAFCikAEABQQQUAQENDFAAFUhAaGhSQYZ6m6aB5OmAap3GghmiLNpo2LRLRpDQKmmgKJWmFpCkp/x8A/wBZAAEBAFgA/xog5U66
-     13.583.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000414, nw_hot 0x0000082c
+
+     13.583.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000414, nw_hot 0x0000082c
      13.583.300 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      13.583.304 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      13.583.308 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -110,7 +113,8 @@ Hello from main scheduler...
 
 14604430 TRX:
 nwBZADgZAAMYARoHpYUAGg3qUa4aDPVVnBoN6nBYGWUuGQAAGAhZAAUAAHN9gwAAGg3rqXcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBA65zG9lT0qSCFBXQCNFq0ahSTYMKpJFEqiUq0qKpBpK0FGk0RFMdoKlIGk0BoUSqaaoUQhKp0oZoWiRtoxEaqkqaJAqaYdekaVooQdrQpgKAJlVDC4EQjWqUtIKgUiIokbYICGgNsidVqqlBi0akGCJUk6qgIgWgQDUdtEBQBikiaFWJEIpCoAgpIKhESxOliBAtAFRDEKFoU1VDilCNkKimGomSptBWoJEmVDQUSYqiTUsiREhbopFGNUQJ0lJFoCpAFUI02kIqDU0aJKAlTYqolD2DRhsIFVQbGoo0bSiRIqQklaagUEEKIVTStAokTQN70JSoIEgJKtWGStOohNL/DwD/AFkAAQH/GgN4q+s=
-     14.589.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000610, nw_hot 0x00000a28
+
+     14.589.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000610, nw_hot 0x00000a28
      14.589.300 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      14.589.304 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      14.589.308 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -142,7 +146,8 @@ Hello from main scheduler...
 
 15610445 TRX:
 nwBZADgZAAQYARoImyAAGg7f7K4aDPVVnBoO4AtYOTXRGQAAGAhZAAUAAHN9gwAAGg7hRLcaAAAAAFkEAAFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+a5zGxKatNWgJIWkGlXRaKlSKpoUUUQqlKCiEVRLWkUQpYkkoSklCqSQNKoESWgKmkIlUJI0TUtbEEiTFiGCoo2ARgg0LSUojZQIQFsSdChtIikle1CppiFUGKSgGhWiSjQNVIuKMBSIRtFIFA2CtCotDRAaoqKoFFCClEglLSTRpkJRSEoLQUUhqKhQgTYSNKBJVRqNyg6VSkBENIoCVQKQFEK0UqrQGABpWlREoSkQIKJpUnaqqASkImlVhRaBFBUERAdNRVU0TcFQBQqBiDakoZDSogIREIJKG001SVVTTUoFQBqoKJAIKFIKJKEq2qQRparRVPn/AP8AWQABAf8aounKxg==
-     15.595.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000a24, nw_hot 0x00000e3c
+
+     15.595.290 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000a24, nw_hot 0x00000e3c
      15.595.300 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      15.595.304 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      15.595.308 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -173,7 +178,8 @@ Hello from main scheduler...
 
 16615577 TRX:
 nwBZADgZAAUYARoJkLugGg/ViE4aDPVVnBoP1ab4GS6OGQAAGAhZAAUAAHN9gwAAGg/W4BcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+a5zGyJKFaFIkUAJrZaohFYBhRgaRRJKIrQ0GkpApYoKEUFLQimVIBWFEkoqUiqtCEUqNKFKQlRLopAqUNFItA0NmmilIlGNJopKaaOpRKlKiLSVGiSgRNO0JBXSQBWFoCiq0ggimoYUECUNiDaiLYKSQpCgQlsSe0iVQINIqEaJilYKoQBoItUKaYlASgVoKACSPZoijSjQVqJDQSgK1QFESiAtLQkoICIp0KSqBFGlSkKCaqoRFUoJVTRQaVQQFJKqMjQQ1RpoGqqRaCqkkuwthUAAUNIUVCJSLUg1KBKIVDUaAmLXVKMCjbQJiYZqAiotaaCIyP8HAP8AWQABAf8a4nveNQ==
-     16.601.289 scheduler.c(822)          receive                   start Rx [5] at 16603768us/0x0fd5a78e (global 0x0990dae0/10030510us), timeout 5000us
+
+     16.601.289 scheduler.c(822)          receive                   start Rx [5] at 16603768us/0x0fd5a78e (global 0x0990dae0/10030510us), timeout 5000us
      16.601.296 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00000e3c, nw_hot 0x00001254
      16.601.306 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      16.601.310 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -206,7 +212,8 @@ Hello from main scheduler...
 
 17619690 TRX:
 nwBZAEUZAAYYARoKhlagGhDLI04aEMvCDhoQy9EOGQAAGQAAGIBZAB4AGQECAwSLU66kAQADAKBWhgpnEdgABQYHCAgAAAAZfQD/GlWLXQY=
-     17.607.304 scheduler.c(690)          transmit                  start Tx [6] at 17611768us/0x10cbbf8e (global 0x0a86f2e0 / 11036510 + 2000 us), timeout 5000us
+
+     17.607.304 scheduler.c(690)          transmit                  start Tx [6] at 17611768us/0x10cbbf8e (global 0x0a86f2e0 / 11036510 + 2000 us), timeout 5000us
      17.607.313 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      17.611.770 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      17.612.057 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -224,7 +231,8 @@ Hello from main scheduler...
 
 18628293 TRX:
 nwBZAFEZAAcYARoLe/GgGhHAvk4aEcFdEBoRwWwQGQACGQAAGHBZAB4AGQECAwSJcQXVAgEFAKDxewuLU66kBQYHCAjEgA4AABoRwXJXGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHmuc9ugbSCAVEqlKiWhKogKqWgFoi0k2iZlP+yww484bFmP2NZIIjJKoQAgDSgBAE0JAFCAlAAA0BQpgAAKAACIkaIoAABNEUVIBVBSAGiA0BRAAQRAAQHDNE/jQQdMB0zDPI0UtGl1CCLSggaiKpKWqmgQmioQ/x8A/wBZAAEBAFgA/xrix2BU
-     18.613.300 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001250, nw_hot 0x00001668
+
+     18.613.300 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001250, nw_hot 0x00001668
      18.613.310 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      18.613.314 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      18.613.318 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -262,7 +270,8 @@ Hello from main scheduler...
 
 19634525 TRX:
 nwBZADgZAAgYARoMcYygGhK2WU4aEcFdEBoStnf4GWUCGQAAGAhZAAUAAMSADgAAGhK3sRcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA9q5zGxWlIVCJKkqgCJWiKAAVQSMEQhqFtK1UqDSFpiKNAEQFkVagRaVJoZGIElQ1UQ1pSNFGCpQQoNKopkEz0DS0QtFIEKTVFBGgtBSNIBVakEiroarSiAZFpCktaBAgSpuQFoCkUmkIUqSlFYISRVSQqoFCGiipioRqNZJCQiNN07SgpLSoJKKRFChFpAqaJKSKaKClFUijUSlC04gqJAVpSgAoKIGAIFSqSavaCG00kBYgaQ2qkEZUNaoaIKFomjIQKUERWpQKSkAgQAEQJJWKtJRUqBDCHjRoNKClNNGAREm0aWmiQaSEplGisgtKgxIhUv8fAP8AWQABAQBYAP8ahauTHw==
-     19.619.300 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000144c, nw_hot 0x00001864
+
+     19.619.300 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000144c, nw_hot 0x00001864
      19.619.310 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      19.619.314 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      19.619.318 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -294,7 +303,8 @@ Hello from main scheduler...
 
 20640524 TRX:
 nwBZADgZAAkYARoNZyegGhOr9E4aEcFdEBoTrBL4OTX9GQAAGAhZAAUAAMSADgAAGhOtTBcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+q5zu6YaxC4UFAOkUckOVS2ooICQVAQqaVJVRapNNIQqpAFJQIVEJYWqkCoEqoVoIlVC0golCiUtadAmoNEGAbsQIE2hCWlalAaEINA0rTSVqkQVKFIJEqWR7hVSRJoK1ezSNNpAUkhQoEi0iaShUBUUJVBSEShIpaiIQpKmShvahDQKSUUlO1CgRJpAS1SgIEiboAqkSarRVEGkFIVUBGm0ogKhBZAIDaU0VQlVGgiBEkVRBERDpaIiRQW0qSpJoIGqNKIDBYUIJYRUhyaUtgRUqmmiqao0KiQqFdAQUtBqiFSbqGqkQqi0UWgk0WghmlSFaqJoAEr+PwD/AFkAAQEAWAD/GprsKJw=
-     20.625.300 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001860, nw_hot 0x00001c78
+
+     20.625.300 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001860, nw_hot 0x00001c78
      20.625.310 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      20.625.314 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      20.625.318 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -326,7 +336,8 @@ Hello from main scheduler...
 
 21645587 TRX:
 nwBZADgZAAoYARoOXMNAGhShj+4aEcFdEBoUoa6YGS5iGQAAGAhZAAUAAMSADgAAGhSi57caAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA765zG5AUAlVQEhWqVENFlMoAoi0kKqBJU1RJERToUAIlTYGSQJoApREqJUiLSAFQBGlTDYKUdEcJRNMq0AChCU1JoiSlFBBt0EGhoaEYEDTakFIVaSglRQOBRpQ2iSpKkj2kAZFQrdA0DaRSUqGqEFRTIElTAEFUiDZQJEKhRIsqAilpqALRAChAgERQIWjTQkRDQYu0BppSAE2QNrGDEE0rqaoiiTagFQG0USkJoWhooGggQKpCFUAaFJCktEI1BA0EFAJSGqFCaVLaIFqRAoRAimq0BJqSSogWURJKQ0MaEqWg0SEKlbYJJQUp/j8A/wBZAAEB/xqivmgH
-     21.631.299 scheduler.c(822)          receive                   start Rx [10] at 21633778us/0x14a1af2e (global 0x0e5ce280/15060520us), timeout 5000us
+
+     21.631.299 scheduler.c(822)          receive                   start Rx [10] at 21633778us/0x14a1af2e (global 0x0e5ce280/15060520us), timeout 5000us
      21.631.306 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00001c74, nw_hot 0x0000208c
      21.631.316 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      21.631.320 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -359,7 +370,8 @@ Hello from main scheduler...
 
 22649700 TRX:
 nwBZAEUZAAsYARoPUl5AGhWXKu4aFZfJrhoVl9iuGQAAGQAAGIBZAB4AGQECAwRgZEXlAQADAEBeUg/iDIGjBQYHCAgAAAAZfQD/GpFQSfk=
-     22.637.314 scheduler.c(690)          transmit                  start Tx [11] at 22641778us/0x1597c72e (global 0x0f52fa80 / 16066520 + 2000 us), timeout 5000us
+
+     22.637.314 scheduler.c(690)          transmit                  start Tx [11] at 22641778us/0x1597c72e (global 0x0f52fa80 / 16066520 + 2000 us), timeout 5000us
      22.637.323 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      22.641.780 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      22.642.067 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -377,7 +389,8 @@ Hello from main scheduler...
 
 23658346 TRX:
 nwBZAFEZAAwYARoQR/lAGhaMxe4aFo1krBoWjXOsOQABGQAAGHBZAB4AGQECAwRBFdJaAgEFAED5RxBgZEXlBQYHCAgE4vUAABoWjXn3GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHaucxsYUC1Bg0hLByoIBVTRVFQUEIoSajv8f0ccedi6HrFtkkhkNFUpBVQAAFIAGgAACqIBgFBRAKQAUABRCCUAFABI0zQFQooUAKEAAAQKQFMCAABIJfM8jQfN8zyN8zgWhaIDpAiaENokGm1UaUSBhgZJ/X8A/wBZAAEB/xqC6vYg
-     23.643.310 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002088, nw_hot 0x000024a0
+
+     23.643.310 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002088, nw_hot 0x000024a0
      23.643.320 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      23.643.324 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      23.643.328 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -415,7 +428,8 @@ Hello from main scheduler...
 
 24664578 TRX:
 nwBZADgZAA0YARoRPZRAGheCYO4aFo1krBoXgn+YGWT+GQAAGAhZAAUAAATi9QAAGheDuLcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/65zu5QilErRNNoGSSjQaJRWmiJNVEU0gEA0VJug0dgVJQloSEnRBIrQAAgKUVFRCkiAaJUgWlFSFKJRkRQNJQIoaTugCBqlRFMJWqQAiSYtaURVk0oaqhCgpdGARKWBSlsxpNVKaAKiCW2g1UA1CaFNVIWKVIASFVBJGyBVhKaRFK2mIqXRtEM7JKGUgqQlTRqtBCopaVVoiFRRQKqJBkELSQkFoqSqgiSFok1IG03aSBGloaiGUJVKESIUKaKJgtImQFAN0TRKW4FoaGqPoQipSuxBISRNU6QNKlCtahINtEEa1QgRtAmtVmQoqWoANCTVoAgtBqJFWiShQv1/AP8AWQABAf8avlUn+w==
-     24.649.310 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002284, nw_hot 0x0000269c
+
+     24.649.310 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002284, nw_hot 0x0000269c
      24.649.320 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      24.649.324 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      24.649.328 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -447,7 +461,8 @@ Hello from main scheduler...
 
 25670576 TRX:
 nwBZADgZAA4YARoSMy9AGhh3++4aFo1krBoYeBqYOTYBGQAAGAhZAAUAAATi9QAAGhh5U7caAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAK5zu0ZTFCQarQKpgKBRjaIhoVooaQhaQ0U1oghtUCREkVCUVDTRIBqgTaoS1TQJJS12NEQrBlFShSJtItqEQhSI0FRVKdKECipSoqQNaSkiiHagiUaBABqCtpUU6UChlQRtAJqiSlQLQ6gQEEWk1VDQFNJEQ4soEAJDaFuaFGmaNGhIm5DSUhVCCA3SVptGUJQ0RYMmkpIgWoIqommSKiolkAJtklJRogiKpNJKIRoBClIKlACNoVRaohDRKKIaJVBJVJpKVaUQKghUCtBAgVRSSGgNbdpAk0ShUNFGUqEU7VBpSFNpVZpEO3RoadAMhTaFREoUjaBSaVKoSCv5/wD/AFkAAQEAWAD/Gk+9K00=
-     25.655.310 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002698, nw_hot 0x00002ab0
+
+     25.655.310 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002698, nw_hot 0x00002ab0
      25.655.320 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      25.655.325 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      25.655.329 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -479,7 +494,8 @@ Hello from main scheduler...
 
 26675596 TRX:
 nwBZADgZAA8YARoTKMrgGhltl44aFo1krBoZbbY4GS5eGQAAGAhZAAUAAATi9QAAGhlu71caAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+65zaxLQJgiqQEoKgNgBSCptpUJFhFQ0sdsrIqWqUYWUSHQAUYGoRkkhJG0aigahGkhgT4vQJkFVohEpza5JC0JaVVJC0LQSAjtIKarQAG0AqSaNKIG0SSGiSImGQBMtkUpKizYCoJE2RAXaCKhIaUWUFE1IaSAFlQaiNSgEWkQQqpFqSIEGqpBIUXSoJtGmlDQiTUOkGlRJG6FpGpVqBRqFIoYgLZRKqCDVEtGEArSiEBqlaSCaRAO0UWkFCE2jlQZFpSAVqIbQASlJyp6oCg0pAK1KVChKmtKUhEIFCZVU7QIdoqEINBrQCEqzI0hBUhRRAjRUACTk/wMA/wBZAAEB/xqoIKOs
-     26.661.309 scheduler.c(822)          receive                   start Rx [15] at 26663788us/0x196db6ce (global 0x1328ea20/20090530us), timeout 5000us
+
+     26.661.309 scheduler.c(822)          receive                   start Rx [15] at 26663788us/0x196db6ce (global 0x1328ea20/20090530us), timeout 5000us
      26.661.316 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002aac, nw_hot 0x00002ec4
      26.661.326 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      26.661.330 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -512,7 +528,8 @@ Hello from main scheduler...
 
 27679709 TRX:
 nwBZAEUZABAYARoUHmXgGhpjMo4aGmPRThoaY+BOGQAAGQAAGIBZAB4AGQECAwSmaHPAAQADAOBlHhQ4QqavBQYHCAgAAAAZfQD/GqmBaEo=
-     27.667.324 scheduler.c(690)          transmit                  start Tx [16] at 27671788us/0x1a63cece (global 0x141f0220 / 21096530 + 2000 us), timeout 5000us
+
+     27.667.324 scheduler.c(690)          transmit                  start Tx [16] at 27671788us/0x1a63cece (global 0x141f0220 / 21096530 + 2000 us), timeout 5000us
      27.667.333 radio.c(860)              radio_start               armed radio, start time buffer: 4415us
      27.671.790 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      27.672.077 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -530,7 +547,8 @@ Hello from main scheduler...
 
 28688355 TRX:
 nwBZAFEZABEYARoVFADgGhtYzY4aG1lsThobWXtOGQAAGQAAGHBZAB4AGQECAwRDSTlTAgEFAOAAFBWmaHPABQYHCAi3t1sAABobWYGXGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHiuc9tCqhpppBXZExGoFk200aRoaDRIUaJo0eyHHXrEEYcv65HrJklERlOpQgEgBVKhAABIAWgAKYAABQAAAAAAEAoQRBEKFSiAUEAoAAACKCkAKg0AABimeTrgoAPGA8ZpGkICqQaNItmJRAtEoWggaYOmQgr/HwD/AFkAAQH/GiNxksw=
-     28.673.320 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002ec0, nw_hot 0x000032d8
+
+     28.673.320 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00002ec0, nw_hot 0x000032d8
      28.673.330 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      28.673.334 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      28.673.338 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -568,7 +586,8 @@ Hello from main scheduler...
 
 29694587 TRX:
 nwBZADgZABIYARoWCZvgGhxOaI4aG1lsThocToc4GWUAGQAAGAhZAAUAALe3WwAAGhxPwFcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+K5zW6SkKCiQSANpUVJFUGnQtK1GIJEIRWkaSqTt0AKAFBBEBWmTqtCUKEVEFEipGhAaqEpR0qAJAtLYI2VXKoUMaQHalASJFEClbaKhTZVCJEmllGqkVKQSLU0ASlpJo0BAQ4UKiKoMFUAFVZqmCRRICyGBRpFESzRtqGoqQpSmiACoaDTRgCbVEDsaQCXQVFLVFKkmJYBKq4iqBkGSaIFCQlMVDUIaJVCFSoWIqjboEEEpJG1LJFoNBApFKgkRbZvKHkVDI0QFAVRAq0JJGo0qkUYhDYho0+yNliAg0EaQFmmiUqEgiiICBSQaFEDQKFUl0DSk/x8A/wBZAAEBAFgA/xqfMttS
-     29.679.320 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000030bc, nw_hot 0x000034d4
+
+     29.679.320 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000030bc, nw_hot 0x000034d4
      29.679.330 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      29.679.334 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      29.679.338 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -600,7 +619,8 @@ Hello from main scheduler...
 
 30700586 TRX:
 nwBZADgZABMYARoW/zbgGh1EA44aG1lsThodRCI4OTX/GQAAGAhZAAUAALe3WwAAGh1FW1caAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBBa5zWxSxg6o0QUpAZUeh0iAMUVUKQYeUJkhTUS0VFUUDCJJoSZtKUpJKES1AVUhIm0oiWoVGE1HVSiWa6gApmpJSIqkqCYWqiBRSyN6SSgnRNKIkaIVqhNBCEVEUiUaRaIpSxdBUkwop0ZRUmoYoiKZCUwWhCJCStHSgxK5I0qQFAAgllZKUkpQmKdHYQZQ0DRWURtEBSKsCUSGhbTQCqmInSJW2EE1iSEOVVBqitGiGogIIURVQEGkEaVulJSFDQwJtCzSaomgjSEM1SLQRQpGiHYpUVECCkmqpRMheQrWRAgaVNpWUtEEATUArNKm2GRqKNNKWDEXSQlOEpFLakAia8v8BAP8AWQABAf8aYiIWxA==
-     30.685.320 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000034d0, nw_hot 0x000038e8
+
+     30.685.320 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000034d0, nw_hot 0x000038e8
      30.685.330 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      30.685.334 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      30.685.338 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -632,7 +652,8 @@ Hello from main scheduler...
 
 31705605 TRX:
 nwBZADgZABQYARoX9NKAGh45ny4aG1lsThoeOb3YGS5gGQAAGAhZAAUAALe3WwAAGh469vcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAq5zG4iKNo2GNFogGkgLWiqQFkiRhECaaJVWSrRpBFAhkEa0AqKBaLNLVBoqgbZJaIpSpNKQVpKShthTSaNpRWovkkKQtkiCNlUplA6BClRKkLRIAwqaSoMqiGi0EtFQragUiaACFKGgEtq0odKQoqCJoEIaSiUI1ShKSSItkZKi0lBQQRPakCLVSNFUBSLVNIlG2qQpUU2oRlXTCIRQtFBCJWmqpGhaQhSpUJJQ0tImaiBKiTQKoarSSFOEtBoNoapJSEsh0QYITTVBoQklKQ1IVKVQkmpQqZISoKk26JBo2jQtREpKE4gioZVGm4ZWIArQBKKqgSAgKKGaVokmKf8fAP8AWQABAQBYAP8ano8OXg==
-     31.691.319 scheduler.c(822)          receive                   start Rx [20] at 31693798us/0x1e39be6e (global 0x17f4f1c0/25120540us), timeout 5000us
+
+     31.691.319 scheduler.c(822)          receive                   start Rx [20] at 31693798us/0x1e39be6e (global 0x17f4f1c0/25120540us), timeout 5000us
      31.691.326 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000038e4, nw_hot 0x00003cfc
      31.691.336 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      31.691.340 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -665,7 +686,8 @@ Hello from main scheduler...
 
 32709719 TRX:
 nwBZAEUZABUYARoY6m2AGh8vOi4aHy/Y7hofL+fuGQAAGQAAGIBZAB4AGQECAwThCu8fAQADAIBt6hgnBgkCBQYHCAgAAAAZfQD/Gn2NfbM=
-     32.697.334 scheduler.c(690)          transmit                  start Tx [21] at 32701798us/0x1f2fd66e (global 0x18eb09c0 / 26126540 + 2000 us), timeout 5000us
+
+     32.697.334 scheduler.c(690)          transmit                  start Tx [21] at 32701798us/0x1f2fd66e (global 0x18eb09c0 / 26126540 + 2000 us), timeout 5000us
      32.697.343 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      32.701.800 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      32.702.087 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -683,7 +705,8 @@ Hello from main scheduler...
 
 33718364 TRX:
 nwBZAFEZABYYARoZ4AiAGiAk1S4aICVz7hogJYLuGQAAGQAAGHBZAB4AGQECAwTD4dWjAgEFAIAI4BnhCu8fBQYHCAhmQ7oAABogJYk3GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHmuc2uqTQNJGk0TadsmJWipBgypaNIABa0CsB1+6BFHHL6uR2ybJBIZTVVKAQAAhAIAAACVBgCAFAAAQqUATQMAhAZKgIJAAShpCFAAAICAAoAGoAFSKWCYp2k6aJ7ncZynEU2bSlVoqqEQ2QVF0EoaAZFqCU3q/wMA/wBZAAEBAFgA/xry7IUz
-     33.703.330 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00003cf8, nw_hot 0x00004110
+
+     33.703.330 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00003cf8, nw_hot 0x00004110
      33.703.340 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      33.703.345 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      33.703.349 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -721,7 +744,8 @@ Hello from main scheduler...
 
 34724597 TRX:
 nwBZADgZABcYARoa1aOAGiEacC4aICVz7hohGo7YGWUAGQAAGAhZAAUAAGZDugAAGiEbx/caAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/K5zS6RJRRHSpoqSICUiVdWiJSgCakBECVRKDQBtEloQQBQaUFFNB5UqGlJSlEgNKSrSFCCVpghVABWJqIq2SBqQNtGmaZNGVSIpRdAiZEgppaqCRJOm1aSpQJNqShQ0FSUVwKACaSFagiiiEFo0GoIqlSLSFCI0JUWlUUEkmlSVIlEU2hCNDmVoCtWhDRAapLRQgpAoEYW9NBI0hUAqtCRNA5A2aEKjJSWokkI0iRRASShCS5MmJXZQBJWSDlVQkZKIRhVthTZBJQBJJbRINWlooKpoABGQUqLYEyoVJaGBUAUaTaCakAYqbUQrTSuEkgaUUEQhpBppBP4/AP8AWQABAQBYAP8aMzLnIQ==
-     34.709.330 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00003ef4, nw_hot 0x0000430c
+
+     34.709.330 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00003ef4, nw_hot 0x0000430c
      34.709.340 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      34.709.344 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      34.709.348 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -753,7 +777,8 @@ Hello from main scheduler...
 
 35730595 TRX:
 nwBZADgZABgYARobyz6AGiIQCy4aICVz7hoiECnYOTX/GQAAGAhZAAUAAGZDugAAGiIRYvcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/K5zO7QBRaWalCJSoKJESVGgASkdiJBGodVIo6AgiVbQJohW0EiBSCNtCSmkUY1qJGg0TRsgGlS0QFRAQ0FTqAZJaJNKRQlpUEWjiUoKQEoRBToICiEpDVCgKhQFgoIIKJFGQQoFAYnUTkoqlYY0baNCVFQbAko0DUFFS6CDiiYahYSqIkhpk6YUSlKkIRWqLYg0bVIJBdGESlrdkUaaUCKlTUmCVqKpoJoKgAoJIC2EVkDbCkEKSYlodEdKESSqTQRRaYtKIZWWpE0NogEVKrQi9iEl0IpUESoVmiqkApISaTVpAK1oA6KCVNJqoBUkFAmNdAcNIntU0v8PAP8AWQABAQBYAP8aDWhUBQ==
-     35.715.330 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004308, nw_hot 0x00004720
+
+     35.715.330 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004308, nw_hot 0x00004720
      35.715.340 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      35.715.344 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      35.715.348 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -785,7 +810,8 @@ Hello from main scheduler...
 
 36735615 TRX:
 nwBZADgZABkYARocwNogGiMFps4aICVz7hojBcV4GS5gGQAAGAhZAAUAAGZDugAAGiMG/pcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBBK5z62oSkqIgpZW0QQqaSkNLoCGpVpICKICqAiqaJApFJFEt0hQSTQeaqohKg0YbArSi0hIh0IoKikJFBkBLQ6GRUFFpA0kp0WhSoi1UNBUkFSooTSMpWgQhmgpViRRUgw5CgRJRUDSlIlFRIqlKFdKACimNaCVQhLSqUk1Co6LRKEXFQBWCoKEoCW3QKKQaiAIQaYNQIQmtNlKEoi2aajSDpjWIhg4tmiiDQqMUCaqJRgKi2hpAKpoqKk1TSFOFVkDFUAAoQBsRbUJQhUjF0EJ2hCal0gyl9pLKkArSAtFUa2g0IaVJKgjVNE2lJSglENUmSQMamhratNTQIhVNUhXx/wEA/wBZAAEBAFgA/xoEuxc5
-     36.721.329 scheduler.c(822)          receive                   start Rx [25] at 36723808us/0x2305c60e (global 0x1cc0f960/30150550us), timeout 5000us
+
+     36.721.329 scheduler.c(822)          receive                   start Rx [25] at 36723808us/0x2305c60e (global 0x1cc0f960/30150550us), timeout 5000us
      36.721.336 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000471c, nw_hot 0x00004b34
      36.721.346 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      36.721.350 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -818,7 +844,8 @@ Hello from main scheduler...
 
 37739728 TRX:
 nwBZAEUZABoYARodtnUgGiP7Qc4aI/vgjhoj+++OGQAAGQAAGIBZAB4AGQECAwQJqkfXAQADACB1th0g3LvVBQYHCAgAAAAZfQD/GrSJe0M=
-     37.727.344 scheduler.c(690)          transmit                  start Tx [26] at 37731808us/0x23fbde0e (global 0x1db71160 / 31156550 + 2000 us), timeout 5000us
+
+     37.727.344 scheduler.c(690)          transmit                  start Tx [26] at 37731808us/0x23fbde0e (global 0x1db71160 / 31156550 + 2000 us), timeout 5000us
      37.727.353 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      37.731.810 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      37.732.097 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -836,7 +863,8 @@ Hello from main scheduler...
 
 38748374 TRX:
 nwBZAFEZABsYARoerBAgGiTw3M4aJPF7jhok8YqOGQAAGQAAGHBZAB4AGQECAwSfFmanAgEFACAQrB4JqkfXBQYHCAgiW1YAABok8ZDXGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHeuc5sIhYIiEdUUJEUgGtUUlTYqJVBFQbfDDz3iiMOX7YhtkyQio5EqBQVpQAUAoAQaoCkABEVQCKCBIgAKAJBCgAIhKIACAYpAQwEAgJACoAAAIQCVMszzOB00z/M0zsMQSjQlEaAUEVrVSKUpRCsJaWm1Qf8/AP8AWQABAQBYAP8ahoGWaA==
-     38.733.340 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004b30, nw_hot 0x00004f48
+
+     38.733.340 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004b30, nw_hot 0x00004f48
      38.733.350 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      38.733.354 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      38.733.358 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -874,7 +902,8 @@ Hello from main scheduler...
 
 39754606 TRX:
 nwBZADgZABwYARofoasgGiXmd84aJPF7jhol5pZ4GWUAGQAAGAhZAAUAACJbVgAAGiXnz5caAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBBq5zm0JaDaICpaSRUKCiVURVikijYUAlCVKqihZIKkFRJAg0KNK0Cd23fW9bBRVNhqi22pJBWzJolSEYNPYWUEAGrQpJtAqkpRDNMAwlQ/fuKlrSqmTUtlQqlVakUpVhzJAkSQgDSCsqJdHQqAoaNJogbYMmgqZKEKGUFKJBEWgDIQpUpJqiEFJoaKKKVJSkqoFQFAJDRQukaZAWICRtKkWQFCjSHYFUi8ZA2kYlaIBUQKBQSBWARGiViDapEk0UoEGBgVY1aSHSQBRIijIQLZWGIkWooSVFEylUVJNUE1SIXejQItrsKQkVCFTQakRSQiMtFWiqKSk0QiGUEoJU2hQaEor+fwD/AFkAAQEAWAD/Gpsisr4=
-     39.739.340 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004d2c, nw_hot 0x00005144
+
+     39.739.340 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00004d2c, nw_hot 0x00005144
      39.739.350 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      39.739.354 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      39.739.358 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -906,7 +935,8 @@ Hello from main scheduler...
 
 40760609 TRX:
 nwBZADgZAB0YARogl0YgGibcEs4aJPF7jhom3DF4OTX/GQAAGAhZAAUAACJbVgAAGibdapcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5zKxIQaRRa0tBoNFVpUEoKCk3TVBokDQkaragGUUIhooAKBKJABNE2KalU00aiiSjKnkYlQhUVTapoQqSoVlJJA9VCqTSRNlACUNAEqVAKRUJaGaJJq9VUSNAGDRSaSFWDtEJKQ9KihCYKjTQVKaIIaVRLoACgOpBIuqcQTSVpaVRLSoC0kCBShIKqVBOQpilopASSiqKhpUkV0ESqUhGIRlpSQpUK1ZBEKy1VmkZTNG1qgKYiBSQqGqrRUEmDQIOmKmkK0CEolSYtCiKUSlIqohqCKKSVglJRUqCkEDqkDJUSKaGaoEVTJSTaNEPaVEALlBCJ2qVVaUJD0UYg/H8A/wBZAAEB/xpxTefh
-     40.745.340 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005140, nw_hot 0x00005558
+
+     40.745.340 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005140, nw_hot 0x00005558
      40.745.350 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      40.745.354 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      40.745.358 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -938,7 +968,8 @@ Hello from main scheduler...
 
 41765624 TRX:
 nwBZADgZAB4YARohjOHAGifRrm4aJPF7jhon0c0YGS5gGQAAGAhZAAUAACJbVgAAGifTBjcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+q5zGyJVVQISVFOS0iZFUSFFmgYlaaUaEQgpWgo0adGkUJKgmhhChVYRCG2ICHYF2UNVBxRFSJKmquhQBIk02khRGqmqQEmJELE3KlE7iZ2WKDQpQhRENRLRJmhaKYBgaFPVlAASUdVEKRU0SYtApSDVRAUJbUjTsCdoWkERjagCEqRSqgCNKEo0KUKgjQoFVCKtlAYBoEU0SaUoaCVtU4RUIqogCFHQggSiBSkF0UpIgVZQRKA0SkQR0UbaVKMUkiKaKFIA1SAN0iZoSRQNhEpRNCGVCEqjoKiAFNHsoSEEhUYq0rRFigqgAaHRCClIQTUkVTSapvT/AwD/AFkAAQEAWAD/GnCL7G8=
-     41.751.339 scheduler.c(822)          receive                   start Rx [30] at 41753818us/0x27d1cdae (global 0x218d0100/35180560us), timeout 5000us
+
+     41.751.339 scheduler.c(822)          receive                   start Rx [30] at 41753818us/0x27d1cdae (global 0x218d0100/35180560us), timeout 5000us
      41.751.346 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005554, nw_hot 0x0000596c
      41.751.356 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      41.751.360 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -971,7 +1002,8 @@ Hello from main scheduler...
 
 42769738 TRX:
 nwBZAEUZAB8YARoignzAGijHSW4aKMfoLhoox/cuGQAAGQAAGIBZAB4AGQECAwThxRYlAQADAMB8giJCLZHcBQYHCAgAAAAZfQD/GqK9OkM=
-     42.757.354 scheduler.c(690)          transmit                  start Tx [31] at 42761818us/0x28c7e5ae (global 0x22831900 / 36186560 + 2000 us), timeout 5000us
+
+     42.757.354 scheduler.c(690)          transmit                  start Tx [31] at 42761818us/0x28c7e5ae (global 0x22831900 / 36186560 + 2000 us), timeout 5000us
      42.757.363 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      42.761.820 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      42.762.107 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -989,7 +1021,8 @@ Hello from main scheduler...
 
 43778426 TRX:
 nwBZAFEZACAYARojeBfAGim85G4aKb2DLhopvZIuGQAAGQAAGHBZAB4AGQECAwT+sLDQAgEFAMAXeCPhxRYlBQYHCAhOyckAABopvZh3GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHmuc9sgqpSCppGSRFNBtGgZsgON2FMoUqAi6+H/O/KIw9b1iHWTJBKjqUopQAMAKSkAAKQANA0AAAAoaYoAAIVAA5BKBQCgACgCAESFAgAgQAHQABBNpUilknmapoPmeZ7GeRzCroFoRUCphqQKSUpLK4gSqbZA/j8A/wBZAAEBAFgA/xrbsF03
-     43.763.350 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005968, nw_hot 0x00005d80
+
+     43.763.350 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005968, nw_hot 0x00005d80
      43.763.360 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      43.763.364 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      43.763.368 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -1027,7 +1060,8 @@ Hello from main scheduler...
 
 44784616 TRX:
 nwBZADgZACEYARokbbLAGiqyf24aKb2DLhoqsp4YGWUAGQAAGAhZAAUAAE7JyQAAGiqz1zcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAK5zqxBRqgiSNAoaVBMFRUUpaEA0QjqQ2FXTakKjOqhGSqJUKBCCQEkq9oYGCFFoNQkJ0LQKGlSgEUIVpKoRVBpoUhSNSiVpUwg1qJYiRKVJCqFNUm0YmhZEEdGKSlNSxZ6ACEVSURItSBUFpRLRJI1dilQxSDUQiDbSNm1UommiKNWItE3B0IAoggIkuzRJQRVNqoECkTaaNE1QGlUNEVEUQiGIQkjbBpEiqJKGQtAC0QYlIEpICYXSSiBESiWloFElKZVUCk2BZDdUU0FTaUmRSlJNE5FKWtlRoQCaalIpsjNoDVKVilCAoJpUaCBIgagqREqktJBoIKJVmpT/DwD/AFkAAQEAWAD/GroKdpY=
-     44.769.350 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005b64, nw_hot 0x00005f7c
+
+     44.769.350 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005b64, nw_hot 0x00005f7c
      44.769.360 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      44.769.364 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      44.769.368 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -1059,7 +1093,8 @@ Hello from main scheduler...
 
 45790619 TRX:
 nwBZADgZACIYARolY03AGiuoGm4aKb2DLhorqDkYOTX/GQAAGAhZAAUAAE7JyQAAGiupcjcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/a5zq0BJCyJKpHRoCoFUS0GkVIWkDRGaIIWWFjSholICBRGaEEoTVSKipQFKSlKilGgiGiUlRQuaEEKbBipUNU0E0VIUZQgqCNKUNqk0SgBpJW2oViAgkbZQolTSBgRKRKpiJ5pqaCggmpSkSFRBaKNUkpaEqmiHEkWglCBJ2Bsl0BRIpCma0gppQURTIaRQBYqESkOgUgBVADHQVIUCFBoJVJNI0ShRDZoU0BYkpSFSSEpRKRAKKUlUtIEKGi1CEYU0bSRttI3QhqYDSEmbqiHVIolCkyqJFqINCakmLWlSoaQADUWaSosoKYOGtEloQVDQVJUaOlQk0Sb+PwD/AFkAAQH/GqCc7u8=
-     45.775.351 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005f78, nw_hot 0x00006390
+
+     45.775.351 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00005f78, nw_hot 0x00006390
      45.775.360 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      45.775.365 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      45.775.369 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -1091,7 +1126,8 @@ Hello from main scheduler...
 
 46795634 TRX:
 nwBZADgZACMYARomWOlgGiydtg4aKb2DLhosndS4GS5gGQAAGAhZAAUAAE7JyQAAGiyfDdcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+q5z26aphipBEE2AnWghaFNSLQHSAEGoQiFtSUKoJqloRYEAUs3QpkGikiqgkKBE29A0UakgKVoKEtFGE9U2KSQF0moKSdoSRESLapOEpjQpmipJo0GlaQJSShqiqkVDACkqlCgC0iBFgUjTSBRVUVSlAak0FRRIQ9pGgZKSBClNhWqKiJIqQlQoAAJNU0kDBaCipB1EpSggUFKEUqIEmiQpFUUK2jRIpTRUaBDVBJSgDdVQkJC2KVEIgtYAqQJAk5SQdE+ljRRR7IKIVgWhJE0rKi0NSaoCJamUEkKqQagC1aCRoiHStEijFZKiqFQgDbREJEAJJfX/AQD/AFkAAQEAWAD/GjkWRkc=
-     46.781.349 scheduler.c(822)          receive                   start Rx [35] at 46783828us/0x2c9dd54e (global 0x265908a0/40210570us), timeout 5000us
+
+     46.781.349 scheduler.c(822)          receive                   start Rx [35] at 46783828us/0x2c9dd54e (global 0x265908a0/40210570us), timeout 5000us
      46.781.356 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000638c, nw_hot 0x000067a4
      46.781.366 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      46.781.370 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -1124,7 +1160,8 @@ Hello from main scheduler...
 
 47799747 TRX:
 nwBZAEUZACQYARonToRgGi2TUQ4aLZPvzhotk/7OGQAAGQAAGIBZAB4AGQECAwRbG9sWAQADAGCETifVuONfBQYHCAgAAAAZfQD/GkXAjcg=
-     47.787.364 scheduler.c(690)          transmit                  start Tx [36] at 47791828us/0x2d93ed4e (global 0x274f20a0 / 41216570 + 2000 us), timeout 5000us
+
+     47.787.364 scheduler.c(690)          transmit                  start Tx [36] at 47791828us/0x2d93ed4e (global 0x274f20a0 / 41216570 + 2000 us), timeout 5000us
      47.787.373 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      47.791.830 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      47.792.117 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -1142,7 +1179,8 @@ Hello from main scheduler...
 
 48808397 TRX:
 nwBZAFEZACUYARooRB9gGi6I7A4aLomKzhouiZnOGQAAGQAAGHBZAB4AGQECAwRZ7QWXAgEFAGAfRChbG9sWBQYHCAiI25QAABouiaAXGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHquc6sIVAREA4RW0KKaNKAiaRKoStvKnkortR/xvyOOPHRZj1w3iURMUACgAYBUKClACqIAAKQQBAUFAEGlAAAABIWoAKiAAgCkKQAAAAigpAAACGOqCjSZp2ma5/nAYZrHcdCiIi0qSGJPoULQpCkVJSlJK1S18f8BAP8AWQABAf8aDViUNw==
-     48.793.360 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000067a0, nw_hot 0x00006bb8
+
+     48.793.360 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000067a0, nw_hot 0x00006bb8
      48.793.370 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      48.793.374 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      48.793.378 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -1180,7 +1218,8 @@ Hello from main scheduler...
 
 49814625 TRX:
 nwBZADgZACYYARopObpgGi9+hw4aLomKzhovfqW4GWUAGQAAGAhZAAUAAIjblAAAGi9/3tcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBBK5zG02TSlskWoSkpEoDUEURZSiaIhAMCFBVUqoR1ZZIIFUkUiVCQ0CUaARSDVQqWkQpNESAQghNNdpQqShS0rRU0DRBhwpVQStSgTSoFNBdogIR0lRDBWg0UilVKtKgSNQuaZOIEk1pKrtUCCUlhKqUoEgNQLShVFoi0JSKpDpo0EpSjUoj2gKRlCoiVQiSXdqENoVK0gRNWyRUqgFtI6AQSAUJbYqmIrQk0ooiWkIqaVIUVURVg6SqiSilYUjRNKEEWg2kqQjVJC1tGk2KRnXQNKSAEDSIlLaSUJqi2qQa0VCVKGJoqTYiQ5VoklJpG43QlJQoQFKoEkREqwQJpADR/w8A/wBZAAEBAFgA/xrQlLDt
-     49.799.360 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000699c, nw_hot 0x00006db4
+
+     49.799.360 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000699c, nw_hot 0x00006db4
      49.799.370 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      49.799.375 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      49.799.378 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -1212,7 +1251,8 @@ Hello from main scheduler...
 
 50820628 TRX:
 nwBZADgZACcYARoqL1VgGjB0Ig4aLomKzhowdEC4OTX/GQAAGAhZAAUAAIjblAAAGjB1edcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA965zmwSlaEAKSgAUEFWgGigFDImUClTQqCLSVNGgkiFaREkAEqVCiwZJpSkITTUUVCWkSQEV1UCChqpWokCoVIdUNDRVlDQJKRRVEjSgICjSQkqHgKhoG6FQlTbRIlIQ2qSUNEERJSgSVDRKQQoABYg0FRWlIKSkiUqbKIoAmmgKIlUpBI0STSWFpFKoolEpEiWKggQVRSJNhTZNhOxCVUWqBgFptNICNAoRNKA0RUiQnVQVEFU1NGiCaLQpdKgmNG0iEi0EKQ1FgYio0qKDVFCkoiAFKWmiaUHRRooEDaHVRCFRJBptm5RIiSiqKAxNlKREWuL/AwD/AFkAAQH/GjHxTEM=
-     50.805.360 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00006db0, nw_hot 0x000071c8
+
+     50.805.360 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00006db0, nw_hot 0x000071c8
      50.805.370 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      50.805.375 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      50.805.379 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -1244,7 +1284,8 @@ Hello from main scheduler...
 
 51825643 TRX:
 nwBZADgZACgYARorJPEAGjFpva4aLomKzhoxadxYGS5gGQAAGAhZAAUAAIjblAAAGjFrFXcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA9q5zB00VRWlJCEiFtC2lUU1BtEqkhCEAQaEEGi2VlCJNIyJohaEFQiMtSpEUiUpKoCrSQgI0BagCAdFoQgGgCIC0oipIUKE7SVNQIQDRqCqCiooGaBI0RSkkUUhVU02QXVIqIdCUFjRRUUQA0JSm0kJSQSMajWgATSlNkwKISuwISkqaRiFSSpRogCZFQACFNCJ2oKCJUkrsUdGIpkIVpZImIVIKSEjbpCoKSGUXVaIRjdaQojQJlNKkoFE0Qao0FSkJQKVUJQgaBREFUlCkAAVNUikpjZY2EW0SBKBpCEVII0XbFIPStNEUyUC1SNMgpCWF9v8DAP8AWQABAQBYAP8aWk66rw==
-     51.811.359 scheduler.c(822)          receive                   start Rx [40] at 51813838us/0x3169dcee (global 0x2b251040/45240580us), timeout 5000us
+
+     51.811.359 scheduler.c(822)          receive                   start Rx [40] at 51813838us/0x3169dcee (global 0x2b251040/45240580us), timeout 5000us
      51.811.366 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000071c4, nw_hot 0x000075dc
      51.811.376 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      51.811.380 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -1277,7 +1318,8 @@ Hello from main scheduler...
 
 52829756 TRX:
 nwBZAEUZACkYARosGowAGjJfWK4aMl/3bhoyYAZuGQAAGQAAGIBZAB4AGQECAwS2lwfIAQADAACMGixKuEieBQYHCAgAAAAZfQD/Gns69ow=
-     52.817.374 scheduler.c(690)          transmit                  start Tx [41] at 52821838us/0x325ff4ee (global 0x2c1b2840 / 46246580 + 2000 us), timeout 5000us
+
+     52.817.374 scheduler.c(690)          transmit                  start Tx [41] at 52821838us/0x325ff4ee (global 0x2c1b2840 / 46246580 + 2000 us), timeout 5000us
      52.817.383 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      52.821.840 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      52.822.127 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -1295,7 +1337,8 @@ Hello from main scheduler...
 
 53838407 TRX:
 nwBZAFEZACoYARotECcAGjNU864aM1WSbhozVaFuGQAAGQAAGHBZAB4AGQECAwRdGaLaAgEFAAAnEC22lwfIBQYHCAhvWA0AABozVae3GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHKuczsFlACKIgJJFVIg0FYRCIq2EUW3ww474ojD1/WIbZNEImNGVYUCQBQElBQAkAIAIAWCAIVC0KBRAAAAAgBIQRQAlAAAKAAABFAAAICACqhknqcDDpqnA8ZxGkFAIRRq14RS0VRJ0xCaCI0mUBH/HwD/AFkAAQH/GmuQzpc=
-     53.823.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000075d8, nw_hot 0x000079f0
+
+     53.823.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000075d8, nw_hot 0x000079f0
      53.823.380 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      53.823.385 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      53.823.389 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -1333,7 +1376,8 @@ Hello from main scheduler...
 
 54844639 TRX:
 nwBZADgZACsYARouBcIAGjRKjq4aM1WSbho0Sq1YGWUAGQAAGAhZAAUAAG9YDQAAGjRL5ncaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBAa5z21RSFaoVENBKadoKqaagEJqKCEiUkKIlaEALCkNJKIgQSmtoorQdaBoa1TSlmkQRUEODQjXShJQGIqooDKVINBUEglZRmkYDokATQgqxJ9rsQEilSVsxFNqmgtBUiiLQIZWiAiWNhKjSqKSqA0hFAW2CBg1EUpQqUpRoRJsIbVKaqKai2oQgAAa0gSpEBUUogCIVSStKikRpSKWVopUSAQDIniihpCoqlRSFpNKmQkA1KCJt0qahSTWKFBVDC0TTyE4TDdBUpK0IRYk0KaVElLSpBCgkjaZSlTbStEFFSDUaDZUmVWmSKkBVRClUkhQBBU1JZI8ohTaNNCSA/w8A/wBZAAEB/xoQu+0q
-     54.829.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000077d4, nw_hot 0x00007bec
+
+     54.829.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x000077d4, nw_hot 0x00007bec
      54.829.380 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      54.829.384 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      54.829.388 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -1365,7 +1409,8 @@ Hello from main scheduler...
 
 55850637 TRX:
 nwBZADgZACwYARou+10AGjVAKa4aM1WSbho1QEhYOTX/GQAAGAhZAAUAAG9YDQAAGjVBgXcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/a5z69BI00pUaEMq1SgA0FTRDhAAoYAUKBGqSTUFQSU0IKhKQSAMqooiDaCJlKQaokhTFLQpBKKaKoaUStIODVqhqkGjoholEjDYiRRNirQaadFEmlAaFaCBVKUqBBWCKlEShRKUhKDSUCRKVRBaTUOBNCWkQtM00aYppSGNElISKJWIAo0mWiH2akJISVWiqFYpASEJ0RSqJKKqkSoaQFQ0ikijLRk0ihKk1ZIABSLQBoKiUpIoTWiVVElIQ7UQIgKlbUg1oqIpTYFKNEED2lANImhQKkMi1UIjGk2jqESjtEGRSoNoWkVFRKqQJtJqQ5ACIaUJtESTtOr/AwD/AFkAAQH/GiZTrxQ=
-     55.835.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00007be8, nw_hot 0x00008000
+
+     55.835.370 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00007be8, nw_hot 0x00008000
      55.835.380 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      55.835.385 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      55.835.389 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -1397,7 +1442,8 @@ Hello from main scheduler...
 
 56855657 TRX:
 nwBZADgZAC0YARov8PigGjY1xU4aM1WSbho2NeP4GS5gGQAAGAhZAAUAAG9YDQAAGjY3HRcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+K5zO1KAtmnQKEhJKWmjgjRVmoAGkKQJWg0N0VJFgxIRRZLQJqWFJNA2RWgTadGIqKI00ggplCSlTRMtjQQaLSmRokF2ohCiaWlCkyiEVkELkmojIIhWkBRNVQVNRNNUmqYJoE3QpioKmko0mpRQEQ1IU6rRKCgBadK0QZMmKaAVGppSESgllQJoCE0aaSpAVaAqDagADUFKoEARDQ2poGmLUggglVCpSBVopJVQKiiJFlAEBASQsANCSlSiaNpKWooBUVBFICWh1aAVCBgqFVJFwC4AIUqoUiGNiqZBVSpQKNJQACVJmjRKpCiQVgMhbSOgFSnq/wMA/wBZAAEBAFgA/xou+0aQ
-     56.841.369 scheduler.c(822)          receive                   start Rx [45] at 56843848us/0x3635e48e (global 0x2ff117e0/50270590us), timeout 5000us
+
+     56.841.369 scheduler.c(822)          receive                   start Rx [45] at 56843848us/0x3635e48e (global 0x2ff117e0/50270590us), timeout 5000us
      56.841.376 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00007ffc, nw_hot 0x00008414
      56.841.386 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      56.841.390 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -1430,7 +1476,8 @@ Hello from main scheduler...
 
 57859770 TRX:
 nwBZAEUZAC4YARow5pOgGjcrYE4aNyv/Dho3LA4OGQAAGQAAGIBZAB4AGQECAwRRTbJHAQADAKCT5jAam6+TBQYHCAgAAAAZfQD/Gm6JAWs=
-     57.847.384 scheduler.c(690)          transmit                  start Tx [46] at 57851848us/0x372bfc8e (global 0x30e72fe0 / 51276590 + 2000 us), timeout 5000us
+
+     57.847.384 scheduler.c(690)          transmit                  start Tx [46] at 57851848us/0x372bfc8e (global 0x30e72fe0 / 51276590 + 2000 us), timeout 5000us
      57.847.393 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      57.851.850 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      57.852.137 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -1448,7 +1495,8 @@ Hello from main scheduler...
 
 58868416 TRX:
 nwBZAFEZAC8YARox3C6gGjgg+04aOCGaDho4IakOGQAAGQAAGHBZAB4AGQECAwTjyr3MAgEFAKAu3DFRTbJHBQYHCAhQnxkAABo4Ia9XGgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHauc1vaiJSgQYpICwWVlDaJNoVAaSjRVCNlP+zQIw4/fFmPXNdIIjKaShUFAAAIBQAAADQNAGhKAAANSAGgaUADkAJAEAWgRAEAAAAAEFAAgJIKQAqkDPM0jQcdMM3zcMA4FhqkUEJBI1VCdumAQiNEKKWK+P8A/wBZAAEB/xruzURW
-     58.853.380 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008410, nw_hot 0x00008828
+
+     58.853.380 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008410, nw_hot 0x00008828
      58.853.390 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      58.853.394 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      58.853.398 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2
@@ -1486,7 +1534,8 @@ Hello from main scheduler...
 
 59874648 TRX:
 nwBZADgZADAYARoy0cmgGjkWlk4aOCGaDho5FrT4GWUAGQAAGAhZAAUAAFCfGQAAGjkX7hcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA+a5zGwgtlZQICoHIrlEpjZKkLUSqGlASaQqUIEWVRqVUCFIghpYogSiJRqVSgIJUAaQkWhpIgzagSdOkRQ1Bo9BUaFpCQyGpJhBNo6ARFVGNkkoRiqhKFAUpFQEVKqVUpASJolEJQUsaqJKgNAAUUo0ookWCQiIaBSJVRRFFRQyVShu0SAlUB9BQUZBKRFWpGBAalA4FqYIkCmlp0pY00RRFQiCtNFVFQtOCipaEqiDVpCQ0UQh7GqQlNIg2aCURUU1b0VRoNK0oaQikkBIlJVBVQoQSTSkKKSlICQ2ViqAJQtgR1RJUAyCpSijRCs1AQQup0ARo8v8BAP8AWQABAf8a79Mdog==
-     59.859.381 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000860c, nw_hot 0x00008a24
+
+     59.859.381 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x0000860c, nw_hot 0x00008a24
      59.859.390 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      59.859.395 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 3)
      59.859.399 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 3
@@ -1518,7 +1567,8 @@ Hello from main scheduler...
 
 60880647 TRX:
 nwBZADgZADEYARozx2SgGjoMMU4aOCGaDho6DE/4OTX/GQAAGAhZAAUAAFCfGQAAGjoNiRcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkBBK5zu1YgStpoNZWKgkBAKt1BVFooAw0kVNBqBKJ2ghBVSIqKIlEkKUQjbYFAkxKoqmjSAKEiVZSStAqJZkhDq1IIREujkqai0lAAlETTNAWapk2VhiTQNCUFILEjjSZpWikipapUQiJ7iEqjJQ2lCRpE7SVImgKkDZoWJAVJGgAUUq3qEK1GmihoSFIplFChaZoKoDSoBhElSLU0AmmhgFSEJkAamqpCaaUhiWrSQkQFoWgaTdpoRZvQIkmbRlNEtQKJkoYKlVSpIImikEjbiigNg0JjT5FIQ6K0kEYVSVMpFRFtVLqnIUWiJIooUdImLVUMRKtphKRVUZVIiQJKlBTC/wcA/wBZAAEBAFgA/xrhlQsO
-     60.865.380 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008a20, nw_hot 0x00008e38
+
+     60.865.380 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008a20, nw_hot 0x00008e38
      60.865.390 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      60.865.394 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 4)
      60.865.398 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 4
@@ -1550,7 +1600,8 @@ Hello from main scheduler...
 
 61885666 TRX:
 nwBZADgZADIYARo0vQBAGjsBzO4aOCGaDho7AeuYGS5gGQAAGAhZAAUAAFCfGQAAGjsDJLcaAAAAAFkD/AFfWQAcBMADEACHAQTAvUdU27Zt27Zt27Zt27Zt27YdPVkA/K5zG0IolYpWEimqBZUCGpVUpUEhiqQJUioATaMtUENDmkJE0FQKkZIqKEoNNEIK1TRNNGgku1RKoBpNUloqyU7TNEFLNSkRBNoCFGlKExEDbZCmBLKnQKECiaR70eogGg0lSCStKtIIVRUVVCrRoIkiUKIhJQWqadMISakoNNoAhIBSAlEpUikapKEhqhUU0aYkKKmgQdCUFgk0FI0kABVpIWjTIgikoEFUqqkm0FRaCKUS1FChgibaNNo0FA1ENGkbDbSSViikQAoJEZQWUITsElU0pASoQiqQClXSIFUkShoaVAoMSoEANJrQNCVQDDTRKE1BCUjT6P8HAP8AWQABAQBYAP8ax3lW/A==
-     61.871.379 scheduler.c(822)          receive                   start Rx [50] at 61873858us/0x3b01ec2e (global 0x34bd1f80/55300600us), timeout 5000us
+
+     61.871.379 scheduler.c(822)          receive                   start Rx [50] at 61873858us/0x3b01ec2e (global 0x34bd1f80/55300600us), timeout 5000us
      61.871.386 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00008e34, nw_hot 0x0000924c
      61.871.396 radio.c(860)              radio_start               armed radio, start time buffer: 2423us
      61.871.400 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 0)
@@ -1583,7 +1634,8 @@ Hello from main scheduler...
 
 62889780 TRX:
 nwBZAEUZADMYARo1sptAGjv3Z+4aO/gGrho7+BWuGQAAGQAAGIBZAB4AGQECAwS8dAu9AQADAECbsjVHOU8RBQYHCAgAAAAZfQD/Gqamt10=
-     62.877.394 scheduler.c(690)          transmit                  start Tx [51] at 62881858us/0x3bf8042e (global 0x35b33780 / 56306600 + 2000 us), timeout 5000us
+
+     62.877.394 scheduler.c(690)          transmit                  start Tx [51] at 62881858us/0x3bf8042e (global 0x35b33780 / 56306600 + 2000 us), timeout 5000us
      62.877.403 radio.c(860)              radio_start               armed radio, start time buffer: 4416us
      62.881.860 radio.c(534)              RADIO_IRQHandler_         <- return radio ready (ramped up)
      62.882.147 radio.c(545)              RADIO_IRQHandler_         Tx done, disabling radio
@@ -1601,7 +1653,8 @@ Hello from main scheduler...
 
 63898425 TRX:
 nwBZAFEZADQYARo2qDZAGjztAu4aPO2hrho87bCuGQAAGQAAGHBZAB4AGQECAwQBNCQhAgEFAEA2qDa8dAu9BQYHCAh2BwsAABo87bb3GgAAAABZAeQBX1kAHATAAxAAhwEEwL1HVNu2bdu2bdu2bdu2bdu2HT1ZAHquc3uoSNO2AiQtoaHRRElpaKQkbVuRKq1I02I74r9HHnH4sh65bpJEZDRVKQUAABAFAAAAVBoAADRNAQAEUADRaABSKaQIBTQAQAAABQAAAhQAmiIADQAY5mmaDpqnA6ZxHgfRYlAV0gqhATSq2kJSTaIpKkFJ5f8DAP8AWQABAf8a7fhHrw==
-     63.883.390 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00009248, nw_hot 0x00009660
+
+     63.883.390 radio.c(1209)             radio_start_rx            RSSI buffer: size 0x400, nw_buf 0x00009248, nw_hot 0x00009660
      63.883.400 radio.c(860)              radio_start               armed radio, start time buffer: 2419us
      63.883.404 scheduler.c(925)          receive                   expecting transmitter 0.0 (node 2)
      63.883.408 scheduler.c(422)          assemble_tx_packet        assemble Tx packet for node 2

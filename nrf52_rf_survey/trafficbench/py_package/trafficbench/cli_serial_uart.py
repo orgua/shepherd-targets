@@ -94,9 +94,7 @@ receive_h = {
 
 @app.command("receive")
 def receive_serial(
-    file_path: Annotated[
-        Path, typer.Argument(help=receive_h["fp"])
-    ],
+    file_path: Annotated[Path, typer.Argument(help=receive_h["fp"])],
     serial_ports: Annotated[
         Optional[List[str]], typer.Option(help=receive_h["sp"])
     ] = None,

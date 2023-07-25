@@ -22,7 +22,7 @@ try:
     def calc_crc(data: bytes) -> bytes:
         return crc_core_function(data).to_bytes(3, "big").translate(bitswap_lut)
 
-except:
+except BaseException:
     # <https://pypi.org/project/crc>
     from crc import Calculator
     from crc import Configuration

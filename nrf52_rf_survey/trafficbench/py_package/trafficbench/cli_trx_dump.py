@@ -113,8 +113,9 @@ def dump_trx(
             decoder = cbor2.decoder.CBORDecoder(io.BytesIO(x))
             chunks = decoder.decode()
             checksum = decoder.decode()
-            assert checksum == fletcher32(x[:-4])
-        except:
+            if checksum != fletcher32(x[:-4]):
+                raise AssertionError()
+        except BaseException:
             # TODO: print detailed error message and continue
             logger.warning("CBOR error")
             continue
@@ -124,9 +125,9 @@ def dump_trx(
 
         # extract inner CBOR data
         for x in zip(chunks[0::2], chunks[1::2]):
-            if 0 == x[0]:
+            if x[0] == 0:
                 data.append(x[1])
-            elif 1 == x[0]:
+            elif x[0] == 1:
                 data.append(zlib.decompress(x[1], wbits=-15))
             else:
                 raise ValueError()
@@ -158,7 +159,7 @@ def dump_trx(
             tx_delay,
         ) = data[0:11]
 
-        operation = not not (trx_status_field & 0x80)
+        operation = (trx_status_field & 0x80) > 0
 
         trx_status = {
             "timeout": (trx_status_field & 0x88 == 0x08),
@@ -169,7 +170,7 @@ def dump_trx(
 
         # extend schedule_gts
         # ATTENTION: this simple approach assumes that the first record from each node has high part 0
-        if not node_id in gts_high:
+        if node_id not in gts_high:
             gts_high[node_id] = (schedule_gts, 0)
         x = gts_high[node_id]
         h = x[1] + (schedule_gts < x[0])
@@ -177,7 +178,7 @@ def dump_trx(
         schedule_gts += h << 32  # TODO: bug? this is feed into a uint32-container
 
         # if transmitter: compute CRC
-        if "TX" == TRxOperation(operation):
+        if TRxOperation(operation) == "TX":
             packet = packet[0:-3] + calc_crc(packet[0:-3])
 
         # NOTE: data[-1] of RSSI data = is_valid flag
@@ -201,7 +202,7 @@ def dump_trx(
                         map(str, i[:3] + ["..."] + i[-3:] if len(i) > 10 else i)
                     )
                     logger.warning(
-                        f"warning: %d @ %010x: RSSI sample test failed at position(s) %d",
+                        "warning: %d @ %010x: RSSI sample test failed at position(s) %d",
                         node_id,
                         schedule_gts,
                         i,
@@ -235,7 +236,7 @@ def dump_trx(
                 if x["schedule_gts"] == schedule_gts
             ]
             if x:
-                assert False  # TODO: raise exception
+                raise AssertionError()
 
             if schedule_gts >= 2**32:
                 # print("dropped a record - because of prior Operation (high part gts)")
@@ -411,9 +412,13 @@ def dump_trx(
                 ) / len(pdu_bits)
                 dt = ((ts_pdu_end - ts_pdu_begin) / len(pdu_bits)) / TICKS_PER_S
             ts_header_begin = np.uint32(ts_header_begin)
-            assert ts_header_begin < ts_pdu_begin
-            assert ts_pdu_begin < ts_pdu_end
-            assert ts_pdu_end < 0x8000_0000
+
+            if (
+                (ts_header_begin >= ts_pdu_begin)
+                or (ts_pdu_begin >= ts_pdu_end)
+                or (ts_pdu_end >= 0x8000_0000)
+            ):
+                raise AssertionError()
             ts_header_begin = int(ts_header_begin) + schedule_gts
             ts_end = int(ts_pdu_end) + schedule_gts
 
@@ -432,8 +437,8 @@ def dump_trx(
             # send RSSI data
             if (
                 rssi_valid
-                and (0 == rssi_num_samples_missed)
-                and (0 == rssi_status_field)
+                and (rssi_num_samples_missed == 0)
+                and (rssi_status_field == 0)
             ):
                 ts_rssi_last = np.uint32(rssi_end_lts - schedule_lts)
                 ts_rssi_last = int(ts_rssi_last) + schedule_gts

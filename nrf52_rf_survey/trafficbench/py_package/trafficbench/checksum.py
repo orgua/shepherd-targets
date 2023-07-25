@@ -13,20 +13,20 @@ def fletcher32(data: bytes) -> int:
     :param data:
     :return:
     """
-    assert isinstance(data, bytes)
-    assert not (len(data) & 1)
+    if not isinstance(data, bytes) or (len(data) & 1):
+        raise AssertionError()
 
     len_ = len(data)
-    i = 0
+    idx = 0
     c0 = c1 = 0
 
-    while i < len_:
-        l = min(len_ - i, 360)
+    while idx < len_:
+        l = min(len_ - idx, 360)
 
-        for k in range(l // 2):
-            c0 += (data[i] << 8) | data[i + 1]
+        for _ in range(l // 2):
+            c0 += (data[idx] << 8) | data[idx + 1]
             c1 += c0
-            i += 2
+            idx += 2
 
         c0 %= 0xFFFF
         c1 %= 0xFFFF
@@ -57,7 +57,7 @@ def test_checksum(
     elif byteorder == "le":
         c1 = (c1[0] << 0) | (c1[1] << 8) | (c1[2] << 16) | (c1[3] << 24)
     else:
-        assert False
+        raise AssertionError()
 
     c2 = fletcher32(data[: position[0]])
 

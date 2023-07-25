@@ -14,28 +14,27 @@ def warn_rssi(r):  # TODO: hint interface
 
     if rssi["num_samples"] == 0:
         logger.debug(
-            "{:3d} @ {:#010x} : no RSSI data available".format(
-                r["node_id"], r["schedule_gts"]
-            )
+            "%3d @ %010x : no RSSI data available", r["node_id"], r["schedule_gts"]
         )
     else:
         if rssi["early_readout_detected"]:
             logger.warning(
-                "{:3d} @ {:#010x} : RSSI early readout detected".format(
-                    r["node_id"], r["schedule_gts"]
-                )
+                "%3d @ %010x : RSSI early readout detected",
+                r["node_id"],
+                r["schedule_gts"],
             )
         if rssi["late_readout_detected"]:
             logger.warning(
-                "{:3d} @ {:#010x} : RSSI late readout detected".format(
-                    r["node_id"], r["schedule_gts"]
-                )
+                "%3d @ %010x : RSSI late readout detected",
+                r["node_id"],
+                r["schedule_gts"],
             )
         if rssi["num_samples_missed"] > 0:
             logger.warning(
-                "{:3d} @ {:#010x} : RSSI {} sample(s) missed".format(
-                    r["node_id"], r["schedule_gts"], rssi["num_samples_missed"]
-                )
+                "%3d @ %010x : RSSI %d sample(s) missed",
+                r["node_id"],
+                r["schedule_gts"],
+                rssi["num_samples_missed"],
             )
 
 
@@ -96,9 +95,10 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
 
     if rssi["num_samples_missed"] > 0:
         logger.warning(
-            "{:3d} @ {:#010x} : unclear sample timing due to {} missed RSSI sample(s)".format(
-                trx["node_id"], trx["schedule_gts"], rssi["num_samples_missed"]
-            )
+            "%3d @ %010x : unclear sample timing due to %d missed RSSI sample(s)",
+            trx["node_id"],
+            trx["schedule_gts"],
+            rssi["num_samples_missed"],
         )
 
     elif trx["trx_status"]["header_detected"] and not trx["trx_status"]["timeout"]:
@@ -123,10 +123,12 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
 
         # check if oscillator drift and event timing uncertainty is "acceptable"
         # TODO: fine-tune the critical value (in case of problems)
-        assert abs(ts_start - ts_start2) < 8
+        if abs(ts_start - ts_start2) >= 8:
+            raise AssertionError()
 
         # ATTENTION: add lts to gts rate adaptation if necessary
-        lts_to_gts = lambda x: x - trx["schedule_lts"] + trx["schedule_gts"]
+        def lts_to_gts(value: float):
+            return value - trx["schedule_lts"] + trx["schedule_gts"]
 
         n = (ts_start - GUARD_TICKS_NOISE_TO_START - ts_rssi_start) // TICKS_PER_SAMPLE
         if n > 0:
@@ -134,12 +136,11 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
             noise_range.append((lts_to_gts(ts_rssi_start + TICKS_PER_SAMPLE), n))
         else:
             logger.info(
-                "{:3d} @ {:#010x} : RSSI prologue interval ({}us) < guard time ({}us)".format(
-                    trx["node_id"],
-                    trx["schedule_gts"],
-                    (ts_start - ts_rssi_start) // TICKS_PER_US,
-                    GUARD_TICKS_NOISE_TO_START // TICKS_PER_US,
-                )
+                "%3d @ %010x : RSSI prologue interval (%f us) < guard time (%f us)",
+                trx["node_id"],
+                trx["schedule_gts"],
+                (ts_start - ts_rssi_start) // TICKS_PER_US,
+                GUARD_TICKS_NOISE_TO_START // TICKS_PER_US,
             )
             # NOTE: ts_start - ts_rssi_start can be negative due to (event) timing uncertainty.
             # Specifically, if a packet starts very short after receiver ramp-up, the combination of
@@ -155,12 +156,11 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
             )
         else:
             logger.info(
-                "{:3d} @ {:#010x} : RSSI epilogue interval ({}us) < guard time ({}us)".format(
-                    trx["node_id"],
-                    trx["schedule_gts"],
-                    (ts_rssi_end - ts_end) // TICKS_PER_US,
-                    GUARD_TICKS_END_TO_NOISE // TICKS_PER_US,
-                )
+                "%3d @ %010x : RSSI epilogue interval (%f us) < guard time (%f us)",
+                trx["node_id"],
+                trx["schedule_gts"],
+                (ts_rssi_end - ts_end) // TICKS_PER_US,
+                GUARD_TICKS_END_TO_NOISE // TICKS_PER_US,
             )
 
         n0 = (
@@ -194,23 +194,30 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
 
     if True:  # TODO: use commandline switch
         # compute mean on linear scale, i.e. arithmetic mean
-        mean_ = lambda value_dBm: power_W_to_dBm(power_dBm_to_W(value_dBm).mean())
-        mean_from_hist = lambda value_dBm, y: power_W_to_dBm(
-            np.dot(power_dBm_to_W(value_dBm), y) / np.sum(y)
-        )
+        def mean_(value_dBm):
+            return power_W_to_dBm(power_dBm_to_W(value_dBm).mean())
+
+        def mean_from_hist(value_dBm, y_):
+            return power_W_to_dBm(np.dot(power_dBm_to_W(value_dBm), y_) / np.sum(y_))
+
     else:
         # compute mean on logarithmic scale, i.e. geometric mean
-        mean_ = lambda x: x.mean()
-        mean_from_hist = lambda x, y: np.dot(x, y) / np.sum(y)
+        def mean_(x):
+            return x.mean()
+
+        def mean_from_hist(x, y_):
+            return np.dot(x, y_) / np.sum(y_)
 
     if noise.size:
         results["noise_mean"] = mean_(noise)
     else:
         logger.debug(
-            "{:3d} @ {:#010x} : unclear idle period, "
-            "estimating noise power from histogram (using lower {} out of {} bins)".format(
-                trx["node_id"], trx["schedule_gts"], n, len(x)
-            )
+            "%3d @ %010x : unclear idle period, "
+            "estimating noise power from histogram (using lower %d out of %d bins)",
+            trx["node_id"],
+            trx["schedule_gts"],
+            n,
+            len(x),
         )
         results["noise_mean"] = mean_from_hist(x[:n], y[:n])
         noise_range = [(-1, -n)]
@@ -221,10 +228,12 @@ def split_rssi(trx, rssi_heap):  # TODO: hint interface
         results["rx_max"] = signal.max()
     else:
         logger.debug(
-            "{:3d} @ {:#010x} : unclear signal period, "
-            "estimating signal power from histogram (using upper {} out of {} bins)".format(
-                trx["node_id"], trx["schedule_gts"], n, len(x)
-            )
+            "%3d @ %010x : unclear signal period, "
+            "estimating signal power from histogram (using upper %d out of %d bins)",
+            trx["node_id"],
+            trx["schedule_gts"],
+            n,
+            len(x),
         )
         results["rx_mean"] = mean_from_hist(x[-n:], y[-n:])
         x = x[-n:]

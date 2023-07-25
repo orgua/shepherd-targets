@@ -23,6 +23,7 @@ from .constants import TICKS_PER_US
 from .logger import logger
 from .rssi import split_rssi
 from .rssi import warn_rssi
+from .table_records import MarkerRecord
 from .table_records import RxInfoRecord
 from .table_records import ScheduleRecord
 from .table_records import SourceUncertainty
@@ -98,7 +99,7 @@ def analyze_trx(
     )
 
     for i in trx_table.indexedcolpathnames:
-        logger.info(f"removing index of {trx_table._v_pathname}.{i}")
+        logger.info("removing index of %s.%s", trx_table._v_pathname, i)
         trx_table.cols._f_col(i).remove_index()
 
     logger.info("creating RX info catalog")
@@ -125,7 +126,7 @@ def analyze_trx(
     ####################################################################################################
 
     # scan and group TRX records
-    logger.info(f"scanning and grouping TRX records (%d entries)", trx_table.nrows)
+    logger.info("scanning and grouping TRX records (%d entries)", trx_table.nrows)
     nodes = set()
     gts_last = -1
     n_tx = n_rx = n_skip = 0
@@ -140,7 +141,8 @@ def analyze_trx(
         # skip records where node was out of sync
         if -1 == np.int32(schedule_gts):
             logger.debug(
-                f"skipping TRX record {row.nrow} because schedule_gts = -1 (out of sync)"
+                "skipping TRX record %d because schedule_gts = -1 (out of sync)",
+                row.nrow,
             )
             n_skip += 1
             continue
@@ -151,15 +153,17 @@ def analyze_trx(
             continue
         gts_last = schedule_gts
 
-        I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
-        trx = trx_table[I]
+        indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
+        trx = trx_table[indexes]
 
         I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
         I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
 
         # TODO: print helpful error message, skip transaction and continue
-        assert len(set(trx["node_id"])) == len(trx)
-        assert len(I_tx) + len(I_rx) == len(trx)
+        if (len(set(trx["node_id"])) != len(trx)) or (
+            len(I_tx) + len(I_rx) != len(trx)
+        ):
+            raise AssertionError()
 
         n_tx += len(I_tx)
         n_rx += np.count_nonzero(trx["trx_status"]["crc_ok"][I_rx])
@@ -194,12 +198,14 @@ def analyze_trx(
     h5file.flush()
     if n_skip > 0:
         logger.info(
-            f"skipped {n_skip} TRX record(s) because schedule_gts = -1 (out of sync)"
+            "skipped %d TRX record(s) because schedule_gts = -1 (out of sync)", n_skip
         )
     logger.info(
-        "found {} nodes, {} transactions, {} transmissions, {} receptions (CRC ok)".format(
-            len(nodes), trans_table.nrows, n_tx, n_rx
-        )
+        "found %d nodes, %d transactions, %d transmissions, %d receptions (CRC ok)",
+        len(nodes),
+        trans_table.nrows,
+        n_tx,
+        n_rx,
     )
     logger.info("creating RX info index and transactions index")
     rx_info_table.cols.schedule_gts.create_csindex()
@@ -216,8 +222,8 @@ def analyze_trx(
     for trans in trans_table.where("num_transmitters == 1"):
         schedule_gts = trans["schedule_gts"]
 
-        I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
-        trx = trx_table[I]
+        indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
+        trx = trx_table[indexes]
 
         I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
         I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
@@ -264,11 +270,13 @@ def analyze_trx(
                             x["rssi_range_noise2_begin"],
                             x["rssi_range_noise2_len"],
                         ) = range_[1]
-                        assert len(range_) <= 2
+                        if len(range_) > 2:
+                            raise AssertionError()
 
                     range_ = rssi["rx_range"]
                     (x["rssi_range_sum_begin"], x["rssi_range_sum_len"]) = range_[0]
-                    assert len(range_) <= 1
+                    if len(range_) > 1:
+                        raise AssertionError()
 
                     sum_dBm = rssi["rx_mean"]
                     noise_dBm = rssi["noise_mean"]
@@ -276,9 +284,11 @@ def analyze_trx(
                     if not np.isnan(sum_dBm) and not np.isnan(noise_dBm):
                         if sum_dBm < noise_dBm:
                             logger.warning(
-                                "{:3d} @ {:#010x} : implausible RSSI split, skipping measurement (sum = {} dBm, noise = {} dBm)".format(
-                                    r["node_id"], schedule_gts, sum_dBm, noise_dBm
-                                )
+                                "%3d @ %010x : implausible RSSI split, skipping measurement (sum = %f dBm, noise = %f dBm)",
+                                r["node_id"],
+                                schedule_gts,
+                                sum_dBm,
+                                noise_dBm,
                             )
                         else:
                             noise_W = power_dBm_to_W(noise_dBm)
@@ -298,7 +308,7 @@ def analyze_trx(
                 # rx_info_table[k] = [x]
 
     rx_info_table.flush()
-    logger.info(f"found {n} receptions that can be exploited for link estimation")
+    logger.info("found %d receptions that can be exploited for link estimation", n)
 
     # estimate link matrix
     logger.info("creating link matrix")
@@ -312,7 +322,8 @@ def analyze_trx(
     n = np.zeros((n, n), dtype=trx_table.description.schedule_gts.dtype)
 
     for x in rx_info_table.where("is_link_measurement"):
-        assert not np.isnan(x["P_sigint"])
+        if np.isnan(x["P_sigint"]):
+            raise AssertionError()
         # if np.isnan(x['P_sigint']):
         #     continue
 
@@ -331,18 +342,13 @@ def analyze_trx(
     h5file.flush()
 
     logger.info("link matrix:")
-    logger.info("       %s", "  ".join(map(lambda x: f"{x:4d}", nodes)))
+    logger.info("       %s", "  ".join([f"{x:4d}" for x in nodes]))
     logger.info("     +-%s", "--" * (len(nodes) - 1) + "----" * len(nodes))
     for x in enumerate(power_W_to_dBm(link_matrix)):
         logger.info(
             "%4d | %s",
             nodes[x[0]],
-            "  ".join(
-                map(
-                    lambda x: "    " if np.isnan(x) else f"{x:4.0f}",
-                    x[1],
-                )
-            ),
+            "  ".join(["    " if np.isnan(val) else f"{val:4.0f}" for val in x[1]]),
         )
 
     ####################################################################################################
@@ -356,8 +362,8 @@ def analyze_trx(
     for trans in trans_table:
         schedule_gts = trans["schedule_gts"]
 
-        I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
-        trx = trx_table[I]
+        indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
+        trx = trx_table[indexes]
 
         I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
         I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
@@ -372,7 +378,8 @@ def analyze_trx(
             k = rx_info_table.get_where_list(
                 f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
             )
-            assert len(k) == 1
+            if len(k) != 1:
+                raise AssertionError()
             k = k[0]
 
             rxi = rx_info_table[k]
@@ -386,12 +393,18 @@ def analyze_trx(
                     id_map[trx["node_id"][I_tx]], id_map[r["node_id"]]
                 ]
             else:
-                assert r["schedule_gts"].dtype == np.uint32
-                fmap = lambda x: (
-                    abs(np.int32(x["schedule_gts"] - np.uint32(schedule_gts))),
-                    x["P_sigint"],
-                )
-                fmin = lambda a, b: a if a[0] <= b[0] else b
+                if r["schedule_gts"].dtype != np.uint32:
+                    raise AssertionError()
+
+                def fmap(x):
+                    return (
+                        abs(np.int32(x["schedule_gts"] - np.uint32(schedule_gts))),
+                        x["P_sigint"],
+                    )
+
+                def fmin(a, b):
+                    return a if a[0] <= b[0] else b
+
                 for l, k in enumerate(I_tx):
                     x = functools.reduce(
                         fmin,
@@ -519,7 +532,7 @@ def analyze_trx(
                         S1 = S[rx_power_isnan[S] == False]
 
                 s = S1[rx_power[S1].argmax()] if len(S1) > 0 else None
-                if not s is None:
+                if s is not None:
                     rxi["source_node_id"] = trx[I_tx[s]]["node_id"]
 
                 if (SourceUncertainty.STRONG == rxi["source_uncertainty"]) and (
@@ -527,9 +540,10 @@ def analyze_trx(
                 ):
                     n = trx["node_id"][I_tx[S[rx_power_isnan[S]]]]
                     logger.debug(
-                        "{:3d} @ {:#010x} : strong link power uncertainty due to missing link measurement(s) for transmitting node(s) {}".format(
-                            r["node_id"], schedule_gts, ",".join(map(str, n))
-                        )
+                        "%3d @ %010x : strong link power uncertainty due to missing link measurement(s) for transmitting node(s) %s",
+                        r["node_id"],
+                        schedule_gts,
+                        ",".join(map(str, n)),
                     )
 
             # split RSSI only if not already done during link measurement processing (above)
@@ -560,11 +574,13 @@ def analyze_trx(
                         rxi["rssi_range_noise2_begin"],
                         rxi["rssi_range_noise2_len"],
                     ) = range_[1]
-                    assert len(range_) <= 2
+                    if len(range_) > 2:
+                        raise AssertionError()
 
                 range_ = rssi["rx_range"]
                 (rxi["rssi_range_sum_begin"], rxi["rssi_range_sum_len"]) = range_[0]
-                assert len(range_) <= 1
+                if len(range_) > 1:
+                    raise AssertionError()
 
             sum_dBm = rssi["rx_mean"]
             noise_dBm = rssi["noise_mean"]
@@ -572,9 +588,11 @@ def analyze_trx(
             if not np.isnan(sum_dBm) and not np.isnan(noise_dBm):
                 if sum_dBm < noise_dBm:
                     logger.warning(
-                        "{:3d} @ {:#010x} : implausible RSSI split, skipping measurement (sum = {} dBm, noise = {} dBm)".format(
-                            r["node_id"], schedule_gts, sum_dBm, noise_dBm
-                        )
+                        "%3d @ %010x : implausible RSSI split, skipping measurement (sum = %f dBm, noise = %f dBm)",
+                        r["node_id"],
+                        schedule_gts,
+                        sum_dBm,
+                        noise_dBm,
                     )
                 else:
                     noise_W = power_dBm_to_W(noise_dBm)
@@ -587,7 +605,7 @@ def analyze_trx(
 
                     # signal
                     # sig_now       = sigint_now if len(I_tx) == 1 else np.nan
-                    sig_link = rx_power[s] if not s is None else np.nan
+                    sig_link = rx_power[s] if s is not None else np.nan
 
                     # interference
                     # int_now       = sigint_now - sig_now
@@ -694,7 +712,7 @@ def analyze_trx(
     for desc in markers:
         where_clause = desc["condition"].replace("#", "(" + desc["expression"] + ")")
 
-        logger.info(f'creating markers: {desc["name"]} (where {where_clause})')
+        logger.info("creating markers: %s (where %s)", desc["name"], where_clause)
 
         source_table = h5file.get_node("/", desc["table"])
 
@@ -704,7 +722,8 @@ def analyze_trx(
                 if n in source_table.colnames:
                     node_id_field = n
                     break
-        assert node_id_field
+        if node_id_field is None:
+            raise AssertionError()
 
         marker_table = h5file.create_table(
             "/markers", desc["name"], MarkerRecord, title=desc["title"]
@@ -744,8 +763,8 @@ def analyze_trx(
     for trans in trans_table:
         schedule_gts = trans["schedule_gts"]
 
-        I = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
-        trx = trx_table[I]
+        indexes = trx_table.get_where_list(f"schedule_gts == {schedule_gts}")
+        trx = trx_table[indexes]
 
         I_tx = np.flatnonzero(trx["operation"] == TRX_Operation.TX)
         I_rx = np.flatnonzero(trx["operation"] == TRX_Operation.RX)
@@ -754,7 +773,7 @@ def analyze_trx(
         # assert(len(set(trx["node_id"])) == len(trx))
         # assert(len(I_tx) + len(I_rx) == len(trx))
 
-        logger.info(f"\ntransaction at %010x:", schedule_gts)
+        logger.info("\ntransaction at %010x:", schedule_gts)
 
         actions = [("-", "")] * len(trx)
         SNRs = [(None, None)] * len(trx)
@@ -769,7 +788,8 @@ def analyze_trx(
             rxi = rx_info_table.read_where(
                 f'(schedule_gts == {schedule_gts}) & (destination_node_id == {r["node_id"]})'
             )
-            assert len(rxi) == 1
+            if len(rxi) != 1:
+                raise AssertionError()
             rxi = rxi[0]
 
             m = rxi["ambiguous_source"].decode()
@@ -792,35 +812,30 @@ def analyze_trx(
             if not np.isnan(x):
                 SINRs[i] = (x, m)
 
-        fmt = lambda c: " | ".join(map(lambda x: f"{x:^6}", c))
-        fmtx = lambda c: " | ".join(
-            map(lambda x: "{:^6}".format("".join(map(str, x))), c)
-        )
+        def fmt(c):
+            return " | ".join([f"{x:^6}" for x in c])
+
+        def fmtx(c):
+            return " | ".join(f"{''.join(map(str, x)):^6}" for x in c)
+
         logger.info("\tnode:          %s", fmt(trx["node_id"]))
-        logger.info(f"\treceive from:  %s", fmtx(actions))
+        logger.info("\treceive from:  %s", fmtx(actions))
         logger.info(
             "\tSINR (link):   %s",
             fmtx(
-                map(
-                    lambda x: (f"{x[0]:5.1f}", x[1])
-                    if isinstance(x[0], numbers.Number)
-                    else x,
-                    SINRs,
-                )
+                [
+                    (f"{x[0]:5.1f}", x[1]) if isinstance(x[0], numbers.Number) else x
+                    for x in SINRs
+                ]
             ),
         )
         logger.info(
             "\tSNR (mean):    %s",
-            fmt(map(lambda x: f"{x[1]:5.1f}" if not x[0] is None else "", SNRs)),
+            fmt([f"{x[1]:5.1f}" if x[0] is not None else "" for x in SNRs]),
         )
         logger.info(
             "\tSNR (min:max): %s",
-            fmt(
-                map(
-                    lambda x: f"{x[0]:1.0f}:{x[2]:1.0f}" if not x[0] is None else "",
-                    SNRs,
-                )
-            ),
+            fmt([f"{x[0]:1.0f}:{x[2]:1.0f}" if x[0] is not None else "" for x in SNRs]),
         )
 
     # done

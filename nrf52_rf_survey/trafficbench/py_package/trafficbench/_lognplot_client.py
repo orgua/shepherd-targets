@@ -45,9 +45,12 @@ else:
     ) / len(pdu_bits)
     dt = ((ts_pdu_end - ts_pdu_begin) / len(pdu_bits)) / TICKS_PER_S
 ts_header_begin = np.uint32(ts_header_begin)
-assert ts_header_begin < ts_pdu_begin
-assert ts_pdu_begin < ts_pdu_end
-assert ts_pdu_end < 0x80000000
+if (
+    (ts_header_begin >= ts_pdu_begin)
+    or (ts_pdu_begin >= ts_pdu_end)
+    or (ts_pdu_end >= 0x8000_0000)
+):
+    raise AssertionError()
 ts_header_begin = int(ts_header_begin) + schedule_gts
 ts_end = int(ts_pdu_end) + schedule_gts
 

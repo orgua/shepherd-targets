@@ -41,7 +41,6 @@
 ####################################################################################################
 
 import base64
-from typing import Union
 
 import matplotlib as mpl
 import numpy as np
@@ -79,7 +78,8 @@ mpl.rcParams["pgf.texsystem"] = "pdflatex"
 # This function is similar to numpy.lib.recfunctions.flatten_descr(), the main difference is
 # that it also extends the field names (and the type of the return value).
 def flatten_dtype(dtype, sep="_", prefix=""):
-    assert dtype.alignment == 1
+    if dtype.alignment != 1:
+        raise AssertionError()
     if dtype.names is None:
         desc = [(prefix, dtype)]
     else:
@@ -103,27 +103,28 @@ def flatten_dtype(dtype, sep="_", prefix=""):
 # helper functions used for gts + node_id links
 
 
-def src_id(id, op):
-    x = id.astype(np.int16, copy=True)
+def src_id(id_, op):
+    x = id_.astype(np.int16, copy=True)
     x[op != TRxOperation.TX] = -1
     return x
 
 
-def dst_id(id, op):
-    x = id.astype(np.int16, copy=True)
+def dst_id(id_, op):
+    x = id_.astype(np.int16, copy=True)
     x[op != TRxOperation.RX] = -1
     return x
 
 
-def node_key(gts, id):
+def node_key(gts, id_):
     gts = np.full(1, gts) if np.isscalar(gts) else gts
     x = np.full(len(gts), -1, dtype=np.float64)
-    if not np.isscalar(id):
-        assert len(id) == len(gts)
-        mask = id >= 0
-        x[mask] = (id[mask] / 100000) + gts[mask]
-    elif id >= 0:
-        x = (id / 100000) + gts
+    if not np.isscalar(id_):
+        if len(id_) != len(gts):
+            raise AssertionError()
+        mask = id_ >= 0
+        x[mask] = (id_[mask] / 100000) + gts[mask]
+    elif id_ >= 0:
+        x = (id_ / 100000) + gts
     return x
 
 
@@ -146,7 +147,8 @@ def read_trx(file_name):
     data = []
     with tbl.open_file(file_name, mode="r") as h5file:
         # check enum types
-        assert TRxOperation == h5file.root.trx_data.trx.get_enum("operation")
+        if TRxOperation != h5file.root.trx_data.trx.get_enum("operation"):
+            raise AssertionError()
 
         path_to_label = {
             "/trx_data/trx": "trx",
@@ -166,7 +168,7 @@ def read_trx(file_name):
         data.append(
             Data(
                 label=path_to_label["/catalogs/transactions"],
-                **dict(map(lambda x: (x, t[x]), t.dtype.names)),
+                **{name: t[name] for name in t.dtype.names},
             )
         )
 
@@ -174,7 +176,7 @@ def read_trx(file_name):
         data.append(
             Data(
                 label=path_to_label["/catalogs/rx_info"],
-                **dict(map(lambda x: (x, t[x]), t.dtype.names)),
+                **{name: t[name] for name in t.dtype.names},
             )
         )
         rx_info = data[-1]
@@ -190,7 +192,7 @@ def read_trx(file_name):
         data.append(
             Data(
                 label=path_to_label["/trx_data/trx"],
-                **dict(map(lambda x: (x, t[x]), t.dtype.names)),
+                **{name: t[name] for name in t.dtype.names},
             )
         )
         trx = data[-1]
@@ -202,9 +204,7 @@ def read_trx(file_name):
         for x in h5file.walk_nodes(where="/markers", classname="Table"):
             label = "markers : " + x._v_name
             t = x.read()
-            data.append(
-                Data(label=label, **dict(map(lambda x: (x, t[x]), t.dtype.names)))
-            )
+            data.append(Data(label=label, **{name: t[name] for name in t.dtype.names}))
             trx_loader_info["markers"][label] = (
                 path_to_label[x._f_getattr("TABLE")],
                 x._f_getattr("NODE_ID_FIELD"),
@@ -265,7 +265,7 @@ def read_trx(file_name):
 
         # add plain RSSI data object
         data.append(
-            Data(label="rssi_data", **dict(map(lambda x: (x, s[x]), s.dtype.names)))
+            Data(label="rssi_data", **{name: s[name] for name in s.dtype.names})
         )
         rssi_data = data[-1]
         rssi_data["anchor"] = (
@@ -307,7 +307,7 @@ def read_trx(file_name):
                 data.append(
                     Data(
                         label=f"rssi_{n}",
-                        **dict(map(lambda n: (n, xx[n]), xx.dtype.names)),
+                        **{name: xx[name] for name in xx.dtype.names},
                     )
                 )
                 xx = data[-1]
@@ -389,7 +389,8 @@ def read_trx(file_name):
                 ]
                 if not rxi:  # e.g. because schedule_gts == -1
                     continue
-                assert len(rxi) == 1
+                if len(rxi) != 1:
+                    raise AssertionError()
                 rxi = rxi[0]
 
                 # get transmitter's TRX entry
@@ -402,13 +403,14 @@ def read_trx(file_name):
                         if x["schedule_gts"] == rxi["schedule_gts"]
                         and x["node_id"] == rxi["source_node_id"]
                     ]
-                    assert len(x) == 1
+                    if len(x) != 1:
+                        raise AssertionError()
                     trx_tx = x[0]
 
                 # extract bitstreams
                 # ATTENTION: bits include the CRC, which is transmitted MSB first (in contrast to the PDU bytes)
                 # TODO: check if last 3 bytes (CRC) must be bit-reversed here
-                if not trx_tx is None:
+                if trx_tx is not None:
                     src_bits = np.unpackbits(
                         np.frombuffer(
                             base64.b16decode(trx_tx["packet_content_raw"]),
@@ -436,7 +438,7 @@ def read_trx(file_name):
                     ts_header_begin = ts_pdu_begin - (
                         len(header_bits) * (ts_pdu_end - ts_pdu_begin)
                     ) / len(dst_bits)
-                    if not trx_tx is None:
+                    if trx_tx is not None:
                         bitshift = 0
                         if (
                             rxi["ambiguous_source"] != b""
@@ -448,7 +450,7 @@ def read_trx(file_name):
                             bitshift = np.int32(np.rint(gts_ticks_to_us(ts_shift)))
                         # print(f"{rxi['schedule_gts']=}; {rxi['destination_node_id']=}; {rxi['source_node_id']=}; {rxi['ambiguous_source']=}; {bitshift=}")
                 else:  # BLE modes != 1M
-                    assert False
+                    raise AssertionError()
                     # TODO: CI, TERM1, TERM2 (in long range modes)
                     # ts_pdu_begin = (trx['packet_lts'] - trx['schedule_lts']) + CI / TERM1
                     # ts_pdu_end   = (trx['end_lts'] - trx['schedule_lts']) - TERM2
@@ -505,7 +507,7 @@ def read_trx(file_name):
             data.append(
                 Data(
                     label=f"bitstream_{node}",
-                    **dict(map(lambda n: (n, y[n]), y.dtype.names)),
+                    **{name: y[name] for name in y.dtype.names},
                 )
             )
             x = data[-1]
@@ -762,8 +764,8 @@ def rx_viewer_setup(axes, state):
 
     # create "our" axes objects
     # NOTE: 'axes' (the existing object) is not part of the constrained layout
-    fig.set_constrained_layout(dict(hspace=0, wspace=0))
-    fig.subplots(2, 1, sharex=True, gridspec_kw=dict(height_ratios=[1, 0.2]))
+    fig.set_constrained_layout({"hspace": 0, "wspace": 0})
+    fig.subplots(2, 1, sharex=True, gridspec_kw={"height_ratios": [1, 0.2]})
     ax1, ax2 = fig.axes[-2:]
     ax1.set_ylabel("RSSI")
     ax1.grid(visible=True)
@@ -830,11 +832,11 @@ def rx_viewer_plot_data(
     ]  # [0] can contain 'axes' (depending on what we do in rx_viewer_setup())
     ret = []
 
-    if "us" == timestamp_unit:
+    if timestamp_unit == "us":
         gts = gts_us
         ax2.set_xlabel("global timestamp [us]")
         state.x_to_ticks = gts_us_to_ticks
-    elif "s" == timestamp_unit:
+    elif timestamp_unit == "s":
         gts = gts_s
         ax2.set_xlabel("global timestamp [s]")
         state.x_to_ticks = gts_s_to_ticks
@@ -844,10 +846,10 @@ def rx_viewer_plot_data(
 
     # adapt xbound to current timescale
     x = 0.05 * (gts[-1] - gts[0])
-    l = gts[0] - x
-    u = gts[-1] + x
-    ax1.set_xbound(lower=l, upper=u)
-    ax2.set_xbound(lower=l, upper=u)
+    low = gts[0] - x
+    upp = gts[-1] + x
+    ax1.set_xbound(lower=low, upper=upp)
+    ax2.set_xbound(lower=low, upper=upp)
 
     # if dataset is a RSSI dataset
     if not np.isnan(rssi).all():

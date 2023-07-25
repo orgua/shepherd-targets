@@ -57,11 +57,15 @@ def test_and_warn(
         pos_new = min(len(section) if x < 0 else x for x in pos_new)
         pos_new += pos_start
 
-        l = line_number - text.count(b"\n", pos_new)
-        c = 1 + pos_new - max(0, text.rfind(b"\n", 0, pos_new))
-        x = text[pos_new - (c - 1) : text.find(b"\n", pos_new + 1)]
+        line = line_number - text.count(b"\n", pos_new)
+        column = 1 + pos_new - max(0, text.rfind(b"\n", 0, pos_new))
+        segment = text[pos_new - (column - 1) : text.find(b"\n", pos_new + 1)]
         logger.warning(
-            f"line {l} column {c}: orphaned control character {hex(text[pos_new])} in segment {x}"
+            "line %d column %d: orphaned control character %s in segment %s",
+            line,
+            column,
+            hex(text[pos_new]),
+            segment,
         )
 
         pos_start = pos_new + 1
@@ -256,7 +260,7 @@ def _filter_logfile(
     )
     re_source_id = (
         re.compile(source_id_pattern.encode(), flags=re.MULTILINE)
-        if not source_id_pattern is None
+        if source_id_pattern is not None
         else None
     )
 
@@ -281,7 +285,7 @@ def _filter_logfile(
         buffer += line
 
         # collect text until buffer contains BEGIN_RECORD and END_RECORD markers (at least one of each)
-        if not END_RECORD in line:
+        if END_RECORD not in line:
             # drop data in front of BEGIN_RECORD
             # ATTENTION: this is important for the record size check below to work right
             p = buffer.find(BEGIN_RECORD)
@@ -297,9 +301,12 @@ def _filter_logfile(
 
             # limit maximum record size
             if len(buffer) > max_record_size:
-                l = line_number - buffer.count(b"\n")
+                line = line_number - buffer.count(b"\n")
                 logger.warning(
-                    f"line {l}: dropping record because size exceeds maximum ({len(buffer)} > {max_record_size})"
+                    "line %d: dropping record because size exceeds maximum (%d > %d)",
+                    line,
+                    len(buffer),
+                    max_record_size,
                 )
                 buffer = b""
 
@@ -386,11 +393,11 @@ def _filter_logfile(
                         )
 
                 except ValueError as err:
-                    l = line_number - buffer.count(b"\n", record_match.start(0))
+                    line = line_number - buffer.count(b"\n", record_match.start(0))
                     logger.warning(
-                        f"line {l}: dropping invalid record ("
-                        + ";".join(err.args)
-                        + ")"
+                        "line %d: dropping invalid record (%s)",
+                        line,
+                        ";".join(err.args),
                     )
 
                 # if ok: write output text
@@ -410,7 +417,7 @@ def _filter_logfile(
 
             # continue with next record
             if BEGIN_RECORD in buffer:
-                if not END_RECORD in buffer:
+                if END_RECORD not in buffer:
                     break
             else:
                 # explicitly drop garbage to re-enable the fast dropping step in the outer loop (see above)

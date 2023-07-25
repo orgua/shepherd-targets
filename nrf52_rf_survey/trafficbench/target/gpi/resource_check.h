@@ -219,22 +219,22 @@
     // Note that this concept is different from weak symbols.
 
   #define _GPI_RESOURCE_RESERVE_SHARED(id)                                                         \
-    /* global marker variable, declared as common */                                               \
-    const gpi_resource_declaration_##id __attribute__((common)) gpi_resource_reservation_##id;     \
-    /* additional typedef used to catch SHARED and non-SHARED in same module */                    \
-    typedef char gpi_resource_reservation_##id##_
+      /* global marker variable, declared as common */                                             \
+      const gpi_resource_declaration_##id __attribute__((common)) gpi_resource_reservation_##id;   \
+      /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
+      typedef char gpi_resource_reservation_##id##_
 
   #define _GPI_RESOURCE_RESERVE(id)                                                                \
-    /* global marker variable, declared as non-common */                                           \
-    const gpi_resource_declaration_##id _GPI_RESOURCE_SECTION_DECL gpi_resource_reservation_##id = \
-            1;                                                                                     \
-    /* additional typedef used to catch SHARED and non-SHARED in same module */                    \
-    typedef long gpi_resource_reservation_##id##_
+      /* global marker variable, declared as non-common */                                         \
+      const gpi_resource_declaration_##id _GPI_RESOURCE_SECTION_DECL                               \
+                   gpi_resource_reservation_##id = 1;                                              \
+      /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
+      typedef long gpi_resource_reservation_##id##_
 
 #elif (2 == GPI_RESOURCE_CHECK_DECLARATION)
 
   #define _GPI_RESOURCE_DECLARE(id)                                                                \
-    const char __attribute__((common)) gpi_resource_declaration_##id[0]
+      const char __attribute__((common)) gpi_resource_declaration_##id[0]
 
     // NOTE: In the implementation below, each reservation stores a pointer to the corresponding
     // declaration. To save memory, we could store only one byte instead of the whole pointer.
@@ -245,38 +245,39 @@
     //     on the other hand they can be deactivated in the release build.
 
   #define _GPI_RESOURCE_RESERVE_SHARED(id)                                                         \
-    extern const char                                   gpi_resource_declaration_##id[];           \
-    /* local marker, throws error if resource declaration is missing */                            \
-    static const char *const _GPI_RESOURCE_SECTION_DECL CONCAT(                                    \
-            gpi_resource_reservation_##id##_ref, __COUNTER__) = &gpi_resource_declaration_##id[0]; \
-    /* global marker variable, declared as common */                                               \
-    const char *const __attribute__((common)) gpi_resource_reservation_##id;                       \
-    /* additional typedef used to catch SHARED and non-SHARED in same module */                    \
-    typedef char gpi_resource_reservation_##id##_
+      extern const char                                   gpi_resource_declaration_##id[];         \
+      /* local marker, throws error if resource declaration is missing */                          \
+      static const char *const _GPI_RESOURCE_SECTION_DECL CONCAT(                                  \
+              gpi_resource_reservation_##id##_ref, __COUNTER__) =                                  \
+              &gpi_resource_declaration_##id[0];                                                   \
+      /* global marker variable, declared as common */                                             \
+      const char *const __attribute__((common)) gpi_resource_reservation_##id;                     \
+      /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
+      typedef char gpi_resource_reservation_##id##_
 
   #define _GPI_RESOURCE_RESERVE(id)                                                                \
-    extern const char                            gpi_resource_declaration_##id[];                  \
-    /* global marker variable, declared as non-common */                                           \
-    const char *const _GPI_RESOURCE_SECTION_DECL gpi_resource_reservation_##id =                   \
-            &gpi_resource_declaration_##id[0];                                                     \
-    /* additional typedef used to catch SHARED and non-SHARED in same module */                    \
-    typedef long gpi_resource_reservation_##id##_
+      extern const char                            gpi_resource_declaration_##id[];                \
+      /* global marker variable, declared as non-common */                                         \
+      const char *const _GPI_RESOURCE_SECTION_DECL gpi_resource_reservation_##id =                 \
+              &gpi_resource_declaration_##id[0];                                                   \
+      /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
+      typedef long gpi_resource_reservation_##id##_
 
 #else
 
   #define _GPI_RESOURCE_DECLARE(id) typedef int Gpi_Resource_Dummy_Type
 
   #define _GPI_RESOURCE_RESERVE_SHARED(id)                                                         \
-    /* global marker variable, declared as common */                                               \
-    const char __attribute__((common)) gpi_resource_reservation_##id;                              \
-    /* additional typedef used to catch SHARED and non-SHARED in same module */                    \
-    typedef char gpi_resource_reservation_##id##_
+      /* global marker variable, declared as common */                                             \
+      const char __attribute__((common)) gpi_resource_reservation_##id;                            \
+      /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
+      typedef char gpi_resource_reservation_##id##_
 
   #define _GPI_RESOURCE_RESERVE(id)                                                                \
-    /* global marker variable, declared as non-common */                                           \
-    const char _GPI_RESOURCE_SECTION_DECL gpi_resource_reservation_##id = 1;                       \
-    /* additional typedef used to catch SHARED and non-SHARED in same module */                    \
-    typedef long                          gpi_resource_reservation_##id##_
+      /* global marker variable, declared as non-common */                                         \
+      const char _GPI_RESOURCE_SECTION_DECL gpi_resource_reservation_##id = 1;                     \
+      /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
+      typedef long                          gpi_resource_reservation_##id##_
 
 #endif
 

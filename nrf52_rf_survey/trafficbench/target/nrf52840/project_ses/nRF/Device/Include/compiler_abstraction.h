@@ -81,11 +81,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   #ifndef NRF_STATIC_ASSERT
     #define NRF_STATIC_ASSERT(cond, msg)                                                           \
-      ;                                                                                            \
-      enum                                                                                         \
-      {                                                                                            \
-          NRF_STRING_CONCATENATE(static_assert_on_line_, __LINE__) = 1 / (!!(cond))                \
-      }
+        ;                                                                                          \
+        enum                                                                                       \
+        {                                                                                          \
+            NRF_STRING_CONCATENATE(static_assert_on_line_, __LINE__) = 1 / (!!(cond))              \
+        }
   #endif
 
 #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
@@ -248,16 +248,16 @@ static inline unsigned int gcc_current_sp(void)
 #endif
 
 #define NRF_MDK_VERSION_ASSERT_AT_LEAST(major, minor, micro)                                       \
-  NRF_STATIC_ASSERT(((major < MDK_MAJOR_VERSION) ||                                                \
-                     (major == MDK_MAJOR_VERSION && minor < MDK_MINOR_VERSION) ||                  \
-                     (major == MDK_MAJOR_VERSION && minor == MDK_MINOR_VERSION &&                  \
-                      micro < MDK_MICRO_VERSION)),                                                 \
-                    "MDK version mismatch.")
+    NRF_STATIC_ASSERT(((major < MDK_MAJOR_VERSION) ||                                              \
+                       (major == MDK_MAJOR_VERSION && minor < MDK_MINOR_VERSION) ||                \
+                       (major == MDK_MAJOR_VERSION && minor == MDK_MINOR_VERSION &&                \
+                        micro < MDK_MICRO_VERSION)),                                               \
+                      "MDK version mismatch.")
 
 #define NRF_MDK_VERSION_ASSERT_EXACT(major, minor, micro)                                          \
-  NRF_STATIC_ASSERT(((major != MDK_MAJOR_VERSION) || (major != MDK_MAJOR_VERSION) ||               \
-                     (major != MDK_MAJOR_VERSION)),                                                \
-                    "MDK version mismatch.")
+    NRF_STATIC_ASSERT(((major != MDK_MAJOR_VERSION) || (major != MDK_MAJOR_VERSION) ||             \
+                       (major != MDK_MAJOR_VERSION)),                                              \
+                      "MDK version mismatch.")
 
 /*lint --flb "Leave library region" */
 

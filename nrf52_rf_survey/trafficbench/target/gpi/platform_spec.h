@@ -185,7 +185,7 @@
 
     #define _GPI_ARCH_GET(field)  (GPI_ARCH_PLATFORM & GPI_ARCH_##field##_MASK)
     #define _GPI_ARCH_ENCODE(field, x)                                                             \
-      ((UINT32_C(x) << GPI_ARCH_##field##_SHIFT) & GPI_ARCH_##field##_MASK)
+        ((UINT32_C(x) << GPI_ARCH_##field##_SHIFT) & GPI_ARCH_##field##_MASK)
 
   #endif
 
@@ -194,8 +194,9 @@
     // i.e., _END & _MASK could be 0. Hence, do not compare < _END, do <= _END - 1 instead.
     // NOTE: A single value version (without interval) could be provided easily too, but we do not need it.
   #define _GPI_ARCH_TEST_INTERVAL(field, attr, interval)                                           \
-    ((_GPI_ARCH_GET(field) >= GPI_ARCH_##attr##_##interval) &&                                     \
-     (_GPI_ARCH_GET(field) <= (GPI_ARCH_##attr##_##interval##_END - _GPI_ARCH_ENCODE(field, 1))))
+      ((_GPI_ARCH_GET(field) >= GPI_ARCH_##attr##_##interval) &&                                   \
+       (_GPI_ARCH_GET(field) <=                                                                    \
+        (GPI_ARCH_##attr##_##interval##_END - _GPI_ARCH_ENCODE(field, 1))))
 
     // internal: test optional extra conditions provided by _COND
   #define _GPI_ARCH_TEST_EXTRA(...)        _GPI_ARCH_TEST_EXTRA_(__VA_ARGS__, 1)
@@ -206,7 +207,8 @@
     // so _COND has limited nesting capabilities and must be used with care
   #define _GPI_ARCH_IS_X1(field, attr, x)  _GPI_ARCH_TEST_INTERVAL(field, attr, x)
   #define _GPI_ARCH_IS_X2(field, attr, x)                                                          \
-    (_GPI_ARCH_TEST_INTERVAL(field, attr, x) && _GPI_ARCH_TEST_EXTRA(GPI_ARCH_##attr##_##x##_COND))
+      (_GPI_ARCH_TEST_INTERVAL(field, attr, x) &&                                                  \
+       _GPI_ARCH_TEST_EXTRA(GPI_ARCH_##attr##_##x##_COND))
 
   #define GPI_ARCH_IS_CORE(x)   _GPI_ARCH_IS_X1(DEVICE, CORE, x)
     //	#define GPI_ARCH_IS_DEVICE_FAMILY(x)	_GPI_ARCH_IS_X1(DEVICE, DEVICE_FAMILY, x)
@@ -425,14 +427,14 @@ ASSERT_CT_STATIC(ALIGNMENT == 2, alignment_mismatch);
 #define GPI_ARCH_BOARD_nRF_PCA10056     (GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(1)) // = nRF52840 DK
 #define GPI_ARCH_BOARD_nRF_PCA10056_END (GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(2))
 #define GPI_ARCH_BOARD_nRF_PCA10059                                                                \
-  (GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(2)) // = nRF52840 USB Dongle
+    (GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(2)) // = nRF52840 USB Dongle
 #define GPI_ARCH_BOARD_nRF_PCA10059_PURE     (GPI_ARCH_BOARD_nRF_PCA10059 + _GPI_ARCH_BOARD(0))
 #define GPI_ARCH_BOARD_nRF_PCA10059_PURE_END (GPI_ARCH_BOARD_nRF_PCA10059 + _GPI_ARCH_BOARD(1))
 #define GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB                                                       \
-  (GPI_ARCH_BOARD_nRF_PCA10059 + _GPI_ARCH_BOARD(1)) // = PCA10059 FlockLab target
+    (GPI_ARCH_BOARD_nRF_PCA10059 + _GPI_ARCH_BOARD(1)) // = PCA10059 FlockLab target
 #define GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB_END (GPI_ARCH_BOARD_nRF_PCA10059 + _GPI_ARCH_BOARD(2))
 #define GPI_ARCH_BOARD_FLOCKLAB_nRF5                                                               \
-  GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB // alias for FlockLab oriented naming
+    GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB // alias for FlockLab oriented naming
 #define GPI_ARCH_BOARD_FLOCKLAB_nRF5_END  GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB_END
 // GPI_ARCH_BOARD_nRF5_FLOCKLAB is deprecated, use GPI_ARCH_BOARD_FLOCKLAB_nRF5 instead
 // (for reasons see comments about board names at the beginning of this file)
@@ -517,8 +519,8 @@ ASSERT_CT_STATIC(ALIGNMENT == 8, alignment_mismatch);
   #define _GPI_ARCH_RTE_AUTO_WARN(x)
 #else
   #define _GPI_ARCH_RTE_AUTO_WARN(...)                                                             \
-    _GPI_ARCH_RTE_AUTO_WARN_1(GPI RTE detection                                                    \
-                              : __VA_ARGS__(please update GPI_ARCH_PLATFORM setting))
+      _GPI_ARCH_RTE_AUTO_WARN_1(GPI RTE detection                                                  \
+                                : __VA_ARGS__(please update GPI_ARCH_PLATFORM setting))
   #define _GPI_ARCH_RTE_AUTO_WARN_1(...) _GPI_ARCH_RTE_AUTO_WARN_2(#__VA_ARGS__)
   #define _GPI_ARCH_RTE_AUTO_WARN_2(x)   _GPI_ARCH_RTE_AUTO_WARN_3(GCC warning #x)
   #define _GPI_ARCH_RTE_AUTO_WARN_3(x)   _Pragma(#x)
@@ -545,8 +547,8 @@ _GPI_ARCH_RTE_AUTO_WARN(changed CRT to SEGGER1)
       #else // spec. method 3 (see above)
         #undef _GPI_ARCH_GET
         #define _GPI_ARCH_GET(field)                                                               \
-          ((GPI_ARCH_PLATFORM & ~GPI_ARCH_CRT_MASK | GPI_ARCH_CRT_SEGGER1) &                       \
-           GPI_ARCH_##field##_MASK)
+            ((GPI_ARCH_PLATFORM & ~GPI_ARCH_CRT_MASK | GPI_ARCH_CRT_SEGGER1) &                     \
+             GPI_ARCH_##field##_MASK)
       #endif
 
             // SEGGER RTL (available since SES 5.10, version 2.4.2 in SES 5.42)
@@ -564,8 +566,8 @@ _GPI_ARCH_RTE_AUTO_WARN(changed CRT to SEGGER2)
       #else // spec. method 3 (see above)
         #undef _GPI_ARCH_GET
         #define _GPI_ARCH_GET(field)                                                               \
-          ((GPI_ARCH_PLATFORM & ~GPI_ARCH_CRT_MASK | GPI_ARCH_CRT_SEGGER2) &                       \
-           GPI_ARCH_##field##_MASK)
+            ((GPI_ARCH_PLATFORM & ~GPI_ARCH_CRT_MASK | GPI_ARCH_CRT_SEGGER2) &                     \
+             GPI_ARCH_##field##_MASK)
       #endif
 
     #endif

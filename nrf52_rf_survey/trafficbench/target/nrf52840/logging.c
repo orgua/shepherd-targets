@@ -90,11 +90,11 @@ GPI_TRACE_CONFIG(logging, GPI_TRACE_BASE_SELECTION | GPI_TRACE_USER_SELECTION);
 #endif
 
 #define TRACE_MSG(...)                                                                             \
-  do {                                                                                             \
-    GPI_TRACE_MSG(__VA_ARGS__);                                                                    \
-    TRACE_AUTO_FLUSH();                                                                            \
-  }                                                                                                \
-  while (0)
+    do {                                                                                           \
+        GPI_TRACE_MSG(__VA_ARGS__);                                                                \
+        TRACE_AUTO_FLUSH();                                                                        \
+    }                                                                                              \
+    while (0)
 
 // enable/disable TRACE flush between chunks and consecutive records
 // can be used to output TRACE messages with about the same priority as log records (e.g. for

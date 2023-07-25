@@ -106,8 +106,8 @@ GPI_TRACE_CONFIG(scheduler, GPI_TRACE_BASE_SELECTION | GPI_TRACE_USER_SELECTION 
   #define ASSERT_ELSE(cond) if (!(cond))
 #else
   #define ASSERT_ELSE(cond)                                                                        \
-    if (1) assert(cond);                                                                           \
-    else
+      if (1) assert(cond);                                                                         \
+      else
 #endif
 
 //**************************************************************************************************

@@ -88,52 +88,52 @@
 
 
 #define _GPI_SIZE_DISPATCHER_FUNCTION_1_16(name, return_type)                                      \
-  _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint16_t _param_)          \
-  {                                                                                                \
-    switch (_size_)                                                                                \
+    _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint16_t _param_)        \
     {                                                                                              \
-      case 1: return name##_8(_param_);                                                            \
-      case 2: return name##_16(_param_);                                                           \
-      default: assert(0); return (return_type) -1; /* must not happen */                           \
-    }                                                                                              \
-  }
+        switch (_size_)                                                                            \
+        {                                                                                          \
+            case 1: return name##_8(_param_);                                                      \
+            case 2: return name##_16(_param_);                                                     \
+            default: assert(0); return (return_type) -1; /* must not happen */                     \
+        }                                                                                          \
+    }
 
 #define _GPI_SIZE_DISPATCHER_FUNCTION_1_32(name, return_type)                                      \
-  _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint32_t _param_)          \
-  {                                                                                                \
-    switch (_size_)                                                                                \
+    _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint32_t _param_)        \
     {                                                                                              \
-      case 1: return name##_8(_param_);                                                            \
-      case 2: return name##_16(_param_);                                                           \
-      case 4: return name##_32(_param_);                                                           \
-      default: assert(0); return (return_type) -1; /* must not happen */                           \
-    }                                                                                              \
-  }
+        switch (_size_)                                                                            \
+        {                                                                                          \
+            case 1: return name##_8(_param_);                                                      \
+            case 2: return name##_16(_param_);                                                     \
+            case 4: return name##_32(_param_);                                                     \
+            default: assert(0); return (return_type) -1; /* must not happen */                     \
+        }                                                                                          \
+    }
 
 #define _GPI_SIZE_DISPATCHER_FUNCTION_2_32(name, return_type, param2_type)                         \
-  _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint32_t _param_,          \
-                                                   param2_type _param2_)                           \
-  {                                                                                                \
-    switch (_size_)                                                                                \
+    _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint32_t _param_,        \
+                                                     param2_type _param2_)                         \
     {                                                                                              \
-      case 1: return name##_8(_param_, _param2_);                                                  \
-      case 2: return name##_16(_param_, _param2_);                                                 \
-      case 4: return name##_32(_param_, _param2_);                                                 \
-      default: assert(0); return (return_type) -1; /* must not happen */                           \
-    }                                                                                              \
-  }
+        switch (_size_)                                                                            \
+        {                                                                                          \
+            case 1: return name##_8(_param_, _param2_);                                            \
+            case 2: return name##_16(_param_, _param2_);                                           \
+            case 4: return name##_32(_param_, _param2_);                                           \
+            default: assert(0); return (return_type) -1; /* must not happen */                     \
+        }                                                                                          \
+    }
 
 #define _GPI_SIZE_DISPATCHER_1_16(name, param)                                                     \
-  (_##name##_(sizeof(param), param) +                                                              \
-   ASSERT_CT_EVAL(sizeof(param) <= 2, name##_invalid_parameter_type))
+    (_##name##_(sizeof(param), param) +                                                            \
+     ASSERT_CT_EVAL(sizeof(param) <= 2, name##_invalid_parameter_type))
 
 #define _GPI_SIZE_DISPATCHER_1_32(name, param)                                                     \
-  (_##name##_(sizeof(param), param) +                                                              \
-   ASSERT_CT_EVAL(sizeof(param) <= 4, name##_invalid_parameter_type))
+    (_##name##_(sizeof(param), param) +                                                            \
+     ASSERT_CT_EVAL(sizeof(param) <= 4, name##_invalid_parameter_type))
 
 #define _GPI_SIZE_DISPATCHER_2_32(name, param, param2)                                             \
-  (_##name##_(sizeof(param), param, param2) +                                                      \
-   ASSERT_CT_EVAL(sizeof(param) <= 4, name##_invalid_parameter_type))
+    (_##name##_(sizeof(param), param, param2) +                                                    \
+     ASSERT_CT_EVAL(sizeof(param) <= 4, name##_invalid_parameter_type))
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************

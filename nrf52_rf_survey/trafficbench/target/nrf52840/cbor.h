@@ -146,7 +146,7 @@ extern "C" {
 
 #define cbor_encode_uint(item, value)   cbor_encode_uint_(&(item), sizeof(item), (value))
 #define cbor_encode_uint_tiny(item, value)                                                         \
-  cbor_encode_uint_(&(item), sizeof(cbor_uint_tiny_t), (value))
+    cbor_encode_uint_(&(item), sizeof(cbor_uint_tiny_t), (value))
 #define cbor_encode_uint8(item, value)         cbor_encode_uint_(&(item), sizeof(cbor_uint8_t), (value))
 #define cbor_encode_uint16(item, value)        cbor_encode_uint_(&(item), sizeof(cbor_uint16_t), (value))
 #define cbor_encode_uint32(item, value)        cbor_encode_uint_(&(item), sizeof(cbor_uint32_t), (value))
@@ -154,24 +154,24 @@ extern "C" {
 
 #define cbor_encode_int(item, value)           cbor_encode_int_(&(item), sizeof(item), (value))
 #define cbor_encode_int_tiny(item, value)                                                          \
-  cbor_encode_int_(&(item), sizeof(cbor_int_tiny_t), (value))
+    cbor_encode_int_(&(item), sizeof(cbor_int_tiny_t), (value))
 #define cbor_encode_int8(item, value)    cbor_encode_int_(&(item), sizeof(cbor_int8_t), (value))
 #define cbor_encode_int16(item, value)   cbor_encode_int_(&(item), sizeof(cbor_int16_t), (value))
 #define cbor_encode_int32(item, value)   cbor_encode_int_(&(item), sizeof(cbor_int32_t), (value))
 
 #define cbor_encode_bstr(item, src, len) cbor_encode_bstr_(&(item), sizeof(item), (src), (len))
 #define cbor_encode_bstr_tiny(item, src, len)                                                      \
-  cbor_encode_bstr_(&(item), sizeof(cbor_bstr_tiny_t), (src), (len))
+    cbor_encode_bstr_(&(item), sizeof(cbor_bstr_tiny_t), (src), (len))
 #define cbor_encode_bstr8(item, src, len)                                                          \
-  cbor_encode_bstr_(&(item), sizeof(cbor_bstr8_t), (src), (len))
+    cbor_encode_bstr_(&(item), sizeof(cbor_bstr8_t), (src), (len))
 #define cbor_encode_bstr16(item, src, len)                                                         \
-  cbor_encode_bstr_(&(item), sizeof(cbor_bstr16_t), (src), (len))
+    cbor_encode_bstr_(&(item), sizeof(cbor_bstr16_t), (src), (len))
 #define cbor_encode_bstr32(item, src, len)                                                         \
-  cbor_encode_bstr_(&(item), sizeof(cbor_bstr32_t), (src), (len))
+    cbor_encode_bstr_(&(item), sizeof(cbor_bstr32_t), (src), (len))
 
 #define cbor_encode_array(item, len) cbor_encode_array_(&(item), sizeof(item), (len))
 #define cbor_encode_array_tiny(item, len)                                                          \
-  cbor_encode_array_(&(item), sizeof(cbor_array_tiny_t), (len))
+    cbor_encode_array_(&(item), sizeof(cbor_array_tiny_t), (len))
 #define cbor_encode_array8(item, len)  cbor_encode_array_(&(item), sizeof(cbor_array8_t), (len))
 #define cbor_encode_array16(item, len) cbor_encode_array_(&(item), sizeof(cbor_array16_t), (len))
 #define cbor_encode_array32(item, len) cbor_encode_array_(&(item), sizeof(cbor_array32_t), (len))
@@ -242,12 +242,12 @@ static inline void *cbor_encode_uint_(void *dest, size_t size, uint_fast32_t val
 
 #if 0
   #define cbor_encode_uint(field, value)                                                           \
-    do {                                                                                           \
-      typeof(field) *p = &(field);                                                                 \
-      p->hdr           = 24 + MSB(sizeof(p->val));                                                 \
-      p->val           = hton((value), sizeof(p->val));                                            \
-    }                                                                                              \
-    while (0)
+      do {                                                                                         \
+          typeof(field) *p = &(field);                                                             \
+          p->hdr           = 24 + MSB(sizeof(p->val));                                             \
+          p->val           = hton((value), sizeof(p->val));                                        \
+      }                                                                                            \
+      while (0)
 		//(field).hdr = 24 + MSB(sizeof((field).val));
 		//(field).val = hton((value), sizeof((field).val));
 #endif
@@ -286,17 +286,17 @@ static inline void *cbor_encode_int_(void *dest, size_t size, int_fast32_t value
 
 #if 0
   #define cbor_encode_int(field, value)                                                            \
-    do {                                                                                           \
-      typeof(field) *p = &(field);                                                                 \
-      typeof(value)  x = (value);                                                                  \
-      if (x < 0)                                                                                   \
-      {                                                                                            \
-        p->hdr = 0x20 + 24 + MSB(sizeof(p->val));                                                  \
-        p->val = hton(-x, sizeof(p->val));                                                         \
+      do {                                                                                         \
+          typeof(field) *p = &(field);                                                             \
+          typeof(value)  x = (value);                                                              \
+          if (x < 0)                                                                               \
+          {                                                                                        \
+              p->hdr = 0x20 + 24 + MSB(sizeof(p->val));                                            \
+              p->val = hton(-x, sizeof(p->val));                                                   \
+          }                                                                                        \
+          else cbor_encode_uint(*p, x);                                                            \
       }                                                                                            \
-      else cbor_encode_uint(*p, x);                                                                \
-    }                                                                                              \
-    while (0)
+      while (0)
 		//if (x < 0) {
 		//	(field).hdr = 0x20 + 24 + MSB(sizeof((field).val));
 		//	(field).val = hton(-x, sizeof((field).val));

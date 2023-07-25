@@ -77,7 +77,7 @@
 //  note: two-step approach is essential (do not remove it!)
 #define CONCAT_NOEXP(...) CONCAT_NOEXP2(dummy, ##__VA_ARGS__, , , , , , , , , )
 #define CONCAT_NOEXP2(dummy, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, ...)                         \
-  _1##_2##_3##_4##_5##_6##_7##_8##_9##_10
+    _1##_2##_3##_4##_5##_6##_7##_8##_9##_10
 
 /* simple test code:
 #define		A	1
@@ -159,9 +159,9 @@ TEST_EXPANSION(CONCAT(CONCAT_NOEXP(A, B), C));
 // internal core construct to implement compile-time assertions
 // note: make sure that bitfield does not contain unused bits to avoid -Wpadded warnings (if enabled)
 #define ASSERT_CT_CORE(condition, ...)                                                             \
-  sizeof(struct __attribute__((packed)) {                                                          \
-int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                                     \
-  })
+    sizeof(struct __attribute__((packed)) {                                                        \
+        int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                             \
+    })
 
 /// @brief compile-time assertion
 /// @details The assertion is evaluated at compile-time and leads to a compilation error if the
@@ -182,47 +182,47 @@ int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                  
 /// inside functions, ASSERT_CT_STATIC() can be used on file scope, i.e., outside of functions.
 //#define ASSERT_CT_STATIC(condition, ...)	ASSERT_CT_STATIC2(__COUNTER__, condition, __VA_ARGS__)
 #define ASSERT_CT_STATIC(condition, ...)                                                           \
-  static inline void CONCAT(assert_dummy_, __COUNTER__)(void)                                      \
-  {                                                                                                \
-    ASSERT_CT(condition, ##__VA_ARGS__);                                                           \
-  }
+    static inline void CONCAT(assert_dummy_, __COUNTER__)(void)                                    \
+    {                                                                                              \
+        ASSERT_CT(condition, ##__VA_ARGS__);                                                       \
+    }
 
 // Workaround for MSPGCC version <= 4.6.3, GCC diagnostic push/pop commands are ignored
 #if ((__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) <= 40603)
     /// @brief like ASSERT_CT(), but generates a warning instead of an error
   #define ASSERT_CT_WARN(condition, ...)                                                           \
-    do {                                                                                           \
-      _Pragma("GCC diagnostic warning \"-Wpadded\"");                                              \
-      struct T_                                                                                    \
-      {                                                                                            \
-        uint8_t  a[1 + !!(condition)];                                                             \
-        uint16_t assertion_warning__##__VA_ARGS__;                                                 \
-      };                                                                                           \
-      _Pragma("GCC diagnostic ignored \"-Wpadded\"");                                              \
-    }                                                                                              \
-    while (0)
+      do {                                                                                         \
+          _Pragma("GCC diagnostic warning \"-Wpadded\"");                                          \
+          struct T_                                                                                \
+          {                                                                                        \
+              uint8_t  a[1 + !!(condition)];                                                       \
+              uint16_t assertion_warning__##__VA_ARGS__;                                           \
+          };                                                                                       \
+          _Pragma("GCC diagnostic ignored \"-Wpadded\"");                                          \
+      }                                                                                            \
+      while (0)
 #else
     /// @brief like ASSERT_CT(), but generates a warning instead of an error
   #define ASSERT_CT_WARN(condition, ...)                                                           \
-    do {                                                                                           \
-      _Pragma("GCC diagnostic push");                                                              \
-      _Pragma("GCC diagnostic warning \"-Wpadded\"");                                              \
-      struct T_                                                                                    \
-      {                                                                                            \
-        uint8_t  a[1 + !!(condition)];                                                             \
-        uint16_t assertion_warning__##__VA_ARGS__;                                                 \
-      };                                                                                           \
-      _Pragma("GCC diagnostic pop");                                                               \
-    }                                                                                              \
-    while (0)
+      do {                                                                                         \
+          _Pragma("GCC diagnostic push");                                                          \
+          _Pragma("GCC diagnostic warning \"-Wpadded\"");                                          \
+          struct T_                                                                                \
+          {                                                                                        \
+              uint8_t  a[1 + !!(condition)];                                                       \
+              uint16_t assertion_warning__##__VA_ARGS__;                                           \
+          };                                                                                       \
+          _Pragma("GCC diagnostic pop");                                                           \
+      }                                                                                            \
+      while (0)
 #endif
 
 /// @brief like ASSERT_CT_STATIC(), but generates a warning instead of an error
 #define ASSERT_CT_WARN_STATIC(condition, ...)                                                      \
-  static inline void CONCAT(assert_dummy_, __COUNTER__)(void)                                      \
-  {                                                                                                \
-    ASSERT_CT_WARN(condition, ##__VA_ARGS__);                                                      \
-  }
+    static inline void CONCAT(assert_dummy_, __COUNTER__)(void)                                    \
+    {                                                                                              \
+        ASSERT_CT_WARN(condition, ##__VA_ARGS__);                                                  \
+    }
 
 /// @brief determine if c is a constant expression
 /// @details One use case for this is to ensure that some macro M can be used only with constants
@@ -236,27 +236,27 @@ int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                  
 /// generate a warning if compile-time evaluation is impossible. This can be used as a hint
 /// to either rework the condition or switch to assert().
 #define ASSERT(condition, ...)                                                                     \
-  do {                                                                                             \
-    if (__builtin_constant_p(condition))                                                           \
-    {                                                                                              \
-      /* here we use variable-length arrays, a feature introduced with C99 */                      \
-      const int trigger_ = __builtin_constant_p(condition) * !(condition);                         \
-      int       assertion_failed_##__VA_ARGS__[1 - 2 * trigger_] __attribute__((unused));          \
+    do {                                                                                           \
+        if (__builtin_constant_p(condition))                                                       \
+        {                                                                                          \
+            /* here we use variable-length arrays, a feature introduced with C99 */                \
+            const int trigger_ = __builtin_constant_p(condition) * !(condition);                   \
+            int       assertion_failed_##__VA_ARGS__[1 - 2 * trigger_] __attribute__((unused));    \
+        }                                                                                          \
+        else                                                                                       \
+        {                                                                                          \
+            _Pragma("GCC diagnostic push");                                                        \
+            _Pragma(ASSERT_DIAG_MODE);                                                             \
+            struct T_                                                                              \
+            {                                                                                      \
+                uint8_t  a[1 + !!__builtin_constant_p(condition)];                                 \
+                uint16_t unable_to_evaluate_ASSERT_at_compile_time;                                \
+            };                                                                                     \
+            _Pragma("GCC diagnostic pop");                                                         \
+            assert(condition);                                                                     \
+        }                                                                                          \
     }                                                                                              \
-    else                                                                                           \
-    {                                                                                              \
-      _Pragma("GCC diagnostic push");                                                              \
-      _Pragma(ASSERT_DIAG_MODE);                                                                   \
-      struct T_                                                                                    \
-      {                                                                                            \
-        uint8_t  a[1 + !!__builtin_constant_p(condition)];                                         \
-        uint16_t unable_to_evaluate_ASSERT_at_compile_time;                                        \
-      };                                                                                           \
-      _Pragma("GCC diagnostic pop");                                                               \
-      assert(condition);                                                                           \
-    }                                                                                              \
-  }                                                                                                \
-  while (0)
+    while (0)
 
 #if (!defined(ASSERT_WARN_CT) && defined(NDEBUG))
   #define ASSERT_WARN_CT 1
@@ -275,12 +275,12 @@ int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                  
   #define assert_msg(condition, ...) ((void) 0)
 #else
   #define assert_msg(condition, ...)                                                               \
-    if (!(condition)) do                                                                           \
-      {                                                                                            \
-        static const void *msg_[] = {#condition, ##__VA_ARGS__};                                   \
-        __assert(msg_[NUM_ELEMENTS(msg_) - 1], __FILE__, __LINE__);                                \
-      }                                                                                            \
-    while (0)
+      if (!(condition)) do                                                                         \
+          {                                                                                        \
+              static const void *msg_[] = {#condition, ##__VA_ARGS__};                             \
+              __assert(msg_[NUM_ELEMENTS(msg_) - 1], __FILE__, __LINE__);                          \
+          }                                                                                        \
+      while (0)
 #endif
 
 //**************************************************************************************************
@@ -290,12 +290,12 @@ int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                  
 /// @internal the name ARRAY_SIZE stems from the Linux kernel
 /// @internal http://zubplot.blogspot.com/2015/01/gcc-is-wonderful-better-arraysize-macro.html
 /// helps to understand the type issues
-#define ARRAY_SIZE(a)                                                                              \
-  ((sizeof(a) /                                                                                    \
-    sizeof((a)[0])) + /* check if a is really the array (itself), not a pointer to the array;		\
-		 * otherwise the result would be wrong */  \
-   ASSERT_CT_EVAL(!__builtin_types_compatible_p(typeof(a), typeof(&(a)[0])),                       \
-                  invalid_ARRAY_SIZE_usage))
+#define ARRAY_SIZE(a)                                                                               \
+    ((sizeof(a) /                                                                                   \
+      sizeof((a)[0])) + /* check if a is really the array (itself), not a pointer to the array;		\
+		 * otherwise the result would be wrong */ \
+     ASSERT_CT_EVAL(!__builtin_types_compatible_p(typeof(a), typeof(&(a)[0])),                      \
+                    invalid_ARRAY_SIZE_usage))
 
 /// @copybrief ARRAY_SIZE().
 /// This is just another name for ARRAY_SIZE(), it avoids confusion with sizeof(array).
@@ -349,8 +349,8 @@ int8_t assertion_failed__##__VA_ARGS__ : 8 - 9 * !(condition);                  
 /// extract MSB of a constant value
 /// @internal if sizeof(a) assertion triggers, then extend the MSBx macros (it is straightforward)
 #define MSB(a)                                                                                     \
-  (MSB32(a) + ASSERT_CT_EVAL(IS_CONST_EXPRESSION(a), non_const_expression) +                       \
-   ASSERT_CT_EVAL(sizeof(a) < 8, overflow))
+    (MSB32(a) + ASSERT_CT_EVAL(IS_CONST_EXPRESSION(a), non_const_expression) +                     \
+     ASSERT_CT_EVAL(sizeof(a) < 8, overflow))
 
 /// extract LSB of a constant value
 #define LSB(a)        MSB((a) & -(a))
@@ -382,36 +382,36 @@ static ALWAYS_INLINE void REORDER_BARRIER(void) { __asm__ volatile("" : : : "mem
 #ifndef ABS
     /// @brief
   #define ABS(a)                                                                                   \
-    ({                                                                                             \
-typeof(a) a_ = (a);                                                                                \
-(a_ < 0) ? -a_ : a_;                                                                               \
-    })
+      ({                                                                                           \
+        typeof(a) a_ = (a);                                                                        \
+        (a_ < 0) ? -a_ : a_;                                                                       \
+      })
 #endif
 
 #ifndef MIN
     /// @brief
   #define MIN(a, b)                                                                                \
-    ({                                                                                             \
-typeof(a) a_ = (a);                                                                                \
-typeof(b) b_ = (b);                                                                                \
-(a_ < b_) ? a_ : b_;                                                                               \
-    })
+      ({                                                                                           \
+        typeof(a) a_ = (a);                                                                        \
+        typeof(b) b_ = (b);                                                                        \
+        (a_ < b_) ? a_ : b_;                                                                       \
+      })
     /// @brief
   #define MAX(a, b)                                                                                \
-    ({                                                                                             \
-typeof(a) a_ = (a);                                                                                \
-typeof(b) b_ = (b);                                                                                \
-(a_ > b_) ? a_ : b_;                                                                               \
-    })
+      ({                                                                                           \
+        typeof(a) a_ = (a);                                                                        \
+        typeof(b) b_ = (b);                                                                        \
+        (a_ > b_) ? a_ : b_;                                                                       \
+      })
 #endif
 
 #define ALIGNMENT                                                                                  \
-  offsetof(                                                                                        \
-          struct {                                                                                 \
-        int8_t   a;                                                                                \
-        intmax_t b;                                                                                \
-          },                                                                                       \
-          b)
+    offsetof(                                                                                      \
+            struct {                                                                               \
+                int8_t   a;                                                                        \
+                intmax_t b;                                                                        \
+            },                                                                                     \
+            b)
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************

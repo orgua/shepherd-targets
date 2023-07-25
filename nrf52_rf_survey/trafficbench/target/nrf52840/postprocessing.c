@@ -92,8 +92,8 @@ GPI_TRACE_CONFIG(postprocessing, GPI_TRACE_BASE_SELECTION | GPI_TRACE_USER_SELEC
   #define ASSERT_ELSE(cond) if (!(cond))
 #else
   #define ASSERT_ELSE(cond)                                                                        \
-    if (1) assert(cond);                                                                           \
-    else
+      if (1) assert(cond);                                                                         \
+      else
 #endif
 
 //**************************************************************************************************
@@ -239,17 +239,17 @@ PT_THREAD(postproc_thread())
 					int_fast16_t	is_invalid_samples = -1;
 					uint8_t			x_last;
     #define CHECK_SAMPLES(x_)                                                                      \
-      do {                                                                                         \
-        uint32_t x = x_;                                                                           \
-        for (int_fast8_t i = 4; i-- > 0;)                                                          \
-        {                                                                                          \
-          if (is_invalid_samples < 0) is_invalid_samples = 0;                                      \
-          else is_invalid_samples |= (uint8_t) x - x_last - UINT8_C(1);                            \
-          x_last = x;                                                                              \
-          x >>= 8;                                                                                 \
+        do {                                                                                       \
+            uint32_t x = x_;                                                                       \
+            for (int_fast8_t i = 4; i-- > 0;)                                                      \
+            {                                                                                      \
+                if (is_invalid_samples < 0) is_invalid_samples = 0;                                \
+                else is_invalid_samples |= (uint8_t) x - x_last - UINT8_C(1);                      \
+                x_last = x;                                                                        \
+                x >>= 8;                                                                           \
+            }                                                                                      \
         }                                                                                          \
-      }                                                                                            \
-      while (0)
+        while (0)
     #define IS_INVALID_SAMPLES() is_invalid_samples
   #endif
 #else

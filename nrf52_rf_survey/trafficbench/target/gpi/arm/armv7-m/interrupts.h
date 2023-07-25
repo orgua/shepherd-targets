@@ -323,17 +323,17 @@ static ALWAYS_INLINE void gpi_atomic_write_32(volatile uint32_t *p, uint32_t dat
 //**************************************************************************************************
 
 #define gpi_atomic_write(p, data)                                                                  \
-  do {                                                                                             \
-    ASSERT_CT(sizeof(*(p)) <= 4, gpi_atomic_write_size_overflow);                                  \
-    switch (sizeof(*(p)))                                                                          \
-    {                                                                                              \
-      case 1: gpi_atomic_write_8((volatile uint8_t *) (p), (uint8_t) (data)); break;               \
-      case 2: gpi_atomic_write_16((volatile uint16_t *) (p), (uint16_t) (data)); break;            \
-      case 4: gpi_atomic_write_32((volatile uint32_t *) (p), (uint32_t) (data)); break;            \
-      default: assert(0);                                                                          \
+    do {                                                                                           \
+        ASSERT_CT(sizeof(*(p)) <= 4, gpi_atomic_write_size_overflow);                              \
+        switch (sizeof(*(p)))                                                                      \
+        {                                                                                          \
+            case 1: gpi_atomic_write_8((volatile uint8_t *) (p), (uint8_t) (data)); break;         \
+            case 2: gpi_atomic_write_16((volatile uint16_t *) (p), (uint16_t) (data)); break;      \
+            case 4: gpi_atomic_write_32((volatile uint32_t *) (p), (uint32_t) (data)); break;      \
+            default: assert(0);                                                                    \
+        }                                                                                          \
     }                                                                                              \
-  }                                                                                                \
-  while (0)
+    while (0)
 
 //**************************************************************************************************
 //**************************************************************************************************

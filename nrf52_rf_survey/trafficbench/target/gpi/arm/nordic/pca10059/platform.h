@@ -74,7 +74,7 @@
 #ifndef GPI_STDOUT_UART_BAUDRATE
   #define GPI_STDOUT_UART_BAUDRATE 115200
   #define _GPI_STDOUT_UART_BAUDRATE_DEFAULT_WARNING                                                \
-    "GPI_STDOUT_UART_BAUDRATE undefined, default = 115200"
+      "GPI_STDOUT_UART_BAUDRATE undefined, default = 115200"
 #endif
 
 // decide whether stdout/stderr functionality uses interrupt driven async I/O
@@ -90,7 +90,7 @@
   #ifndef GPI_ARM_NRF_STDIO_INTERRUPT_PRIORITY
     #define GPI_ARM_NRF_STDIO_INTERRUPT_PRIORITY 1
     #define _GPI_ARM_NRF_STDIO_INTERRUPT_PRIORITY_DEFAULT_WARNING                                  \
-      "GPI_ARM_NRF_STDIO_INTERRUPT_PRIORITY undefined, default = 1"
+        "GPI_ARM_NRF_STDIO_INTERRUPT_PRIORITY undefined, default = 1"
   #endif
 
     // number of slots in the transmit buffer pool
@@ -100,7 +100,7 @@
   #ifndef GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS
     #define GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS 16
     #define _GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS_DEFAULT_WARNING                                   \
-      "GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS undefined, default = 16"
+        "GPI_ARM_NRF_STDOUT_BUFFER_NUM_SLOTS undefined, default = 16"
   #endif
 
     // size of single transmit buffer slot
@@ -109,7 +109,7 @@
   #ifndef GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE
     #define GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE 4
     #define _GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE_DEFAULT_WARNING                                   \
-      "GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE undefined, default = 4"
+        "GPI_ARM_NRF_STDOUT_BUFFER_SLOT_SIZE undefined, default = 4"
   #endif
 
 #endif

@@ -95,9 +95,9 @@ typedef uint32_t Gpi_Trace_Uint_t;
 //**************************************************************************************************
 
 #define _GPI_TRACE_TYPE_INDEX(group)                                                               \
-  (!(group & GPI_TRACE_MSG_TYPE_MASK)                                                              \
-           ? 0                                                                                     \
-           : 1 + LSB(group & GPI_TRACE_MSG_TYPE_MASK) - LSB(GPI_TRACE_MSG_TYPE_MASK))
+    (!(group & GPI_TRACE_MSG_TYPE_MASK)                                                            \
+             ? 0                                                                                   \
+             : 1 + LSB(group & GPI_TRACE_MSG_TYPE_MASK) - LSB(GPI_TRACE_MSG_TYPE_MASK))
 
 //**************************************************************************************************
 
@@ -136,14 +136,14 @@ _gpi_trace_filter_path_0(const char *s, size_t a, size_t b)
 
     // middle layer functions
   #define _GPI_TRACE_FILTER_PATH_x(x, y)                                                           \
-    static inline __attribute__((always_inline, optimize("O3")))                                   \
-    size_t _gpi_trace_filter_path_##y(const char *s, size_t a, size_t b)                           \
-    {                                                                                              \
-      if (a == b) return ((s[a] == '/') || (s[a] == '\\')) ? a + 1 : 0;                            \
-      size_t c = _gpi_trace_filter_path_##x(s, a + (b - a) / 2 + 1, b);                            \
-      if (c) return c;                                                                             \
-      return _gpi_trace_filter_path_##x(s, a, a + (b - a) / 2);                                    \
-    }
+      static inline __attribute__((always_inline, optimize("O3")))                                 \
+      size_t _gpi_trace_filter_path_##y(const char *s, size_t a, size_t b)                         \
+      {                                                                                            \
+          if (a == b) return ((s[a] == '/') || (s[a] == '\\')) ? a + 1 : 0;                        \
+          size_t c = _gpi_trace_filter_path_##x(s, a + (b - a) / 2 + 1, b);                        \
+          if (c) return c;                                                                         \
+          return _gpi_trace_filter_path_##x(s, a, a + (b - a) / 2);                                \
+      }
 
 _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_PATH_x(2, 3)
         _GPI_TRACE_FILTER_PATH_x(3, 4) _GPI_TRACE_FILTER_PATH_x(4, 5) _GPI_TRACE_FILTER_PATH_x(5, 6)
@@ -153,32 +153,32 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
     // entry point
   #if (GPI_TRACE_FILTER_PATH <= 16)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_4(s, 0, sizeof(s) - 1) +                                           \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 4), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_4(s, 0, sizeof(s) - 1) +                                         \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 4), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #elif (GPI_TRACE_FILTER_PATH <= 32)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_5(s, 0, sizeof(s) - 1) +                                           \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 5), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_5(s, 0, sizeof(s) - 1) +                                         \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 5), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #elif (GPI_TRACE_FILTER_PATH <= 64)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_6(s, 0, sizeof(s) - 1) +                                           \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 6), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_6(s, 0, sizeof(s) - 1) +                                         \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 6), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #elif (GPI_TRACE_FILTER_PATH <= 128)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_7(s, 0, sizeof(s) - 1) +                                           \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 7), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_7(s, 0, sizeof(s) - 1) +                                         \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 7), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #elif (GPI_TRACE_FILTER_PATH <= 256)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_8(s, 0, sizeof(s) - 1) +                                           \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 8), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_8(s, 0, sizeof(s) - 1) +                                         \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 8), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #elif (GPI_TRACE_FILTER_PATH <= 512)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_9(s, 0, sizeof(s) - 1) +                                           \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 9), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_9(s, 0, sizeof(s) - 1) +                                         \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 9), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #elif (GPI_TRACE_FILTER_PATH <= 1024)
     #define _GPI_TRACE_FILTER_PATH(s)                                                              \
-      &s[_gpi_trace_filter_path_10(s, 0, sizeof(s) - 1) +                                          \
-         ASSERT_CT_EVAL(sizeof(s) <= (1 << 10), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
+        &s[_gpi_trace_filter_path_10(s, 0, sizeof(s) - 1) +                                        \
+           ASSERT_CT_EVAL(sizeof(s) <= (1 << 10), _GPI_TRACE_FILTER_PATH__size_coverage_exceeded)]
   #else
     #error _GPI_TRACE_FILTER_PATH__size_coverage_exceeded
   #endif
@@ -196,7 +196,7 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
 #define GPI_TRACE_MODE_TRACE      1 ///< enables log output. see GPI_TRACE_MODE for details
 #define GPI_TRACE_MODE_FLUSH_AUTO 0 ///< enables automatic flush for non ..._FAST macros (default)
 #define GPI_TRACE_MODE_FLUSH_NOAUTO                                                                \
-  2 ///< disables automatic flush. application must call GPI_TRACE_FLUSH() manually
+    2 ///< disables automatic flush. application must call GPI_TRACE_FLUSH() manually
 /// @}
 
 /// @name TRACE mode test macros
@@ -209,18 +209,18 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
 /// Such errors can be avoided by using consistent test macros.
 /// @{
 #define _GPI_TRACE_MODE_IS(setting, option, not_option)                                            \
-  (GPI_TRACE_MODE_##setting##_##option ==                                                          \
-   (GPI_TRACE_MODE &                                                                               \
-    (GPI_TRACE_MODE_##setting##_##option | GPI_TRACE_MODE_##setting##_##not_option)))
+    (GPI_TRACE_MODE_##setting##_##option ==                                                        \
+     (GPI_TRACE_MODE &                                                                             \
+      (GPI_TRACE_MODE_##setting##_##option | GPI_TRACE_MODE_##setting##_##not_option)))
 
 #define GPI_TRACE_MODE_IS_TRACE                                                                    \
-  (GPI_TRACE_MODE & GPI_TRACE_MODE_TRACE) ///< test if GPI_TRACE_MODE_TRACE is active
+    (GPI_TRACE_MODE & GPI_TRACE_MODE_TRACE) ///< test if GPI_TRACE_MODE_TRACE is active
 #define GPI_TRACE_MODE_IS_NO_TRACE                                                                 \
-  (!(GPI_TRACE_MODE & GPI_TRACE_MODE_TRACE)) ///< test if GPI_TRACE_MODE_NO_TRACE is active
+    (!(GPI_TRACE_MODE & GPI_TRACE_MODE_TRACE)) ///< test if GPI_TRACE_MODE_NO_TRACE is active
 #define GPI_TRACE_MODE_IS_FLUSH_AUTO                                                               \
-  _GPI_TRACE_MODE_IS(FLUSH, AUTO, NOAUTO) ///< test if GPI_TRACE_MODE_FLUSH_AUTO is active
+    _GPI_TRACE_MODE_IS(FLUSH, AUTO, NOAUTO) ///< test if GPI_TRACE_MODE_FLUSH_AUTO is active
 #define GPI_TRACE_MODE_IS_FLUSH_NOAUTO                                                             \
-  _GPI_TRACE_MODE_IS(FLUSH, NOAUTO, AUTO) ///< test if GPI_TRACE_MODE_FLUSH_NOAUTO is active
+    _GPI_TRACE_MODE_IS(FLUSH, NOAUTO, AUTO) ///< test if GPI_TRACE_MODE_FLUSH_NOAUTO is active
 /// @}
 
 /// @name output options
@@ -235,17 +235,17 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
 /// @name standard message types
 /// @{
 #define GPI_TRACE_LOG_FUNCTION_ENTRY                                                               \
-  UINT32_C(                                                                                        \
-          0x02000000) // for internal use only (externally, consider GPI_TRACE_LOG_FUNCTION_CALLS instead)
+    UINT32_C(                                                                                      \
+            0x02000000) // for internal use only (externally, consider GPI_TRACE_LOG_FUNCTION_CALLS instead)
 #define GPI_TRACE_LOG_FUNCTION_RETURN                                                              \
-  UINT32_C(                                                                                        \
-          0x02000000) // for internal use only (externally, consider GPI_TRACE_LOG_FUNCTION_CALLS instead)
+    UINT32_C(                                                                                      \
+            0x02000000) // for internal use only (externally, consider GPI_TRACE_LOG_FUNCTION_CALLS instead)
 #define GPI_TRACE_LOG_FUNCTION_RETURN_MSG                                                          \
-  UINT32_C(0x01000000) ///< trace returns with explicit message only (i.e. GPI_TRACE_RETURN_MSG())
+    UINT32_C(0x01000000) ///< trace returns with explicit message only (i.e. GPI_TRACE_RETURN_MSG())
 #define GPI_TRACE_LOG_FUNCTION_CALLS                                                               \
-  UINT32_C(0x03000000) ///< trace function calls (includes GPI_TRACE_LOG_FUNCTION_RETURN_MSG)
+    UINT32_C(0x03000000) ///< trace function calls (includes GPI_TRACE_LOG_FUNCTION_RETURN_MSG)
 #define GPI_TRACE_LOG_PROGRAM_FLOW                                                                 \
-  UINT32_C(0x03000000) ///< another name for GPI_TRACE_LOG_FUNCTION_CALLS
+    UINT32_C(0x03000000) ///< another name for GPI_TRACE_LOG_FUNCTION_CALLS
 //#define GPI_TRACE_LOG_STARTUP/MODULES			UINT32_C(0x04000000)
 
 #define GPI_TRACE_MSG_TYPE_VERBOSE UINT32_C(0x00800000)
@@ -286,19 +286,16 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
     /// the (then dynamic) format handling into gpi_trace_store_msg().
     ///
   #define GPI_TRACE_CONFIG(module, config)                                                         \
-    /* provide private dummy function needed internally */                                         \
-    static inline int gpi_trace_dummy_function()                                                   \
-    {                                                                                              \
-      return 0;                                                                                    \
-    }                                                                                              \
-    /* instantiate module control block */                                                         \
-    static const Gpi_Trace_Module_Descriptor gpi_trace_module_desc = {                             \
-            (config) /*#module,																\
-			__FILE__*/                                                  \
-    };                                                                                             \
-    /* add a flat version of config because GCC's constant propagation */                          \
-    /* doesn't fully propagate const from struct in all cases */                                   \
-    static const uint32_t gpi_trace_config = (config)
+      /* provide private dummy function needed internally */                                       \
+      static inline int                        gpi_trace_dummy_function() { return 0; }            \
+      /* instantiate module control block */                                                       \
+      static const Gpi_Trace_Module_Descriptor gpi_trace_module_desc = {                           \
+              (config) /*#module,																\
+			__FILE__*/                                                \
+      };                                                                                           \
+      /* add a flat version of config because GCC's constant propagation */                        \
+      /* doesn't fully propagate const from struct in all cases */                                 \
+      static const uint32_t gpi_trace_config = (config)
 
     /// output all buffered messages
   #define GPI_TRACE_FLUSH() gpi_trace_print_all_msgs()
@@ -328,8 +325,8 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
         // ATTENTION: since ASSERT_CT generates compile-time errors we must incorporate all checks
         // (including mode), we cannot rely on the position in the switch-case-block
     #define _GPI_TRACE_ASSERT_VA(m, ...)                                                           \
-      ASSERT_CT((_mode_ != (m)) || (VA_SIZE(__VA_ARGS__) <= GPI_TRACE_VA_SIZE_MAX),                \
-                var_args_size_overflow)
+        ASSERT_CT((_mode_ != (m)) || (VA_SIZE(__VA_ARGS__) <= GPI_TRACE_VA_SIZE_MAX),              \
+                  var_args_size_overflow)
   #else
     #define _GPI_TRACE_ASSERT_VA(m, ...) assert(VA_SIZE(__VA_ARGS__) <= GPI_TRACE_VA_SIZE_MAX)
     #ifdef NDEBUG
@@ -341,148 +338,156 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
     // NOTE: this is necessary due to limited constant propagation (at least with optimization
     // disabled). It looks painful, but optimization makes it very efficient.
   #define _GPI_TRACE_MSG_FAST_1(a, b, group, fmt)                                                  \
-    const char *_s_;                                                                               \
-    if (!(a) && !(b)) { _s_ = fmt; }                                                               \
-    else if ((a) && !(b))                                                                          \
-    {                                                                                              \
-      static const struct __attribute__((packed))                                                  \
+      const char *_s_;                                                                             \
+      if (!(a) && !(b)) { _s_ = fmt; }                                                             \
+      else if ((a) && !(b))                                                                        \
       {                                                                                            \
-        char sc[4];                                                                                \
-        char sfmt[sizeof(fmt)];                                                                    \
-      } _s2_ = {{'A', '\b', '0', '\b'}, fmt};                                                      \
-      _s_    = (const char *) &_s2_;                                                               \
-    }                                                                                              \
-    else if (!(a) && (b))                                                                          \
-    {                                                                                              \
-      static const struct __attribute__((packed))                                                  \
+          static const struct __attribute__((packed))                                              \
+          {                                                                                        \
+              char sc[4];                                                                          \
+              char sfmt[sizeof(fmt)];                                                              \
+          } _s2_ = {{'A', '\b', '0', '\b'}, fmt};                                                  \
+          _s_    = (const char *) &_s2_;                                                           \
+      }                                                                                            \
+      else if (!(a) && (b))                                                                        \
       {                                                                                            \
-        char sc[4];                                                                                \
-        char sfmt[sizeof(fmt)];                                                                    \
-      } _s2_ = {{'B', '\b', '0' + (char) _GPI_TRACE_TYPE_INDEX(group), '\b'}, fmt};                \
-      _s_    = (const char *) &_s2_;                                                               \
-    }                                                                                              \
-    else                                                                                           \
-    {                                                                                              \
-      static const struct __attribute__((packed))                                                  \
+          static const struct __attribute__((packed))                                              \
+          {                                                                                        \
+              char sc[4];                                                                          \
+              char sfmt[sizeof(fmt)];                                                              \
+          } _s2_ = {{'B', '\b', '0' + (char) _GPI_TRACE_TYPE_INDEX(group), '\b'}, fmt};            \
+          _s_    = (const char *) &_s2_;                                                           \
+      }                                                                                            \
+      else                                                                                         \
       {                                                                                            \
-        char sc[8];                                                                                \
-        char sfmt[sizeof(fmt)];                                                                    \
-      } _s2_ = {                                                                                   \
-              {'A', '\b', '0', '\b', 'B', '\b', '0' + (char) _GPI_TRACE_TYPE_INDEX(group), '\b'},  \
-              fmt};                                                                                \
-      _s_ = (const char *) &_s2_;                                                                  \
-    }
+          static const struct __attribute__((packed))                                              \
+          {                                                                                        \
+              char sc[8];                                                                          \
+              char sfmt[sizeof(fmt)];                                                              \
+          } _s2_ = {{'A', '\b', '0', '\b', 'B', '\b', '0' + (char) _GPI_TRACE_TYPE_INDEX(group),   \
+                     '\b'},                                                                        \
+                    fmt};                                                                          \
+          _s_    = (const char *) &_s2_;                                                           \
+      }
 
   #define _GPI_TRACE_FMT_FILE                                                                      \
-    "%-" GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_FILE) "." GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_FILE) "s"
+      "%-" GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_FILE) "." GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_FILE) "s"
 
   #define _GPI_TRACE_FMT_SCOPE                                                                     \
-    "%-" GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_SCOPE) "." GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_SCOPE) "s"
+      "%-" GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_SCOPE) "." GPI_TRACE_STRINGIFY(                      \
+              GPI_TRACE_SIZE_SCOPE) "s"
 
-  #define GPI_TRACE_MSG_FAST(group, msg, ...)                                                      \
-    do {                                                                                           \
-      if (gpi_trace_module_desc.msg_config & (group))                                              \
-      {                                                                                            \
-        const uint32_t _mode_ = gpi_trace_config & (GPI_TRACE_LOG_FILE | GPI_TRACE_LOG_SCOPE);     \
-        switch (_mode_)                                                                            \
-        {                                                                                          \
-          case 0:                                                                                  \
-          {                                                                                        \
-            _GPI_TRACE_ASSERT_VA(0, ##__VA_ARGS__);                                                \
-            _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group, msg)             \
-            gpi_trace_store_msg(_s_, ##__VA_ARGS__);                                               \
-            break;                                                                                 \
-          }                                                                                        \
-          case GPI_TRACE_LOG_FILE:                                                                 \
-          {                                                                                        \
-            _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_FILE, &"x", ##__VA_ARGS__);                         \
-            if (1 == GPI_TRACE_FILTER_PATH)                                                        \
-            {                                                                                      \
-              _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
-                                    _GPI_TRACE_FMT_FILE " " msg)                                   \
-              gpi_trace_store_msg(_s_, __FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")",             \
-                                  ##__VA_ARGS__);                                                  \
-            }                                                                                      \
-            else                                                                                   \
-            {                                                                                      \
-              _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
-                                    _GPI_TRACE_FMT_FILE " " msg)                                   \
-              gpi_trace_store_msg(                                                                 \
-                      _s_, _GPI_TRACE_FILTER_PATH(__FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")"), \
-                      ##__VA_ARGS__);                                                              \
-            }                                                                                      \
-            break;                                                                                 \
-          }                                                                                        \
-          case GPI_TRACE_LOG_SCOPE:                                                                \
-          {                                                                                        \
-            _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_SCOPE, &(__func__[0]), 0, (void *) 0,               \
-                                 ##__VA_ARGS__);                                                   \
-            _GPI_TRACE_MSG_FAST_1(                                                                 \
-                    0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                                \
-                    "%-." GPI_TRACE_STRINGIFY(GPI_TRACE_SIZE_SCOPE) "s (" GPI_TRACE_STRINGIFY(     \
-                            __LINE__) ")%-*.0s" msg)                                               \
-            gpi_trace_store_msg(_s_, __func__,                                                     \
-                                (int) (GPI_TRACE_SIZE_SCOPE -                                      \
-                                       MIN(GPI_TRACE_SIZE_SCOPE, sizeof(__func__) - 1) + 6 -       \
-                                       sizeof(GPI_TRACE_STRINGIFY(__LINE__))),                     \
-                                (void *) 0, ##__VA_ARGS__);                                        \
-            break;                                                                                 \
-          }                                                                                        \
-          default:                                                                                 \
-          {                                                                                        \
-            _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_FILE | GPI_TRACE_LOG_SCOPE, &"x", &(__func__[0]),   \
-                                 ##__VA_ARGS__);                                                   \
-            if (1 == GPI_TRACE_FILTER_PATH)                                                        \
-            {                                                                                      \
-              _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
-                                    _GPI_TRACE_FMT_FILE " " _GPI_TRACE_FMT_SCOPE " " msg)          \
-              gpi_trace_store_msg(_s_, __FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")", __func__,   \
-                                  ##__VA_ARGS__);                                                  \
-            }                                                                                      \
-            else                                                                                   \
-            {                                                                                      \
-              _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
-                                    _GPI_TRACE_FMT_FILE " " _GPI_TRACE_FMT_SCOPE " " msg)          \
-              gpi_trace_store_msg(                                                                 \
-                      _s_, _GPI_TRACE_FILTER_PATH(__FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")"), \
-                      __func__, ##__VA_ARGS__);                                                    \
-            }                                                                                      \
-            break;                                                                                 \
-          }                                                                                        \
-        }                                                                                          \
-      }                                                                                            \
-    }                                                                                              \
-    while (0)
+  #define GPI_TRACE_MSG_FAST(group, msg, ...)                                                                  \
+      do {                                                                                                     \
+          if (gpi_trace_module_desc.msg_config & (group))                                                      \
+          {                                                                                                    \
+              const uint32_t _mode_ =                                                                          \
+                      gpi_trace_config & (GPI_TRACE_LOG_FILE | GPI_TRACE_LOG_SCOPE);                           \
+              switch (_mode_)                                                                                  \
+              {                                                                                                \
+                  case 0:                                                                                      \
+                  {                                                                                            \
+                      _GPI_TRACE_ASSERT_VA(0, ##__VA_ARGS__);                                                  \
+                      _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group, msg)               \
+                      gpi_trace_store_msg(_s_, ##__VA_ARGS__);                                                 \
+                      break;                                                                                   \
+                  }                                                                                            \
+                  case GPI_TRACE_LOG_FILE:                                                                     \
+                  {                                                                                            \
+                      _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_FILE, &"x", ##__VA_ARGS__);                           \
+                      if (1 == GPI_TRACE_FILTER_PATH)                                                          \
+                      {                                                                                        \
+                          _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                                                _GPI_TRACE_FMT_FILE " " msg)                                   \
+                          gpi_trace_store_msg(_s_, __FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")",             \
+                                              ##__VA_ARGS__);                                                  \
+                      }                                                                                        \
+                      else                                                                                     \
+                      {                                                                                        \
+                          _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                                                _GPI_TRACE_FMT_FILE " " msg)                                   \
+                          gpi_trace_store_msg(                                                                 \
+                                  _s_,                                                                         \
+                                  _GPI_TRACE_FILTER_PATH(__FILE__                                              \
+                                                         "(" GPI_TRACE_STRINGIFY(__LINE__) ")"),               \
+                                  ##__VA_ARGS__);                                                              \
+                      }                                                                                        \
+                      break;                                                                                   \
+                  }                                                                                            \
+                  case GPI_TRACE_LOG_SCOPE:                                                                    \
+                  {                                                                                            \
+                      _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_SCOPE, &(__func__[0]), 0, (void *) 0,                 \
+                                           ##__VA_ARGS__);                                                     \
+                      _GPI_TRACE_MSG_FAST_1(                                                                   \
+                              0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                                  \
+                              "%-." GPI_TRACE_STRINGIFY(                                                       \
+                                      GPI_TRACE_SIZE_SCOPE) "s (" GPI_TRACE_STRINGIFY(__LINE__) ")%-*.0s" msg) \
+                      gpi_trace_store_msg(_s_, __func__,                                                       \
+                                          (int) (GPI_TRACE_SIZE_SCOPE -                                        \
+                                                 MIN(GPI_TRACE_SIZE_SCOPE, sizeof(__func__) - 1) +             \
+                                                 6 - sizeof(GPI_TRACE_STRINGIFY(__LINE__))),                   \
+                                          (void *) 0, ##__VA_ARGS__);                                          \
+                      break;                                                                                   \
+                  }                                                                                            \
+                  default:                                                                                     \
+                  {                                                                                            \
+                      _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_FILE | GPI_TRACE_LOG_SCOPE, &"x",                     \
+                                           &(__func__[0]), ##__VA_ARGS__);                                     \
+                      if (1 == GPI_TRACE_FILTER_PATH)                                                          \
+                      {                                                                                        \
+                          _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                                                _GPI_TRACE_FMT_FILE " " _GPI_TRACE_FMT_SCOPE                   \
+                                                                    " " msg)                                   \
+                          gpi_trace_store_msg(_s_, __FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")",             \
+                                              __func__, ##__VA_ARGS__);                                        \
+                      }                                                                                        \
+                      else                                                                                     \
+                      {                                                                                        \
+                          _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                                                _GPI_TRACE_FMT_FILE " " _GPI_TRACE_FMT_SCOPE                   \
+                                                                    " " msg)                                   \
+                          gpi_trace_store_msg(                                                                 \
+                                  _s_,                                                                         \
+                                  _GPI_TRACE_FILTER_PATH(__FILE__                                              \
+                                                         "(" GPI_TRACE_STRINGIFY(__LINE__) ")"),               \
+                                  __func__, ##__VA_ARGS__);                                                    \
+                      }                                                                                        \
+                      break;                                                                                   \
+                  }                                                                                            \
+              }                                                                                                \
+          }                                                                                                    \
+      }                                                                                                        \
+      while (0)
 
     /// print log message
   #if (GPI_TRACE_MODE_IS_FLUSH_AUTO)
     #define GPI_TRACE_MSG(group, msg, ...)                                                         \
-      do {                                                                                         \
-        GPI_TRACE_MSG_FAST(group, msg, ##__VA_ARGS__);                                             \
-        GPI_TRACE_FLUSH();                                                                         \
-      }                                                                                            \
-      while (0)
+        do {                                                                                       \
+            GPI_TRACE_MSG_FAST(group, msg, ##__VA_ARGS__);                                         \
+            GPI_TRACE_FLUSH();                                                                     \
+        }                                                                                          \
+        while (0)
   #else
     #define GPI_TRACE_MSG(group, msg, ...) GPI_TRACE_MSG_FAST(group, msg, ##__VA_ARGS__)
   #endif
 
     /// log function call/entry
   #define GPI_TRACE_FUNCTION_FAST()                                                                \
-    do {                                                                                           \
-      if (gpi_trace_module_desc.msg_config & GPI_TRACE_LOG_SCOPE)                                  \
-        GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_ENTRY, "-> entry");                              \
-      else GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_ENTRY, "-> %s()", __func__);                  \
-    }                                                                                              \
-    while (0)
+      do {                                                                                         \
+          if (gpi_trace_module_desc.msg_config & GPI_TRACE_LOG_SCOPE)                              \
+              GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_ENTRY, "-> entry");                        \
+          else GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_ENTRY, "-> %s()", __func__);              \
+      }                                                                                            \
+      while (0)
 
     /// @copybrief GPI_TRACE_FUNCTION_FAST
   #if (GPI_TRACE_MODE_IS_FLUSH_AUTO)
     #define GPI_TRACE_FUNCTION()                                                                   \
-      do {                                                                                         \
-        GPI_TRACE_FUNCTION_FAST();                                                                 \
-        GPI_TRACE_FLUSH();                                                                         \
-      }                                                                                            \
-      while (0)
+        do {                                                                                       \
+            GPI_TRACE_FUNCTION_FAST();                                                             \
+            GPI_TRACE_FLUSH();                                                                     \
+        }                                                                                          \
+        while (0)
   #else
         /// @copybrief GPI_TRACE_FUNCTION_FAST
     #define GPI_TRACE_FUNCTION() GPI_TRACE_FUNCTION_FAST()
@@ -520,72 +525,74 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
     // match the return type of the function.
     //
   #define GPI_TRACE_RETURN_INTERNAL(flush, ...)                                                    \
-    do {                                                                                           \
-      typeof(gpi_trace_dummy_function(), ##__VA_ARGS__) r_ =                                       \
-              (gpi_trace_dummy_function(), ##__VA_ARGS__);                                         \
+      do {                                                                                         \
+          typeof(gpi_trace_dummy_function(), ##__VA_ARGS__) r_ =                                   \
+                  (gpi_trace_dummy_function(), ##__VA_ARGS__);                                     \
                                                                                                    \
-      _Pragma("GCC diagnostic push") _Pragma(                                                      \
-              "GCC diagnostic ignored \"-Wpointer-to-int-cast\"") if (gpi_trace_module_desc        \
-                                                                              .msg_config &        \
-                                                                      GPI_TRACE_LOG_SCOPE)         \
-      {                                                                                            \
-        if (VA_NUM(__VA_ARGS__))                                                                   \
-          GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN,                                        \
-                             "<- return %" GPI_TRACE_PRId " (0x%08" GPI_TRACE_PRIx ")",            \
-                             (Gpi_Trace_Uint_t) r_, (Gpi_Trace_Uint_t) r_);                        \
-        else GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN, "<- return");                       \
+          _Pragma("GCC diagnostic push") _Pragma(                                                  \
+                  "GCC diagnostic ignored \"-Wpointer-to-int-cast\"") if (gpi_trace_module_desc    \
+                                                                                  .msg_config &    \
+                                                                          GPI_TRACE_LOG_SCOPE)     \
+          {                                                                                        \
+              if (VA_NUM(__VA_ARGS__))                                                             \
+                  GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN,                                \
+                                     "<- return %" GPI_TRACE_PRId " (0x%08" GPI_TRACE_PRIx ")",    \
+                                     (Gpi_Trace_Uint_t) r_, (Gpi_Trace_Uint_t) r_);                \
+              else GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN, "<- return");                 \
+          }                                                                                        \
+          else                                                                                     \
+          {                                                                                        \
+              if (VA_NUM(__VA_ARGS__))                                                             \
+                  GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN,                                \
+                                     "<- %s() returned %" GPI_TRACE_PRId " (0x%08" GPI_TRACE_PRIx  \
+                                     ")",                                                          \
+                                     __func__, (Gpi_Trace_Uint_t) r_, (Gpi_Trace_Uint_t) r_);      \
+              else GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN, "<- %s()", __func__);         \
+          }                                                                                        \
+          _Pragma("GCC diagnostic pop")                                                            \
+                                                                                                   \
+                  /* attention: if flush is requested, we have to do it before returning				\
+			 * (that is why we do it here and not outside of this macro) */     \
+                  if (flush) GPI_TRACE_FLUSH();                                                    \
+                                                                                                   \
+          return (typeof((void) 0, ##__VA_ARGS__)) r_;                                             \
       }                                                                                            \
-      else                                                                                         \
-      {                                                                                            \
-        if (VA_NUM(__VA_ARGS__))                                                                   \
-          GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN,                                        \
-                             "<- %s() returned %" GPI_TRACE_PRId " (0x%08" GPI_TRACE_PRIx ")",     \
-                             __func__, (Gpi_Trace_Uint_t) r_, (Gpi_Trace_Uint_t) r_);              \
-        else GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN, "<- %s()", __func__);               \
-      }                                                                                            \
-      _Pragma("GCC diagnostic pop")                                                                \
-                                                                                                   \
-              /* attention: if flush is requested, we have to do it before returning				\
-			 * (that is why we do it here and not outside of this macro) */         \
-              if (flush) GPI_TRACE_FLUSH();                                                        \
-                                                                                                   \
-      return (typeof((void) 0, ##__VA_ARGS__)) r_;                                                 \
-    }                                                                                              \
-    while (0)
+      while (0)
 
     /// log function return/exit
   #define GPI_TRACE_RETURN_FAST(...) GPI_TRACE_RETURN_INTERNAL(0, ##__VA_ARGS__)
   #define GPI_TRACE_RETURN(...)                                                                    \
-    GPI_TRACE_RETURN_INTERNAL(GPI_TRACE_MODE_IS_FLUSH_AUTO, ##__VA_ARGS__)
+      GPI_TRACE_RETURN_INTERNAL(GPI_TRACE_MODE_IS_FLUSH_AUTO, ##__VA_ARGS__)
     ///< @copybrief GPI_TRACE_RETURN_FAST
 
   #define GPI_TRACE_RETURN_MSG_INTERNAL(msg, ...)                                                  \
-    do {                                                                                           \
-      if (gpi_trace_module_desc.msg_config & GPI_TRACE_LOG_SCOPE)                                  \
-        GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN_MSG, "<- return " msg, ##__VA_ARGS__);    \
-      else                                                                                         \
-        GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN_MSG, "<- %s() returned " msg, __func__,   \
-                           ##__VA_ARGS__);                                                         \
-    }                                                                                              \
-    while (0)
+      do {                                                                                         \
+          if (gpi_trace_module_desc.msg_config & GPI_TRACE_LOG_SCOPE)                              \
+              GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN_MSG, "<- return " msg,              \
+                                 ##__VA_ARGS__);                                                   \
+          else                                                                                     \
+              GPI_TRACE_MSG_FAST(GPI_TRACE_LOG_FUNCTION_RETURN_MSG, "<- %s() returned " msg,       \
+                                 __func__, ##__VA_ARGS__);                                         \
+      }                                                                                            \
+      while (0)
 
     /// log function return/exit with specific message (e.g. return value format)
   #define GPI_TRACE_RETURN_MSG_FAST(r, msg, ...)                                                   \
-    do {                                                                                           \
-      GPI_TRACE_RETURN_MSG_INTERNAL(msg, ##__VA_ARGS__);                                           \
-      return r;                                                                                    \
-    }                                                                                              \
-    while (0)
+      do {                                                                                         \
+          GPI_TRACE_RETURN_MSG_INTERNAL(msg, ##__VA_ARGS__);                                       \
+          return r;                                                                                \
+      }                                                                                            \
+      while (0)
 
     /// @copybrief GPI_TRACE_RETURN_MSG_FAST
   #if (GPI_TRACE_MODE_IS_FLUSH_AUTO)
     #define GPI_TRACE_RETURN_MSG(r, msg, ...)                                                      \
-      do {                                                                                         \
-        GPI_TRACE_RETURN_MSG_INTERNAL(msg, ##__VA_ARGS__);                                         \
-        GPI_TRACE_FLUSH();                                                                         \
-        return r;                                                                                  \
-      }                                                                                            \
-      while (0)
+        do {                                                                                       \
+            GPI_TRACE_RETURN_MSG_INTERNAL(msg, ##__VA_ARGS__);                                     \
+            GPI_TRACE_FLUSH();                                                                     \
+            return r;                                                                              \
+        }                                                                                          \
+        while (0)
   #else
     #define GPI_TRACE_RETURN_MSG(r, msg, ...) GPI_TRACE_RETURN_MSG_FAST(r, msg, ##__VA_ARGS__)
   #endif
@@ -700,12 +707,12 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
 #endif
 
 #define GPI_TRACE_TYPE_FORMAT_LUT                                                                  \
-  {                                                                                                \
-    GPI_TRACE_TYPE_FORMAT_DEFAULT, GPI_TRACE_TYPE_FORMAT_FAILED, GPI_TRACE_TYPE_FORMAT_OK,         \
-            GPI_TRACE_TYPE_FORMAT_ERROR, GPI_TRACE_TYPE_FORMAT_WARNING,                            \
-            GPI_TRACE_TYPE_FORMAT_INFO, GPI_TRACE_TYPE_FORMAT_VERBOSE,                             \
-            GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW, GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW                 \
-  }
+    {                                                                                              \
+        GPI_TRACE_TYPE_FORMAT_DEFAULT, GPI_TRACE_TYPE_FORMAT_FAILED, GPI_TRACE_TYPE_FORMAT_OK,     \
+                GPI_TRACE_TYPE_FORMAT_ERROR, GPI_TRACE_TYPE_FORMAT_WARNING,                        \
+                GPI_TRACE_TYPE_FORMAT_INFO, GPI_TRACE_TYPE_FORMAT_VERBOSE,                         \
+                GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW, GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW             \
+    }
 
                                 ASSERT_CT_STATIC(1 ==
                                                  _GPI_TRACE_TYPE_INDEX(GPI_TRACE_MSG_TYPE_FAILED));

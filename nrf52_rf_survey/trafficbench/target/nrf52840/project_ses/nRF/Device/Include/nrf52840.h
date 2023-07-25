@@ -185,19 +185,19 @@ typedef enum
 
 /* ===========================  Configuration of the ARM Cortex-M4 Processor and Core Peripherals  =========================== */
   #define __CM4_REV                                                                                \
-    0x0001U /*!< CM4 Core Revision                                                         */
+        0x0001U /*!< CM4 Core Revision                                                         */
   #define __DSP_PRESENT                                                                            \
-    1 /*!< DSP present or not                                                        */
+        1 /*!< DSP present or not                                                        */
   #define __VTOR_PRESENT                                                                           \
-    1 /*!< Set to 1 if CPU supports Vector Table Offset Register                     */
+        1 /*!< Set to 1 if CPU supports Vector Table Offset Register                     */
   #define __NVIC_PRIO_BITS                                                                         \
-    3 /*!< Number of Bits used for Priority Levels                                   */
+        3 /*!< Number of Bits used for Priority Levels                                   */
   #define __Vendor_SysTickConfig                                                                   \
-    0 /*!< Set to 1 if different SysTick Config is used                              */
+        0 /*!< Set to 1 if different SysTick Config is used                              */
   #define __MPU_PRESENT                                                                            \
-    1 /*!< MPU present                                                               */
+        1 /*!< MPU present                                                               */
   #define __FPU_PRESENT                                                                            \
-    1 /*!< FPU present                                                               */
+        1 /*!< FPU present                                                               */
 
 
 /** @} */ /* End of group Configuration_of_CMSIS */

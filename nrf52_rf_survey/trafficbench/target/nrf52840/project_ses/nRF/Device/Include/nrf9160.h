@@ -164,23 +164,23 @@ typedef enum
 
 /* ==========================  Configuration of the ARM Cortex-M33 Processor and Core Peripherals  =========================== */
   #define __CM33_REV                                                                               \
-    0x0004U /*!< CM33 Core Revision                                                        */
+        0x0004U /*!< CM33 Core Revision                                                        */
   #define __DSP_PRESENT                                                                            \
-    1 /*!< DSP present or not                                                        */
+        1 /*!< DSP present or not                                                        */
   #define __NVIC_PRIO_BITS                                                                         \
-    3 /*!< Number of Bits used for Priority Levels                                   */
+        3 /*!< Number of Bits used for Priority Levels                                   */
   #define __Vendor_SysTickConfig                                                                   \
-    0 /*!< Set to 1 if different SysTick Config is used                              */
+        0 /*!< Set to 1 if different SysTick Config is used                              */
   #define __VTOR_PRESENT                                                                           \
-    1 /*!< Set to 1 if CPU supports Vector Table Offset Register                     */
+        1 /*!< Set to 1 if CPU supports Vector Table Offset Register                     */
   #define __MPU_PRESENT                                                                            \
-    1 /*!< MPU present                                                               */
+        1 /*!< MPU present                                                               */
   #define __FPU_PRESENT                                                                            \
-    1 /*!< FPU present                                                               */
+        1 /*!< FPU present                                                               */
   #define __FPU_DP                                                                                 \
-    0 /*!< Double Precision FPU                                                      */
+        0 /*!< Double Precision FPU                                                      */
   #define __SAUREGION_PRESENT                                                                      \
-    0 /*!< SAU region present                                                        */
+        0 /*!< SAU region present                                                        */
 
 
 /** @} */ /* End of group Configuration_of_CMSIS */

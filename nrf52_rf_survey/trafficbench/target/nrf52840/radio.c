@@ -206,8 +206,8 @@ GPI_RESOURCE_RESERVE(NRF_TEMP);
   #define PPI_CHEN_RX_MASK_EXTRA 0
 #endif
 #define PPI_CHEN_RX_MASK                                                                           \
-  (PPI_CHEN_TX_MASK | PPI_CHEN_RX_MASK_EXTRA | BV(PPI_READY) | BV(PPI_RSSI_START) |                \
-   BV(PPI_RSSI_END) | BV(PPI_RSSI_MWU) | BV(PPI_RSSI_COUNT))
+    (PPI_CHEN_TX_MASK | PPI_CHEN_RX_MASK_EXTRA | BV(PPI_READY) | BV(PPI_RSSI_START) |              \
+     BV(PPI_RSSI_END) | BV(PPI_RSSI_MWU) | BV(PPI_RSSI_COUNT))
 
 GPI_RESOURCE_RESERVE_SHARED(NRF_PPI);
 GPI_RESOURCE_RESERVE(NRF_PPI_CH, PPI_START);
@@ -254,14 +254,14 @@ GPI_RESOURCE_RESERVE(NRF_GPIOTE_CH, GPIOTE_DEBUG2);
 
 #ifdef DEBUG_GPIO
   #define LED_ISR(name, led)                                                                       \
-    CONCAT(name, _)();                                                                             \
-    void name()                                                                                    \
-    {                                                                                              \
-      gpi_led_toggle(led);                                                                         \
       CONCAT(name, _)();                                                                           \
-      gpi_led_toggle(led);                                                                         \
-    }                                                                                              \
-    void CONCAT(name, _)()
+      void name()                                                                                  \
+      {                                                                                            \
+          gpi_led_toggle(led);                                                                     \
+          CONCAT(name, _)();                                                                       \
+          gpi_led_toggle(led);                                                                     \
+      }                                                                                            \
+      void CONCAT(name, _)()
 #else
   #define LED_ISR(name, led) void name()
 #endif
@@ -289,12 +289,12 @@ GPI_RESOURCE_RESERVE(NRF_GPIOTE_CH, GPIOTE_DEBUG2);
 // besides nRF spec., see Carsten's measurements and
 // https://devzone.nordicsemi.com/f/nordic-q-a/83778/undocumented-tx---rx-radio-delay
 #define RADIO_TX_EVENT_ADDRESS_DELAY                                                               \
-  (-13) // surprise: it's negative (-> nRF spec. event desc. is not precise)
+    (-13) // surprise: it's negative (-> nRF spec. event desc. is not precise)
 #define RADIO_RX_EVENT_ADDRESS_DELAY                                                               \
-  155 // 152.1...156.5, mean 154.5, rounding up includes some air time
+    155 // 152.1...156.5, mean 154.5, rounding up includes some air time
 #define RADIO_TX_EVENT_END_DELAY 4
 #define RADIO_RX_EVENT_END_DELAY                                                                   \
-  156 // 154.1...157.2, mean 155.5, rounding up includes some air time
+    156 // 154.1...157.2, mean 155.5, rounding up includes some air time
 
 // RADIO_TX_DISABLE_DELAY can be used to fine-tune shutdown moment of power amplifier.
 // nRF spec. defines TASKS_DISABLE -> EVENTS_DISABLED delay (6us for BLE 1M), but it is

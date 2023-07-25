@@ -120,10 +120,10 @@ struct pt
  * \hideinitializer
  */
   #define PT_BEGIN(pt)                                                                             \
-    {                                                                                              \
-      char __attribute__((unused)) PT_YIELD_FLAG = 1;                                              \
-      LC_RESUME((pt)->lc);                                                                         \
-      GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_BEGIN")
+        {                                                                                          \
+            char __attribute__((unused)) PT_YIELD_FLAG = 1;                                        \
+            LC_RESUME((pt)->lc);                                                                   \
+            GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_BEGIN")
 
 /**
  * Declare the end of a protothread.
@@ -136,12 +136,12 @@ struct pt
  * \hideinitializer
  */
   #define PT_END(pt)                                                                               \
-    LC_END((pt)->lc);                                                                              \
-    PT_YIELD_FLAG = 0;                                                                             \
-    PT_INIT(pt);                                                                                   \
-    GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_END");                                        \
-    return PT_ENDED;                                                                               \
-    }
+        LC_END((pt)->lc);                                                                          \
+        PT_YIELD_FLAG = 0;                                                                         \
+        PT_INIT(pt);                                                                               \
+        GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_END");                                    \
+        return PT_ENDED;                                                                           \
+        }
 
 /** @} */
 
@@ -162,17 +162,17 @@ struct pt
  * \hideinitializer
  */
   #define PT_WAIT_UNTIL(pt, condition)                                                             \
-    do {                                                                                           \
-      LC_SET((pt)->lc);                                                                            \
-      if (!(condition))                                                                            \
-      {                                                                                            \
-        GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_WAIT ...");                               \
-        return PT_WAITING;                                                                         \
+        do {                                                                                       \
+            LC_SET((pt)->lc);                                                                      \
+            if (!(condition))                                                                      \
+            {                                                                                      \
+                GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_WAIT ...");                       \
+                return PT_WAITING;                                                                 \
 /*      GPI_TRACE_RETURN_MSG(PT_WAITING, "PT_WAIT");		\
       GPI_TRACE_RETURN_MSG(PT_WAITING, "PT_WAIT until (" #condition ")");	\
 */    }                                                                                            \
-    }                                                                                              \
-    while (0)
+        }                                                                                          \
+        while (0)
 
 /**
  * Block and wait while condition is true.
@@ -225,11 +225,11 @@ struct pt
  * \hideinitializer
  */
   #define PT_SPAWN(pt, child, thread)                                                              \
-    do {                                                                                           \
-      PT_INIT((child));                                                                            \
-      PT_WAIT_THREAD((pt), (thread));                                                              \
-    }                                                                                              \
-    while (0)
+        do {                                                                                       \
+            PT_INIT((child));                                                                      \
+            PT_WAIT_THREAD((pt), (thread));                                                        \
+        }                                                                                          \
+        while (0)
 
 /** @} */
 
@@ -249,12 +249,12 @@ struct pt
  * \hideinitializer
  */
   #define PT_RESTART(pt)                                                                           \
-    do {                                                                                           \
-      PT_INIT(pt);                                                                                 \
-      GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_RESTART");                                  \
-      return PT_WAITING;                                                                           \
-    }                                                                                              \
-    while (0)
+        do {                                                                                       \
+            PT_INIT(pt);                                                                           \
+            GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_RESTART");                            \
+            return PT_WAITING;                                                                     \
+        }                                                                                          \
+        while (0)
 
 /**
  * Exit the protothread.
@@ -268,12 +268,12 @@ struct pt
  * \hideinitializer
  */
   #define PT_EXIT(pt)                                                                              \
-    do {                                                                                           \
-      PT_INIT(pt);                                                                                 \
-      GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_EXIT");                                     \
-      return PT_EXITED;                                                                            \
-    }                                                                                              \
-    while (0)
+        do {                                                                                       \
+            PT_INIT(pt);                                                                           \
+            GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_EXIT");                               \
+            return PT_EXITED;                                                                      \
+        }                                                                                          \
+        while (0)
 
 /** @} */
 
@@ -296,10 +296,10 @@ struct pt
  */
 //#define PT_SCHEDULE(f) ((f) < PT_EXITED)
   #define PT_SCHEDULE(f)                                                                           \
-    ({                                                                                             \
-  GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_SCHEDULE " #f);                                  \
-  (f) < PT_EXITED;                                                                                 \
-    })
+        ({                                                                                         \
+            GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_SCHEDULE " #f);                        \
+            (f) < PT_EXITED;                                                                       \
+        })
 
 /**
  * Schedule a protothread.
@@ -314,10 +314,10 @@ struct pt
  * \hideinitializer
  */
   #define PT_SCHEDULE_STATE(f)                                                                     \
-    ({                                                                                             \
-  GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_SCHEDULE " #f);                                  \
-  (f);                                                                                             \
-    })
+        ({                                                                                         \
+            GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_ENTRY, "PT_SCHEDULE " #f);                        \
+            (f);                                                                                   \
+        })
 
 /** @} */
 
@@ -337,16 +337,16 @@ struct pt
  * \hideinitializer
  */
   #define PT_YIELD(pt)                                                                             \
-    do {                                                                                           \
-      PT_YIELD_FLAG = 0;                                                                           \
-      LC_SET((pt)->lc);                                                                            \
-      if (PT_YIELD_FLAG == 0)                                                                      \
-      {                                                                                            \
-        GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_YIELD");                                  \
-        return PT_YIELDED;                                                                         \
-      }                                                                                            \
-    }                                                                                              \
-    while (0)
+        do {                                                                                       \
+            PT_YIELD_FLAG = 0;                                                                     \
+            LC_SET((pt)->lc);                                                                      \
+            if (PT_YIELD_FLAG == 0)                                                                \
+            {                                                                                      \
+                GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_YIELD");                          \
+                return PT_YIELDED;                                                                 \
+            }                                                                                      \
+        }                                                                                          \
+        while (0)
 
 /**
  * \brief      Yield from the protothread until a condition occurs.
@@ -360,16 +360,16 @@ struct pt
  * \hideinitializer
  */
   #define PT_YIELD_UNTIL(pt, cond)                                                                 \
-    do {                                                                                           \
-      PT_YIELD_FLAG = 0;                                                                           \
-      LC_SET((pt)->lc);                                                                            \
-      if ((PT_YIELD_FLAG == 0) || !(cond))                                                         \
-      {                                                                                            \
-        GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_YIELD");                                  \
-        return PT_YIELDED;                                                                         \
-      }                                                                                            \
-    }                                                                                              \
-    while (0)
+        do {                                                                                       \
+            PT_YIELD_FLAG = 0;                                                                     \
+            LC_SET((pt)->lc);                                                                      \
+            if ((PT_YIELD_FLAG == 0) || !(cond))                                                   \
+            {                                                                                      \
+                GPI_TRACE_MSG(GPI_TRACE_LOG_FUNCTION_RETURN, "PT_YIELD");                          \
+                return PT_YIELDED;                                                                 \
+            }                                                                                      \
+        }                                                                                          \
+        while (0)
 
 /** @} */
 

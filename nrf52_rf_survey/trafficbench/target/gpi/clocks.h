@@ -73,9 +73,9 @@
 #define GPI_TICK_MS_TO_FAST(ms) _GPI_TICK_T_TO_X(ms, 1000, FAST)
 #define GPI_TICK_S_TO_FAST(s)   _GPI_TICK_T_TO_X(s, 1, FAST)
 #define GPI_TICK_MS_TO_FAST2(ms)                                                                   \
-  (GPI_TICK_S_TO_FAST((ms) / 1000) + GPI_TICK_MS_TO_FAST((ms) % 1000))
+    (GPI_TICK_S_TO_FAST((ms) / 1000) + GPI_TICK_MS_TO_FAST((ms) % 1000))
 #define GPI_TICK_US_TO_FAST2(us)                                                                   \
-  (GPI_TICK_MS_TO_FAST2((us) / 1000) + GPI_TICK_US_TO_FAST((us) % 1000))
+    (GPI_TICK_MS_TO_FAST2((us) / 1000) + GPI_TICK_US_TO_FAST((us) % 1000))
 
 #define GPI_TICK_MS_TO_SLOW(ms)   _GPI_TICK_T_TO_X(ms, 1000, SLOW)
 #define GPI_TICK_S_TO_SLOW(s)     _GPI_TICK_T_TO_X(s, 1, SLOW)
@@ -84,35 +84,36 @@
 #define GPI_TICK_MS_TO_HYBRID(ms) _GPI_TICK_T_TO_X(ms, 1000, HYBRID)
 #define GPI_TICK_S_TO_HYBRID(s)   _GPI_TICK_T_TO_X(s, 1, HYBRID)
 #define GPI_TICK_MS_TO_HYBRID2(ms)                                                                 \
-  (GPI_TICK_S_TO_HYBRID((ms) / 1000) + GPI_TICK_MS_TO_HYBRID((ms) % 1000))
+    (GPI_TICK_S_TO_HYBRID((ms) / 1000) + GPI_TICK_MS_TO_HYBRID((ms) % 1000))
 #define GPI_TICK_US_TO_HYBRID2(us)                                                                 \
-  (GPI_TICK_MS_TO_HYBRID2((us) / 1000) + GPI_TICK_US_TO_HYBRID((us) % 1000))
+    (GPI_TICK_MS_TO_HYBRID2((us) / 1000) + GPI_TICK_US_TO_HYBRID((us) % 1000))
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 #define _GPI_TICK_T_TO_X(x, m, t)                                                                  \
-  (((GPI_##t##_CLOCK_RATE % m) ? (((x) *GPI_##t##_CLOCK_RATE) / m + ((m > 1) ? 1 : 0))             \
-                               : ((x) * (GPI_##t##_CLOCK_RATE / m))) +                             \
-   ASSERT_CT_EVAL((x) <= (GPI_TICK_##t##_MAX / GPI_##t##_CLOCK_RATE) ||                            \
-                          !(GPI_##t##_CLOCK_RATE % m),                                             \
-                  GPI_TICK_TO_##t##_overflow))
+    (((GPI_##t##_CLOCK_RATE % m) ? (((x) *GPI_##t##_CLOCK_RATE) / m + ((m > 1) ? 1 : 0))           \
+                                 : ((x) * (GPI_##t##_CLOCK_RATE / m))) +                           \
+     ASSERT_CT_EVAL((x) <= (GPI_TICK_##t##_MAX / GPI_##t##_CLOCK_RATE) ||                          \
+                            !(GPI_##t##_CLOCK_RATE % m),                                           \
+                    GPI_TICK_TO_##t##_overflow))
 
 // helper function for timestamp comparisons
 // return value indicates a in relation to b: </> 0 : a is earlier/later than b (== 0 : a equals b)
 #define _GPI_TICK_COMPARE_FUNCTION(name, type)                                                     \
-  static inline __attribute__((always_inline)) int_fast8_t gpi_tick_compare_##name(type a, type b) \
-  {                                                                                                \
-    ASSERT_CT(sizeof(a) <= 8, gpi_tick_compare_##name##_overflow);                                 \
-    a -= b;                                                                                        \
-    switch (sizeof(a))                                                                             \
+    static inline __attribute__((always_inline))                                                   \
+    int_fast8_t gpi_tick_compare_##name(type a, type b)                                            \
     {                                                                                              \
-      case 2: return ((int16_t) a < 0) ? -1 : !!(a);                                               \
-      case 4: return ((int32_t) a < 0) ? -1 : !!(a);                                               \
-      case 8: return ((int64_t) a < 0) ? -1 : !!(a);                                               \
-      default: return 0; /* must not happen (catch with ASSERT_CT) */                              \
-    }                                                                                              \
-  }
+        ASSERT_CT(sizeof(a) <= 8, gpi_tick_compare_##name##_overflow);                             \
+        a -= b;                                                                                    \
+        switch (sizeof(a))                                                                         \
+        {                                                                                          \
+            case 2: return ((int16_t) a < 0) ? -1 : !!(a);                                         \
+            case 4: return ((int32_t) a < 0) ? -1 : !!(a);                                         \
+            case 8: return ((int64_t) a < 0) ? -1 : !!(a);                                         \
+            default: return 0; /* must not happen (catch with ASSERT_CT) */                        \
+        }                                                                                          \
+    }
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************

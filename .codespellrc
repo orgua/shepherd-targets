@@ -1,9 +1,9 @@
 [codespell]
-skip = *.brd,*.sch,*.lbr,*/trafficbench/*,
+skip = *.brd,*.sch,*.lbr,*.EXTREP,*.REP,*/trafficbench/*,
 
 builtin = clear,rare,informal,usage,code,en-GB_to_en-US
 
-ignore-words-list = dout,jupyter,stdio,astroid,uint
+ignore-words-list = dout,jupyter,stdio,astroid,uint,ro
 
 # options without argument
 check-filenames =

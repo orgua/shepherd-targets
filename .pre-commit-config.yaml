@@ -30,18 +30,86 @@ repos:
       - id: isort
 
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.7.0
     hooks:
       - id: black
 
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-noqa
+      - id: python-use-type-annotations
+      - id: python-no-log-warn
+      - id: rst-backticks
+      - id: rst-directive-colons
+      - id: rst-inline-touching-normal
+      - id: text-unicode-replacement-char
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.9.0
+    hooks:
+      - id: pyupgrade
+        args: ["--py38-plus"]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 5.0.4
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          # NOTE: entries are copy of .flake8-config-file -> for auto-install
+          ### Bugs
+          - flake8-bugbear
+          - flake8-secure-coding-standard
+          - flake8-bandit
+          - flake8-builtins
+
+          ### Clean Code
+          - flake8-comprehensions
+          - flake8-simplify
+          - flake8-eradicate
+          - flake8-commas
+
+          ### Limitations
+          - flake8-blind-except
+          - flake8-logging-format
+          - flake8-print
+
+          ### Documentation
+          - flake8-comments
+          # - flake8-docstrings
+          # - flake8-rst-docstrings
+
+          ### Test-Improvements
+          - flake8-assertive
+
+          ### Load Config from …
+          - Flake8-pyproject
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.280'
+    hooks:
+      - id: ruff
+        # args: ["--fix", "--exit-non-zero-on-fix"]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.35.0
+    hooks:
+      - id: markdownlint
+        args: ["--disable", "MD013"] # ignore line length
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.13
+    hooks:
+      - id: validate-pyproject
+
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.2"
+    rev: "v2.2.5"
     hooks:
       - id: codespell
         exclude: \.(sch|brd|lbr)$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 'v15.0.7'
+    rev: 'v16.0.6'
     hooks:
       - id: clang-format
         types_or: [c++, c]

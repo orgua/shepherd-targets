@@ -54,7 +54,7 @@ def test_and_warn(
             break
 
         pos_new = (section.find(char) for char in ctrl_chars)
-        pos_new = min((len(section) if x < 0 else x for x in pos_new))
+        pos_new = min(len(section) if x < 0 else x for x in pos_new)
         pos_new += pos_start
 
         l = line_number - text.count(b"\n", pos_new)
@@ -249,10 +249,10 @@ def _filter_logfile(
 
     # precompiled regular expressions
     re_record = re.compile(
-        BEGIN_RECORD + b"(\w+):([^" + BEGIN_RECORD + END_RECORD + b"]*)" + END_RECORD
+        BEGIN_RECORD + rb"(\w+):([^" + BEGIN_RECORD + END_RECORD + rb"]*)" + END_RECORD
     )
     re_chunk = re.compile(
-        BEGIN_CHUNK + b"([^" + BEGIN_CHUNK + END_CHUNK + b"]*)" + END_CHUNK
+        BEGIN_CHUNK + rb"([^" + BEGIN_CHUNK + END_CHUNK + rb"]*)" + END_CHUNK
     )
     re_source_id = (
         re.compile(source_id_pattern.encode(), flags=re.MULTILINE)

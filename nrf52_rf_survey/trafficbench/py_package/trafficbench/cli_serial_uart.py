@@ -31,7 +31,7 @@ def serial_port_list() -> list:
     elif sys.platform.startswith("darwin"):
         ports_ = glob.glob("/dev/tty.*")
     else:
-        raise EnvironmentError("Unsupported platform")
+        raise OSError("Unsupported platform")
 
     result = []
     for port_ in ports_:

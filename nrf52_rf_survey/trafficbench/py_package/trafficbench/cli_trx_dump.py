@@ -26,6 +26,7 @@ from .checksum import fletcher32
 from .cli_proto import app
 from .crc import calc_crc
 from .file_database import FileWriter
+from .logger import logger
 from .table_records import TRxOperation
 
 
@@ -74,7 +75,7 @@ def dump_trx(
     """decode TRX messages and import them into PyTables HDF5 file (.b64 -> .h5)"""
 
     if isinstance(infile, Path):
-        infile = open(infile, "r")
+        infile = open(infile)
     else:
         infile = sys.stdin
 
@@ -115,7 +116,7 @@ def dump_trx(
             assert checksum == fletcher32(x[:-4])
         except:
             # TODO: print detailed error message and continue
-            print("CBOR error")
+            logger.warning("CBOR error")
             continue
 
         # encapsulate data (inner CBOR format) in an extra array to parse everything at once
@@ -199,8 +200,11 @@ def dump_trx(
                     i = ", ".join(
                         map(str, i[:3] + ["..."] + i[-3:] if len(i) > 10 else i)
                     )
-                    print(
-                        f"warning: {node_id} @ {schedule_gts:#010x} : RSSI sample test failed at position(s) {i}"
+                    logger.warning(
+                        f"warning: %d @ %010x: RSSI sample test failed at position(s) %d",
+                        node_id,
+                        schedule_gts,
+                        i,
                     )
         # TODO: shouldn't an invalid rssi skip the whole iteration?
 
@@ -333,7 +337,7 @@ def dump_trx(
                     file=logfile,
                 )
                 if len(rssi_samples) <= rssi_dump_max:
-                    print("{}".format(rssi_samples)[1:-1], file=logfile)
+                    print(f"{rssi_samples}"[1:-1], file=logfile)
                 else:
                     print(
                         "{} ... {} ... {} ({} samples)".format(

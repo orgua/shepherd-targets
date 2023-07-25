@@ -125,9 +125,7 @@ def analyze_trx(
     ####################################################################################################
 
     # scan and group TRX records
-    logger.info(
-        "scanning and grouping TRX records ({} entries)".format(trx_table.nrows)
-    )
+    logger.info(f"scanning and grouping TRX records (%d entries)", trx_table.nrows)
     nodes = set()
     gts_last = -1
     n_tx = n_rx = n_skip = 0
@@ -332,20 +330,19 @@ def analyze_trx(
     h5file.create_carray("/catalogs", "link_matrix_dBm", obj=10 * np.log10(link_matrix))
     h5file.flush()
 
-    print("link matrix:")
-    print("       {}".format("  ".join(map(lambda x: f"{x:4d}", nodes))))
-    print("     +-{}".format("--" * (len(nodes) - 1) + "----" * len(nodes)))
-    for x in enumerate(link_matrix):
-        print(
-            "{:4d} | {}".format(
-                nodes[x[0]],
-                "  ".join(
-                    map(
-                        lambda x: "    " if np.isnan(x) else f"{x:4.0f}",
-                        10 * np.log10(x[1]),
-                    )
-                ),
-            )
+    logger.info("link matrix:")
+    logger.info("       %s", "  ".join(map(lambda x: f"{x:4d}", nodes)))
+    logger.info("     +-%s", "--" * (len(nodes) - 1) + "----" * len(nodes))
+    for x in enumerate(power_W_to_dBm(link_matrix)):
+        logger.info(
+            "%4d | %s",
+            nodes[x[0]],
+            "  ".join(
+                map(
+                    lambda x: "    " if np.isnan(x) else f"{x:4.0f}",
+                    x[1],
+                )
+            ),
         )
 
     ####################################################################################################
@@ -728,7 +725,7 @@ def analyze_trx(
 
         # compute expression for marked records
         x = source_table.read_where(where_clause)
-        x = dict([(n, x[n]) for n in x.dtype.names])
+        x = {n: x[n] for n in x.dtype.names}
         expr = tbl.Expr(desc["expression"], uservars=x)
         expr.set_output(marker_table.cols.expression_value)
         expr.eval()
@@ -757,7 +754,7 @@ def analyze_trx(
         # assert(len(set(trx["node_id"])) == len(trx))
         # assert(len(I_tx) + len(I_rx) == len(trx))
 
-        print(f"\ntransaction at {schedule_gts:#010x}:")
+        logger.info(f"\ntransaction at %010x:", schedule_gts)
 
         actions = [("-", "")] * len(trx)
         SNRs = [(None, None)] * len(trx)
@@ -795,40 +792,35 @@ def analyze_trx(
             if not np.isnan(x):
                 SINRs[i] = (x, m)
 
-        fmt = lambda c: " | ".join(map(lambda x: "{:^6}".format(x), c))
+        fmt = lambda c: " | ".join(map(lambda x: f"{x:^6}", c))
         fmtx = lambda c: " | ".join(
             map(lambda x: "{:^6}".format("".join(map(str, x))), c)
         )
-        print("\tnode:          {}".format(fmt(trx["node_id"])))
-        print("\treceive from:  {}".format(fmtx(actions)))
-        print(
-            "\tSINR (link):   {}".format(
-                fmtx(
-                    map(
-                        lambda x: (f"{x[0]:5.1f}", x[1])
-                        if isinstance(x[0], numbers.Number)
-                        else x,
-                        SINRs,
-                    )
+        logger.info("\tnode:          %s", fmt(trx["node_id"]))
+        logger.info(f"\treceive from:  %s", fmtx(actions))
+        logger.info(
+            "\tSINR (link):   %s",
+            fmtx(
+                map(
+                    lambda x: (f"{x[0]:5.1f}", x[1])
+                    if isinstance(x[0], numbers.Number)
+                    else x,
+                    SINRs,
                 )
-            )
+            ),
         )
-        print(
-            "\tSNR (mean):    {}".format(
-                fmt(map(lambda x: f"{x[1]:5.1f}" if not x[0] is None else "", SNRs))
-            )
+        logger.info(
+            "\tSNR (mean):    %s",
+            fmt(map(lambda x: f"{x[1]:5.1f}" if not x[0] is None else "", SNRs)),
         )
-        print(
-            "\tSNR (min:max): {}".format(
-                fmt(
-                    map(
-                        lambda x: f"{x[0]:1.0f}:{x[2]:1.0f}"
-                        if not x[0] is None
-                        else "",
-                        SNRs,
-                    )
+        logger.info(
+            "\tSNR (min:max): %s",
+            fmt(
+                map(
+                    lambda x: f"{x[0]:1.0f}:{x[2]:1.0f}" if not x[0] is None else "",
+                    SNRs,
                 )
-            )
+            ),
         )
 
     # done

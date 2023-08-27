@@ -44,7 +44,11 @@ jobs:
     - name: Upload artifacts to github 🔼
       uses: actions/upload-artifact@v3
       with:
-        name: "${{ matrix.subproject }}"
-        path: |
-          "${{ github.workspace }}/${{ matrix.subproject }}.elf"
-          "${{ github.workspace }}/${{ matrix.subproject }}.hex"
+        name: "${{ matrix.subproject }}.elf"
+        path: "${{ github.workspace }}/${{ matrix.subproject }}.elf"
+
+    - name: Upload artifacts to github 🔼
+      uses: actions/upload-artifact@v3
+      with:
+        name: "${{ matrix.subproject }}.hex"
+        path: "${{ github.workspace }}/${{ matrix.subproject }}.hex"

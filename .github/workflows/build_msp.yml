@@ -38,7 +38,7 @@ jobs:
       run: make
       working-directory: "${{ github.workspace }}/${{ matrix.subproject }}/"
 
-    - run: "mkdir content"
+    - run: "mkdir content/${{ matrix.subproject }}/"
     - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf content/${{ matrix.subproject }}/"
     - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex content/${{ matrix.subproject }}/"
 

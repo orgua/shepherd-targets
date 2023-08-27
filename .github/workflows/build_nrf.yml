@@ -49,20 +49,15 @@ jobs:
         run: make
         working-directory: "${{ github.workspace }}/${{ matrix.subproject }}"
 
-      - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf ${{ github.workspace }}/${{ matrix.subproject }}.elf"
-      - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex ${{ github.workspace }}/${{ matrix.subproject }}.hex"
+      - run: "mkdir content"
+      - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf content/${{ matrix.subproject }}/"
+      - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex content/${{ matrix.subproject }}/"
 
       - name: Upload artifacts to github 🔼
         uses: actions/upload-artifact@v3
         with:
-          name: "${{ matrix.subproject }}.elf"
-          path: "${{ github.workspace }}/${{ matrix.subproject }}.elf"
-
-      - name: Upload artifacts to github 🔼
-        uses: actions/upload-artifact@v3
-        with:
-          name: "${{ matrix.subproject }}.hex"
-          path: "${{ github.workspace }}/${{ matrix.subproject }}.hex"
+          name: "${{ matrix.subproject }}"
+          path: "content/${{ matrix.subproject }}/"
 
   build_segger:
     runs-on: ubuntu-latest
@@ -111,17 +106,12 @@ jobs:
         run: "./bin/emBuild -config 'Release' ${{ env.PROJECT_FILE }}"
         working-directory: "${{ env.SEGGER_PATH }}"
 
-      - run: "cp ${{ env.PROJECT_ELF }} ${{ github.workspace }}/${{ matrix.subproject }}.elf"
-      - run: "cp ${{ env.PROJECT_HEX }} ${{ github.workspace }}/${{ matrix.subproject }}.hex"
+      - run: "mkdir content"
+      - run: "cp ${{ env.PROJECT_ELF }} content//${{ matrix.subproject }}/"
+      - run: "cp ${{ env.PROJECT_HEX }} content//${{ matrix.subproject }}/"
 
       - name: Upload artifacts to github 🔼
         uses: actions/upload-artifact@v3
         with:
-          name: "${{ matrix.subproject }}.elf"
-          path: "${{ github.workspace }}/${{ matrix.subproject }}.elf"
-
-      - name: Upload artifacts to github 🔼
-        uses: actions/upload-artifact@v3
-        with:
-          name: "${{ matrix.subproject }}.hex"
-          path: "${{ github.workspace }}/${{ matrix.subproject }}.hex"
+          name: "${{ matrix.subproject }}"
+          path: "content/${{ matrix.subproject }}/"

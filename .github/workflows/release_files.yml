@@ -19,6 +19,9 @@ jobs:
       - call-build-msp
       - call-build-nrf
     steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
       - run: mkdir -p content
 
       - uses: actions/download-artifact@v3

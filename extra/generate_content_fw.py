@@ -37,4 +37,4 @@ if __name__ == "__main__":
                 visible2all=True,
             ).to_file(path_here/_fw)
         else:
-            logger.error("FW not found, will skip: %s", path_fw.name)
+            logger.error("FW not found, will skip: %s", path_fw.as_posix())

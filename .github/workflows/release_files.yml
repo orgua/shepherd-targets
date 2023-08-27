@@ -19,14 +19,14 @@ jobs:
       - call-build-msp
       - call-build-nrf
     steps:
-      - run: mkdir content
+      - run: mkdir -p content
 
       - uses: actions/download-artifact@v3
         with:
           path: content/
 
       - run: pip install -r ${{ github.workspace }}/extras/requirements.txt
-      - run: cp ${{ github.workspace }}/extras/generate_content_fw.py content/"
+      - run: cp ${{ github.workspace }}/extras/generate_content_fw.py content/
       - run: python content/generate_content_fw.py
 
       - run: zip -7 -r firmwares.zip content/

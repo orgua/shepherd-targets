@@ -1,6 +1,7 @@
 """
 script will:
 - generate embedded firmware-models
+- it assumes sub-dirs in the same dir with ./build.elf in it
 - works together with .github/workflows/release_files.yml
 """
 from pathlib import Path

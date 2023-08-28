@@ -28,10 +28,7 @@ jobs:
         with:
           path: content/
 
-      - run: pip install -r ${{ github.workspace }}/extra/requirements.txt
-      - run: cp ${{ github.workspace }}/extra/generate_content_fw.py content/
-      - run: python content/generate_content_fw.py
-
+      - run: cp ${{ github.workspace }}/metadata_fw.yaml content/
       - run: zip -7 -r firmwares.zip content/
 
       - name: Release

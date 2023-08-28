@@ -21,7 +21,7 @@ if __name__ == "__main__":
         "nrf52_deep_sleep": "practically turned off MCU with the lowest possible consumption",
         "nrf52_rf_survey": "Link Matrix Generator - TX-Unit - sends packet with every possible P_TX, loops until stopped",
     }
-    path_here = Path(__file__).parent.absolute()
+
 
     for _fw, _descr in firmwares.items():
 

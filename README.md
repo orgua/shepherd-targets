@@ -18,14 +18,16 @@ The repositoty contains a collection of target-hardware and mcu-firmwares used b
 
 ## nRF52 with MSP430FR as FRAM
 
-![Target_nRF_MSP430](https://github.com/orgua/shepherd-targets/tree/main/PCBs/pcb_rendering_nRF_MSRP430_FRAM_Target.png)
-
 Hardware v1.0 uses
 
 - nRF52840 (Panasonic PAN1780)
 - MSP430FR5962 (TI)
+- RTC
+
+![Target_nRF_MSP430](./media/pcb_rendering_nRF_MSRP430_FRAM_Target.png)
 
 BOM, gerber-files and schematics are available in the [PCB-Directory](https://github.com/orgua/shepherd-targets/tree/main/PCBs)
+
 
 ### Features
 

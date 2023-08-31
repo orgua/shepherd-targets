@@ -6,10 +6,15 @@ Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to
 
 ## Functionality
 
-- LEDs
-    - blink / switch 10x at startup
-    - 50 ms on / 150 ms off
-    - P0_13, _14 (Target v2.1)
+- Startup-Routine 1: LEDs
+    - blink / switch each LED consecutive
+    - 100 ms on each
+    - (depending on node-id) >=8 repetitions 
+    - LED0:2 (Target v2.1)
+- Startup-Routine 2: Header GPIO
+  - switch each on for 100ms consecutive
+  - 4 repetitions
+  - GPIO0:9 (Target v2.1)
 - UART
     - P0_06 TX, _08 RX (Target v2.1, SDK)
     - listens and answers

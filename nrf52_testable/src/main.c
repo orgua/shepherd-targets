@@ -9,7 +9,11 @@
 
 #include "pt.h"
 
+// see shepherd_node_id.c for details
+extern const uint16_t SHEPHERD_NODE_ID;
+
 #define N_PINS      sizeof(pins) / sizeof(unsigned int)
+#define N_HDR      sizeof(hdr_all) / sizeof(unsigned int)
 
 #define PIN_UART_TX 8  // P0.08
 #define PIN_UART_RX 21 // P0.21
@@ -19,6 +23,27 @@
 
 // with reference to names of target-port (gpio 0:6 = 7, 8, 2, 3, 4, 5, 6)
 unsigned int pins[] = {11, 13, 4, 5, 41, 26, 35};
+unsigned int hdr_all[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
+
+/*
+    Pins P3:12 on Target-Header of V1.0 are:
+
+    TGT-HDR     Riotee      nRF52       msp430
+    GPIO0       GPIO.7      P0.11       P5.3
+    GPIO1       GPIO.8      P0.13       P5.2
+    GPIO2       GPIO.2      P0.04       P2.3
+    GPIO3       GPIO.3      P0.05       P2.4
+    GPIO4       GPIO.4      P1.09       P4.6
+    GPIO5       GPIO.5      P0.26       P3.6
+    GPIO6       GPIO.6      P1.03       PJ.6
+    GPIO7       GPIO.1      P0.08       P2.5
+    GPIO8       GPIO.0      P0.21       P2.6
+    BATOK       GPIO.9      P0.07       P5.5
+                LED.0       P0.16       P5.1
+                LED.1       P0.12       P5.0
+                LED.2P      P0.03       PJ.0
+ */
+
 
 /* Processes rising GPIO edges */
 void         gpio_consumer(struct pt *pt)
@@ -72,6 +97,42 @@ void cmd_consumer(struct pt *pt)
     pt_end(pt);
 }
 
+
+static void set_gpio_out(const uint32_t p0_num, const bool enable)
+{
+    if (enable)
+    {
+        nrf_gpio_cfg_output(p0_num);
+        nrf_gpio_pin_set(p0_num);
+    }
+    else
+    {
+        nrf_gpio_pin_clear(p0_num);
+        nrf_gpio_cfg_input(p0_num, NRF_GPIO_PIN_NOPULL);
+    }
+}
+
+
+static void set_gpio_state(const uint32_t p0_num, const bool state)
+{
+    if (state) NRF_P0->OUTSET = (1u << p0_num);
+    else NRF_P0->OUTCLR = (1u << p0_num);
+}
+
+
+static void gpio_led_ctrl(const uint32_t mask)
+{
+    if (mask & BIT0) NRF_P0->OUTSET = (1u << PIN_LED0);
+    else NRF_P0->OUTCLR = (1u << PIN_LED0);
+
+    if (mask & BIT1) NRF_P0->OUTSET = (1 << PIN_LED1);
+    else NRF_P0->OUTCLR = (1u << PIN_LED1);
+
+    if (mask & BIT2) NRF_P0->OUTSET = (1 << PIN_LED2);
+    else NRF_P0->OUTCLR = (1u << PIN_LED2);
+}
+
+
 int main(void)
 {
 
@@ -86,25 +147,51 @@ int main(void)
     struct pt pt_gpio_consumer = pt_init();
     struct pt pt_cmd_consumer  = pt_init();
 
-    /* Switch on pin for 100us */
-    nrf_gpio_cfg_output(PIN_LED0);
-    nrf_gpio_cfg_output(PIN_LED1);
-    nrf_gpio_pin_set(PIN_LED0);
-    nrf_gpio_pin_set(PIN_LED1);
+    /* TODO: test RTC & FRAM */
 
-    for (uint8_t count = 0; count < 10; count++)
+    /* Switch on LEDs for 100ms in a row (>=8 Reps) */
+    set_gpio_out(PIN_LED0, true);
+    set_gpio_out(PIN_LED1, true);
+    set_gpio_out(PIN_LED2, true);
+
+    uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;
+    for (uint32_t reps = 0; reps < rep_sum; reps++)
     {
-        timer_reset();
-        NRF_P0->OUTCLR = (1 << PIN_LED0);
-        NRF_P0->OUTSET = (1 << PIN_LED1);
-        while (timer_now_us() < 50000)
-            ;
-        NRF_P0->OUTSET = (1 << PIN_LED0);
-        NRF_P0->OUTCLR = (1 << PIN_LED1);
-        while (timer_now_us() < 150000)
-            ;
+        for (uint8_t led_mask = BIT0; led_mask <= BIT2; led_mask <<= 1u)
+        {
+            timer_reset();
+            gpio_led_ctrl(led_mask);
+            while (timer_now_us() < 100000)
+                ;
+        }
+        gpio_led_ctrl(0);
+    }
+    set_gpio_out(PIN_LED0, false);
+    set_gpio_out(PIN_LED1, false);
+    set_gpio_out(PIN_LED2, false);
+
+    /* switch all Header-GPIO on for 10 ms in a row (1 rep) */
+    for (uint8_t count = 0; count < N_HDR; count++)
+    {
+        set_gpio_out(hdr_all[count], true);
+        set_gpio_state(hdr_all[count], false);
+    }
+    for (uint8_t reps = 0; reps < 4; reps++)
+    {
+        for (uint8_t count = 0; count<N_HDR; count++)
+        {
+            timer_reset();
+            set_gpio_state(hdr_all[count], true);
+            while (timer_now_us()<10000);
+            set_gpio_state(hdr_all[count], false);
+        }
+    }
+    for (uint8_t count = 0; count < N_HDR; count++)
+    {
+        set_gpio_out(hdr_all[count], false);
     }
 
+    /* start reacting to gpio-signals or uart-messages */
     while (1)
     {
         gpio_consumer(&pt_gpio_consumer);

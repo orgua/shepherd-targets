@@ -16,7 +16,8 @@ SRC_FILES += \
   startup.c \
   main.c \
   peripherals.c \
-  printf.c
+  printf.c \
+  shepherd_node_id.c
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 

@@ -159,14 +159,14 @@ int main(void)
     for (uint8_t count = 0; count < N_LEDS; count++) { set_gpio_out(leds[count], false); }
 
     /* switch all Header-GPIO on for 10 ms in a row (1 rep) */
-    for (uint8_t count = 0; count < N_HDR; count++)
+    for (uint8_t count = 0; count < N_GPIOS; count++)
     {
         set_gpio_out(gpios_all[count], true);
         set_gpio_state(gpios_all[count], false);
     }
     for (uint8_t reps = 0; reps < 4; reps++)
     {
-        for (uint8_t count = 0; count < N_HDR; count++)
+        for (uint8_t count = 0; count < N_GPIOS; count++)
         {
             timer_reset();
             set_gpio_state(gpios_all[count], true);
@@ -175,7 +175,7 @@ int main(void)
             set_gpio_state(gpios_all[count], false);
         }
     }
-    for (uint8_t count = 0; count < N_HDR; count++) { set_gpio_out(gpios_all[count], false); }
+    for (uint8_t count = 0; count < N_GPIOS; count++) { set_gpio_out(gpios_all[count], false); }
 
     /* start reacting to gpio-signals or uart-messages */
     while (1)

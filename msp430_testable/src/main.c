@@ -21,6 +21,25 @@ static inline void delay_ms(const uint32_t time)
     delay_cycles(cycles);
 }
 
+/*
+    Pins P3:12 on Target-Header of V1.0 are:
+
+    SHP-HDR     Riotee      nRF52       msp430
+    GPIO0       GPIO.7      P0.11       P5.3
+    GPIO1       GPIO.8      P0.13       P5.2
+    GPIO2       GPIO.2      P0.04       P2.3
+    GPIO3       GPIO.3      P0.05       P2.4
+    GPIO4       GPIO.4      P1.09       P4.6
+    GPIO5       GPIO.5      P0.26       P3.6
+    GPIO6       GPIO.6      P1.03       PJ.6
+    GPIO7       GPIO.1      P0.08       P2.5
+    GPIO8       GPIO.0      P0.21       P2.6
+    BATOK       GPIO.9      P0.07       P5.5
+                LED.0       P0.16       P5.1
+                LED.1       P0.12       P5.0
+                LED.2P      P0.03       PJ.0
+ */
+
 static void gpio_init(void)
 {
     /* To save energy, all non-shared GPIOs are put to a defined state */
@@ -86,7 +105,7 @@ static void gpio_ext_out(const bool enable)
         P2DIR |= (BIT3 | BIT4 | BIT5 | BIT6);
         P3DIR |= (BIT6);
         P4DIR |= (BIT6);
-        P5DIR |= (BIT2 | BIT3);
+        P5DIR |= (BIT2 | BIT3 | BIT5);
         PJDIR |= (BIT6);
     }
     else
@@ -94,18 +113,19 @@ static void gpio_ext_out(const bool enable)
         P2DIR &= ~(BIT3 | BIT4 | BIT5 | BIT6);
         P3DIR &= ~(BIT6);
         P4DIR &= ~(BIT6);
-        P5DIR &= ~(BIT2 | BIT3);
+        P5DIR &= ~(BIT2 | BIT3 | BIT5);
         PJDIR &= ~(BIT6);
     }
 }
 
 static void gpio_ext_ctrl(const uint32_t mask)
 {
-    if (mask & BIT0) P2OUT |= BIT6;
-    else P2OUT &= ~BIT6;
+    /* order of pin-header */
+    if (mask & BIT0) P5OUT |= BIT3;
+    else P5OUT &= ~BIT3;
 
-    if (mask & BIT1) P2OUT |= BIT5;
-    else P2OUT &= ~BIT5;
+    if (mask & BIT1) P5OUT |= BIT2;
+    else P5OUT &= ~BIT2;
 
     if (mask & BIT2) P2OUT |= BIT3;
     else P2OUT &= ~BIT3;
@@ -122,14 +142,14 @@ static void gpio_ext_ctrl(const uint32_t mask)
     if (mask & BIT6) PJOUT |= BIT6;
     else PJOUT &= ~BIT6;
 
-    if (mask & BIT7) P5OUT |= BIT3;
-    else P5OUT &= ~BIT3;
+    if (mask & BIT7) P2OUT |= BIT5;
+    else P2OUT &= ~BIT5;
 
-    if (mask & BIT8) P5OUT |= BIT2;
-    else P5OUT &= ~BIT2;
+    if (mask & BIT8) P2OUT |= BIT6;
+    else P2OUT &= ~BIT6;
 
-    //if (mask & BIT9) P5OUT |= BIT5;
-    //else P5OUT &= ~BIT5;
+    if (mask & BIT9) P5OUT |= BIT5;
+    else P5OUT &= ~BIT5;
 }
 
 static void gpio_led_out(const bool enable)
@@ -185,7 +205,7 @@ int main(void)
     gpio_ext_out(true);
     for (uint8_t reps = 0; reps < 4; reps++)
     {
-        for (uint8_t ext_mask = BIT0; ext_mask <= BIT8; ext_mask <<= 1u)
+        for (uint8_t ext_mask = BIT0; ext_mask <= BIT9; ext_mask <<= 1u)
         {
             gpio_ext_ctrl(ext_mask);
             delay_ms(100);

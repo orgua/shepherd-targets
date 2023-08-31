@@ -4,9 +4,12 @@ The firmware toggles all 3 LEDs >8 times (reacts to SHEPHERD_NODE_ID) for 100 ms
 
 ## Functionality
 
-- LEDs
-    - blink / switch all 3 in a row, 16x repetitions at startup
-    - 100 ms on / 100 ms off
-- GPIO
-    - active: (GPIO 0 to 8)
-    - switch on for 100 ms, all in a row, 4 repetitions after LEDs
+- Startup-Routine 1: LEDs
+  - blink / switch each LED consecutive
+  - 100 ms on each
+  - (depending on node-id) >=8 repetitions
+  - LED0:2 (Target v2.1)
+- Startup-Routine 2: Header GPIO
+  - switch each on for 100ms consecutive
+  - 4 repetitions
+  - GPIO0:9 (Target v2.1)

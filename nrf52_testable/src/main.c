@@ -28,7 +28,7 @@ unsigned int hdr_all[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
 /*
     Pins P3:12 on Target-Header of V1.0 are:
 
-    TGT-HDR     Riotee      nRF52       msp430
+    SHP-HDR     Riotee      nRF52       msp430
     GPIO0       GPIO.7      P0.11       P5.3
     GPIO1       GPIO.8      P0.13       P5.2
     GPIO2       GPIO.2      P0.04       P2.3

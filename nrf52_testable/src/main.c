@@ -19,13 +19,13 @@ extern const uint16_t SHEPHERD_NODE_ID;
 #define PIN_LED2    3  // P0.03 -> burns energy-budget
 
 // with reference to names of target-port (gpio 0:6 = 7, 8, 2, 3, 4, 5, 6)
-unsigned int pins[]    = {11, 13, 4, 5, 41, 26, 35};
-unsigned int GPIOS_all[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
-unsigned int leds[]    = {PIN_LED0, PIN_LED1, PIN_LED2};
+unsigned int pins[]      = {11, 13, 4, 5, 41, 26, 35};
+unsigned int gpios_all[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
+unsigned int leds[]      = {PIN_LED0, PIN_LED1, PIN_LED2};
 
-#define N_PINS       sizeof(pins) / sizeof(unsigned int)
-#define N_GPIOS      sizeof(hdr_all) / sizeof(unsigned int)
-#define N_LEDS       sizeof(leds) / sizeof(unsigned int)
+#define N_PINS  sizeof(pins) / sizeof(unsigned int)
+#define N_GPIOS sizeof(gpios_all) / sizeof(unsigned int)
+#define N_LEDS  sizeof(leds) / sizeof(unsigned int)
 
 /*
     Pins P3:12 on Target-Header of V1.0 are:
@@ -48,7 +48,7 @@ unsigned int leds[]    = {PIN_LED0, PIN_LED1, PIN_LED2};
 
 
 /* Processes rising GPIO edges */
-void         gpio_consumer(struct pt *pt)
+void gpio_consumer(struct pt *pt)
 {
     pt_begin(pt);
 
@@ -156,29 +156,26 @@ int main(void)
             set_gpio_state(leds[count], true);
         }
     }
-    for (uint8_t count = 0; count < N_LEDS; count++)
-    {
-        set_gpio_out(leds[count], false);
-    }
+    for (uint8_t count = 0; count < N_LEDS; count++) { set_gpio_out(leds[count], false); }
 
     /* switch all Header-GPIO on for 10 ms in a row (1 rep) */
     for (uint8_t count = 0; count < N_HDR; count++)
     {
-        set_gpio_out(hdr_all[count], true);
-        set_gpio_state(hdr_all[count], false);
+        set_gpio_out(gpios_all[count], true);
+        set_gpio_state(gpios_all[count], false);
     }
     for (uint8_t reps = 0; reps < 4; reps++)
     {
         for (uint8_t count = 0; count < N_HDR; count++)
         {
             timer_reset();
-            set_gpio_state(hdr_all[count], true);
+            set_gpio_state(gpios_all[count], true);
             while (timer_now_us() < 100000)
                 ;
-            set_gpio_state(hdr_all[count], false);
+            set_gpio_state(gpios_all[count], false);
         }
     }
-    for (uint8_t count = 0; count < N_HDR; count++) { set_gpio_out(hdr_all[count], false); }
+    for (uint8_t count = 0; count < N_HDR; count++) { set_gpio_out(gpios_all[count], false); }
 
     /* start reacting to gpio-signals or uart-messages */
     while (1)

@@ -208,7 +208,7 @@ int main(void)
         for (uint8_t ext_mask = BIT0; ext_mask <= BIT9; ext_mask <<= 1u)
         {
             gpio_ext_ctrl(ext_mask);
-            delay_ms(100);
+            delay_ms(10);
         }
         gpio_ext_ctrl(0);
     }
@@ -222,7 +222,6 @@ int main(void)
 
     /* turn off the PMM to allow for LPM4.5 */
     PMMCTL0_L |= PMMREGOFF; // set Flag to enter LPM4.5 with LPM4 request
-
 
     /* Wait in LPM4 until CS is high */
     __bis_SR_register(GIE + LPM4_bits);

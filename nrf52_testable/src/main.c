@@ -106,6 +106,7 @@ static void set_gpio_out(const uint32_t p0_num, const bool enable)
     {
         nrf_gpio_cfg_output(p0_num);
         nrf_gpio_pin_set(p0_num);
+        NRF_P0->OUTCLR = (1u << p0_num);
     }
     else
     {
@@ -139,11 +140,7 @@ int main(void)
     /* TODO: test RTC & FRAM */
 
     /* Switch on LEDs for 100ms in a row (>=8 Reps) */
-    for (uint8_t count = 0; count < N_LEDS; count++)
-    {
-        set_gpio_out(leds[count], true);
-        set_gpio_state(leds[count], false);
-    }
+    for (uint8_t count = 0; count < N_LEDS; count++) { set_gpio_out(leds[count], true); }
     uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;
     for (uint32_t reps = 0; reps < rep_sum; reps++)
     {
@@ -153,17 +150,13 @@ int main(void)
             set_gpio_state(leds[count], true);
             while (timer_now_us() < 100000)
                 ;
-            set_gpio_state(leds[count], true);
+            set_gpio_state(leds[count], false);
         }
     }
     for (uint8_t count = 0; count < N_LEDS; count++) { set_gpio_out(leds[count], false); }
 
     /* switch all Header-GPIO on for 10 ms in a row (1 rep) */
-    for (uint8_t count = 0; count < N_GPIOS; count++)
-    {
-        set_gpio_out(gpios_all[count], true);
-        set_gpio_state(gpios_all[count], false);
-    }
+    for (uint8_t count = 0; count < N_GPIOS; count++) { set_gpio_out(gpios_all[count], true); }
     for (uint8_t reps = 0; reps < 4; reps++)
     {
         for (uint8_t count = 0; count < N_GPIOS; count++)

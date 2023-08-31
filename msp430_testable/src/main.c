@@ -208,7 +208,7 @@ int main(void)
         for (uint8_t ext_mask = BIT0; ext_mask <= BIT9; ext_mask <<= 1u)
         {
             gpio_ext_ctrl(ext_mask);
-            delay_ms(10);
+            delay_ms(100);
         }
         gpio_ext_ctrl(0);
     }

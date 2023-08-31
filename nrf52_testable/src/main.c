@@ -12,9 +12,6 @@
 // see shepherd_node_id.c for details
 extern const uint16_t SHEPHERD_NODE_ID;
 
-#define N_PINS      sizeof(pins) / sizeof(unsigned int)
-#define N_HDR      sizeof(hdr_all) / sizeof(unsigned int)
-
 #define PIN_UART_TX 8  // P0.08
 #define PIN_UART_RX 21 // P0.21
 #define PIN_LED0    16 // P0.16 -> powered externally
@@ -22,8 +19,13 @@ extern const uint16_t SHEPHERD_NODE_ID;
 #define PIN_LED2    3  // P0.03 -> burns energy-budget
 
 // with reference to names of target-port (gpio 0:6 = 7, 8, 2, 3, 4, 5, 6)
-unsigned int pins[] = {11, 13, 4, 5, 41, 26, 35};
-unsigned int hdr_all[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
+unsigned int pins[]    = {11, 13, 4, 5, 41, 26, 35};
+unsigned int GPIOS_all[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
+unsigned int leds[]    = {PIN_LED0, PIN_LED1, PIN_LED2};
+
+#define N_PINS       sizeof(pins) / sizeof(unsigned int)
+#define N_GPIOS      sizeof(hdr_all) / sizeof(unsigned int)
+#define N_LEDS       sizeof(leds) / sizeof(unsigned int)
 
 /*
     Pins P3:12 on Target-Header of V1.0 are:
@@ -120,19 +122,6 @@ static void set_gpio_state(const uint32_t p0_num, const bool state)
 }
 
 
-static void gpio_led_ctrl(const uint32_t mask)
-{
-    if (mask & BIT0) NRF_P0->OUTSET = (1u << PIN_LED0);
-    else NRF_P0->OUTCLR = (1u << PIN_LED0);
-
-    if (mask & BIT1) NRF_P0->OUTSET = (1 << PIN_LED1);
-    else NRF_P0->OUTCLR = (1u << PIN_LED1);
-
-    if (mask & BIT2) NRF_P0->OUTSET = (1 << PIN_LED2);
-    else NRF_P0->OUTCLR = (1u << PIN_LED2);
-}
-
-
 int main(void)
 {
 
@@ -150,25 +139,27 @@ int main(void)
     /* TODO: test RTC & FRAM */
 
     /* Switch on LEDs for 100ms in a row (>=8 Reps) */
-    set_gpio_out(PIN_LED0, true);
-    set_gpio_out(PIN_LED1, true);
-    set_gpio_out(PIN_LED2, true);
-
+    for (uint8_t count = 0; count < N_LEDS; count++)
+    {
+        set_gpio_out(leds[count], true);
+        set_gpio_state(leds[count], false);
+    }
     uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;
     for (uint32_t reps = 0; reps < rep_sum; reps++)
     {
-        for (uint8_t led_mask = BIT0; led_mask <= BIT2; led_mask <<= 1u)
+        for (uint8_t count = 0; count < N_LEDS; count++)
         {
             timer_reset();
-            gpio_led_ctrl(led_mask);
+            set_gpio_state(leds[count], true);
             while (timer_now_us() < 100000)
                 ;
+            set_gpio_state(leds[count], true);
         }
-        gpio_led_ctrl(0);
     }
-    set_gpio_out(PIN_LED0, false);
-    set_gpio_out(PIN_LED1, false);
-    set_gpio_out(PIN_LED2, false);
+    for (uint8_t count = 0; count < N_LEDS; count++)
+    {
+        set_gpio_out(leds[count], false);
+    }
 
     /* switch all Header-GPIO on for 10 ms in a row (1 rep) */
     for (uint8_t count = 0; count < N_HDR; count++)
@@ -178,18 +169,16 @@ int main(void)
     }
     for (uint8_t reps = 0; reps < 4; reps++)
     {
-        for (uint8_t count = 0; count<N_HDR; count++)
+        for (uint8_t count = 0; count < N_HDR; count++)
         {
             timer_reset();
             set_gpio_state(hdr_all[count], true);
-            while (timer_now_us()<10000);
+            while (timer_now_us() < 100000)
+                ;
             set_gpio_state(hdr_all[count], false);
         }
     }
-    for (uint8_t count = 0; count < N_HDR; count++)
-    {
-        set_gpio_out(hdr_all[count], false);
-    }
+    for (uint8_t count = 0; count < N_HDR; count++) { set_gpio_out(hdr_all[count], false); }
 
     /* start reacting to gpio-signals or uart-messages */
     while (1)

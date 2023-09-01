@@ -137,7 +137,12 @@ int main(void)
     struct pt pt_gpio_consumer = pt_init();
     struct pt pt_cmd_consumer  = pt_init();
 
-    /* TODO: test RTC & FRAM */
+    /* TODO: test
+     *  - RTC &
+     *  - FRAM,
+     *  - also connection between MCUs: I2C, RTC Int, C2C
+     *  - new tactic: one MCU toggles, the other supervises
+     *  */
 
     /* Switch on LEDs for 100ms in a row (>=8 Reps) */
     for (uint8_t count = 0; count < N_LEDS; count++) { set_gpio_out(leds[count], true); }

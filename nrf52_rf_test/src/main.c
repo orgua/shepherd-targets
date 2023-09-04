@@ -8,7 +8,7 @@
 #include "radio.h"
 #include "peripherals.h"
 
-#define GPIO_LED        3 // P0.03 -> burns energy
+#define GPIO_LED        16
 
 // see shepherd_node_id.c for details
 extern const uint16_t SHEPHERD_NODE_ID;
@@ -58,15 +58,17 @@ int main(void)
     while (1)
     {
         /* Switch on LED */
-        NRF_P0->OUTCLR = (1u << GPIO_LED);
+        NRF_P0->OUTSET = (1u << GPIO_LED);
+
 
         /* Place the counter value within packets payload */
         memcpy(&pkt.payload[17], &counter, 4);
         radio_send(&pkt, 38);
         counter++;
+        delay_ms(30);
 
         /* Switch off LED */
-        NRF_P0->OUTSET = (1u << GPIO_LED);
+        NRF_P0->OUTCLR = (1u << GPIO_LED);
 
         delay_ms(1000);
     }

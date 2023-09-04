@@ -33,10 +33,3 @@ unsigned int timer_now_us(void)
     NRF_TIMER0->TASKS_CAPTURE[0] = 1;
     return NRF_TIMER0->CC[0];
 }
-
-__RAMFUNC void             enter_low_power(void)
-{
-    __WFE();
-    __SEV();
-    __WFE();
-}

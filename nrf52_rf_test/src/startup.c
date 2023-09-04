@@ -1,37 +1,35 @@
 #include "nrf52840.h"
 #include "nrf52840_bitfields.h"
 
-#define STACK_TOP (void *) 0x20004000
+#define STACK_TOP (void *) 0x20002000
 
-extern unsigned long   _stext;
-extern unsigned long   _sbss;
-extern unsigned long   _sdata;
-extern unsigned long   _etext;
-extern unsigned long   _ebss;
-extern unsigned long   _edata;
-extern unsigned long   _isr_vector_start;
-extern unsigned long   _isr_vector_end;
-
-volatile unsigned long ram_vector_table[64] __attribute__((aligned(128)));
+extern unsigned long _stext;
+extern unsigned long _sbss;
+extern unsigned long _sdata;
+extern unsigned long _etext;
+extern unsigned long _ebss;
+extern unsigned long _edata;
+extern unsigned long _isr_vector_start;
+extern unsigned long _isr_vector_end;
 
 /* Exceptions */
-void                   NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   MemManage_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   BusFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   UsageFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   SVC_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   DebugMon_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
-void                   SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 NMI_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 HardFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 MemManage_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 BusFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 UsageFault_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 SVC_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 DebugMon_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 PendSV_Handler(void) __attribute__((weak, alias("Default_Handler")));
+void                 SysTick_Handler(void) __attribute__((weak, alias("Default_Handler")));
 
-void                   POWER_CLOCK_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
-void                   RADIO_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
-void UARTE0_UART0_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
-void SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler(void)
-        __attribute__((weak, alias("Default_Handler")));
+void                 POWER_CLOCK_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
+void                 RADIO_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
+void                 UARTE0_UART0_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
+void                 SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler(void)
+__attribute__((weak, alias("Default_Handler")));
 void SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler(void)
-        __attribute__((weak, alias("Default_Handler")));
+__attribute__((weak, alias("Default_Handler")));
 void NFCT_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void GPIOTE_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void SAADC_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
@@ -146,85 +144,19 @@ __attribute__((section(".isr_vector"))) void (*vectors[])(void) = {
 
 void Default_Handler(void)
 {
-
     while (1) { __NOP(); }
-}
-
-void lf_rtc_start(void)
-{
-
-    /* Start LFCLK in LFRC low power mode */
-    NRF_CLOCK->LFRCMODE |= 1;
-    NRF_CLOCK->TASKS_LFCLKSTART = 1;
-    while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0)
-        ;
-    /* Use RTC to wait for 500ms until everything has settled */
-    NRF_RTC0->CC[0]       = 32768 / 2;
-    NRF_RTC0->EVTENSET    = RTC_EVTENSET_COMPARE0_Msk;
-    NRF_RTC0->INTENSET    = RTC_INTENSET_COMPARE0_Msk;
-    NRF_RTC0->TASKS_CLEAR = 1;
-
-    /* Allow pending interrupts to wakeup CPU */
-    SCB->SCR |= SCB_SCR_SEVONPEND_Msk;
-    NRF_RTC0->TASKS_START       = 1;
-
-    NRF_RTC0->EVENTS_COMPARE[0] = 0;
-    while (NRF_RTC0->EVENTS_COMPARE[0] == 0)
-    {
-        __WFE();
-        __SEV();
-        __WFE();
-    };
-    NRF_RTC0->EVENTS_COMPARE[0] = 0;
-    NRF_RTC0->EVTENCLR          = RTC_EVTENCLR_COMPARE0_Msk;
-    NRF_RTC0->INTENCLR          = RTC_INTENCLR_COMPARE0_Msk;
-    NVIC_ClearPendingIRQ(RTC0_IRQn);
-
-    /* Disable pending interrupts waking up CPU */
-    SCB->SCR &= ~SCB_SCR_SEVONPEND_Msk;
-}
-
-int enable_fpu(void)
-{
-    SCB->CPACR |= (3UL << 20) | (3UL << 22);
-    __DSB();
-    __ISB();
-    return 0;
 }
 
 void c_startup(void)
 {
-
     volatile unsigned long *src, *dst;
 
-    lf_rtc_start();
-    enable_fpu();
-
-    /* Disable retention on all unused RAM sections (2 per bank) */
-    NRF_POWER->RAM[2].POWERCLR = 0x3;
-    NRF_POWER->RAM[3].POWERCLR = 0x3;
-    NRF_POWER->RAM[4].POWERCLR = 0x3;
-    NRF_POWER->RAM[5].POWERCLR = 0x3;
-    NRF_POWER->RAM[6].POWERCLR = 0x3;
-    NRF_POWER->RAM[7].POWERCLR = 0x3;
-    /* Last bank has 6 sections */
-    NRF_POWER->RAM[8].POWERCLR = 0x3F;
-
-    src                        = &_etext;
-    dst                        = &_sdata;
+    src = &_etext;
+    dst = &_sdata;
     while (dst < &_edata) *(dst++) = *(src++);
 
     src = &_sbss;
     while (src < &_ebss) *(src++) = 0;
-
-    /* Copy Vector Table from Flash to RAM */
-    src = &_isr_vector_start;
-    dst = ram_vector_table;
-    while (src < &_isr_vector_end) *(dst++) = *(src++);
-
-    /* Relocate Vector Table to RAM */
-    SCB->VTOR = (uint32_t) ram_vector_table;
-    __DSB();
 
     main();
 }

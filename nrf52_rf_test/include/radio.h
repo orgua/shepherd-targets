@@ -38,7 +38,7 @@ typedef struct
 } __attribute__((__packed__)) adv_pck_t;
 
 int         radio_prepare_adv(adv_pck_t *pkt, ble_ll_addr_t *adv_addr, unsigned int len);
-void *radio_send(adv_pck_t *pkt, uint8_t ch);
+void radio_send(adv_pck_t *pkt, uint8_t ch);
 int         radio_init();
 
 #endif /* __RADIO_H__ */

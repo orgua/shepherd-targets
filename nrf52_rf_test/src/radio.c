@@ -37,7 +37,7 @@ int radio_prepare_adv(adv_pck_t *pkt, ble_ll_addr_t *adv_addr, unsigned int len)
     return 0;
 }
 
-__RAMFUNC void *radio_send(adv_pck_t *pkt, uint8_t ch)
+void radio_send(adv_pck_t *pkt, uint8_t ch)
 {
     NRF_RADIO->FREQUENCY        = ch2freq(ch);
     /* Whitening initialization see Bluetooth Core Spec 5.2 Section 3.2 */
@@ -47,7 +47,7 @@ __RAMFUNC void *radio_send(adv_pck_t *pkt, uint8_t ch)
     NRF_CLOCK->TASKS_HFCLKSTART = 1;
 }
 
-__RAMFUNC void RADIO_IRQHandler(void)
+void RADIO_IRQHandler(void)
 {
     if (NRF_RADIO->EVENTS_DISABLED == 1)
     {

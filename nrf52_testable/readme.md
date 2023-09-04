@@ -1,14 +1,14 @@
 # nRF52 Testable
 
-The app monitors shared GPIO pins and reports via uart upon detection. 
-This needs a second MCU that toggles these gpio. 
+The app monitors shared GPIO pins and reports via uart upon detection.
+This needs a second MCU that toggles these gpio.
 Alternatively this FW can change the mode to toggling-behavior.
 
 Other modes:
 
-Print the index of the pin where the edge was detected over UART. 
-Simultaneously, it waits for incoming messages on the UART. 
-When receiving an ASCII encoded number between 0 and the number of configured pins, 
+Print the index of the pin where the edge was detected over UART.
+Simultaneously, it waits for incoming messages on the UART.
+When receiving an ASCII encoded number between 0 and the number of configured pins,
 the app sets the corresponding pin high for ~100us.
 
 Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to reflect your hardware.

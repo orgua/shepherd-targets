@@ -49,26 +49,24 @@ extern const uint16_t SHEPHERD_NODE_ID;
 #define PIN_LED2    3  // P0.03 -> burns energy-budget
 
 // with reference to names of shepherds target-port
-unsigned int pins[]      = {11, 13, 4, 5, 41, 26, 35, 21, 7}; // without uart-TX
+unsigned int pins[]  = {11, 13, 4, 5, 41, 26, 35, 21, 7}; // without uart-TX
 unsigned int gpios[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
 
-unsigned int leds[]      = {PIN_LED0, PIN_LED1, PIN_LED2};
-unsigned int i2c[] = {40, 6, 30};
-unsigned int c2c[] = {18, 17, 14, 22, 15};
+unsigned int leds[]  = {PIN_LED0, PIN_LED1, PIN_LED2};
+unsigned int i2c[]   = {40, 6, 30};
+unsigned int c2c[]   = {18, 17, 14, 22, 15};
 
-unsigned int all[] = {
-        11, 13, 4, 5, 41, 26, 35, 21, 7,
-        PIN_LED0, PIN_LED1, PIN_LED2,
-        40, 6, 30,
-        18, 17, 14, 22, 15,
-        };
+unsigned int all[]   = {
+        11,       13,       4,  5, 41, 26, 35, 21, 7,  PIN_LED0,
+        PIN_LED1, PIN_LED2, 40, 6, 30, 18, 17, 14, 22, 15,
+};
 
 #define N_PINS  sizeof(pins) / sizeof(unsigned int)
 #define N_GPIOS sizeof(gpios) / sizeof(unsigned int)
 #define N_LEDS  sizeof(leds) / sizeof(unsigned int)
-#define N_I2C  sizeof(i2c) / sizeof(unsigned int)
-#define N_C2C  sizeof(c2c) / sizeof(unsigned int)
-#define N_ALL  sizeof(all) / sizeof(unsigned int)
+#define N_I2C   sizeof(i2c) / sizeof(unsigned int)
+#define N_C2C   sizeof(c2c) / sizeof(unsigned int)
+#define N_ALL   sizeof(all) / sizeof(unsigned int)
 
 /* Processes rising GPIO edges */
 void gpio_consumer(struct pt *pt)
@@ -194,31 +192,25 @@ int main(void)
      *  - Mode 1: this MCU toggles, the other supervises & reports
      *  - Mode X: start reacting to gpio-signals or uart-messages
      */
-    uint8_t mode = 0;
+    uint8_t   mode             = 0;
 
     if (mode == 0)
     {
         /* this MCU supervises & reports */
-        while (1)
-        {
-            gpio_consumer(&pt_gpio_consumer);
-        };
+        while (1) { gpio_consumer(&pt_gpio_consumer); };
     }
     else if (mode == 1)
     {
         /* Switch on used GPIO for 100ms in a row */
         toggle_gpio_one_high(leds, N_LEDS);
 
-        toggle_gpio_one_high(pins, N_LEDS);
-        toggle_gpio_one_high(i2c, N_LEDS);
-        toggle_gpio_one_high(c2c, N_LEDS);
+        toggle_gpio_one_high(pins, N_PINS);
+        toggle_gpio_one_high(i2c, N_I2C);
+        toggle_gpio_one_high(c2c, N_C2C);
 
         /* Switch on LEDs for 100ms in a row (>=8 Reps, depending on node-id) */
         uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;
-        for (uint32_t reps = 0; reps < rep_sum; reps++)
-        {
-            toggle_gpio_one_high(leds, N_LEDS);
-        }
+        for (uint32_t reps = 0; reps < rep_sum; reps++) { toggle_gpio_one_high(leds, N_LEDS); }
     }
     else
     {

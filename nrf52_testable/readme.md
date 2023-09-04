@@ -9,10 +9,10 @@ Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to
 Mode 0 (default)
 
 - monitor all shared GPIO and report activity via uart
-- NOTE 1: msp-testable is master (gpio toggle, here more 1)
-- NOTE 2: requires special Header-Inter-connector that only routes pwr, uart tx, programming (pin 1, 2, 10, 13 - 18) 
+- NOTE 1: msp-testable is actor (gpio toggle, here mode 1)
+- NOTE 2: requires special Header-Inter-connector that only routes pwr, uart tx, programming (pin 1, 2, 10, 13 - 18)
 
-Mode 1 
+Mode 1
 
 - Startup-Routine 1:
   - toggles LEDs, Pins on the shepherd target-port (without UART-TX), I2C pins, Chip2chip (C2C) pins

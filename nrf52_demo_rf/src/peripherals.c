@@ -39,7 +39,7 @@ int uart_init(uint32_t pseltxd)
     NRF_UART0->PSEL.TXD = pseltxd;
     /* Disconnect RX pin */
     NRF_UART0->PSEL.RXD |= (1UL << 31);
-    nrf_uart_baudrate_set(NRF_UART0, NRF_UART_BAUDRATE_1000000);
+    nrf_uart_baudrate_set(NRF_UART0, NRF_UART_BAUDRATE_115200);
     return 0;
 }
 

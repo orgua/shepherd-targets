@@ -15,7 +15,7 @@ void                _putchar(char character);
 void                enter_low_power(void);
 int                 uart_init(uint32_t pseltxd, uint32_t pselrxd);
 
-int                 gpiote_init(unsigned int pins[], unsigned int n_pins);
+int                 gpiote_init(const uint32_t pins[], uint8_t n_pins);
 
 int                 timer_init(void);
 int                 timer_reset(void);

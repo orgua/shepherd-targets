@@ -42,7 +42,7 @@ BOM, gerber-files and schematics are available in the [PCB-Directory](https://gi
 ### nRF52-Firmwares
 
 - [nrf52_demo_rf](https://github.com/orgua/shepherd-targets/tree/main/nrf52_demo_rf): demo implementation for a simple node that sends BLE packets when energy budget allows it
-- [nrf52_testable](https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable): blinks LEDs on boot and listens/answers to UART (verification after assembly)
+- [nrf52_testable](https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable): watches all gpio and reports with UART messages (verification after assembly)
 - [nrf52_rf_survey](https://github.com/orgua/shepherd-targets/tree/main/nrf52_rf_survey): Link Matrix Generator - TX-Unit - sends packet with every possible P_TX, loops until stopped
 - [nrf52_deep_sleep](https://github.com/orgua/shepherd-targets/tree/main/nrf52_deep_sleep): practically turned off MCU with the lowest possible consumption
 
@@ -52,7 +52,7 @@ BOM, gerber-files and schematics are available in the [PCB-Directory](https://gi
 
 - [msp430_deep_sleep](https://github.com/orgua/shepherd-targets/tree/main/msp430_deep_sleep): practically turned off MCU with the lowest possible consumption
 - [msp430_spi_fram](https://github.com/orgua/shepherd-targets/tree/main/msp430_spi_fram): [riotee](https://github.com/NessieCircuits/Riotee_MSP430Fram) implementation to use MSP as a flash storage
-- [msp430_testable](https://github.com/orgua/shepherd-targets/tree/main/msp430_testable): blinks LEDs on boot and listens/answers to UART (verification after assembly)
+- [msp430_testable](https://github.com/orgua/shepherd-targets/tree/main/msp430_testable): switches on all shared gpio one by one (verification after assembly)
 
 - TODO: cleanup-fw - FRAM & program-storage should be wiped between runs
 

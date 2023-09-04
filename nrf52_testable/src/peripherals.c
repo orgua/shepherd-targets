@@ -47,7 +47,7 @@ int uart_init(uint32_t pseltxd, uint32_t pselrxd)
     NRF_UART0->ENABLE   = 4UL;
     NRF_UART0->PSEL.TXD = pseltxd;
     NRF_UART0->PSEL.RXD = pselrxd;
-    nrf_uart_baudrate_set(NRF_UART0, NRF_UART_BAUDRATE_1000000);
+    nrf_uart_baudrate_set(NRF_UART0, NRF_UART_BAUDRATE_115200);
 
     NRF_UART0->INTENSET = UARTE_INTENSET_RXDRDY_Msk;
     NVIC_EnableIRQ(UARTE0_UART0_IRQn);
@@ -74,10 +74,10 @@ void _putchar(char character)
     NRF_UART0->TASKS_STOPTX  = 1UL;
 }
 
-int gpiote_init(unsigned int pins[], unsigned int n_pins)
+int gpiote_init(const uint32_t pins[], uint8_t n_pins)
 {
     n_gpio_pins = n_pins;
-    for (unsigned int i = 0; i < n_pins; i++)
+    for (uint8_t i = 0; i < n_pins; i++)
     {
         nrf_gpio_cfg_input(pins[i], NRF_GPIO_PIN_NOPULL);
         nrf_gpiote_event_configure(i, pins[i], NRF_GPIOTE_POLARITY_LOTOHI);

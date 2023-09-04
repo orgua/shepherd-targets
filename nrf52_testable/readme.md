@@ -6,21 +6,30 @@ Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to
 
 ## Functionality
 
-- Startup-Routine 1: LEDs
-    - blink / switch on each LED
-    - 100 ms on
-    - (depending on node-id) >=8 repetitions
-    - LED0:2 (Target v2.1)
-- Startup-Routine 2: Header GPIO
-  - switch each pin on for 100ms consecutive
-  - 4 repetitions
-  - GPIO0:9 (Target v2.1)
+Mode 0 (default)
+
+- monitor all shared GPIO and report activity via uart
+- NOTE 1: msp-testable is master (gpio toggle, here more 1)
+- NOTE 2: requires special Header-Inter-connector that only routes pwr, uart tx, programming (pin 1, 2, 10, 13 - 18) 
+
+Mode 1 
+
+- Startup-Routine 1:
+  - toggles LEDs, Pins on the shepherd target-port (without UART-TX), I2C pins, Chip2chip (C2C) pins
+  - blink / switch on each pin individually for 100 ms
+- Startup-Routine 2: LEDs
+  - switch each LED on for 100ms consecutive
+  - (depending on node-id) >=8 repetitions
+  - LED0:2 (Target v2.1)
+
+Mode >=2
+
 - UART
     - P0_06 TX, _08 RX (Target v2.1, SDK)
     - listens and answers
     - should report when GPIOs are triggered
 - GPIO
-    - active: P0_20 - P0_25 (GPIO 0 to 5)
+    - active: GPIO of shepherd target header (GPIO 0 to 6, 8, BATOK -> map to 0:8)
     - switch on for 100 us after receiving on UART ("(%u)\r\n")
 
 ## Source

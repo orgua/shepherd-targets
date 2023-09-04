@@ -66,7 +66,6 @@ void UARTE0_UART0_IRQHandler(void)
 
 void _putchar(char character)
 {
-
     NRF_UART0->TXD           = character;
     NRF_UART0->EVENTS_TXDRDY = 0;
     NRF_UART0->TASKS_STARTTX = 1UL;
@@ -77,7 +76,6 @@ void _putchar(char character)
 
 int gpiote_init(unsigned int pins[], unsigned int n_pins)
 {
-
     n_gpio_pins = n_pins;
     for (unsigned int i = 0; i < n_pins; i++)
     {

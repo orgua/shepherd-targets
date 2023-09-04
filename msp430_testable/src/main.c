@@ -6,6 +6,63 @@
 // see shepherd_node_id.c for details
 extern const uint16_t SHEPHERD_NODE_ID;
 
+/*
+    Pins P3:12 on Target-Header of V1.0 are:
+
+    SHP-HDR     Riotee      nRF52       msp430
+    GPIO0       GPIO.7      P0.11       P5.3
+    GPIO1       GPIO.8      P0.13       P5.2
+    GPIO2       GPIO.2      P0.04       P2.3
+    GPIO3       GPIO.3      P0.05       P2.4
+    GPIO4       GPIO.4      P1.09       P4.6
+    GPIO5       GPIO.5      P0.26       P3.6
+    GPIO6       GPIO.6      P1.03       PJ.6
+    GPIO7       GPIO.1      P0.08       P2.5    UART TX (this MCU as Point of view)
+    GPIO8       GPIO.0      P0.21       P2.6    UART RX (this MCU as Point of view)
+    BATOK       GPIO.9      P0.07       P5.5
+
+                LED.0       P0.16       P5.1
+                LED.1       P0.12       P5.0
+                LED.2P      P0.03       PJ.0
+
+                I2C.SCL     P1.08       P6.5
+                I2C.SDA     P0.06       P6.4
+                RTC.INT     P0.30       P7.3
+
+                C2C.CLK     P0.18       P1.5
+                C2C.CoPi    P0.17       P2.0
+                C2C.CiPo    P0.14       P2.1
+                C2C.PSel    P0.22       P1.4
+                C2C.GPIO    P0.15       PJ.2
+
+    MSP430 Pin-Name to int-Conversion:
+    - Port J = 0, Port 1-8 stay same
+    - Num = Port * 8 + Port.Pin
+    - example: P5.5 becomes 5*8+5 = 45
+ */
+
+#define PIN_UART_TX 21 // P2.5
+#define PIN_UART_RX 22 // P2.6
+#define PIN_LED0    41 // P5.1 -> powered externally
+#define PIN_LED1    40 // P5.0 -> powered externally
+#define PIN_LED2    0  // PJ.0 -> burns energy-budget
+
+// with reference to names of shepherd target-port
+unsigned int pins[]      = {43, 42, 19, 20, 38, 30, 6, 22,45}; // without uart-tx
+unsigned int gpios[] = {43, 42, 19, 20, 38, 30, 6, 21,22, 45};
+
+unsigned int leds[]      = {PIN_LED0, PIN_LED1, PIN_LED2};
+unsigned int i2c[] = {53, 52, 59};
+unsigned int c2c[] = {13, 16, 17, 12, 2};
+
+#define N_PINS  sizeof(pins) / sizeof(unsigned int)
+#define N_GPIOS sizeof(gpios) / sizeof(unsigned int)
+#define N_LEDS  sizeof(leds) / sizeof(unsigned int)
+#define N_I2C  sizeof(i2c) / sizeof(unsigned int)
+#define N_C2C  sizeof(c2c) / sizeof(unsigned int)
+
+/* PLATFORM SPECIFIC CODE */
+
 static inline void    delay_cycles(const uint32_t cycles)
 {
     for (uint32_t i = 0; i < cycles; i++) __no_operation();
@@ -21,162 +78,143 @@ static inline void delay_ms(const uint32_t time)
     delay_cycles(cycles);
 }
 
-/*
-    Pins P3:12 on Target-Header of V1.0 are:
+static void set_gpio_state(const uint32_t pin_num, const bool state)
+{
+    uint8_t bank = (pin_num >> 3u);
+    uint8_t pin = (pin_num & 0b111);
+    if (bank>8) return;
 
-    SHP-HDR     Riotee      nRF52       msp430
-    GPIO0       GPIO.7      P0.11       P5.3
-    GPIO1       GPIO.8      P0.13       P5.2
-    GPIO2       GPIO.2      P0.04       P2.3
-    GPIO3       GPIO.3      P0.05       P2.4
-    GPIO4       GPIO.4      P1.09       P4.6
-    GPIO5       GPIO.5      P0.26       P3.6
-    GPIO6       GPIO.6      P1.03       PJ.6
-    GPIO7       GPIO.1      P0.08       P2.5
-    GPIO8       GPIO.0      P0.21       P2.6
-    BATOK       GPIO.9      P0.07       P5.5
-                LED.0       P0.16       P5.1
-                LED.1       P0.12       P5.0
-                LED.2P      P0.03       PJ.0
- */
+    if (state)
+    {
+        if (bank==0) PJOUT |= 1u << pin;
+        if (bank==1) P1OUT |= 1u << pin;
+        if (bank==2) P2OUT |= 1u << pin;
+        if (bank==3) P3OUT |= 1u << pin;
+        if (bank==4) P4OUT |= 1u << pin;
+        if (bank==5) P5OUT |= 1u << pin;
+        if (bank==6) P6OUT |= 1u << pin;
+        if (bank==7) P7OUT |= 1u << pin;
+        if (bank==8) P8OUT |= 1u << pin;
+    }
+    else
+    {
+        if (bank==0) PJOUT &= ~(1u << pin);
+        if (bank==1) P1OUT &= ~(1u << pin);
+        if (bank==2) P2OUT &= ~(1u << pin);
+        if (bank==3) P3OUT &= ~(1u << pin);
+        if (bank==4) P4OUT &= ~(1u << pin);
+        if (bank==5) P5OUT &= ~(1u << pin);
+        if (bank==6) P6OUT &= ~(1u << pin);
+        if (bank==7) P7OUT &= ~(1u << pin);
+        if (bank==8) P8OUT &= ~(1u << pin);
+    }
+}
+
+static void set_gpio_dir(const uint32_t pin_num, const bool input)
+{
+    uint8_t bank = (pin_num >> 3u);
+    uint8_t pin = (pin_num & 0b111);
+    if (bank>8) return;
+
+    if (input)
+    {
+        if (bank==0) PJDIR &= ~(1u << pin);
+        if (bank==1) P1DIR &= ~(1u << pin);
+        if (bank==2) P2DIR &= ~(1u << pin);
+        if (bank==3) P3DIR &= ~(1u << pin);
+        if (bank==4) P4DIR &= ~(1u << pin);
+        if (bank==5) P5DIR &= ~(1u << pin);
+        if (bank==6) P6DIR &= ~(1u << pin);
+        if (bank==7) P7DIR &= ~(1u << pin);
+        if (bank==8) P8DIR &= ~(1u << pin);
+    }
+    else
+    {
+        if (bank==0) PJDIR |= 1u << pin;
+        if (bank==1) P1DIR |= 1u << pin;
+        if (bank==2) P2DIR |= 1u << pin;
+        if (bank==3) P3DIR |= 1u << pin;
+        if (bank==4) P4DIR |= 1u << pin;
+        if (bank==5) P5DIR |= 1u << pin;
+        if (bank==6) P6DIR |= 1u << pin;
+        if (bank==7) P7DIR |= 1u << pin;
+        if (bank==8) P8DIR |= 1u << pin;
+    }
+}
+
+static void set_gpio_out(const uint32_t pin_num, const bool enable)
+{
+    /* similar to nrf52-code */
+    set_gpio_state(pin_num, 0);
+    set_gpio_dir(pin_num, !enable);
+}
 
 static void gpio_init(void)
 {
-    /* To save energy, all non-shared GPIOs are put to a defined state */
+    PJOUT = 0u;
+    PJDIR = 0xFF;
+    PJSEL0 = 0u;
+    PJSEL1 = 0u;
 
-    /* Exclude [THRCTRL.H0], C2C.CS, C2C. CLK */
-    P1OUT  = 0x0;
-    P1DIR  = ~(BIT4 | BIT5);
+    P1OUT = 0u;
+    P1DIR = 0xFF;
     P1SEL0 = 0u;
     P1SEL1 = 0u;
 
-    /* Exclude C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
-    P2OUT  = 0;
-    P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
+    P2OUT = 0u;
+    P2DIR = 0xFF;
     P2SEL0 = 0u;
     P2SEL1 = 0u;
 
-    /* Exclude [THRCTRL.H1], D5 */
-    P3OUT  = 0u;
-    P3DIR  = ~(BIT6);
+    P3OUT = 0u;
+    P3DIR = 0xFF;
     P3SEL0 = 0u;
     P3SEL1 = 0u;
 
-    /* Exclude D4 */
-    P4OUT  = 0;
-    P4DIR  = ~(BIT6);
-    P4SEL0 = 0x0;
-    P4SEL1 = 0x0;
+    P4OUT = 0u;
+    P4DIR = 0xFF;
+    P4SEL0 = 0u;
+    P4SEL1 = 0u;
 
-    /* Exclude D10, D9, D8, D7, [PWRGD_L], PWRGD_H  */
-    P5OUT  = 0;
-    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT5);
-    P5SEL0 = 0x0;
-    P5SEL1 = 0x0;
+    P5OUT = 0u;
+    P5DIR = 0xFF;
+    P5SEL0 = 0u;
+    P5SEL1 = 0u;
 
-    /* Exclude [THRCTRL.L0], SYS.SDA, SYS.SCL */
-    P6OUT  = 0;
-    P6DIR  = ~(BIT4 | BIT5);
-    P6SEL0 = 0x0;
-    P6SEL1 = 0x0;
+    P6OUT = 0u;
+    P6DIR = 0xFF;
+    P6SEL0 = 0u;
+    P6SEL1 = 0u;
 
-    /* Exclude [THRCTRL.L1], RTC_INT, [VCAP_SENSE] */
-    P7OUT  = 0;
-    P7DIR  = ~(BIT3);
+    P7OUT = 0u;
+    P7DIR = 0xFF;
     P7SEL0 = 0u;
     P7SEL1 = 0u;
 
-    P8OUT  = 0;
-    P8DIR  = 0xFF;
-    P8SEL0 = 0x0;
-    P8SEL1 = 0x0;
-
-    PJOUT  = 0;
-    /* Exclude LED_CTRL, [MAX_INT],  D6, Take control of C2C.GPIO */
-    PJDIR  = ~(BIT0 | BIT6);
-    PJSEL0 = 0x0;
-    PJSEL1 = 0x0;
+    P8OUT = 0u;
+    P8DIR = 0xFF;
+    P8SEL0 = 0u;
+    P8SEL1 = 0u;
 }
 
-static void gpio_ext_out(const bool enable)
+/* GENERALIZED GPIO FUNCTIONS */
+
+static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
 {
-    if (enable)
+    /* set array to output */
+    for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], true); }
+    /* switch each pin on in array */
+    for (uint8_t count = 0; count < array_size; count++)
     {
-        P2DIR |= (BIT3 | BIT4 | BIT5 | BIT6);
-        P3DIR |= (BIT6);
-        P4DIR |= (BIT6);
-        P5DIR |= (BIT2 | BIT3 | BIT5);
-        PJDIR |= (BIT6);
+        set_gpio_state(array[count], true);
+        delay_ms(100);
+        set_gpio_state(array[count], false);
     }
-    else
-    {
-        P2DIR &= ~(BIT3 | BIT4 | BIT5 | BIT6);
-        P3DIR &= ~(BIT6);
-        P4DIR &= ~(BIT6);
-        P5DIR &= ~(BIT2 | BIT3 | BIT5);
-        PJDIR &= ~(BIT6);
-    }
+    /* set pins to INPUT */
+    for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], false); }
 }
 
-static void gpio_ext_ctrl(const uint32_t mask)
-{
-    /* order of pin-header */
-    if (mask & BIT0) P5OUT |= BIT3;
-    else P5OUT &= ~BIT3;
-
-    if (mask & BIT1) P5OUT |= BIT2;
-    else P5OUT &= ~BIT2;
-
-    if (mask & BIT2) P2OUT |= BIT3;
-    else P2OUT &= ~BIT3;
-
-    if (mask & BIT3) P2OUT |= BIT4;
-    else P2OUT &= ~BIT4;
-
-    if (mask & BIT4) P4OUT |= BIT6;
-    else P4OUT &= ~BIT6;
-
-    if (mask & BIT5) P3OUT |= BIT6;
-    else P3OUT &= ~BIT6;
-
-    if (mask & BIT6) PJOUT |= BIT6;
-    else PJOUT &= ~BIT6;
-
-    if (mask & BIT7) P2OUT |= BIT5;
-    else P2OUT &= ~BIT5;
-
-    if (mask & BIT8) P2OUT |= BIT6;
-    else P2OUT &= ~BIT6;
-
-    if (mask & BIT9) P5OUT |= BIT5;
-    else P5OUT &= ~BIT5;
-}
-
-static void gpio_led_out(const bool enable)
-{
-    if (enable)
-    {
-        P5DIR |= (BIT0 | BIT1);
-        PJDIR |= (BIT0);
-    }
-    else
-    {
-        P5DIR &= ~(BIT0 | BIT1);
-        PJDIR &= ~(BIT0);
-    }
-}
-
-static void gpio_led_ctrl(const uint32_t mask)
-{
-    if (mask & BIT0) P5OUT |= BIT1;
-    else P5OUT &= ~BIT1;
-
-    if (mask & BIT1) P5OUT |= BIT0;
-    else P5OUT &= ~BIT0;
-
-    if (mask & BIT2) PJOUT |= BIT0;
-    else PJOUT &= ~BIT0;
-}
+/* PRIMARY ROUTINE */
 
 
 int main(void)
@@ -187,34 +225,25 @@ int main(void)
     /* Apply the GPIO configuration */
     PM5CTL0 &= ~LOCKLPM5;
 
+    /* TEST-CODE, mode: this MCU toggles, the other supervises & reports */
     gpio_init();
+    delay_ms(1000);
 
-    gpio_led_out(true);
+    /* Switch on GPIO for 100ms in a row */
+    toggle_gpio_one_high(leds, N_LEDS);
+
+    toggle_gpio_one_high(pins, N_LEDS);
+    toggle_gpio_one_high(i2c, N_LEDS);
+    toggle_gpio_one_high(c2c, N_LEDS);
+
+    /* Switch on LEDs for 100ms in a row (>=8 Reps, depending on node-id) */
     uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;
     for (uint32_t reps = 0; reps < rep_sum; reps++)
     {
-        for (uint8_t led_mask = BIT0; led_mask <= BIT2; led_mask <<= 1u)
-        {
-            gpio_led_ctrl(led_mask);
-            delay_ms(100);
-        }
-        gpio_led_ctrl(0);
+        toggle_gpio_one_high(leds, N_LEDS);
     }
-    gpio_led_out(false);
 
-    gpio_ext_out(true);
-    for (uint8_t reps = 0; reps < 4; reps++)
-    {
-        for (uint8_t ext_mask = BIT0; ext_mask <= BIT9; ext_mask <<= 1u)
-        {
-            gpio_ext_ctrl(ext_mask);
-            delay_ms(100);
-        }
-        gpio_ext_ctrl(0);
-    }
-    gpio_ext_out(false);
-
-    // TODO: enable and use UART
+    /* END OF TEST-CODE */
 
     /* Disable SVS */
     PMMCTL0_H = PMMPW_H; // PMM Password

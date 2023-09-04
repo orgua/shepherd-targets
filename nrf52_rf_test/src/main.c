@@ -5,10 +5,10 @@
 #include "nrf_delay.h"
 #include "nrf_gpio.h"
 
-#include "radio.h"
 #include "peripherals.h"
+#include "radio.h"
 
-#define GPIO_LED        16
+#define GPIO_LED 16
 
 // see shepherd_node_id.c for details
 extern const uint16_t SHEPHERD_NODE_ID;
@@ -30,7 +30,7 @@ uint8_t               some_data[] = {0x02, // length of this data
                                      0x00, 0x00, /* Custom 4B data */
                                      0x00, 0x00};
 
-static inline void delay_ms(const uint32_t duration)
+static inline void    delay_ms(const uint32_t duration)
 {
     timer_reset();
     uint32_t duration_us = duration * 1000;
@@ -40,7 +40,7 @@ static inline void delay_ms(const uint32_t duration)
 
 int main(void)
 {
-    static unsigned int         counter;
+    static unsigned int counter;
 
     /* put shepherd-node-id into packets user-data*/
     some_data[19] = (SHEPHERD_NODE_ID >> 8) & 0xFF;

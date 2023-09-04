@@ -49,10 +49,7 @@ void radio_send(adv_pck_t *pkt, uint8_t ch)
 
 void RADIO_IRQHandler(void)
 {
-    if (NRF_RADIO->EVENTS_DISABLED == 1)
-    {
-        NRF_RADIO->EVENTS_DISABLED = 0;
-    }
+    if (NRF_RADIO->EVENTS_DISABLED == 1) { NRF_RADIO->EVENTS_DISABLED = 0; }
 }
 int radio_init()
 {

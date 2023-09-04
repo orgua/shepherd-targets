@@ -9,7 +9,7 @@
 
 #include "peripherals.h"
 
-int                 timer_init(void)
+int timer_init(void)
 {
     NRF_TIMER0->MODE        = TIMER_MODE_MODE_Timer;
     /* prescaler 2^4 -> 1MHz */

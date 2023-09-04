@@ -27,9 +27,9 @@ void                 POWER_CLOCK_IRQHandler(void) __attribute__((weak, alias("De
 void                 RADIO_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void                 UARTE0_UART0_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void                 SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler(void)
-__attribute__((weak, alias("Default_Handler")));
+        __attribute__((weak, alias("Default_Handler")));
 void SPIM1_SPIS1_TWIM1_TWIS1_SPI1_TWI1_IRQHandler(void)
-__attribute__((weak, alias("Default_Handler")));
+        __attribute__((weak, alias("Default_Handler")));
 void NFCT_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void GPIOTE_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void SAADC_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));

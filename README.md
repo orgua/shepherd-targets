@@ -26,7 +26,7 @@ Hardware v1.0 uses
 
 ![Target_nRF_MSP430](./media/pcb_rendering_nRF_MSRP430_FRAM_Target.png)
 
-BOM, gerber-files and schematics are available in the [PCB-Directory](https://github.com/orgua/shepherd-targets/tree/main/hardware)
+BOM, gerber-files and schematics are available in the [PCB-Directory](https://github.com/orgua/shepherd-targets/tree/main/hardware). This folder also contains a guide for testing new target-PCBs.
 
 
 ### Features

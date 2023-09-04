@@ -1,11 +1,10 @@
-# Target PCBs
+# Target Boards
 
 ## nRF52 & MSP430 Target
 
 Shared pins between MCU
 
 -> Pins P3:12 on Target-Header of V1.0 are GPIO0:8 & BATOK
-
 
 | SHP-HDR | Riotee   | nRF52 | msp430 | Description                         |
 |---------|----------|-------|--------|-------------------------------------|
@@ -30,3 +29,43 @@ Shared pins between MCU
 |         | C2C.CiPo | P0.14 | P2.1   |                                     |
 |         | C2C.PSel | P0.22 | P1.4   |                                     |
 |         | C2C.GPIO | P0.15 | PJ.2   |                                     |
+
+### Testing the PCBs
+
+- first do a visual inspection (both sides)
+- solder the 2x9-Pin-Header
+
+Prereqs (all on BBone)
+
+```Shell
+cd ~
+git clone https://github.com/orgua/shepherd-datalib
+cd shepherd-datalib
+git checkout dev
+git pull
+
+python3 ./extra/gen_firmwares.py
+```
+
+Put Target on BBone with Target on Port 1!
+
+First test all used gpio with this fw-combo (msp toggles, nrf watches and reports via uart)
+
+```Shell
+sudo shepherd-sheep -vvv program -p A -m 1 -v 3 -t nrf52 extra/content/nrf52_testable/build.hex
+sudo shepherd-sheep -vvv program -p A -m 2 -v 3 -t msp430 extra/content/msp430_testable/build.hex
+sudo shepherd-sheep -vvv target-power -p A -v 3 --on
+```
+
+Behavior is described here: https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable
+
+For testing the radio
+
+```Shell
+sudo shepherd-sheep -vvv program -p A -m 1 -v 3 -t nrf52 extra/content/nrf52_rf_test/build.hex
+sudo shepherd-sheep -vvv program -p A -m 2 -v 3 -t msp430 extra/content/msp430_deep_sleep/build.hex
+sudo shepherd-sheep -vvv target-power -p A -v 3.4 --on
+```
+
+Behavior is described here: https://github.com/orgua/shepherd-targets/tree/main/nrf52_rf_test
+

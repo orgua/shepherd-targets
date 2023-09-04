@@ -13,6 +13,7 @@ jobs:
         subproject:
           - nrf52_demo_rf
           - nrf52_testable
+          - nrf52_rf_test
           - nrf52_deep_sleep
 
     env:

@@ -5,5 +5,6 @@ metadata:
   msp430_testable: switches on all shared gpio one by one (verification after assembly)
   nrf52_demo_rf: A simple demo that sends BLE packets when energy budget allows it
   nrf52_testable: watches all gpio and reports with UART messages (verification after assembly)
+  nrf52_rf_test: sends out 1 BLE-Packet per second (verify with an app like 'RaMBLE')
   nrf52_deep_sleep: practically turned off MCU with the lowest possible consumption
   nrf52_rf_survey: Link Matrix Generator - TX-Unit - sends packet with every possible P_TX, loops until stopped

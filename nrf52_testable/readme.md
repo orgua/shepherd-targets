@@ -43,6 +43,40 @@ Mode >=2
     - switch on for 100 us after receiving on UART ("(%u)\r\n")
 - NOTE: 115200 baud datarate
 
+## Example Output Mode 0
+
+```uart
+GPIO WATCHER
+9 triggered
+10 triggered
+11 triggered
+0 triggered
+1 triggered
+2 triggered
+3 triggered
+4 triggered
+5 triggered
+6 triggered
+7 triggered
+8 triggered
+12 triggered
+13 triggered
+14 triggered
+15 triggered
+16 triggered
+17 triggered
+18 triggered
+19 triggered
+Received all 20 shared pins!!
+9 triggered
+Received all 20 shared pins!!
+10 triggered
+Received all 20 shared pins!!
+11 triggered
+Received all 20 shared pins!!
+[repeated last 6 lines]
+```
+
 ## Source
 
 https://github.com/geissdoerfer/shepherd-nrf52-demo

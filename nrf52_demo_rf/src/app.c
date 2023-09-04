@@ -24,7 +24,7 @@ pt_event_t            evt_off = pt_event_init();
 adv_pck_t             pkt;
 ble_ll_addr_t         adv_address = {.addr_bytes = {0x05, 0x04, 0x03, 0x02, 0x01, 0x00}};
 
-uint8_t               some_data[] = {0x02, // lengthof thisdata
+uint8_t               some_data[] = {0x02, // length of this data
                                      0x01, (1UL << 2) | (1UL << 1),
                                      0x09, /* Length of name field */
                                      0x09, /* Type of name field */
@@ -71,7 +71,7 @@ __RAMFUNC void        application(struct pt *pt)
         pt_event_clear(&evt_on);
         pt_event_wait(pt, &evt_on);
         /* Switch on LED */
-        NRF_P0->OUTCLR = (1 << GPIO_LED);
+        NRF_P0->OUTCLR = (1u << GPIO_LED);
 
         /* Place the counter value within packets payload */
         memcpy(&pkt.payload[17], &counter, 4);
@@ -90,7 +90,7 @@ __RAMFUNC void        application(struct pt *pt)
         while (!pt_event_get(&evt_off));
 
         /* Switch off LED */
-        NRF_P0->OUTSET = (1 << GPIO_LED);
+        NRF_P0->OUTSET = (1u << GPIO_LED);
     }
 
     pt_end(pt);

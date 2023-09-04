@@ -43,6 +43,8 @@ BOM, gerber-files and schematics are available in the [PCB-Directory](https://gi
 
 - [nrf52_demo_rf](https://github.com/orgua/shepherd-targets/tree/main/nrf52_demo_rf): demo implementation for a simple node that sends BLE packets when energy budget allows it
 - [nrf52_testable](https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable): watches all gpio and reports with UART messages (verification after assembly)
+  - ensures that pcb is assembled OK and both MCUs are programmable and show basic functions
+  - what is not tested: watchdog, FRAM, RF-Frontend (-> use demo-rf or rf-survey), sleep power consumption
 - [nrf52_rf_survey](https://github.com/orgua/shepherd-targets/tree/main/nrf52_rf_survey): Link Matrix Generator - TX-Unit - sends packet with every possible P_TX, loops until stopped
 - [nrf52_deep_sleep](https://github.com/orgua/shepherd-targets/tree/main/nrf52_deep_sleep): practically turned off MCU with the lowest possible consumption
 

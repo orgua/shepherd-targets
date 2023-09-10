@@ -122,7 +122,7 @@ static int gpio_init(void)
     P6DIR  = ~(BIT4 | BIT5);
     P6SEL0 = 0x0;
     P6SEL1 = 0x0;
-    P6REN = BIT5; // FIX: P6.BIT5 as input (i2c.sda) drains 500uA (without PD-Resistor)
+    P6REN  = BIT5; // FIX: P6.BIT5 as input (i2c.sda) drains 500uA (without PD-Resistor)
 
     /* Exclude [THRCTRL.L1], RTC_INT, [VCAP_SENSE] */
     P7OUT  = 0;

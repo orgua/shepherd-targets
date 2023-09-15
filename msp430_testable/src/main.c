@@ -123,48 +123,49 @@ static void set_gpio_out(const uint32_t pin_num, const bool enable)
 
 static void gpio_init(void)
 {
+    /* set all to neutral state: input */
     PJOUT  = 0u;
-    PJDIR  = 0xFF;
+    PJDIR  = 0x00;
     PJSEL0 = 0u;
     PJSEL1 = 0u;
 
     P1OUT  = 0u;
-    P1DIR  = 0xFF;
+    P1DIR  = 0x00;
     P1SEL0 = 0u;
     P1SEL1 = 0u;
 
     P2OUT  = 0u;
-    P2DIR  = 0xFF;
+    P2DIR  = 0x00;
     P2SEL0 = 0u;
     P2SEL1 = 0u;
 
     P3OUT  = 0u;
-    P3DIR  = 0xFF;
+    P3DIR  = 0x00;
     P3SEL0 = 0u;
     P3SEL1 = 0u;
 
     P4OUT  = 0u;
-    P4DIR  = 0xFF;
+    P4DIR  = 0x00;
     P4SEL0 = 0u;
     P4SEL1 = 0u;
 
     P5OUT  = 0u;
-    P5DIR  = 0xFF;
+    P5DIR  = 0x00;
     P5SEL0 = 0u;
     P5SEL1 = 0u;
 
     P6OUT  = 0u;
-    P6DIR  = 0xFF;
+    P6DIR  = 0x00;
     P6SEL0 = 0u;
     P6SEL1 = 0u;
 
     P7OUT  = 0u;
-    P7DIR  = 0xFF;
+    P7DIR  = 0x00;
     P7SEL0 = 0u;
     P7SEL1 = 0u;
 
     P8OUT  = 0u;
-    P8DIR  = 0xFF;
+    P8DIR  = 0x00;
     P8SEL0 = 0u;
     P8SEL1 = 0u;
 }

@@ -2,6 +2,7 @@ name: Release firmware
 
 on:
   push:
+    # branches: [ main ]  # this is handled as OR (push to main OR tagged)
     tags:
       - 'v*.*.*'
 

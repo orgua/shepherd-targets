@@ -18,6 +18,10 @@ static void gpio_init(void)
      * - gpio w/o function (Sel),
      * - unused=output, PxDIR 1b=Output
      * - clear interrupt flag
+     * - FIX: P6.BIT5 as input (i2c.sda) drains 500uA (without PD-Resistor)
+     * - improvement: support unconnected targets (without gpio-lines)
+     *      - all inputs have now a pulldown-resistor activated,
+     *      - sleep current rises from 19 to 21 nA (@3V) for the FRAM-Target
      * */
     P1OUT  = 0u;
     P1DIR  = ~(BIT4 | BIT5);
@@ -25,7 +29,7 @@ static void gpio_init(void)
     P1SEL1 = 0u;
     P1IE   = 0u;
     P1IFG  = 0u;
-    P1REN  = 0u;
+    P1REN  = BIT4 | BIT5;
 
     P2OUT  = 0u;
     P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
@@ -33,7 +37,7 @@ static void gpio_init(void)
     P2SEL1 = 0u;
     P2IE   = 0u;
     P2IFG  = 0u;
-    P2REN  = 0u;
+    P2REN  = BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6;
 
     P3OUT  = 0u;
     P3DIR  = ~(BIT6);
@@ -41,7 +45,7 @@ static void gpio_init(void)
     P3SEL1 = 0u;
     P3IE   = 0u;
     P3IFG  = 0u;
-    P3REN  = 0u;
+    P3REN  = BIT6;
 
     P4OUT  = 0u;
     P4DIR  = ~(BIT6);
@@ -49,7 +53,7 @@ static void gpio_init(void)
     P4SEL1 = 0u;
     P4IE   = 0u;
     P4IFG  = 0u;
-    P4REN  = 0u;
+    P4REN  = BIT6;
 
     P5OUT  = 0u;
     P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT5);
@@ -57,7 +61,7 @@ static void gpio_init(void)
     P5SEL1 = 0u;
     P5IE   = 0u;
     P5IFG  = 0u;
-    P5REN  = 0u;
+    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT5;
 
     P6OUT  = 0u;
     P6DIR  = ~(BIT4 | BIT5);
@@ -65,7 +69,7 @@ static void gpio_init(void)
     P6SEL1 = 0u;
     P6IE   = 0u;
     P6IFG  = 0u;
-    P6REN  = BIT5; // FIX: P6.BIT5 as input (i2c.sda) drains 500uA (without PD-Resistor)
+    P6REN  = BIT4 | BIT5;
 
     P7OUT  = 0u;
     P7DIR  = ~(BIT3);
@@ -73,7 +77,7 @@ static void gpio_init(void)
     P7SEL1 = 0u;
     P7IE   = 0u;
     P7IFG  = 0u;
-    P7REN  = 0u;
+    P7REN  = BIT3;
 
     P8OUT  = 0u;
     P8DIR  = 0xFF;
@@ -89,7 +93,7 @@ static void gpio_init(void)
     PJSEL1 = 0u;
     // PJIE = 0u;
     // PJIFG = 0u;
-    PJREN  = 0u;
+    PJREN  = BIT0 | BIT2 | BIT6;
 }
 
 

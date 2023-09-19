@@ -92,43 +92,49 @@ static int gpio_init(void)
     P1DIR  = ~(BIT4 | BIT5);
     P1SEL0 = 0u;
     P1SEL1 = 0u;
+    P1REN  = BIT4 | BIT5;
 
     /* Exclude C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
     P2OUT  = 0;
     P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
     P2SEL0 = 0u;
     P2SEL1 = 0u;
+    P2REN  = BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6;
 
     /* Exclude [THRCTRL.H1], D5 */
     P3OUT  = 0u;
     P3DIR  = ~(BIT6);
     P3SEL0 = 0u;
     P3SEL1 = 0u;
+    P3REN  = BIT6;
 
     /* Exclude D4 */
     P4OUT  = 0;
     P4DIR  = ~(BIT6);
     P4SEL0 = 0x0;
     P4SEL1 = 0x0;
+    P4REN  = BIT6;
 
     /* Exclude D10, D9, D8, D7, [PWRGD_L], PWRGD_H  */
     P5OUT  = 0;
     P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT5);
     P5SEL0 = 0x0;
     P5SEL1 = 0x0;
+    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT5;
 
     /* Exclude [THRCTRL.L0], SYS.SDA, SYS.SCL */
     P6OUT  = 0;
     P6DIR  = ~(BIT4 | BIT5);
     P6SEL0 = 0x0;
     P6SEL1 = 0x0;
-    P6REN  = BIT5; // FIX: P6.BIT5 as input (i2c.sda) drains 500uA (without PD-Resistor)
+    P6REN  = BIT4 | BIT5;
 
     /* Exclude [THRCTRL.L1], RTC_INT, [VCAP_SENSE] */
     P7OUT  = 0;
     P7DIR  = ~(BIT3);
     P7SEL0 = 0u;
     P7SEL1 = 0u;
+    P7REN  = BIT3;
 
     P8OUT  = 0;
     P8DIR  = 0xFF;
@@ -140,6 +146,7 @@ static int gpio_init(void)
     PJDIR  = ~(BIT0 | BIT6);
     PJSEL0 = 0x0;
     PJSEL1 = 0x0;
+    PJREN  = BIT0 | BIT6;
 
     return 0;
 }

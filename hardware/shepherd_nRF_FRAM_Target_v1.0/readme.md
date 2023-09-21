@@ -96,7 +96,7 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 
 -> Overview / Results for manufactured PCBs moved to [doc_testbed](https://github.com/orgua/shepherd_v2_planning/tree/main/doc_testbed)
 
-## Bugs / Changes
+## Bugs, Changes, Improvements
 
 ### v1.0
 
@@ -107,6 +107,9 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 - 240R all same orientation? -> easier placing
 - there are two different 1uF -> >4V, <<25 V, 0402 is wanted
 - name LEDs
+
+-> implemented in v1.1
+
 
 ### v1.1
 

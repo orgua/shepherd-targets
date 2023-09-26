@@ -386,13 +386,13 @@ void gpi_platform_init()
             BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
             BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
     NRF_P0->PIN_CNF[12] =
-                    BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
-                    BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
-                    BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+            BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
+            BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
+            BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
     NRF_P0->PIN_CNF[16] =
-                    BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
-                    BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
-                    BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+            BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
+            BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
+            BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
     // P0.18 / RESET: D29 (GPIO) / RESET
     NRF_P0->PIN_CNF[18] =

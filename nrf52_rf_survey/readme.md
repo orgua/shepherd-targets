@@ -32,12 +32,20 @@ Current configuration
 - removed node-id-magic in main.c (line 154:217)
 - transformed py-scripts to be more accessible
 
+specially for shepherd
 
+- reduced uart-speed to 115_200 for now (in config.h)
+- disable flow control (readme warns about it) to just stream uart (mode=0 in config.h)
+- disable button press to start (section removed in main.c)
+- hardcoded GPI_ARCH_BOARD_nRF_PCA10056 as hardware
+  - miss-use that board as shepherd-target (adapt platform.c/.h)
+  - activly use led1-led3
+  - remove other gpio
+  - use correct uart-pins
+  - set button-macros to harmless gpio
 
 ## TODO:
 
-- adapt uart-speed
-- change GPI to use correct uart-pins
 - vary send-power (?)
 - look for other IO used by TB
   - gpi_button_read() in main.c
@@ -45,8 +53,6 @@ Current configuration
   - gpi_led_on() & gpi_led_off() in scheduler.c
   - LED_SYNC, GPI_LED_2
   - GPI_BUTTON_SIG1, GPI_BUTTON_1
-- disable flow control (readme warns about it) to just stream uart
-- disable putton press to start (just node 1?)
 - py:
   - filter_log.py and more
   - make code usable by other py-code

@@ -128,20 +128,15 @@
 //**************************************************************************************************
 
 #define GPI_LED_NONE 0
-#define GPI_LED_1    BV(13)
-#define GPI_LED_2    BV(14)
-#define GPI_LED_3    BV(15)
+#define GPI_LED_1    BV(16)
+#define GPI_LED_2    BV(12)
+#define GPI_LED_3    BV(3)
 #define GPI_LED_4    BV(16)
 
-#if 1 // DEFAULT wiring
-  #define GPI_BUTTON_1 BV(11)
-  #define GPI_BUTTON_2 BV(12)
-#else // OPTIONAL wiring
-  #define GPI_BUTTON_1 BV(31) | BV(7)
-  #define GPI_BUTTON_2 BV(31) | BV(8)
-#endif
-#define GPI_BUTTON_3 BV(24)
-#define GPI_BUTTON_4 BV(25)
+#define GPI_BUTTON_1 BV(11)
+#define GPI_BUTTON_2 BV(13)
+#define GPI_BUTTON_3 BV(21)
+#define GPI_BUTTON_4 BV(26)
 
 // for details see comments in gpi/platform.h
 static ALWAYS_INLINE int gpi_led_index_to_mask(int i)

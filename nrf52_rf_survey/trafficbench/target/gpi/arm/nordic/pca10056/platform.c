@@ -168,21 +168,21 @@ static inline void uart_init(uint32_t baudrate)
 #endif
 
         // TXD
-        NRF_P0->OUTSET = BV(6);
-        NRF_P0->PIN_CNF[6] =
+        NRF_P0->OUTSET = BV(8);
+        NRF_P0->PIN_CNF[8] =
                 BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
                 BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, S0S1) |
                 BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
         NRF_UARTE0->PSEL.TXD = BV_BY_VALUE(UARTE_PSEL_TXD_PORT, 0) |
-                               BV_BY_VALUE(UARTE_PSEL_TXD_PIN, 6) |
+                               BV_BY_VALUE(UARTE_PSEL_TXD_PIN, 8) |
                                BV_BY_NAME(UARTE_PSEL_TXD_CONNECT, Connected);
 
         // RXD
-        NRF_P0->PIN_CNF[8] =
+        NRF_P0->PIN_CNF[21] =
                 BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
                 BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
         NRF_UARTE0->PSEL.RXD = BV_BY_VALUE(UARTE_PSEL_RXD_PORT, 0) |
-                               BV_BY_VALUE(UARTE_PSEL_RXD_PIN, 8) |
+                               BV_BY_VALUE(UARTE_PSEL_RXD_PIN, 21) |
                                BV_BY_NAME(UARTE_PSEL_RXD_CONNECT, Connected);
 
 // RTS
@@ -375,119 +375,29 @@ void gpi_platform_init()
             BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
             BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
-    // P0.02 / AIN0:  AREF (GPIO)
-    // P0.03 / AIN1:  A0 (GPIO)
+    // P0.16: LED1
+    // P0.12: LED2
+    // P0.03: LED3
 
-    // P0.04 / AIN2:  A1 (GPIO) / CTS_OPTIONAL
-    // reconfigured in uart_init() if used as CTS
+    NRF_P0->OUTSET = BV(16) | BV(12) | BV(3);
 
-    // P0.05 / AIN3:  D16 (GPIO) / RTS, used as RTS
-    // reconfigured in uart_init()
-
-    // P0.06: D17 (GPIO) / TXD, used as TXD
-    // reconfigured in uart_init()
-
-    // P0.07:		  D18 (GPIO) / CTS_DEFAULT / TRACECLK
-    // reconfigured in uart_init() if used as CTS
-
-    // P0.08: D19 (GPIO) / RXD, used as RXD
-    // reconfigured in uart_init()
-
-    // P0.09 / NFC1:  D20 (GPIO) / NFC
-    // P0.10 / NFC2:  D21 (GPIO) / NFC
-
-    // P0.11:		  D22 (GPIO) / BUTTON1_DEFAULT / TRACEDATA2
-    // P0.12:		  D23 (GPIO) / BUTTON2_DEFAULT / TRACEDATA1
-    for (i = 11; i <= 12; ++i)
-    {
-        NRF_P0->PIN_CNF[i] =
-                BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
-                BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-    }
-
-    // P0.13:		  D24 (GPIO) / LED1
-    // P0.14:		  D25 (GPIO) / LED2
-    // P0.15:		  D26 (GPIO) / LED3
-    // P0.16:		  D27 (GPIO) / LED4
-    NRF_P0->OUTSET = BV(13) | BV(14) | BV(15) | BV(16);
-    for (i = 13; i <= 16; ++i)
-    {
-        NRF_P0->PIN_CNF[i] =
-                BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
-                BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
-                BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-    }
-
-    // P0.17:		  [D28 (GPIO)] / QSPI_nCS
-    // NOTE: After reset (power-on), the flash device is in stand-by mode, but not in
-    // Deep Power-down (DP) mode. The device can be send to DP mode by issuing the
-    // corresponding command.
-    NRF_P0->OUTSET = BV(17);
-    NRF_P0->PIN_CNF[17] =
+    NRF_P0->PIN_CNF[3] =
             BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
-            BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, S0S1) |
+            BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
             BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+    NRF_P0->PIN_CNF[12] =
+                    BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
+                    BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
+                    BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+    NRF_P0->PIN_CNF[16] =
+                    BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
+                    BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) | BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1) |
+                    BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
     // P0.18 / RESET: D29 (GPIO) / RESET
     NRF_P0->PIN_CNF[18] =
             BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
             BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-
-    // P0.19:		  [D30 (GPIO)] / QSPI_CLK
-    // P0.20:		  [D31 (GPIO)] / QSPI_DIO0
-    // P0.21:		  [D32 (GPIO)] / QSPI_DIO1
-    // P0.22:		  [D33 (GPIO)] / QSPI_DIO2
-    // P0.23:		  [D34 (GPIO)] / QSPI_DIO3
-    for (i = 19; i <= 23; ++i)
-    {
-        NRF_P0->PIN_CNF[i] =
-                BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
-                BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-    }
-
-    // P0.24:		  D35 (GPIO) / BUTTON3
-    // P0.25:		  D36 (GPIO) / BUTTON4
-    for (i = 24; i <= 25; ++i)
-    {
-        NRF_P0->PIN_CNF[i] =
-                BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
-                BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-    }
-
-    // P0.26:		  SDA
-    // P0.27:		  SCL
-    // NOTE: We enable the internal pullups because the external pullups depend on SHIELD_DETECT.
-    // The internal pullups should be disabled during I2C communication (external pullups provide
-    // well defined resistance with small tolerance to enable better slope control).
-    for (i = 26; i <= 27; ++i)
-    {
-        NRF_P0->PIN_CNF[i] =
-                BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
-                BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-    }
-
-    // P0.28 / AIN4:  A2 (GPIO)
-    // P0.29 / AIN5:  A3 (GPIO)
-    // P0.30 / AIN6:  A4 (GPIO)
-    // P0.31 / AIN7:  A5 (GPIO)
-
-    // P1.00:		  D37 (GPIO) / SWO / TRACEDATA0
-    // P1.01:		  D0 (GPIO)
-    // P1.02:		  D1 (GPIO)
-    // P1.03:		  D2 (GPIO)
-    // P1.04:		  D3 (GPIO)
-    // P1.05:		  D4 (GPIO)
-    // P1.06:		  D5 (GPIO)
-    // P1.07:		  D6 (GPIO) / BUTTON1_OPTIONAL
-    // P1.08:		  D7 (GPIO) / BUTTON2_OPTIONAL
-    // P1.09:		  D38 (GPIO) / TRACEDATA3
-    // P1.10:		  D8 (GPIO)
-    // P1.11:		  D9 (GPIO)
-    // P1.12:		  D10 (GPIO)
-    // P1.13:		  D11 (GPIO)
-    // P1.14:		  D12 (GPIO)
-    // P1.15:		  D13 (GPIO)
-
 
     // init clock system
     // NOTE: this should be done before initializing other peripherals

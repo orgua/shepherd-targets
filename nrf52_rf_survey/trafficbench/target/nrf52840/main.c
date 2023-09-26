@@ -168,18 +168,6 @@ int                   main()
 #endif
     printf("mapped physical node %u to logical id %u\n", physical_node_id, node_id);
 
-// on developer's desk, use Button 1 to start the root node
-// This is helpful for controlled start when programming devices one after the other.
-#if !GPI_ARCH_IS_BOARD(FLOCKLAB_nRF5)
-    if (ROOT_NODE_ID == node_id)
-    {
-        printf("press button 1 to start...");
-        while (!gpi_button_read(GPI_BUTTON_1))
-            ;
-        printf("ok\n");
-    }
-#endif
-
     // start TrafficBench's task scheduler
     scheduler_start(node_id);
 

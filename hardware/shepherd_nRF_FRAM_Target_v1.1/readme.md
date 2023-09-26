@@ -7,7 +7,7 @@
 
 ### v1.1
 
-- two bat-status pins from cape would be better 
+- two bat-status pins from cape would be better
   - goal: offer hysteresis - working good for riotee so far
   - second goal: compatibility with riotee-SDK for targets
 - shared gpio would benefit from external PU/PD-Resistors, so current mcu-code can be more independent

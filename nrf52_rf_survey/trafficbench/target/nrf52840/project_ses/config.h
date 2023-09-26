@@ -9,8 +9,9 @@
 // GPI configuration
 
 #define GPI_ARCH_PLATFORM                         (GPI_ARCH_BOARD_nRF_PCA10056 | GPI_ARCH_CRT_SEGGER2)
-#define GPI_STDOUT_UART_BAUDRATE                  230400
-#define GPI_ARM_NRF_STDOUT_UART_FLOWCONTROL_MODE  3
+#define GPI_STDOUT_UART_BAUDRATE                  115200
+#define GPI_ARM_NRF_STDOUT_UART_FLOWCONTROL_MODE  0
+// 3: flow ctrl on, 0: off
 // ATTENTION: 460800 is not totally safe even with flow control
 // (I guess that the DK's interface MCU deactivates CTS too late
 // (not enough buffer space left for data transmitted in between))

@@ -135,7 +135,7 @@ int                   main()
     // perform standard GPI radio initialization
     // TODO: could be moved to radio_init(), and maybe the latter into TrafficBench's init
     gpi_radio_init(BLE_1M);
-    gpi_radio_set_tx_power(gpi_radio_dbm_to_power_level(0));
+    gpi_radio_set_tx_power(gpi_radio_dbm_to_power_level(8));
     gpi_radio_set_channel(BLE_RADIO_CHANNEL);
     gpi_radio_ble_set_access_address(~0x8E89BED6); // TODO
     // perform application specific radio init

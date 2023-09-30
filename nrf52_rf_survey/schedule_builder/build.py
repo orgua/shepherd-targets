@@ -6,7 +6,7 @@ from pathlib import Path
 
 # CONFIG
 
-node_count: int = 5
+node_count: int = 12
 path_local = Path(__file__).parent
 path_schedule = (
     path_local.parent / "trafficbench/target/nrf52840/project_ses/schedule.inc"

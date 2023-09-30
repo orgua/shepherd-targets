@@ -140,7 +140,10 @@ def analyze_trx(
         schedule_gts = row["schedule_gts"]
 
         # skip records where node was out of sync
-        if -1 == np.int32(schedule_gts):
+        try:
+            if -1 == np.int32(schedule_gts):
+                raise OverflowError
+        except OverflowError:
             logger.debug(
                 "skipping TRX record %d because schedule_gts = -1 (out of sync)",
                 row.nrow,

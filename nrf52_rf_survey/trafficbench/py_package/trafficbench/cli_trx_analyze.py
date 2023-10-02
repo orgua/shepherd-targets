@@ -167,7 +167,12 @@ def analyze_trx(
         if (len(set(trx["node_id"])) != len(trx)) or (
             len(indexes_tx) + len(indexes_rx) != len(trx)
         ):
-            raise AssertionError()
+            # raise AssertionError()
+            logger.warning(
+                "skipping TRX record %d because internal structure is faulty",
+                row.nrow,
+            )
+            continue
 
         n_tx += len(indexes_tx)
         n_rx += np.count_nonzero(trx["trx_status"]["crc_ok"][indexes_rx])

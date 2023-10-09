@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies 🔧
         run: sudo apt update && sudo apt install -y build-essential wget unzip
@@ -54,7 +54,7 @@ jobs:
       - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf content/${{ matrix.subproject }}/"
       - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex content/${{ matrix.subproject }}/"
 
-      - name: Upload artifacts to github 🔼
+      - name: Upload artifacts to GitHub 🔼
         uses: actions/upload-artifact@v3
         with:
           name: "${{ matrix.subproject }}"

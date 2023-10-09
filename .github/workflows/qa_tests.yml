@@ -1,16 +1,19 @@
-name: Repo-Tests
+name: Test for Quality Assurance
 
 on:
   push:
     branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_call:
 
 jobs:
-  various-tests:
+  tests:
     runs-on: ubuntu-22.04 # TODO: -latest was 20.04 and had old packages
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python 3.11 🐍
         uses: actions/setup-python@v4
         with:

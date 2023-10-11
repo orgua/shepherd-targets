@@ -351,7 +351,7 @@ def analyze_trx(
     h5file.flush()
 
     logger.info("link matrix:")
-    logger.info("       %s", "  ".join([f"{x:4d}" for x in nodes]))
+    logger.info("Tx⟍Rx  %s", "  ".join([f"{x:4d}" for x in nodes]))
     logger.info("     +-%s", "--" * (len(nodes) - 1) + "----" * len(nodes))
     for x in enumerate(power_W_to_dBm(link_matrix)):
         logger.info(

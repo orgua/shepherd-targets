@@ -111,6 +111,7 @@ ignore = [
     "ANN101", "ANN102", # self & cls not type-annotated
     "ANN401",  # Any as valid type
     "COM812", # trailing comma, same line
+    "PYI041", # int != float
 ]
 target-version = "py38"
 preview = true

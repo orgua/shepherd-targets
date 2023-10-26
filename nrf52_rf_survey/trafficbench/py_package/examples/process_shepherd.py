@@ -26,9 +26,9 @@ for file in files_shp:
         if sr["uart"]["time"].shape[0] < 1:
             print("file is empty, no log generated")
             continue
-        log_path = sr.file_path.with_suffix(f".uart.log")
-        with open(log_path, "wb") as log_file:
-            for idx, message in enumerate(sr["uart"]["message"][:]):
+        log_path = sr.file_path.with_suffix(".uart.log")
+        with log_path.open("wb") as log_file:
+            for _, message in enumerate(sr["uart"]["message"][:]):
                 log_file.write(message)
 
 

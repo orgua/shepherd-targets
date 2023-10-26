@@ -32,6 +32,7 @@ def test_and_warn(
     text: bytes,
     pos_start: int = 0,
     pos_end: Optional[int] = None,
+    *,
     strict: bool = True,
 ) -> None:
     """

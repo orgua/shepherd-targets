@@ -26,8 +26,7 @@ def gts_ticks_to_us(gts: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return gts / TICKS_PER_US
 
 
-def gts_us_to_ticks(gts: Union[float, np.ndarray]):
-    TICKS_PER_US = 16
+def gts_us_to_ticks(gts: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     return np.int64(np.rint(gts * TICKS_PER_US))
 
 

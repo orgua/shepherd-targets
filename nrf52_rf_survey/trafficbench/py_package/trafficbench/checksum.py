@@ -16,14 +16,14 @@ def fletcher32(data: bytes) -> int:
     if not isinstance(data, bytes) or (len(data) & 1):
         raise AssertionError()
 
-    len_ = len(data)
+    len1_ = len(data)
     idx = 0
     c0 = c1 = 0
 
-    while idx < len_:
-        l = min(len_ - idx, 360)
+    while idx < len1_:
+        len2_ = min(len1_ - idx, 360)
 
-        for _ in range(l // 2):
+        for _ in range(len2_ // 2):
             c0 += (data[idx] << 8) | data[idx + 1]
             c1 += c0
             idx += 2

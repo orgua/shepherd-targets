@@ -5,7 +5,7 @@ import numpy as np
 from .constants import TICKS_PER_US
 
 
-def get_packet_airtime(pdu_crc_length: Union[int, float, np.nditer]):
+def get_packet_airtime(pdu_crc_length: Union[int, float, np.nditer]) -> Union[int, float, np.nditer]:
     """
     compute nominal packet airtime
     TODO: make it dependent from radio mode
@@ -21,10 +21,14 @@ def get_packet_airtime(pdu_crc_length: Union[int, float, np.nditer]):
     always [bit]:	8			8			0		(0...255)*8
 
     switch (gpi_radio_get_mode())
-      case BLE_1M: airtime = GPI_TICK_US_TO_FAST( 8 +  32 +  0 +  0 +  16 +  24 +  0) + (GPI_TICK_US_TO_FAST(8) * payload_length)
-      case BLE_2M: airtime = GPI_TICK_US_TO_FAST( 8 +  16 +  0 +  0 +   8 +  12 +  0) + (GPI_TICK_US_TO_FAST(4) * payload_length)
-      case BLE_125k: airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 + 128 + 192 + 24) + (GPI_TICK_US_TO_FAST(64) * payload_length)
-      case BLE_500k: airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 +  32 +  48 +  6) + (GPI_TICK_US_TO_FAST(16) * payload_length)
+      case BLE_1M: airtime = GPI_TICK_US_TO_FAST( 8 +  32 +  0 +  0 +  16 +  24 +  0) +
+                            (GPI_TICK_US_TO_FAST(8) * payload_length)
+      case BLE_2M: airtime = GPI_TICK_US_TO_FAST( 8 +  16 +  0 +  0 +   8 +  12 +  0) +
+                            GPI_TICK_US_TO_FAST(4) * payload_length)
+      case BLE_125k: airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 + 128 + 192 + 24) +
+                            (GPI_TICK_US_TO_FAST(64) * payload_length)
+      case BLE_500k: airtime = GPI_TICK_US_TO_FAST(80 + 256 + 16 + 24 +  32 +  48 +  6) +
+                            (GPI_TICK_US_TO_FAST(16) * payload_length)
 
     :param pdu_crc_length:
     :return:
@@ -33,7 +37,7 @@ def get_packet_airtime(pdu_crc_length: Union[int, float, np.nditer]):
     return us * TICKS_PER_US
 
 
-def get_ref_delay():
+def get_ref_delay() -> float:
     """
     # TODO: make it dependent from radio mode
     :return:

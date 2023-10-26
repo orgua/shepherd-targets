@@ -92,7 +92,7 @@
 //***** Local (Private) Defines and Consts *********************************************************
 
 #define _GPI_TICK_T_TO_X(x, m, t)                                                                  \
-    (((GPI_##t##_CLOCK_RATE % m) ? (((x) *GPI_##t##_CLOCK_RATE) / m + ((m > 1) ? 1 : 0))           \
+    (((GPI_##t##_CLOCK_RATE % m) ? (((x) * GPI_##t##_CLOCK_RATE) / m + ((m > 1) ? 1 : 0))          \
                                  : ((x) * (GPI_##t##_CLOCK_RATE / m))) +                           \
      ASSERT_CT_EVAL((x) <= (GPI_TICK_##t##_MAX / GPI_##t##_CLOCK_RATE) ||                          \
                             !(GPI_##t##_CLOCK_RATE % m),                                           \

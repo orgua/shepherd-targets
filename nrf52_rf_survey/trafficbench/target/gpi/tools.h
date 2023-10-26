@@ -356,7 +356,7 @@ TEST_EXPANSION(CONCAT(CONCAT_NOEXP(A, B), C));
 #define LSB(a)        MSB((a) & -(a))
 
 // the following macros are for internal use only
-#define MSB2(a)       ((a) &2 ? 1 : ((a) &1 ? 0 : -1))
+#define MSB2(a)       ((a) & 2 ? 1 : ((a) & 1 ? 0 : -1))
 #define MSB4(a)       ((uint32_t) (a) >= 0x4 ? 2 + MSB2((uint32_t) (a) >> 2) : MSB2(a))
 #define MSB8(a)       ((uint32_t) (a) >= 0x10 ? 4 + MSB4((uint32_t) (a) >> 4) : MSB4(a))
 #define MSB16(a)      ((uint32_t) (a) >= 0x100 ? 8 + MSB8((uint32_t) (a) >> 8) : MSB8(a))

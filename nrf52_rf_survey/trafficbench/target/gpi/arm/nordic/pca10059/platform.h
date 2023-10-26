@@ -216,8 +216,8 @@ static ALWAYS_INLINE int gpi_button_index_to_mask(int i)
 #define BV_BY_NAME_PREEXP(field, value)     BV_BY_NAME(field, value)
 #define BV_BY_VALUE_PREEXP(field, value)    BV_BY_VALUE(field, value)
 
-#define BV_TEST_BY_NAME(reg, field, value)  (BV_BY_NAME(field, value) == ((reg) &field##_Msk))
-#define BV_TEST_BY_VALUE(reg, field, value) (BV_BY_VALUE(field, value) == ((reg) &field##_Msk))
+#define BV_TEST_BY_NAME(reg, field, value)  (BV_BY_NAME(field, value) == ((reg) & field##_Msk))
+#define BV_TEST_BY_VALUE(reg, field, value) (BV_BY_VALUE(field, value) == ((reg) & field##_Msk))
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************

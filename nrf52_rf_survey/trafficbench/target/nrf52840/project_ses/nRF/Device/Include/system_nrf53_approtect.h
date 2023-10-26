@@ -54,7 +54,7 @@ static inline void nrf53_handle_approtect(void)
   #else
     /* Load APPROTECT soft branch from UICR.
                If UICR->APPROTECT is disabled, CTRLAP->APPROTECT will be disabled. */
-    NRF_CTRLAP_S->APPROTECT.DISABLE       = NRF_UICR_S->APPROTECT;
+    NRF_CTRLAP_S->APPROTECT.DISABLE = NRF_UICR_S->APPROTECT;
   #endif
 
         /* Secure APPROTECT is only available for Application core. */
@@ -82,7 +82,7 @@ static inline void nrf53_handle_approtect(void)
   #else
     /* Load APPROTECT soft branch from UICR.
                If UICR->APPROTECT is disabled, CTRLAP->APPROTECT will be disabled. */
-    NRF_CTRLAP_NS->APPROTECT.DISABLE      = NRF_UICR_NS->APPROTECT;
+    NRF_CTRLAP_NS->APPROTECT.DISABLE = NRF_UICR_NS->APPROTECT;
   #endif
 #endif
 }

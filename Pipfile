@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pre-commit = "*"
 # trafficbench
+trafficbench = {editable = true, extras = ["all"], path = "./nrf52_rf_survey/trafficbench/py_package"}
 shepherd-core = {extras = ["elf"], version = "*"}
 # Trafficbench host-scripts
 numpy = "*"
@@ -14,6 +15,8 @@ cbor2 = "*"
 crcmod = "*"
 xonsh = "*"
 vitables = "*"
+crc = "*"
+matplotlib = "*"
 
 [dev-packages]
 

@@ -8,7 +8,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -30,7 +30,7 @@ repos:
       - id: isort
 
   - repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 23.10.1
     hooks:
       - id: black
 
@@ -46,13 +46,13 @@ repos:
       - id: text-unicode-replacement-char
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.9.0
+    rev: v3.15.0
     hooks:
       - id: pyupgrade
         args: ["--py38-plus"]
 
   - repo: https://github.com/pycqa/flake8
-    rev: 5.0.4
+    rev: 6.1.0
     hooks:
       - id: flake8
         additional_dependencies:
@@ -86,30 +86,30 @@ repos:
           - Flake8-pyproject
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.280'
+    rev: 'v0.1.2'
     hooks:
       - id: ruff
         # args: ["--fix", "--exit-non-zero-on-fix"]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.35.0
+    rev: v0.37.0
     hooks:
       - id: markdownlint
         args: ["--disable", "MD013"] # ignore line length
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.13
+    rev: v0.15
     hooks:
       - id: validate-pyproject
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.5"
+    rev: "v2.2.6"
     hooks:
       - id: codespell
         exclude: \.(sch|brd|lbr)$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 'v16.0.6'
+    rev: 'v17.0.3'
     hooks:
       - id: clang-format
         types_or: [c++, c]

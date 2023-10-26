@@ -18,11 +18,9 @@ require-plugins = [
     "flake8-comprehensions",
     "flake8-simplify",
     "flake8-eradicate",
-    "flake8-commas",
 
     ### Limitations
     "flake8-blind-except",
-    "flake8-logging-format",
     "flake8-print",
 
     ### Documentation
@@ -37,51 +35,89 @@ require-plugins = [
 extend-ignore = [
     # black-formatter-specific
     "E203",
-    # open() vs os.open()
-    "SCS109",
-    # hideous commas
-    "C812",
-    "C815",
-    "C813",
-    # DOCString TODO: reduce here
+    # DOCString
     "D100",
     "D102",
     "D103",
+    "G200",
+    # handled by ruff
+    "S403",
+    "S404",
 ]
 
+per-file-ignores = """
+# asserts (in tests are ok), also allow print() instead of logger,
+# also allow executing scripts
+*/tests/*: SCS108, S101, T201, S404, S602, SCS103, SIM117
+# allow print() and commented out code
+*/examples/*: T201, E800
+"""
 
 count = true
 statistics = true
 
-[tool.ruff]  # TODO: once stable it replaces flake8, pyupgrade, isort, …
+[tool.ruff]  # TODO: once stable it replaces flake8, pyupgrade, isort, ...
 line-length = 100
 select = [
-    "A",
-    "ARG",
-    "B",
+    "A",    # flake8-builtins
+    "ANN", # flake8-annotations
+    "ARG",  # flake8-unused-arguments
+    "B",    # Bugbear
     "C",
-    "C4",
-    "E",
-    "ERA",
-    "F",
-#    "I",  # incomplete isort
-    "N",
-    "PLC",
-    "PLE",
-    "PLR",
-    "PLW",
-    "RET",
-    "S",
-    "T10",
-    "UP",
-    "W",  # TODO: just a proposed starting-config
+    "COM", # flake8-commas
+    #    "CPY",  # flake8-copyright
+    "C4",   # flake8-comprehensions
+    "DTZ",  # flake8-datetimez
+    #    "D",    # pydocstyle, TODO: activate
+    "E",    # pycodestyle errors
+    "ERA",  # eradicate commented out code
+    "F",    # pyflakes
+    #    "FA",   # flake8-future-annotations
+    "FBT",  # boolean traps
+    "FLY",  # flynt
+    "FURB", # refurb
+    "G",    # flake8-logging-format
+    #    "I",    # incomplete isort
+    "INP",  # flake8-no-pep420
+    "LOG",  # flake8-logging
+    "N",    # naming
+    "NPY",  # NumPy-specific rules
+    "PD",   # pandas-vet
+    "PERF", # Perflint
+    "PL",   # Pylint
+    "PTH",  # flake8-use-pathlib
+    "PYI",  # flake8-pyi
+    "RET",  # flake8-return
+    "RUF",  # Ruff-specific rules
+    "S",    # bandit, security
+    "SLF",  # flake8-self
+    "SIM",  # flake8-simplify
+    "TID",  # flake8-tidy-imports
+    "TCH",  # flake8-type-checking
+    "T10",  # flake8-print
+    "UP",   # pyupgrade
+    "W",    # pycodestyle warnings
+    "YTT",  # flake8-2020
 ]
-ignore = ["A003"]
+ignore = [
+    "N802", "N803", "N806", "N815", "N816", # naming (si-units should stay)
+    "PLR2004", # magic values
+    "TID252", # relative imports from parent
+    "PLR0904", # complexity
+    "PLR0911", "PLR0912", # complexity
+    "PLR0913", "PLR0915", # complexity
+    "C901", # complexity
+    "E203", # whitespace before ':' (black-default)
+    "ANN101", "ANN102", # self & cls not type-annotated
+    "ANN401",  # Any as valid type
+    "COM812", # trailing comma, same line
+]
 target-version = "py38"
+preview = true
 
 [tool.ruff.per-file-ignores]
-#"__init__.py" = ["F401"]
-#"tests/**" = ["ARG", "S"]
+"*/tests/**" = ["ARG", "S", "D"]
+"*/examples/**" = ["INP001"]  # no namespace
 
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.

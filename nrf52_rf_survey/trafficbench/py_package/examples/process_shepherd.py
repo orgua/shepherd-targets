@@ -5,11 +5,11 @@ Log-Files contain the uart-output of the trafficbench-nodes
 from pathlib import Path
 
 import tables as tbl
+from shepherd_data import Reader
 from trafficbench import analyze_trx
 from trafficbench import dump_trx
 from trafficbench import filter_logfile
 from trafficbench.filesystem import get_files
-from shepherd_data import Reader
 
 # Config
 dir_input = Path(__file__).parent / "experiment"

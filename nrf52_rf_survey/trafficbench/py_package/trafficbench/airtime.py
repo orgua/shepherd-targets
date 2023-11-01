@@ -5,7 +5,9 @@ import numpy as np
 from .constants import TICKS_PER_US
 
 
-def get_packet_airtime(pdu_crc_length: Union[int, float, np.nditer]) -> Union[int, float, np.nditer]:
+def get_packet_airtime(
+    pdu_crc_length: Union[int, float, np.nditer]
+) -> Union[int, float, np.nditer]:
     """
     compute nominal packet airtime
     TODO: make it dependent from radio mode

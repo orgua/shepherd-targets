@@ -1,28 +1,47 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+description: Create a report to help us improve
 title: ''
-labels: bug
+labels: 'bug'
 assignees: ''
 
 ---
 
-**Describe the bug**
+If possible choose the correct project:
+
+- [main-repo](https://github.com/orgua/shepherd/issues)
+- [datalib](https://github.com/orgua/shepherd-datalib/issues)
+- [targets](https://github.com/orgua/shepherd-targets/issues)
+- [webapi](https://github.com/orgua/shepherd_webservice/issues)
+
+## Description
+
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
+## How to reproduce
+
+Steps to reproduce the behavior.
+
 1. Go to '...'
-2. Click on '....'
+2. Type '....'
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
+## Expected behavior
+
 A clear and concise description of what you expected to happen.
 
-**Screenshots or Error Logs**
-If applicable, add data to help explain your problem.
+## Screenshots & Error Logs
 
-**Desktop (please complete the following information):**
- - OS: [e.g. Ubuntu]
- - Python Version [e.g. 3.10]
+If applicable, add screenshots to help explain your problem.
+
+## Environment
+
+Give some information about your setup.
+
+- OS: (e.g. Ubuntu)
+- Python Version (e.g. 3.10)
+
+## Additional Context
+
+Add any other context about the problem here.

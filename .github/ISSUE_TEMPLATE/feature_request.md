@@ -1,11 +1,19 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+description: Suggest an idea for this project
 title: ''
-labels: enhancement
+labels: 'enhancement'
 assignees: ''
 
 ---
+
+If possible choose the correct project:
+
+- [main-repo](https://github.com/orgua/shepherd/issues)
+- [datalib](https://github.com/orgua/shepherd-datalib/issues)
+- [targets](https://github.com/orgua/shepherd-targets/issues)
+- [webapi](https://github.com/orgua/shepherd_webservice/issues)
+
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

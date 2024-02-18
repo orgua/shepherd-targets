@@ -28,11 +28,14 @@ Shared pins between MCUs
 
 **Note**: Pins P[3:12] on Target-Header of V1.0 are GPIO[0:8] & BATOK
 
-## Testing the PCBs
+## Verifying the PCBs
 
 - first do a visual inspection (both sides)
   - backside should be complete
   - front side can have two caps DNP (C14 & C9 in the middle)
+
+### Assembly
+
 - solder the 2x9-Pin-Header
 
 ### First Powerup

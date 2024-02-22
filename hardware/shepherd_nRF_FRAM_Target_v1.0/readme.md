@@ -101,7 +101,7 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 
 ## Bugs, Changes, Improvements
 
-### v1.0
+### Changes after v1.0
 
 - nrf module - trace cross / lines should be realigned
   - silk is more correct

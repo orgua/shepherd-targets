@@ -5,7 +5,7 @@
 
 ## Bugs, Changes, Improvements
 
-### v1.1
+### Changes after v1.1
 
 - two bat-status pins from cape would be better
   - goal: offer hysteresis - working good for riotee so far
@@ -14,3 +14,4 @@
   - problem: msp430 is reacting with high currents for floating pins
   - current solution: activate internal PD-Res in msp430 - at least for our sleep- & FRAM-firmware
 - add a system to identify pcb? OW-nodeid or i2c-rom?
+- ditch PAN1780 module to allow an external antenna (rf-performance of pan-module is sub-par)

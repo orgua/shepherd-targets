@@ -2,9 +2,9 @@
 
 [![Build MSP430](https://github.com/orgua/shepherd-targets/actions/workflows/build_msp.yml/badge.svg)](https://github.com/orgua/shepherd-targets/actions/workflows/build_msp.yml)
 [![Build nRF52](https://github.com/orgua/shepherd-targets/actions/workflows/build_nrf.yml/badge.svg)](https://github.com/orgua/shepherd-targets/actions/workflows/build_nrf.yml)
-[![QA-Tests](https://github.com/orgua/shepherd-targets/actions/workflows/qa_tests.yml/badge.svg)](https://github.com/orgua/shepherd-targets/actions/workflows/qa_tests.yml)
+[![QC-Tests](https://github.com/orgua/shepherd-targets/actions/workflows/qc_tests.yml/badge.svg)](https://github.com/orgua/shepherd-targets/actions/workflows/qc_tests.yml)
 
-**Documentation**: <https://orgua.github.io/shepherd/external/shepherd_targets.html>
+**Main Documentation**: <https://orgua.github.io/shepherd>
 
 **Source Code**: <https://github.com/orgua/shepherd-targets>
 
@@ -12,7 +12,7 @@
 
 ---
 
-The repository contains a collection of target-hardware and mcu-firmwares used by the shepherd-testbed. In the past shepherd had a nRF52-only target but can now leverage an additional FRAM, as demonstrated successfully by the 
+The repository contains a collection of target-hardware and mcu-firmwares used by the shepherd-testbed. In the past shepherd had a nRF52-only target but can now leverage an additional FRAM, as demonstrated successfully by the
 [Riotee-Platform](https://www.riotee.nessie-circuits.de).
 
 **NOTE**: The shepherd testbed has a second target-port (unused) and is looking for ideas. Just contact us.

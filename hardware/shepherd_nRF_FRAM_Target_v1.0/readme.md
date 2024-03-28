@@ -113,7 +113,10 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 
 -> implemented in v1.1
 
-
 ### v1.1
 
-[here](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.1)
+[here](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.1) - skipped
+
+### v1.2
+
+[here](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.2)

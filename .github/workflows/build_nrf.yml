@@ -55,7 +55,7 @@ jobs:
       - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex content/${{ matrix.subproject }}/"
 
       - name: Upload artifacts to GitHub 🔼
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "${{ matrix.subproject }}"
           path: "content/${{ matrix.subproject }}/"
@@ -112,7 +112,7 @@ jobs:
       - run: "cp ${{ env.PROJECT_HEX }} content//${{ matrix.subproject }}/build.hex"
 
       - name: Upload artifacts to github 🔼
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "${{ matrix.subproject }}"
           path: "content/${{ matrix.subproject }}/"

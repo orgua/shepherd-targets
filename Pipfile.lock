@@ -286,11 +286,12 @@
         },
         "crc": {
             "hashes": [
-                "sha256:934085e4128a9d3079df70b70bca330e6d298c8a2191899903272f4e53f3220d",
-                "sha256:bc75343122df0b13d10a20b134793d3b3558ac4ebe092b35b2cc3e0673af0e12"
+                "sha256:8b22f5534e9360bf61e169ce581d61143d3d0248a1fdc2c4b4f2175af3b2c2aa",
+                "sha256:b9fc521042167f2b59d9183ce27acc0897e4a17748421e8b304ccdf7ebf4280a"
             ],
             "index": "pypi",
-            "version": "==6.1.1"
+            "markers": "python_version >= '3.8' and python_version < '4.0'",
+            "version": "==7.0.0"
         },
         "crcmod": {
             "hashes": [

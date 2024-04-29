@@ -99,8 +99,16 @@ Skipped:
 
 ### Bugs
 
-None
+- nRF hat ein Loch bei 600...800 mV -> Target-Load austauschen? Diode+Cap ist ein Problem
+- fix targets: comparator + pwr-switch -> on when above 1.4 V
+  - https://github.com/geissdoerfer/find/blob/master/hardware/schematic.pdf
+  - switch as part of the target
+- TODO: voltage sweep through target
 
 ### Proposed Fixes & Improvements
 
-None
+- add comparator to delay power of nRF
+- extend to 16 GPIO
+  - order adapter to old shepherd 2x9
+  - order pinheader and sockets for the new port
+  - which pins to add?

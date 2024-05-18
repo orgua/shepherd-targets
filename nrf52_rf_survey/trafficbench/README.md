@@ -1,5 +1,9 @@
 # TrafficBench
 
+**NOTE**: this is a stripped copy of <https://github.com/nes-lab/TrafficBench> with small changes (node ID + X, described in readme one dir above).
+
+---
+
 TrafficBench is a tool suite for the experimental exploration of concurrent packet transmissions
 and their consequences (physical layer effects) in low-power wireless networks. It integrates
 [RSSISpy](https://gitlab.com/nes-lab/rssispy), a software module that enables continuous RSSI

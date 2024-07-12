@@ -100,10 +100,20 @@ Skipped:
 ### Bugs
 
 - nRF hat ein Loch bei 600...800 mV -> Target-Load austauschen? Diode+Cap ist ein Problem
+  - TODO: voltage sweep through target
 - fix targets: comparator + pwr-switch -> on when above 1.4 V
   - https://github.com/geissdoerfer/find/blob/master/hardware/schematic.pdf
   - switch as part of the target
-- TODO: voltage sweep through target
+- nRF-IC thermal pad ~4.75²
+- ABx-IC thermal pad ~ 1.8²
+- paste stencil holes of both MCUs a bit bigger
+- less paste on thermal pad of nRF
+- make more clear what is DNP: 1nF, 100uF
+- 1uF is twice in BOM
+- add C on ABx-Crystal?
+- why did the crystals footprint change (larger) but not the part? tombstone rate ~ 50%
+- nRF - remove resist of alignment crosses
+
 
 ### Proposed Fixes & Improvements
 

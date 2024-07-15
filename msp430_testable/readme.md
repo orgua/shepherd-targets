@@ -1,6 +1,14 @@
 # Msp430 Testable
 
-The firmware toggles all used GPIOs and depends on a receiver that verifies each pin. 3 LEDs >8 times (reacts to SHEPHERD_NODE_ID) for 100 ms and does the same for the 10 external GPIO (4 times).
+The firmware toggles all used & shared GPIOs and depends on a receiver / supervisor that verifies each pin. 
+
+Sequence:
+
+- LEDs go first
+- all pins of GPIO-Header
+- shared I2C-Pins
+- shared C2C-Pins (SPI)
+- blink LEDs >8 times (reacts to SHEPHERD_NODE_ID) for 100 ms
 
 ## Functionality
 

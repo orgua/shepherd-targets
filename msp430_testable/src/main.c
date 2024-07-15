@@ -47,13 +47,13 @@ extern const uint16_t SHEPHERD_NODE_ID;
 // index with reference to names of shepherds target-port
 const uint32_t gpios[] = {GPIO0, GPIO1, GPIO2, GPIO3, GPIO4,  GPIO5,
                           GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH};
-const uint32_t pins[]  = {
-        GPIO0, //GPIO1,
-        GPIO2, GPIO3, GPIO4, GPIO5, GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH}; // without uart-tx
+const uint32_t pins[]  = {GPIO0, //GPIO1,
+                          GPIO2, GPIO3, GPIO4, GPIO5,  GPIO6,
+                          GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH}; // without uart-tx
 
-const uint32_t leds[] = {PIN_LED0, PIN_LED2};
-const uint32_t i2c[]  = {I2C_SCL, I2C_SDA, I2C_INT};
-const uint32_t c2c[]  = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
+const uint32_t leds[]  = {PIN_LED0, PIN_LED2};
+const uint32_t i2c[]   = {I2C_SCL, I2C_SDA, I2C_INT};
+const uint32_t c2c[]   = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
 
 #define N_PINS  sizeof(pins) / sizeof(unsigned int)
 #define N_GPIOS sizeof(gpios) / sizeof(unsigned int)
@@ -204,13 +204,16 @@ static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
 {
     /* set array to output */
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], true); }
+    delay_ms(50);
     /* switch each pin on in array */
     for (uint8_t count = 0; count < array_size; count++)
     {
+        delay_ms(50);
         set_gpio_state(array[count], true);
         delay_ms(100);
         set_gpio_state(array[count], false);
     }
+    delay_ms(50);
     /* set pins to INPUT */
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], false); }
 }
@@ -228,7 +231,7 @@ int main(void)
 
     /* TEST-CODE, mode: this MCU toggles, the other supervises & reports */
     gpio_init();
-    delay_ms(1000);
+    delay_ms(2000);
 
     /* Switch on GPIO for 100ms in a row */
     toggle_gpio_one_high(leds, N_LEDS);

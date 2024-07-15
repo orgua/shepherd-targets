@@ -57,9 +57,9 @@ const uint32_t i2c[]  = {I2C_SCL, I2C_SDA, I2C_INT};
 const uint32_t c2c[]  = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
 
 const uint32_t all[]  = {
-        GPIO0, GPIO2,   GPIO3,   GPIO4,    GPIO5,    GPIO6,    GPIO7,    GPIO8,
-        GPIO9,   PWRGDL,  PWRGDH,   PIN_LED0, PIN_LED2, I2C_SCL,  I2C_SDA,
-        I2C_INT, C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
+        GPIO0,   GPIO2,   GPIO3,   GPIO4,    GPIO5,    GPIO6,    GPIO7,
+        GPIO8,   GPIO9,   PWRGDL,  PWRGDH,   PIN_LED0, PIN_LED2, I2C_SCL,
+        I2C_SDA, I2C_INT, C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
 }; // except uart-tx
 
 #define N_PINS  sizeof(pins) / sizeof(uint32_t)
@@ -221,18 +221,18 @@ int main(void)
         for (uint8_t count = 0; count < N_ALL; count++) { set_gpio_out(all[count], false); }
         uint8_t num_new        = 0x00;
         uint8_t num_old        = 0xFF;
-        uint8_t triggered[255] = {0};
+        uint8_t triggered[N_ALL] = {0};
         printf("\r\nGPIO WATCHER\r\n");
         while (1)
         {
             num_new = gpio_watcher(all, N_ALL);
-            if ((num_new < 0xFF) && (num_new != num_old))
+            if ((num_new < N_ALL) && (num_new != num_old))
             {
                 printf("%u triggered\r\n", num_new);
                 num_old            = num_new;
                 triggered[num_new] = 1;
                 uint8_t sum        = 0;
-                for (uint8_t pos = 0; pos < 255; pos++) sum += triggered[pos];
+                for (uint8_t pos = 0; pos < N_ALL; pos++) sum += triggered[pos];
                 if (sum >= N_ALL) { printf("Received all %u shared pins!!\r\n", sum); }
             }
         };

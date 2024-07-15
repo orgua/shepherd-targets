@@ -239,7 +239,7 @@ int main(void)
                 for (uint8_t count = 0; count < N_ALL; count++)
                 {
                     if (map_new & (1 << count)) printf("1");
-                    else print(" ");
+                    else printf(" ");
                 }
                 printf("\r\n");
                 map_old            = map_new;

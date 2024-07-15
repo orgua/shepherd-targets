@@ -1,5 +1,5 @@
 #include <msp430.h>
-#include <msp430fr5962.h>
+#include <msp430fr5994.h>
 #include <stdbool.h>
 #include <stdint.h>
 

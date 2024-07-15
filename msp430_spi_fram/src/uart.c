@@ -2,7 +2,7 @@
 #include "printf.h"
 
 #include <msp430.h>
-#include <msp430fr5962.h>
+#include <msp430fr5994.h>
 
 int uart_init()
 {

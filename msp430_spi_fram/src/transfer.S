@@ -2,7 +2,7 @@
 
 .file "spiloop.s"
 
-#include <msp430fr5962.h>
+#include <msp430fr5994.h>
 
 #define PC r0
 #define SP r1

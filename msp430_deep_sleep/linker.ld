@@ -30,7 +30,7 @@
 /*  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                          */
 /* ============================================================================ */
 
-/* This file supports MSP430FR5962 devices. */
+/* This file supports MSP430FR5994 devices. */
 /* Version: 1.212 */
 /* Default linker script, for normal executables */
 
@@ -447,4 +447,4 @@ SECTIONS
 /* Include peripherals memory map                                           */
 /****************************************************************************/
 
-INCLUDE msp430fr5962_symbols.ld
+INCLUDE msp430fr5994_symbols.ld

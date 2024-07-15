@@ -20,7 +20,7 @@ OUTPUT_DIR := _build
 SRC_DIR := src
 LINKER_SCRIPT:= linker.ld
 
-DEVICE  = MSP430FR5962
+DEVICE  = MSP430FR5994
 
 CSRC_FILES += \
   main.c

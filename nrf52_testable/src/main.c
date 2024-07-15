@@ -213,9 +213,43 @@ int main(void)
      *  - Mode 1: this MCU toggles, the other supervises & reports
      *  - Mode X: start reacting to gpio-signals or uart-messages
      */
-    uint8_t mode = 0;
+    uint8_t mode = 5;
 
-    if (mode == 0)
+    if (mode == 5)
+    {
+        /* this MCU supervises & reports */
+        for (uint8_t count = 0; count < N_ALL; count++) { set_gpio_out(all[count], false); }
+        uint32_t map_new        = 0x00;
+        uint32_t map_old        = 0xFF;
+        uint8_t triggered[N_ALL] = {0};
+        printf("\r\nGPIO WATCHER\r\n");
+        while (1)
+        {
+            map_new = 0;
+            for (uint8_t count = 0; count < N_ALL; count++)
+            {
+                if (get_gpio(all[count]))
+                {
+                    triggered[count] = 1;
+                    map_new |= 1 << count;
+                }
+            }
+            if (map_new != map_old)
+            {
+                for (uint8_t count = 0; count < N_ALL; count++)
+                {
+                    if (map_new & (1 << count)) printf("1");
+                    else print(" ");
+                }
+                printf("\r\n");
+                map_old            = map_new;
+                uint8_t sum        = 0;
+                for (uint8_t pos = 0; pos < N_ALL; pos++) sum += triggered[pos];
+                if (sum >= N_ALL) { printf("Received all %u shared pins!!\r\n", sum); }
+            }
+        };
+    }
+    else if (mode == 0)
     {
         /* this MCU supervises & reports */
         for (uint8_t count = 0; count < N_ALL; count++) { set_gpio_out(all[count], false); }

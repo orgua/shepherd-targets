@@ -15,14 +15,14 @@ Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to
 
 ## Functionality
 
-Mode 0 (default)
+### Mode 0 - Supervisor (default)
 
 - monitor all shared GPIO and report activity via uart
-- NOTE 1: msp-testable is actor (gpio toggle, here mode 1)
-- NOTE 2: requires special Header-Inter-connector that only routes pwr, uart tx, programming (pin 1, 2, 10, 13 - 18)
+- msp-testable-firmware is actor (gpio toggle, here mode 1)
+- NOTE: requires special Header-Inter-connector that only routes pwr, uart tx, programming (pin 1, 2, 10, 13 - 18)
 - NOTE 3: 115200 baud datarate
 
-Mode 1
+### Mode 1 - Actor
 
 - Startup-Routine 1:
   - toggles LEDs, Pins on the shepherd target-port (without UART-TX), I2C pins, chip-to-chip (C2C) pins
@@ -32,7 +32,7 @@ Mode 1
   - (depending on node-id) >=8 repetitions
   - LED0:2 (Target v2.1)
 
-Mode >=2
+### Mode >=2
 
 - UART
     - P0_06 TX, _08 RX (Target v2.1, SDK)

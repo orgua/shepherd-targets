@@ -9,23 +9,51 @@ extern const uint16_t SHEPHERD_NODE_ID;
 /*
     MSP430 Pin-Name to int-Conversion:
     - Port J = 0, Port 1-8 stay same
-    - Num = Port * 8 + Port.Pin
-    - example: P5.5 becomes 5*8+5 = 45
+    - Num = 8 * Port + Port.Pin
+    - example: P5.5 becomes 8 * 5 + 5 = 45
  */
 
-#define PIN_UART_TX 21 // P2.5
-#define PIN_UART_RX 22 // P2.6
-#define PIN_LED0    41 // P5.1 -> powered externally
-#define PIN_LED1    40 // P5.0 -> powered externally
-#define PIN_LED2    0  // PJ.0 -> burns energy-budget
+// Adapted pinout for Target V1.2 (Riotee)
+#define PIN_UART_TX (8 * 2 + 5) // P2.5
+#define PIN_UART_RX (8 * 2 + 6) // P2.6
 
-// with reference to names of shepherd target-port
-unsigned int pins[]  = {43, 42, 19, 20, 38, 30, 6, 22, 45}; // without uart-tx
-unsigned int gpios[] = {43, 42, 19, 20, 38, 30, 6, 21, 22, 45};
+#define GPIO0       PIN_UART_RX
+#define GPIO1       PIN_UART_TX
+#define GPIO2       (8 * 2 + 3) // P2.3
+#define GPIO3       (8 * 2 + 4)
+#define GPIO4       (8 * 4 + 6) // P4.6
+#define GPIO5       (8 * 3 + 6) // P3.6
+#define GPIO6       (8 * 0 + 6) // PJ.6
+#define GPIO7       (8 * 5 + 3) // P5.3
+#define GPIO8       (8 * 5 + 2)
+#define GPIO9       (8 * 5 + 1)
+#define PWRGDL      (8 * 5 + 4)
+#define PWRGDH      (8 * 5 + 5)
 
-unsigned int leds[]  = {PIN_LED0, PIN_LED1, PIN_LED2};
-unsigned int i2c[]   = {53, 52, 59};
-unsigned int c2c[]   = {13, 16, 17, 12, 2};
+#define PIN_LED0    (8 * 5 + 0) // P5.0 -> powered externally
+//#define PIN_LED1    (40) // P5.0 -> powered externally
+#define PIN_LED2    (8 * 0 + 0) // PJ.0 -> burns energy-budget
+
+#define I2C_SCL     (8 * 6 + 5) // P1.08
+#define I2C_SDA     (8 * 6 + 4)
+#define I2C_INT     (8 * 7 + 3)
+
+#define C2C_CLK     (8 * 1 + 5)
+#define C2C_CoPi    (8 * 2 + 0)
+#define C2C_CiPo    (8 * 2 + 1)
+#define C2C_PSel    (8 * 1 + 4)
+#define C2C_GPIO    (8 * 0 + 2)
+
+// index with reference to names of shepherds target-port
+const uint32_t gpios[] = {GPIO0, GPIO1, GPIO2, GPIO3, GPIO4,  GPIO5,
+                          GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH};
+const uint32_t pins[]  = {
+        GPIO0, //GPIO1,
+        GPIO2, GPIO3, GPIO4, GPIO5, GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH}; // without uart-tx
+
+const uint32_t leds[] = {PIN_LED0, PIN_LED2};
+const uint32_t i2c[]  = {I2C_SCL, I2C_SDA, I2C_INT};
+const uint32_t c2c[]  = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
 
 #define N_PINS  sizeof(pins) / sizeof(unsigned int)
 #define N_GPIOS sizeof(gpios) / sizeof(unsigned int)

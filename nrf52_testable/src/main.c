@@ -12,24 +12,55 @@
 // see shepherd_node_id.c for details
 extern const uint16_t SHEPHERD_NODE_ID;
 
-#define PIN_UART_TX 8  // P0.08
-#define PIN_UART_RX 21 // P0.21
-#define PIN_LED0    16 // P0.16 -> powered externally
-#define PIN_LED1    12 // P0.12 -> powered externally
-#define PIN_LED2    3  // P0.03 -> burns energy-budget
+// Adapted pinout for Target V1.2 (Riotee)
+#define PIN_UART_TX (8)  // P0.08
+#define PIN_UART_RX (21) // P0.21
 
-// with reference to names of shepherds target-port
-const uint32_t pins[]  = {11, 13, 4, 5, 41, 26, 35, 7}; // without uart
-const uint32_t gpios[] = {11, 13, 4, 5, 41, 26, 35, 8, 21, 7};
+#define GPIO0       PIN_UART_RX
+#define GPIO1       PIN_UART_TX
+#define GPIO2       (4)
+#define GPIO3       (5)
+#define GPIO4       (41) // P1.09
+#define GPIO5       (26)
+#define GPIO6       (35) // P1.03
+#define GPIO7       (11)
+#define GPIO8       (13)
+#define GPIO9       (16)
+#define PWRGDL      (23)
+#define PWRGDH      (7)
 
-const uint32_t leds[]  = {PIN_LED0, PIN_LED1, PIN_LED2};
-const uint32_t i2c[]   = {40, 6, 30};
-const uint32_t c2c[]   = {18, 17, 14, 22, 15};
+#define PIN_LED0    (12) // P0.16 -> powered externally
+//#define PIN_LED1    12 // P0.12 -> powered externally
+#define PIN_LED2    (3) // P0.03 -> burns energy-budget
 
-const uint32_t all[]   = {
-        11,       13,       4,  5, 41, 26, 35, 21, 7,  PIN_LED0,
-        PIN_LED1, PIN_LED2, 40, 6, 30, 18, 17, 14, 22, 15,
+#define I2C_SCL     (40) // P1.08
+#define I2C_SDA     (6)
+#define I2C_INT     (30)
+
+#define C2C_CLK     (18)
+#define C2C_CoPi    (17)
+#define C2C_CiPo    (14)
+#define C2C_PSel    (22)
+#define C2C_GPIO    (15)
+
+// index with reference to names of shepherds target-port
+const uint32_t gpios[] = {
+        GPIO0, GPIO1, GPIO2, GPIO3, GPIO4, GPIO5, GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH,
 };
+const uint32_t pins[] = {
+        GPIO0, //GPIO1,
+        GPIO2, GPIO3, GPIO4, GPIO5, GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH,
+}; // without uart-tx
+
+const uint32_t leds[] = {PIN_LED0, PIN_LED2};
+const uint32_t i2c[]  = {I2C_SCL, I2C_SDA, I2C_INT};
+const uint32_t c2c[]  = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
+
+const uint32_t all[]  = {
+        GPIO0, GPIO2,   GPIO3,   GPIO4,    GPIO5,    GPIO6,    GPIO7,    GPIO8,
+        GPIO9,   PWRGDL,  PWRGDH,   PIN_LED0, PIN_LED2, I2C_SCL,  I2C_SDA,
+        I2C_INT, C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
+}; // except uart-tx
 
 #define N_PINS  sizeof(pins) / sizeof(uint32_t)
 #define N_GPIOS sizeof(gpios) / sizeof(uint32_t)
@@ -95,8 +126,7 @@ static inline void delay_ms(const uint32_t duration)
 {
     timer_reset();
     uint32_t duration_us = duration * 1000;
-    while (timer_now_us() < duration_us)
-        ;
+    while (timer_now_us() < duration_us);
 }
 
 static void set_gpio_out(const uint8_t pin_num, const bool enable)
@@ -212,7 +242,7 @@ int main(void)
         /* Switch on used GPIO for 100ms in a row */
         toggle_gpio_one_high(leds, N_LEDS);
 
-        toggle_gpio_one_high(pins, N_PINS);
+        toggle_gpio_one_high(pins, N_PINS); // GPIO without UART
         toggle_gpio_one_high(i2c, N_I2C);
         toggle_gpio_one_high(c2c, N_C2C);
 

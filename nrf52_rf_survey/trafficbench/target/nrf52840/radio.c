@@ -329,24 +329,24 @@ typedef enum Radio_State
 //**************************************************************************************************
 //***** Local (Static) Variables *******************************************************************
 
-static Radio_State    radio_state;
-static uint32_t       timestamp_ready;
-static uint32_t       tx_ccr_disable;
+static Radio_State                            radio_state;
+static uint32_t                               timestamp_ready;
+static uint32_t                               tx_ccr_disable;
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
-uint8_t               rssi_space[NUM_ELEMENTS(rssi_space)];
-volatile uint32_t     rssi_space_num_writing;
-volatile uint32_t     rssi_space_num_written_radio;
+uint8_t                                       rssi_space[NUM_ELEMENTS(rssi_space)];
+volatile uint32_t                             rssi_space_num_writing;
+volatile uint32_t                             rssi_space_num_written_radio;
 
-Rx_Queue_Entry        rx_queue[NUM_ELEMENTS(rx_queue)];
-volatile uint32_t     rx_queue_num_writing;
-volatile uint32_t     rx_queue_num_written_radio;
+Rx_Queue_Entry                                rx_queue[NUM_ELEMENTS(rx_queue)];
+volatile uint32_t                             rx_queue_num_writing;
+volatile uint32_t                             rx_queue_num_written_radio;
 
-volatile uint_fast8_t rx_intermediate_trigger_event;
+volatile uint_fast8_t                         rx_intermediate_trigger_event;
 
-Tx_Ack                tx_ack;
+Tx_Ack                                        tx_ack;
 
 //**************************************************************************************************
 //***** Local Functions ****************************************************************************
@@ -708,8 +708,7 @@ void LED_ISR(MAIN_TIMER_ISR_NAME, LED_MAIN_TIMER_ISR)
 #else
         RSSI_TIMER->CC[2] = 3;
 #endif
-        while (!(RSSI_TIMER->EVENTS_COMPARE[2]))
-            ;
+        while (!(RSSI_TIMER->EVENTS_COMPARE[2]));
 
         // stop radio subsystem
         // NOTE: RSSI_TIMER is stopped (from above). RSSI_TIMER2 is also stopped because we are
@@ -1489,8 +1488,7 @@ Gpi_Fast_Tick_Native radio_start_tx(Gpi_Fast_Tick_Native start_tick,
         NRF_RADIO->TASKS_DISABLE = 1;
 
         assert((x < start_tick, 0));
-        while (0)
-            ;
+        while (0);
     }
 
     GPI_TRACE_RETURN(start_tick);
@@ -1611,8 +1609,7 @@ void radio_wake_at(Gpi_Fast_Tick_Native tick)
     GPI_TRACE_FUNCTION();
 
     assert(RS_IDLE == radio_state);
-    while (RS_IDLE != radio_state)
-        ;
+    while (RS_IDLE != radio_state);
 
     CCR_MAIN_COMPARE                             = tick;
     MAIN_TIMER->EVENTS_COMPARE[CCI_MAIN_COMPARE] = 0;

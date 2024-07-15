@@ -156,8 +156,7 @@ void lf_rtc_start(void)
     /* Start LFCLK in LFRC low power mode */
     NRF_CLOCK->LFRCMODE |= 1;
     NRF_CLOCK->TASKS_LFCLKSTART = 1;
-    while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0)
-        ;
+    while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0);
     /* Use RTC to wait for 500ms until everything has settled */
     NRF_RTC0->CC[0]       = 32768 / 2;
     NRF_RTC0->EVTENSET    = RTC_EVTENSET_COMPARE0_Msk;

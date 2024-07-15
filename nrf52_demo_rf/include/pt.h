@@ -27,10 +27,7 @@ struct pt
     int     isset;
     int     status;
 };
-  #define pt_init()                                                                                \
-      {                                                                                            \
-          .isset = 0, .status = 0                                                                  \
-      }
+  #define pt_init() {.isset = 0, .status = 0}
   #define pt_begin(pt)                                                                             \
       do {                                                                                         \
           if ((pt)->isset) { longjmp((pt)->env, 0); }                                              \
@@ -56,10 +53,7 @@ struct pt
     void *label;
     int   status;
 };
-  #define pt_init()                                                                                \
-      {                                                                                            \
-          .label = NULL, .status = 0                                                               \
-      }
+  #define pt_init() {.label = NULL, .status = 0}
   #define pt_begin(pt)                                                                             \
       do {                                                                                         \
           if ((pt)->label != NULL) { goto *(pt)->label; }                                          \
@@ -86,10 +80,7 @@ struct pt
     int label;
     int status;
 };
-  #define pt_init()                                                                                \
-      {                                                                                            \
-          .label = 0, .status = 0                                                                  \
-      }
+  #define pt_init() {.label = 0, .status = 0}
   #define pt_begin(pt)                                                                             \
       switch ((pt)->label)                                                                         \
       {                                                                                            \
@@ -166,10 +157,7 @@ struct pt
         unsigned int r;                                                                            \
         unsigned int w;                                                                            \
     }
-#define pt_queue_init()                                                                            \
-    {                                                                                              \
-        .r = 0, .w = 0                                                                             \
-    }
+#define pt_queue_init()      {.r = 0, .w = 0}
 #define pt_queue_len(q)      (sizeof((q)->buf) / sizeof((q)->buf[0]))
 #define pt_queue_cap(q)      ((q)->w - (q)->r)
 #define pt_queue_empty(q)    ((q)->w == (q)->r)
@@ -189,10 +177,7 @@ struct pt
     {                                                                                              \
         int s;                                                                                     \
     }
-#define pt_event_init()                                                                            \
-    {                                                                                              \
-        .s = 0                                                                                     \
-    }
+#define pt_event_init()   {.s = 0}
 #define pt_event_get(e)   (e)->s
 #define pt_event_set(e)   (e)->s = 1
 #define pt_event_clear(e) (e)->s = 0

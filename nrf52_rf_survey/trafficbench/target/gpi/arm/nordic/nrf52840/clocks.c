@@ -305,8 +305,7 @@ void gpi_milli_sleep(uint16_t ms)
 
     tick += (Gpi_Fast_Tick_Native) ms * TICKS_PER_MS;
 
-    while (gpi_tick_compare_fast_native(gpi_tick_fast_native(), tick) <= 0)
-        ;
+    while (gpi_tick_compare_fast_native(gpi_tick_fast_native(), tick) <= 0);
 }
 
 //*************************************************************************************************
@@ -332,8 +331,7 @@ void gpi_micro_sleep(uint16_t us)
 
     tick += (Gpi_Fast_Tick_Native) us * TICKS_PER_US;
 
-    while (gpi_tick_compare_fast_native(gpi_tick_fast_native(), tick) <= 0)
-        ;
+    while (gpi_tick_compare_fast_native(gpi_tick_fast_native(), tick) <= 0);
 }
 
 //**************************************************************************************************

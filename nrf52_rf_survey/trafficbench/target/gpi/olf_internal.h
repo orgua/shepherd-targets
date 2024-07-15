@@ -94,7 +94,7 @@
         {                                                                                          \
             case 1: return name##_8(_param_);                                                      \
             case 2: return name##_16(_param_);                                                     \
-            default: assert(0); return (return_type) -1; /* must not happen */                     \
+            default: assert(0); return (return_type) - 1; /* must not happen */                    \
         }                                                                                          \
     }
 
@@ -106,7 +106,7 @@
             case 1: return name##_8(_param_);                                                      \
             case 2: return name##_16(_param_);                                                     \
             case 4: return name##_32(_param_);                                                     \
-            default: assert(0); return (return_type) -1; /* must not happen */                     \
+            default: assert(0); return (return_type) - 1; /* must not happen */                    \
         }                                                                                          \
     }
 
@@ -119,7 +119,7 @@
             case 1: return name##_8(_param_, _param2_);                                            \
             case 2: return name##_16(_param_, _param2_);                                           \
             case 4: return name##_32(_param_, _param2_);                                           \
-            default: assert(0); return (return_type) -1; /* must not happen */                     \
+            default: assert(0); return (return_type) - 1; /* must not happen */                    \
         }                                                                                          \
     }
 

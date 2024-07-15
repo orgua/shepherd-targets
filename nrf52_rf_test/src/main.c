@@ -34,8 +34,7 @@ static inline void    delay_ms(const uint32_t duration)
 {
     timer_reset();
     uint32_t duration_us = duration * 1000;
-    while (timer_now_us() < duration_us)
-        ;
+    while (timer_now_us() < duration_us);
 }
 
 int main(void)

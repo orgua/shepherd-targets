@@ -185,8 +185,7 @@ static inline void gpi_uart_write(const void *s, unsigned int len)
     if (NRF_UARTE0->EVENTS_TXSTARTED)
     {
         NRF_UARTE0->EVENTS_TXSTARTED = 0;
-        while (!(NRF_UARTE0->EVENTS_ENDTX))
-            ;
+        while (!(NRF_UARTE0->EVENTS_ENDTX));
     }
 
     // start TX
@@ -195,8 +194,7 @@ static inline void gpi_uart_write(const void *s, unsigned int len)
 
     // wait until TX has been started and TXD.PTR and TXD.MAXCNT can be accessed again
     // NOTE: TXD.PTR and TXD.MAXCNT are double-buffered (see spec. 4413_417 v1.2 page 511)
-    while (!(NRF_UARTE0->EVENTS_TXSTARTED))
-        ;
+    while (!(NRF_UARTE0->EVENTS_TXSTARTED));
 }
 
 #endif
@@ -219,8 +217,7 @@ static inline unsigned int gpi_uart_read(void *s, unsigned int max_len)
 
     NRF_UARTE0->TASKS_STARTRX = 1;
 
-    while (!(NRF_UARTE0->EVENTS_ENDRX))
-        ;
+    while (!(NRF_UARTE0->EVENTS_ENDRX));
 
     return (NRF_UARTE0->EVENTS_ERROR) ? 0 : max_len;
 }
@@ -366,8 +363,7 @@ int __attribute__((weak)) __SEGGER_RTL_X_file_write(FILE *stream, const char *s,
                     // infinite loop trap. We do not use assert() because assert() probably would try
                     // to print something out, but the print stack is the origin of the problem.
       #ifndef NDEBUG
-            while (!((i >= 0) || is_tx_running))
-                ;
+            while (!((i >= 0) || is_tx_running));
       #endif
 
             if (i >= 0) tx_buffer_free_map &= ~(1u << i);
@@ -470,8 +466,7 @@ int __attribute__((weak)) __SEGGER_RTL_X_file_write(FILE *stream, const char *s,
     // wait until transmission has finished (so data buffer can be released for sure)
     // NOTE: TXSTARTED is used as a marker for open transmissions
     if (NRF_UARTE0->EVENTS_TXSTARTED)
-        while (!(NRF_UARTE0->EVENTS_ENDTX))
-            ;
+        while (!(NRF_UARTE0->EVENTS_ENDTX));
 
     #endif // GPI_STDOUT_INTERRUPT_ENABLED
 
@@ -511,8 +506,7 @@ int debug_putchar(int c, __printf_tag_ptr file)
     gpi_uart_write(buf, len);
 
     // wait until transmission has finished
-    while (!(NRF_UARTE0->EVENTS_ENDTX))
-        ;
+    while (!(NRF_UARTE0->EVENTS_ENDTX));
 
     return c;
 }
@@ -559,8 +553,7 @@ int __attribute__((weak)) getchar()
 {
     uint8_t c;
 
-    while (!gpi_uart_read(&c, 1))
-        ;
+    while (!gpi_uart_read(&c, 1));
 
     return c;
 }
@@ -576,8 +569,7 @@ void gpi_stdin_flush()
 
     NRF_UARTE0->EVENTS_ENDRX  = 0;
     NRF_UARTE0->TASKS_FLUSHRX = 1;
-    while (!(NRF_UARTE0->EVENTS_ENDRX))
-        ;
+    while (!(NRF_UARTE0->EVENTS_ENDRX));
 }
 
 // getsn()

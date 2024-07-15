@@ -222,7 +222,7 @@
       /* global marker variable, declared as common */                                             \
       const gpi_resource_declaration_##id __attribute__((common)) gpi_resource_reservation_##id;   \
       /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
-      typedef char gpi_resource_reservation_##id##_
+      typedef char                                                gpi_resource_reservation_##id##_
 
   #define _GPI_RESOURCE_RESERVE(id)                                                                \
       /* global marker variable, declared as non-common */                                         \
@@ -253,7 +253,7 @@
       /* global marker variable, declared as common */                                             \
       const char *const __attribute__((common)) gpi_resource_reservation_##id;                     \
       /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
-      typedef char gpi_resource_reservation_##id##_
+      typedef char                              gpi_resource_reservation_##id##_
 
   #define _GPI_RESOURCE_RESERVE(id)                                                                \
       extern const char                            gpi_resource_declaration_##id[];                \
@@ -271,7 +271,7 @@
       /* global marker variable, declared as common */                                             \
       const char __attribute__((common)) gpi_resource_reservation_##id;                            \
       /* additional typedef used to catch SHARED and non-SHARED in same module */                  \
-      typedef char gpi_resource_reservation_##id##_
+      typedef char                       gpi_resource_reservation_##id##_
 
   #define _GPI_RESOURCE_RESERVE(id)                                                                \
       /* global marker variable, declared as non-common */                                         \

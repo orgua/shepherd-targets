@@ -506,11 +506,9 @@ void gpi_platform_init()
     // that do not rely on clock accuracy.
     // ATTENTION: Since LFCLK may have been unstable when we initialized the RTC (see above),
     // we wait until RTC started up for sure (see spec. 4413_417 v1.0 page 339 START task delay)
-    while (!(NRF_CLOCK->EVENTS_HFCLKSTARTED && NRF_CLOCK->EVENTS_LFCLKSTARTED))
-        ;
+    while (!(NRF_CLOCK->EVENTS_HFCLKSTARTED && NRF_CLOCK->EVENTS_LFCLKSTARTED));
     _gpi_clocks_rtc->EVENTS_TICK = 0;
-    while (!(_gpi_clocks_rtc->EVENTS_TICK))
-        ;
+    while (!(_gpi_clocks_rtc->EVENTS_TICK));
 
 // if !VHT: disable RTC->EVENTS_TICK (not needed anymore)
 #if !GPI_HYBRID_CLOCK_USE_VHT
@@ -564,22 +562,18 @@ void gpi_sleep()
 void gpi_nrf_uicr_erase()
 {
     // set erase-enable mode
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
     NRF_NVMC->CONFIG = BV_BY_NAME(NVMC_CONFIG_WEN, Een);
 
     // erase UICR
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
     NRF_NVMC->ERASEUICR = BV_BY_NAME(NVMC_ERASEUICR_ERASEUICR, Erase);
 
     // go back to read-only mode
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
     NRF_NVMC->CONFIG = BV_BY_NAME(NVMC_CONFIG_WEN, Ren);
 
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
 }
 
 //**************************************************************************************************
@@ -592,12 +586,10 @@ void gpi_nrf_uicr_write(uintptr_t dest, const void *src, size_t size)
     if (0 == size) return;
 
     // set write-enable mode
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
     NRF_NVMC->CONFIG = BV_BY_NAME(NVMC_CONFIG_WEN, Wen);
 
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
 
     // write UICR words
     while (size > 0)
@@ -615,8 +607,7 @@ void gpi_nrf_uicr_write(uintptr_t dest, const void *src, size_t size)
         // optimization level 3 enabled). We add a tiny sleep period to circumvent that.
         // The sleep does not hurt because writing a single word takes much more time
         // anyhow (4413_417 v1.0: typ. 41us).
-        while (!BV_TEST_BY_NAME(NRF_NVMC->READYNEXT, NVMC_READYNEXT_READYNEXT, Ready))
-            ;
+        while (!BV_TEST_BY_NAME(NRF_NVMC->READYNEXT, NVMC_READYNEXT_READYNEXT, Ready));
         NRF_UICR->CUSTOMER[dest >> 2] = t;
         gpi_micro_sleep(2);
 
@@ -626,12 +617,10 @@ void gpi_nrf_uicr_write(uintptr_t dest, const void *src, size_t size)
     }
 
     // go back to read-only mode
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
     NRF_NVMC->CONFIG = BV_BY_NAME(NVMC_CONFIG_WEN, Ren);
 
-    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready))
-        ;
+    while (!BV_TEST_BY_NAME(NRF_NVMC->READY, NVMC_READY_READY, Ready));
 }
 
 //**************************************************************************************************

@@ -5,6 +5,7 @@ run this script after compilation (with segger studio), it will
 - build hex-files with patched node-id
 
 """
+
 import os
 import shutil
 from pathlib import Path

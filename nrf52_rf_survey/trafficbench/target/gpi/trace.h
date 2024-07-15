@@ -136,8 +136,9 @@ _gpi_trace_filter_path_0(const char *s, size_t a, size_t b)
 
     // middle layer functions
   #define _GPI_TRACE_FILTER_PATH_x(x, y)                                                           \
-      static inline __attribute__((always_inline, optimize("O3")))                                 \
-      size_t _gpi_trace_filter_path_##y(const char *s, size_t a, size_t b)                         \
+      static inline                                                                                \
+              __attribute__((always_inline, optimize("O3"))) size_t _gpi_trace_filter_path_##y(    \
+                      const char *s, size_t a, size_t b)                                           \
       {                                                                                            \
           if (a == b) return ((s[a] == '/') || (s[a] == '\\')) ? a + 1 : 0;                        \
           size_t c = _gpi_trace_filter_path_##x(s, a + (b - a) / 2 + 1, b);                        \
@@ -707,12 +708,11 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
 #endif
 
 #define GPI_TRACE_TYPE_FORMAT_LUT                                                                  \
-    {                                                                                              \
-        GPI_TRACE_TYPE_FORMAT_DEFAULT, GPI_TRACE_TYPE_FORMAT_FAILED, GPI_TRACE_TYPE_FORMAT_OK,     \
-                GPI_TRACE_TYPE_FORMAT_ERROR, GPI_TRACE_TYPE_FORMAT_WARNING,                        \
-                GPI_TRACE_TYPE_FORMAT_INFO, GPI_TRACE_TYPE_FORMAT_VERBOSE,                         \
-                GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW, GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW             \
-    }
+    {GPI_TRACE_TYPE_FORMAT_DEFAULT,     GPI_TRACE_TYPE_FORMAT_FAILED,                              \
+     GPI_TRACE_TYPE_FORMAT_OK,          GPI_TRACE_TYPE_FORMAT_ERROR,                               \
+     GPI_TRACE_TYPE_FORMAT_WARNING,     GPI_TRACE_TYPE_FORMAT_INFO,                                \
+     GPI_TRACE_TYPE_FORMAT_VERBOSE,     GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW,                        \
+     GPI_TRACE_TYPE_FORMAT_PROGRAM_FLOW}
 
                                 ASSERT_CT_STATIC(1 ==
                                                  _GPI_TRACE_TYPE_INDEX(GPI_TRACE_MSG_TYPE_FAILED));

@@ -101,8 +101,8 @@
 // helper function for timestamp comparisons
 // return value indicates a in relation to b: </> 0 : a is earlier/later than b (== 0 : a equals b)
 #define _GPI_TICK_COMPARE_FUNCTION(name, type)                                                     \
-    static inline __attribute__((always_inline))                                                   \
-    int_fast8_t gpi_tick_compare_##name(type a, type b)                                            \
+    static inline                                                                                  \
+            __attribute__((always_inline)) int_fast8_t gpi_tick_compare_##name(type a, type b)     \
     {                                                                                              \
         ASSERT_CT(sizeof(a) <= 8, gpi_tick_compare_##name##_overflow);                             \
         a -= b;                                                                                    \

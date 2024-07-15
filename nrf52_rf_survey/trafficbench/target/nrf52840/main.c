@@ -124,8 +124,7 @@ int                   main()
     // <https://gitlab.ethz.ch/tec/public/flocklab/wiki/-/wikis/Man/XmlConfig#gpio-tracing-service-configuration>
     // Besides that, it seems that the UART receiver has also a start delay.
     // Waiting for SIG1 ensures that everything is ready.
-    while (!gpi_button_read(GPI_BUTTON_SIG1))
-        ;
+    while (!gpi_button_read(GPI_BUTTON_SIG1));
 #endif
 
     GPI_TRACE_FLUSH();
@@ -162,8 +161,7 @@ int                   main()
     if (node_id >= NUM_ELEMENTS(nodes))
     {
         printf("!!! PANIC: node mapping not found for node %u !!!\n", physical_node_id);
-        while (1)
-            ;
+        while (1);
     }
 #endif
     printf("mapped physical node %u to logical id %u\n", physical_node_id, node_id);

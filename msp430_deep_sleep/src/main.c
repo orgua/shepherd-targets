@@ -56,12 +56,12 @@ static void gpio_init(void)
     P4REN  = BIT6;
 
     P5OUT  = 0u;
-    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT5);
+    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
     P5SEL0 = 0u;
     P5SEL1 = 0u;
     P5IE   = 0u;
     P5IFG  = 0u;
-    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT5;
+    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5;
 
     P6OUT  = 0u;
     P6DIR  = ~(BIT4 | BIT5);

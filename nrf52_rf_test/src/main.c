@@ -8,7 +8,7 @@
 #include "peripherals.h"
 #include "radio.h"
 
-#define GPIO_LED 16
+#define GPIO_LED (12)
 
 // see shepherd_node_id.c for details
 extern const uint16_t SHEPHERD_NODE_ID;

@@ -167,7 +167,7 @@ static inline void uart_init(uint32_t baudrate)
   #define CTS_PIN 4
 #endif
 
-        // TXD
+        // TXD, Shepherd-Adaption
         NRF_P0->OUTSET = BV(8);
         NRF_P0->PIN_CNF[8] =
                 BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
@@ -177,7 +177,7 @@ static inline void uart_init(uint32_t baudrate)
                                BV_BY_VALUE(UARTE_PSEL_TXD_PIN, 8) |
                                BV_BY_NAME(UARTE_PSEL_TXD_CONNECT, Connected);
 
-        // RXD
+        // RXD, Shepherd-Adaption
         NRF_P0->PIN_CNF[21] =
                 BV_BY_NAME(GPIO_PIN_CNF_DIR, Input) | BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect) |
                 BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup) | BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);

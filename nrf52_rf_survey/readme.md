@@ -39,10 +39,10 @@ specially for shepherd
 - disable button press to start (section removed in main.c)
 - hardcoded GPI_ARCH_BOARD_nRF_PCA10056 as hardware
   - miss-use that board as shepherd-target (adapt platform.c/.h)
-  - actively use led1-led3
-  - remove other gpio
-  - use correct uart-pins
-  - set button-macros to harmless gpio
+  - actively use led1-led3 (`GPI_LED_x` in `platform.h`)
+  - remove other gpio 
+  - use correct uart-pins (`UARTE_PSEL_TXD_PIN` & `UARTE_PSEL_RXD_PIN` in `platform.c`)
+  - set button-macros to harmless gpio (`GPI_BUTTON_x` in `platform.h`)
 
 ## TODO:
 

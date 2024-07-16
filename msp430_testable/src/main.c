@@ -55,11 +55,18 @@ const uint32_t leds[]  = {PIN_LED0, PIN_LED2};
 const uint32_t i2c[]   = {I2C_SCL, I2C_SDA, I2C_INT};
 const uint32_t c2c[]   = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
 
-#define N_PINS  sizeof(pins) / sizeof(unsigned int)
-#define N_GPIOS sizeof(gpios) / sizeof(unsigned int)
-#define N_LEDS  sizeof(leds) / sizeof(unsigned int)
-#define N_I2C   sizeof(i2c) / sizeof(unsigned int)
-#define N_C2C   sizeof(c2c) / sizeof(unsigned int)
+const uint32_t all[]  = {
+        GPIO0,   GPIO2,   GPIO3,   GPIO4,    GPIO5,    GPIO6,    GPIO7,
+        GPIO8,   GPIO9,   PWRGDL,  PWRGDH,   PIN_LED0, PIN_LED2, I2C_SCL,
+        I2C_SDA, I2C_INT, C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
+}; // except uart-tx
+
+#define N_PINS  sizeof(pins) / sizeof(uint32_t)
+#define N_GPIOS sizeof(gpios) / sizeof(uint32_t)
+#define N_LEDS  sizeof(leds) / sizeof(uint32_t)
+#define N_I2C   sizeof(i2c) / sizeof(uint32_t)
+#define N_C2C   sizeof(c2c) / sizeof(uint32_t)
+#define N_ALL   sizeof(all) / sizeof(uint32_t)
 
 /* PLATFORM SPECIFIC CODE */
 
@@ -74,7 +81,7 @@ static inline void delay_ms(const uint32_t time)
        - boot with 5MHz / 128 = 39 kHz
        - above loop takes 2 clock-cycles
     */
-    const uint32_t cycles = time * 18; // 16000; -> very slow without changes
+    const uint32_t cycles = time * 33; // 16000; -> very slow without changes
     delay_cycles(cycles);
 }
 
@@ -204,17 +211,16 @@ static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
 {
     /* set array to output */
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], true); }
-    delay_ms(50);
+    delay_ms(100);
     /* switch each pin on in array */
     for (uint8_t count = 0; count < array_size; count++)
     {
-        delay_ms(50);
         set_gpio_state(array[count], true);
         delay_ms(100);
         set_gpio_state(array[count], false);
     }
-    delay_ms(50);
     /* set pins to INPUT */
+	delay_ms(100);
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], false); }
 }
 
@@ -236,9 +242,8 @@ int main(void)
     /* Switch on GPIO for 100ms in a row */
     toggle_gpio_one_high(leds, N_LEDS);
 
-    toggle_gpio_one_high(pins, N_PINS);
-    toggle_gpio_one_high(i2c, N_I2C);
-    toggle_gpio_one_high(c2c, N_C2C);
+	/* run through all GPIO - to present them to the supervisor */
+    toggle_gpio_one_high(all, N_ALL);
 
     /* Switch on LEDs for 100ms in a row (>=8 Reps, depending on node-id) */
     uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;

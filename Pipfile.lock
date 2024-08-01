@@ -1306,15 +1306,15 @@
         },
         "xonsh": {
             "hashes": [
-                "sha256:02dd4263fbddb25ad693e3f1ae8652dd9476c6530deb276a76e5909e2dceb06e",
-                "sha256:299be7f25f8dfb21d9a62756154f408674809025ed7871b03f70d9507987509e",
-                "sha256:9056cb71babdbc27f32194fcd63266d1a1dfab3acd5b91e2a0a7284573328a70",
-                "sha256:a0e1f181fabd1fa9d322054677ab7e7cbd258d155d70ccff49529a6d9f9c50c3",
-                "sha256:d2d1091ef5643dfe80e06fef081ee0bb10518135ed2103b11cd5fedc558fadbc"
+                "sha256:c5073d154f14c210d855aff4863f69ce9215be084ed5562899bdf1c934f7a53b",
+                "sha256:ca48d859cdccdf38b6d42277f5aa32ad2e02899fd80e86a67bd81a483f9b676a",
+                "sha256:df8010b4af4eeaa7602a0bcd590f2b613337b66d255fcd8478f43046e4e2e6bc",
+                "sha256:e666aeed5503178d671a0a3b6347510b640bb7c2b36ef0e1794252947c799351",
+                "sha256:efebe62cfe101b48772b732b456293608abb6008e96b225ff3c32307241b10bb"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==0.17.0"
+            "version": "==0.18.2"
         },
         "zstandard": {
             "hashes": [

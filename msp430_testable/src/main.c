@@ -36,7 +36,7 @@ extern const uint16_t SHEPHERD_NODE_ID;
 
 #define I2C_SCL     (8 * 6 + 5) // P1.08
 #define I2C_SDA     (8 * 6 + 4)
-#define I2C_INT     (8 * 7 + 3)
+#define I2C_INT     (8 * 7 + 3)  // TODO: output of RTC
 
 #define C2C_CLK     (8 * 1 + 5)
 #define C2C_CoPi    (8 * 2 + 0)
@@ -211,7 +211,6 @@ static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
 {
     /* set array to output */
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], true); }
-    delay_ms(100);
     /* switch each pin on in array */
     for (uint8_t count = 0; count < array_size; count++)
     {
@@ -220,7 +219,6 @@ static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
         set_gpio_state(array[count], false);
     }
     /* set pins to INPUT */
-	delay_ms(100);
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], false); }
 }
 

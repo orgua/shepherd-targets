@@ -1,8 +1,10 @@
 # MSP430 as SPI-FRAM (non-volatile memory)
 
-The code in this repository turns an MSP430FR5962 microcontrollers into a general purpose non-volatile memory controlled via SPI.
+The code in this repository turns an MSP430FR59XX microcontrollers into a general purpose non-volatile memory controlled via SPI.
 
 The MSP430FR59XX series of microcontrollers come with on-board ferroelectric RAM (FRAM). In contrast to SRAM, this memory is non-volatile, i.e. it keeps its state without requiring periodic refreshes and without requiring a power supply. In contrast to flash memory, which must be erased before being written, FRAM can be treated just like SRAM and writing consumes very little energy.
+
+NOTE: Makefile & linker are currently configured for the MSP430FR5994 (256 KB FRAM) instead of Riotees original FR5962 (128 KB)
 
 ## Interface
 

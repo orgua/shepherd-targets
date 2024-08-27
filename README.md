@@ -23,13 +23,19 @@ Hardware v1.0 uses
 
 - nRF52840 (Panasonic PAN1780)
 - MSP430FR5962 (TI)
-- RTC
+- RTC AB1805
 
 ![Target_nRF_MSP430](./media/shepherd_nRF_FRAM_Target_v1.0_photo_front_with_header.jpg)
 
 BOM, gerber-files and schematics are available in the [PCB-Directory](https://github.com/orgua/shepherd-targets/tree/main/hardware). This folder also contains a guide for testing new target-PCBs.
 
 ![Target_nRF_MSP430_render](./media/pcb_rendering_nRF_MSRP430_FRAM_Target.png)
+
+Hardware v1.2 uses
+
+- Nordic nRF52840 
+- TI MSP430FR5994 (TI)
+- RTC AB1805
 
 ### Features
 

@@ -222,7 +222,7 @@ int main(void)
         uint32_t map_new        = 0x00;
         uint32_t map_old        = 0xFF;
         uint8_t triggered[N_ALL] = {0};
-        printf("\r\nGPIO WATCHER\r\n");
+        printf("\r\nGPIO WATCHER (%u pins)\r\n", N_ALL);
         while (1)
         {
             map_new = 0;

@@ -38,26 +38,30 @@ The testbed still used Cape v2.4 as of 2024-08.
 |          | -     | C2C.PSel | P0.22  | P1.4    | msp.A0.PSel                 |
 |          |       | C2C.GPIO | P0.15  | PJ.2    |                             |
 
+- A, B, C in DIR-Column refer to switch-groups
+
 ## Connections to Cape V2.4 via Adapter
 
 The 40-pin Edge-Connector of Target V1.3 has an adapter to interface the 2x9 Header of Cape V2.4. This keeps connections compatible to Target V1.0.
 
-| SHP-V24 | Dir   | Riotee   | nRF52 | msp430  | Description                 |
-|---------|-------|----------|-------|---------|-----------------------------|
-| GPIO0   | -->   | GPIO.7   | P0.11 | P5.3    | msp.B1.PSel                 |
-| GPIO1   | <--   | GPIO.8   | P0.13 | P5.2    | msp.B1.CLK                  |
-| GPIO2   | <-D-> | GPIO.2   | P0.04 | P2.3    | msp.A1.PSel                 |
-| GPIO3   | <-D-> | GPIO.3   | P0.05 | P2.4    | msp.A1.CLK                  |
-| GPIO4   | <-D-> | GPIO.4   | P1.09 | P4.6    |                             |
-| GPIO5   | <-D-> | GPIO.5   | P0.26 | P3.6    |                             |
-| GPIO6   | <--   | GPIO.6   | P1.03 | PJ.6    |                             |
-| GPIO7   | <--   | GPIO.1   | P0.08 | P2.5    | UART Target-TX, msp.A1.CoPi |
-| GPIO8   | <-C-> | GPIO.0   | P0.21 | P2.6    | UART Target-RX, msp.A1.CiPo |
-| BATOK   | -->   | PG_H     | P0.07 | P5.5    |                             |
-| prog11  | -->   | SWD.CLK  | swdclk | -      |                             |
-| prog12  | <-A-> | SWD.IO   | swdio | -       |                             |
-| prog21  | -->   | SBW.CLK  | -     | sbwtck  |                             |
-| prog22  | <-B-> | SBW.IO   | -     | sbwtdio |                             |
+| SHP-V24 | Dir   | Riotee   | nRF52  | msp430  | Description                 |
+|---------|-------|----------|--------|---------|-----------------------------|
+| GPIO0   | -->   | GPIO.7   | P0.11  | P5.3    | msp.B1.PSel                 |
+| GPIO1   | <--   | GPIO.8   | P0.13  | P5.2    | msp.B1.CLK                  |
+| GPIO2   | <-D-> | GPIO.2   | P0.04  | P2.3    | msp.A1.PSel                 |
+| GPIO3   | <-D-> | GPIO.3   | P0.05  | P2.4    | msp.A1.CLK                  |
+| GPIO4   | <-D-> | GPIO.4   | P1.09  | P4.6    |                             |
+| GPIO5   | <-D-> | GPIO.5   | P0.26  | P3.6    |                             |
+| GPIO6   | <--   | GPIO.6   | P1.03  | PJ.6    |                             |
+| GPIO7   | <--   | GPIO.1   | P0.08  | P2.5    | UART Target-TX, msp.A1.CoPi |
+| GPIO8   | <-C-> | GPIO.0   | P0.21  | P2.6    | UART Target-RX, msp.A1.CiPo |
+| BATOK   | -->   | PG_H     | P0.07  | P5.5    |                             |
+| prog11  | -->   | SWD.CLK  | swdclk | -       |                             |
+| prog12  | <-A-> | SWD.IO   | swdio  | -       |                             |
+| prog21  | -->   | SBW.CLK  | -      | sbwtck  |                             |
+| prog22  | <-B-> | SBW.IO   | -      | sbwtdio |                             |
+
+- A, B, C, D in DIR-Column refer to switch-groups
 
 ## Difference to Riotee
 

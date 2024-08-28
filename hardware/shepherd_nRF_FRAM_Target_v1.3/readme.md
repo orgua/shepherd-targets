@@ -69,3 +69,11 @@ Note: A, B, C, D in DIR-Column refer to switch-groups
 - larger msp430FR5994
 - 16x GPIO instead of 10x
 - no power-converters, but over-voltage-protection and under-volt-switch for nRF
+
+## Cost of Production
+
+- PCB-Fabrication 190 € / 30 n
+  - 1.6mm thick, 4 layer, .3mm vias - filled and capped, .1 mm traces and distance
+- parts for 1 n when ordering 10 n = 20.60 €
+- Pick & place:
+  - 29 different parts, 122 in total

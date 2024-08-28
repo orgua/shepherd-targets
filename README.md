@@ -33,7 +33,7 @@ BOM, gerber-files and schematics are available in the [PCB-Directory](https://gi
 
 Hardware v1.2 uses
 
-- Nordic nRF52840 
+- Nordic nRF52840
 - TI MSP430FR5994 (TI)
 - RTC AB1805
 

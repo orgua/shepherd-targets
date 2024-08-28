@@ -219,9 +219,9 @@ int main(void)
     {
         /* this MCU supervises & reports */
         for (uint8_t count = 0; count < N_ALL; count++) { set_gpio_out(all[count], false); }
-        uint32_t map_new        = 0x00;
-        uint32_t map_old        = 0xFF;
-        uint8_t triggered[N_ALL] = {0};
+        uint32_t map_new          = 0x00;
+        uint32_t map_old          = 0xFF;
+        uint8_t  triggered[N_ALL] = {0};
         printf("\r\nGPIO WATCHER (%u pins)\r\n", N_ALL);
         while (1)
         {
@@ -242,8 +242,8 @@ int main(void)
                     else printf(" ");
                 }
                 printf("\r\n");
-                map_old            = map_new;
-                uint8_t sum        = 0;
+                map_old     = map_new;
+                uint8_t sum = 0;
                 for (uint8_t pos = 0; pos < N_ALL; pos++) sum += triggered[pos];
                 if (sum >= N_ALL) { printf("Received all %u shared pins!!\r\n", sum); }
             }
@@ -253,8 +253,8 @@ int main(void)
     {
         /* this MCU supervises & reports */
         for (uint8_t count = 0; count < N_ALL; count++) { set_gpio_out(all[count], false); }
-        uint8_t num_new        = 0x00;
-        uint8_t num_old        = 0xFF;
+        uint8_t num_new          = 0x00;
+        uint8_t num_old          = 0xFF;
         uint8_t triggered[N_ALL] = {0};
         printf("\r\nGPIO WATCHER\r\n");
         while (1)

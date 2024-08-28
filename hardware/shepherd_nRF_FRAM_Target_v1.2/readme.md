@@ -32,7 +32,7 @@ Shared pins between MCUs and Observer, **Cape V2.5 (not produced yet)**
 |          |       | C2C.GPIO | P0.15  | PJ.2    |                             |
 
 **Note**:
-- SHP-HDR Spec of Cape V2.5 
+- SHP-HDR Spec of Cape V2.5
 - Testbed has still v2.4, 2024-08 - see table for target v1.0
 
 ## Verifying the PCBs
@@ -128,63 +128,63 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 ```A
 GPIO WATCHER
 Missing: 2 12         -> GPIO3, LED2
-Always:  5 8 10 [14]  -> GPIO6, GPIO9, PH                   
-              1      
-          1   1      
-        1 1   1      
-     1  1 1   1      
-     1  1 11  1      
-1    1  1 1   1      
- 1   1  1 1   1      
-   1 1  1 1   1      
-    11  1 1   1      
-     11 1 1   1      
-     1 11 1   1      
-     1  1 1   1      
-     1  111   1      
-     1  1 1   1      
-     1  1 1          
-     1  1 1  1       
-     1  1 1   1      
-     1  1 1     1    
-     1  1 1      1   
-     1  1 1       1  
-     1  1 1        1 
+Always:  5 8 10 [14]  -> GPIO6, GPIO9, PH
+              1
+          1   1
+        1 1   1
+     1  1 1   1
+     1  1 11  1
+1    1  1 1   1
+ 1   1  1 1   1
+   1 1  1 1   1
+    11  1 1   1
+     11 1 1   1
+     1 11 1   1
+     1  1 1   1
+     1  111   1
+     1  1 1   1
+     1  1 1
+     1  1 1  1
+     1  1 1   1
+     1  1 1     1
+     1  1 1      1
+     1  1 1       1
+     1  1 1        1
      1  1 1         1
-     1  1 11         
-     1  1 1          
+     1  1 11
+     1  1 1
 ```
 
 ```B
 GPIO WATCHER
 Missing: 2 12 15
-Always:  5 8 9 13 [14]                       
-     1       11      
-     1  1    11      
-     1  1 1  11      
-     1  1    11      
-     1  11   11      
-     1  11 1 11      
-1    1  11   11      
- 1   1  11   11      
-   1 1  11   11      
-    11  11   11      
-     1  11   11      
-     11 11   11      
-     1 111   11      
-     1  11   11      
-     1  111  11      
-     1  11   11      
-     1  11   1       
-     1  11   11      
-     1  11   1       
-     1  11   1  1    
-     1  11   1   1   
-     1  11   1    1  
-     1  11   1     1 
+Always:  5 8 9 13 [14]
+     1       11
+     1  1    11
+     1  1 1  11
+     1  1    11
+     1  11   11
+     1  11 1 11
+1    1  11   11
+ 1   1  11   11
+   1 1  11   11
+    11  11   11
+     1  11   11
+     11 11   11
+     1 111   11
+     1  11   11
+     1  111  11
+     1  11   11
+     1  11   1
+     1  11   11
+     1  11   1
+     1  11   1  1
+     1  11   1   1
+     1  11   1    1
+     1  11   1     1
      1  11   1      1
-     1  11 1 1       
-     1  11   11      
+     1  11 1 1
+     1  11   11
      1  11 1 11
 ```
 
@@ -192,89 +192,89 @@ Always:  5 8 9 13 [14]
 GPIO WATCHER
 Missing: none
 Always:  [3] 5 9 [13]
-   1                 
-   1     1           
-   1 1   1           
-   1 1   1 1         
-   1 1   1           
-   1 1   1  1        
-   1 1   1  11       
-   1 1   1   1       
-   1 1   1  11       
-   1 1   1   1       
-   1 1   1  11       
-   1 1   1   1       
-     1   1   1       
-1    1   1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
- 1   1   1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-  1  1   1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-   1 1   1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-    11   1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     11  1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     1 1 1   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     1  11   1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     1   11  1       
-     1   1   1       
-     1   1  11       
-     1   1   1       
-     1   1           
-     1   1   1       
-     1   1           
-     1   1  1        
-     1   1           
-     1   1    1      
-     1   1           
-     1   1  1        
-     1   1           
-     1   1     1     
-     1   1           
-     1   1  1        
-     1   1           
-     1   1      1    
-   1 1   1      1    
-   1 1   1           
-   1 1   1  1        
-   1 1   1           
-   1 1   1       1   
-   1 1   1           
-   1 1   1  1        
-   1 1   1           
-   1 1   1        1  
-   1 1   1           
-   1 1   1  1        
-   1 1   1           
-   1 1   1         1 
-   1 1   1           
-   1 1   1  1        
-   1 1   1           
+   1
+   1     1
+   1 1   1
+   1 1   1 1
+   1 1   1
+   1 1   1  1
+   1 1   1  11
+   1 1   1   1
+   1 1   1  11
+   1 1   1   1
+   1 1   1  11
+   1 1   1   1
+     1   1   1
+1    1   1   1
+     1   1   1
+     1   1  11
+     1   1   1
+ 1   1   1   1
+     1   1   1
+     1   1  11
+     1   1   1
+  1  1   1   1
+     1   1   1
+     1   1  11
+     1   1   1
+   1 1   1   1
+     1   1   1
+     1   1  11
+     1   1   1
+    11   1   1
+     1   1   1
+     1   1  11
+     1   1   1
+     1   1  11
+     1   1   1
+     11  1   1
+     1   1   1
+     1   1  11
+     1   1   1
+     1 1 1   1
+     1   1   1
+     1   1  11
+     1   1   1
+     1  11   1
+     1   1   1
+     1   1  11
+     1   1   1
+     1   1  11
+     1   1   1
+     1   11  1
+     1   1   1
+     1   1  11
+     1   1   1
+     1   1
+     1   1   1
+     1   1
+     1   1  1
+     1   1
+     1   1    1
+     1   1
+     1   1  1
+     1   1
+     1   1     1
+     1   1
+     1   1  1
+     1   1
+     1   1      1
+   1 1   1      1
+   1 1   1
+   1 1   1  1
+   1 1   1
+   1 1   1       1
+   1 1   1
+   1 1   1  1
+   1 1   1
+   1 1   1        1
+   1 1   1
+   1 1   1  1
+   1 1   1
+   1 1   1         1
+   1 1   1
+   1 1   1  1
+   1 1   1
    1 1   1          1
 Received all 21 shared pins!!
 ```
@@ -364,7 +364,7 @@ Skipped:
   - correct crystal for that larger footprint: 520-ECX-.327CDX-1293, 5ppm, 3.2x1.5mm -> all correct & available
   - OLD: CM8V-T1A-32.768kHz-9pF-20PPM-TA-QC, 20ppm, 2.0x1.2mm
 - add C on ABx-Crystal? YES - datasheet is misleading by not showing any
-- board dimensions: 
+- board dimensions:
   - capes 54.8 / 2 = 27.4 mm max width -> 27
   - edge-connector, slit-bit is 6 x 17.4 mm -> side cutout is 6 x 4.8
   - target with hdr is 38.2 mm, so limiting the whole length now to 37
@@ -375,7 +375,7 @@ Skipped:
   - fix targets: comparator + pwr-switch -> on when above 1.65 .. 1.70 V
     - off again when going below 1.4 V
   - https://github.com/geissdoerfer/find/blob/master/hardware/schematic.pdf
-  - 2x 6.5 MOhm Divider to 
+  - 2x 6.5 MOhm Divider to
   - ~~TS5A23166DCUR~~ -> needs comparator
   - ~~in our stock: NLAS4684, FSA2258~~
   - 595-TS5A3167DCKR, ROn .9 Ohm, SC70-5, 50nA supply, SPST -> V_analog_max = VCC, V_EN_max = VIn_max = 6.5V

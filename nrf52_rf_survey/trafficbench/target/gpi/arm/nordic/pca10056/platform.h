@@ -128,15 +128,15 @@
 //**************************************************************************************************
 
 #define GPI_LED_NONE 0
-#define GPI_LED_1    BV(12)  // shepherd-target LED0
-#define GPI_LED_2    BV(3)   // shepherd-target LED2P
+#define GPI_LED_1    BV(12) // shepherd-target LED0
+#define GPI_LED_2    BV(3)  // shepherd-target LED2P
 #define GPI_LED_3    BV(12)
 #define GPI_LED_4    BV(3)
 
-#define GPI_BUTTON_1 BV(32+12)  // unused by shepherd
-#define GPI_BUTTON_2 BV(32+13)
-#define GPI_BUTTON_3 BV(32+14)
-#define GPI_BUTTON_4 BV(32+15)
+#define GPI_BUTTON_1 BV(32 + 12) // unused by shepherd
+#define GPI_BUTTON_2 BV(32 + 13)
+#define GPI_BUTTON_3 BV(32 + 14)
+#define GPI_BUTTON_4 BV(32 + 15)
 
 // for details see comments in gpi/platform.h
 static ALWAYS_INLINE int gpi_led_index_to_mask(int i)

@@ -40,7 +40,7 @@ specially for shepherd
 - hardcoded GPI_ARCH_BOARD_nRF_PCA10056 as hardware
   - miss-use that board as shepherd-target (adapt platform.c/.h)
   - actively use led1-led3 (`GPI_LED_x` in `platform.h`)
-  - remove other gpio 
+  - remove other gpio
   - use correct uart-pins (`UARTE_PSEL_TXD_PIN` & `UARTE_PSEL_RXD_PIN` in `platform.c`)
   - set button-macros to harmless gpio (`GPI_BUTTON_x` in `platform.h`)
 

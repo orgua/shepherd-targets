@@ -1,6 +1,6 @@
 # nRF52 & MSP430 FRAM Target V1.3
 
-Shared pins between MCUs and Observer, **hypothetical Cape V2.6 (not produced yet)**. 
+Shared pins between MCUs and Observer, **hypothetical Cape V2.6 (not produced yet)**.
 The testbed still used Cape v2.4 as of 2024-08.
 
 | SHP-V26  | Dir   | Riotee   | nRF52  | msp430  | Description                 |

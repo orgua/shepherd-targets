@@ -1,6 +1,6 @@
 # Msp430 Testable
 
-The firmware toggles all used & shared GPIOs and depends on a receiver / supervisor that verifies each pin. 
+The firmware toggles all used & shared GPIOs and depends on a receiver / supervisor that verifies each pin.
 
 Sequence:
 

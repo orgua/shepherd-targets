@@ -36,7 +36,7 @@ extern const uint16_t SHEPHERD_NODE_ID;
 
 #define I2C_SCL     (8 * 6 + 5) // P1.08
 #define I2C_SDA     (8 * 6 + 4)
-#define I2C_INT     (8 * 7 + 3)  // TODO: output of RTC
+#define I2C_INT     (8 * 7 + 3) // TODO: output of RTC
 
 #define C2C_CLK     (8 * 1 + 5)
 #define C2C_CoPi    (8 * 2 + 0)
@@ -55,7 +55,7 @@ const uint32_t leds[]  = {PIN_LED0, PIN_LED2};
 const uint32_t i2c[]   = {I2C_SCL, I2C_SDA, I2C_INT};
 const uint32_t c2c[]   = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
 
-const uint32_t all[]  = {
+const uint32_t all[]   = {
         GPIO0,   GPIO2,   GPIO3,   GPIO4,    GPIO5,    GPIO6,    GPIO7,
         GPIO8,   GPIO9,   PWRGDL,  PWRGDH,   PIN_LED0, PIN_LED2, I2C_SCL,
         I2C_SDA, I2C_INT, C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
@@ -240,7 +240,7 @@ int main(void)
     /* Switch on GPIO for 100ms in a row */
     toggle_gpio_one_high(leds, N_LEDS);
 
-	/* run through all GPIO - to present them to the supervisor */
+    /* run through all GPIO - to present them to the supervisor */
     toggle_gpio_one_high(all, N_ALL);
 
     /* Switch on LEDs for 100ms in a row (>=8 Reps, depending on node-id) */

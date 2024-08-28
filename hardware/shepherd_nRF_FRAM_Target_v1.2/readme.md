@@ -1,6 +1,6 @@
 # nRF52 & MSP430 FRAM Target V1.2
 
-Shared pins between MCUs and Observer
+Shared pins between MCUs and Observer, **Cape V2.5 (not produced yet)**
 
 | SHP-HDR  | Dir   | Riotee   | nRF52  | msp430  | Description                 |
 |----------|-------|----------|--------|---------|-----------------------------|

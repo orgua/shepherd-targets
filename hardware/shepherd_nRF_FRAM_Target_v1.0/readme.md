@@ -2,33 +2,33 @@
 
 Shared pins between MCUs
 
-| SHP-HDR | Dir   | Riotee   | nRF52  | msp430  | Description    |
-|---------|-------|----------|--------|---------|----------------|
-| GPIO0   | <-D-> | GPIO.7   | P0.11  | P5.3    |                |
-| GPIO1   | <-D-> | GPIO.8   | P0.13  | P5.2    |                |
-| GPIO2   | <-D-> | GPIO.2   | P0.04  | P2.3    |                |
-| GPIO3   | <-D-> | GPIO.3   | P0.05  | P2.4    |                |
-| GPIO4   | <--   | GPIO.4   | P1.09  | P4.6    |                |
-| GPIO5   | <--   | GPIO.5   | P0.26  | P3.6    |                |
-| GPIO6   | <--   | GPIO.6   | P1.03  | PJ.6    |                |
-| GPIO7   | <--   | GPIO.1   | P0.08  | P2.5    | UART Target-TX |
-| GPIO8   | <-C-> | GPIO.0   | P0.21  | P2.6    | UART Target-RX |
-| BATOK   | -->   | PG_H     | P0.07  | P5.5    |                |
-| prog11  | -->   | SWD.CLK  | swdclk | -       |                |
-| prog12  | <-A-> | SWD.IO   | swdio  | -       |                |
-| prog21  | -->   | SBW.CLK  | -      | sbwtck  |                |
-| prog22  | <-B-> | SBW.IO   | -      | sbwtdio |                |
-|         |       | LED.0    | P0.16  | P5.1    |                |
-|         |       | LED.1    | P0.12  | P5.0    |                |
-|         |       | LED.2P   | P0.03  | PJ.0    |                |
-|         |       | I2C.SCL  | P1.08  | P6.5    |                |
-|         |       | I2C.SDA  | P0.06  | P6.4    |                |
-|         |       | RTC.INT  | P0.30  | P7.3    |                |
-|         |       | C2C.CLK  | P0.18  | P1.5    |                |
-|         |       | C2C.CoPi | P0.17  | P2.0    |                |
-|         |       | C2C.CiPo | P0.14  | P2.1    |                |
-|         |       | C2C.PSel | P0.22  | P1.4    |                |
-|         |       | C2C.GPIO | P0.15  | PJ.2    |                |
+| SHP-HDR | Dir   | Riotee   | nRF52  | msp430  | Description                 |
+|---------|-------|----------|--------|---------|-----------------------------|
+| GPIO0   | <-A-> | GPIO.7   | P0.11  | P5.3    | msp.B1.PSel                 |
+| GPIO1   | <-A-> | GPIO.8   | P0.13  | P5.2    | msp.B1.CLK                  |
+| GPIO2   | <-A-> | GPIO.2   | P0.04  | P2.3    | msp.A1.PSel                 |
+| GPIO3   | <-A-> | GPIO.3   | P0.05  | P2.4    | msp.A1.CLK                  |
+| GPIO4   | <--   | GPIO.4   | P1.09  | P4.6    |                             |
+| GPIO5   | <--   | GPIO.5   | P0.26  | P3.6    |                             |
+| GPIO6   | <--   | GPIO.6   | P1.03  | PJ.6    |                             |
+| GPIO7   | <--   | GPIO.1   | P0.08  | P2.5    | UART Target-TX, msp.A1.CoPi |
+| GPIO8   | <-B-> | GPIO.0   | P0.21  | P2.6    | UART Target-RX, msp.A1.CiPo |
+| BATOK   | -->   | PG_H     | P0.07  | P5.5    |                             |
+| prog11  | -->   | SWD.CLK  | swdclk | -       |                             |
+| prog12  | <-C-> | SWD.IO   | swdio  | -       |                             |
+| prog21  | -->   | SBW.CLK  | -      | sbwtck  |                             |
+| prog22  | <-D-> | SBW.IO   | -      | sbwtdio |                             |
+|         |       | LED.0    | P0.16  | P5.1    |                             |
+|         |       | LED.1    | P0.12  | P5.0    |                             |
+|         |       | LED.2P   | P0.03  | PJ.0    |                             |
+|         |       | I2C.SCL  | P1.08  | P6.5    |                             |
+|         |       | I2C.SDA  | P0.06  | P6.4    |                             |
+|         |       | RTC.INT  | P0.30  | P7.3    |                             |
+|         |       | C2C.CLK  | P0.18  | P1.5    |                             |
+|         |       | C2C.CoPi | P0.17  | P2.0    |                             |
+|         |       | C2C.CiPo | P0.14  | P2.1    |                             |
+|         |       | C2C.PSel | P0.22  | P1.4    |                             |
+|         |       | C2C.GPIO | P0.15  | PJ.2    |                             |
 
 **Note**: 
 - SHP-HDR Spec of Cape V2.4

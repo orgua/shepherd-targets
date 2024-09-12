@@ -1,0 +1,16 @@
+Altium Designer Pick and Place Locations
+C:\Users\hans\Documents\Altium\shepherd_v24_target_adapter\Project Outputs\Pick Place\Pick Place for tgt_adapter_2v1_2v3.csv
+
+========================================================================================================================
+File Design Information:
+
+Date:       12/09/24
+Time:       14:48
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mm
+
+"Designator","Comment","Layer","Footprint","Center-X(mm)","Center-Y(mm)","Rotation","Manufacturer PN","Value"
+"R1","R_0402_10R","BottomLayer","RESC1005X04","3,6000","11,3000","270","ERJ-2GEJ100X","10R"
+"P2","P_HSEC8-120-01-S-DV","TopLayer","P_HSEC8-120-01-S-DV","4,4300","13,3000","270","HSEC8-120-01-L-DV-A-K-TR",""
+"P1","P_HDR_2x9_2.54mm_socket","TopLayer","P_Pinheader_2x9_R2.54mm_pressfit","12,1000","13,1200","270","SSQ-109-02-S-D-RA",""

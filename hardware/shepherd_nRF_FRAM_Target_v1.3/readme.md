@@ -38,7 +38,7 @@ The testbed still used Cape v2.4 as of 2024-08.
 |          | -     | C2C.PSel | P0.22  | P1.4    | msp.A0.PSel                 |
 |          |       | C2C.GPIO | P0.15  | PJ.2    |                             |
 
-Note: A, B, C in DIR-Column refer to switch-groups
+**Note**: A, B, C in DIR-Column refer to switch-groups
 
 ## Connections to Cape V2.4 via Adapter
 
@@ -61,19 +61,211 @@ The 40-pin Edge-Connector of Target V1.3 has an adapter to interface the 2x9 Hea
 | prog21  | -->   | SBW.CLK  | -      | sbwtck  |                             |
 | prog22  | <-D-> | SBW.IO   | -      | sbwtdio |                             |
 
-Note: A, B, C, D in DIR-Column refer to switch-groups
+**Note**:
+- A, B, C, D in DIR-Column refer to switch-groups
+- GPIO9 (target-rx) will be re-assigned to PwrGoodL (BATOK is PwrGoodH)
+
+
+
+## Features
+
+- similarity to Riotee
+- MCU 1 - nRF52840
+- MCU 2 - msp430FR5994
+- low power RTC & Watchdog
+- one led to burn energy fast
+- SMA port to connect external antenna
+  - balun is optimized for higher transmit power
+- MCUs share SPI-Connection + some additional pins
+- edge-connector routes out
+  - programming pins (SWD & SBW)
+  - power-good signals
+  - 16x shared GPIO
+- all shared GPIO is current limited to prevent damages to the hardware
+  - limit to 8-10 mA @ 4V with 470 R or (2x) 220 R on each IC entry
+- IO-Pins not interfering with RF (nRF PS v1.6 page 578)
+
+### Over-Voltage-Protection
+
+The target voltage coming from the shepherd-cape can reach up to 5 V.
+The MCUs on the target board can't handle that voltage, so the ICs have to be protected.
+
+Abs Max Ratings:
+
+- 3.9 V nRF52
+- 3.8 V RTC AB1805
+- 4.1 V MSP430
+
+A fitting shottky diode is used to burn energy above 3.7V.
+
+One PMEG10010ELR Diode is between V_target and 3V3:
++ 0.0 V -> 6 pA (noise)
++ 0.1 V -> 47 nA
++ 0.2 V -> 2.3 uA
++ 0.3 V -> 120 uA
++ 0.4 V -> 4.83 mA
+
+### Under-Voltage-Protection
+
+- the nRF consumes ~.5mA below 1.7V, even in deep-sleep
+- consumption drops when going above 1.69 V
+- consumption rises when going below 1.58 V
+- tested 13 nodes range from
+   - ON = 1.63 to 1.69 V
+   - OFF = 1.58 to 1.60 V
+
+Solution
+
+- analog switch controlled by comparator with small hysteresis
+- VON = 1.729 V, VOFF = 1.652 V according to datasheet (values are wrong?)
+- VON = 1.797 V, VOFF = 1.642 V when solving the network with traditional methods
+- VON = 1.802 V, VOFF = 1.641 V from actual measurements
+
+Possible Caveats
+
+- hysteresis is currently only 150 mV and unstable behavior must be avoided
+- charging the decoupling caps (2.6 uF) of the MCUs leads to voltage drop
+  - 10 uF storage, 2.6 uF decoupling -> 230 mV drop (trouble)
+  - 47 uF storage, 2.6 uF decoupling -> 48 mV drop
+  - 100 uF storage, 2.6 uF decoupling -> 22 mV drop
+- turning on the switch shows current spike of ~ 4 mA for < 50 us for target v1.0 with 1.6 uF decoupling
+  - 10 uF storage, 5 mA draw -> 200 us for 100 mV drop
+  - 10 uF storage, 1 mA draw -> 1000 us for 100 mV drop
+  - 47 uF storage, 5 mA draw -> 940 us for 100 mV drop
+  - 100 uF storage, 5 mA draw -> 2000 us for 100 mV drop
+
+Calculating the charging drop for the decoupling caps with `maxima`:
+
+```maxima
+C_store: 10e-6;
+C_out: 2.6e-6;
+V_set: 1.7;
+dVc: V_set * (sqrt(1 - C_out / C_store) - 1);
+```
+
+Calculating the allowed time for high current during switching on:
+
+```maxima
+V_set: 1.7;
+C_store: 10e-6;
+I_out: 5e-3;
+dV: 100e-3;
+t: dV * C_store / I_out;
+```
+
+See `.wxmx`-maxima-file for more details.
 
 ## Difference to Riotee
 
+- nRF52840 instead of Riotees -833
+  - main makefile specifies `NRF_DEV_NUM`
+- msp430FR5994 has more storage (256 KB)
+  - Size of FRAM auto-adjust? -> main makefile `RIOTEE_RAM_RETAINED_SIZE`, `RIOTEE_STACK_SIZE`
 - extra LED.0
-- larger msp430FR5994
 - 16x GPIO instead of 10x
 - no power-converters, but over-voltage-protection and under-volt-switch for nRF
 
+## Bugs & Proposed Fixes / Improvements
+
+- nRF - remove resist of alignment crosses
+- less paste on thermal pad of nRF? Thermal paste is OK
+  - solder on thermal is 9 * 1.1² = 8.6 mm² (round) -> 38 %
+  - info: nRF-IC thermal pad ~4.75², 22.6 m² (IC and footprint match)
+- make ABx Thermal pad bigger
+  - info: ABx-IC thermal pad is ~ (1.8 mm)²
+  - datasheet says D2xE2 is 1.65 - 1.75 - 1.85 -> area: 2.6 - 3.1 - 3.4 mm²
+  - footprint was (1.13mm)² with 50% paste reduction (1.27 / 0.65 mm²)
+  - now it is 1.5² with 65% reduction (2.25 / 0.79 mm²)
+- stencil holes of nRF a bit bigger - pad 0.26mm round = 53.1e-3 mm², now with .28mm stencil (.213 distance, 61.6e-3 mm²)
+  - ref design: pads .275mm with 19% expansion (.012mm) -> measured .299 (area .0594, .0647, .0702 for .275, .287, .299)
+- stencil holes of MSP a bit bigger - pad 0.25mm round = 49.1e-3 mm², now with .28mm stencil (.213 distance)
+- 1uF has two versions in BOM -> 10V version stays
+- make more clear what is DNP -> Variants "Only Populate" changes Value, Mnf PN, Price to DNP
+- Riotee has an MSP430FR5962 (like target v1.0) and not the current 5994?!? (256 vs 128 kByte)
+  - linker and makefile needed a small adaption (include proper device-file)
+  - Riotees FRAM-firmware is adapting automatically to FRAM-Size
+  - datasheets memory map (section 9.15) shows identical maps with just double the FRAM-Space (end at x43FFF instead of x23FFF)
+- why did the crystals footprint change (larger) but not the part? tombstone rate ~ 50%
+  - correct crystal for that larger footprint: 520-ECX-.327CDX-1293, 5ppm, 3.2x1.5mm -> all correct & available
+  - OLD: CM8V-T1A-32.768kHz-9pF-20PPM-TA-QC, 20ppm, 2.0x1.2mm
+- add C on ABx-Crystal? YES - datasheet is misleading by not showing any
+- board dimensions:
+  - capes 54.8 / 2 = 27.4 mm max width -> 27
+  - edge-connector, slit-bit is 6 x 17.4 mm -> side cutout is 6 x 4.8
+  - target with hdr is 38.2 mm, so limiting the whole length now to 37
+  - old-area was 25 x 24 = 600 mm², new usable area is 27 x 31 = 837
+- nRF has high current draw between 500...1650 mV -> VSrc with diode+cap is problematic
+  - voltage sweep is plotted in [this graphic](emu_ramp.plot_0s000_to_20s000.png)
+  - add comparator to delay power of nRF
+  - fix targets: comparator + pwr-switch -> on when above 1.65 .. 1.70 V
+    - off again when going below 1.4 V
+  - 2x 6.5 MOhm Divider to
+  - ~~TS5A23166DCUR~~ -> needs comparator
+  - ~~in our stock: NLAS4684, FSA2258~~
+  - 595-TS5A3167DCKR, ROn .9 Ohm, SC70-5, 50nA supply, SPST -> V_analog_max = VCC, V_EN_max = VIn_max = 6.5V
+    - COM connected to NC (normally closed) when logic is LOW, so input is nEN!
+  - 579-MCP6546RT-IOT, comparator, VIN+ gets Ref ResistorNW, When VIN- is below VIN+ the output is high (WANTED)
+    - open drain output, so PU to 3V3 - switch has <20nA leakage, so ~100k should be fine
+- extend to 16 GPIO
+  - order adapter to old shepherd 2x9
+  - order pinheader and sockets for the new port
+  - which pins to add?
+  - 2x10 Angled Socket: SQT-110-01-F-D-RA -> new 2x13: SQT-113-01-F-D-RA -> without Angle: SQT-113-01-F-D
+  - 2x10 PinHeader: 2PH2-20-UA -> new 2x13 only available from samtec, but they fit next to each other -> 2PH2-16-UA + 2PH2-10-UA
+  - width: 20.35/10*13=26.5mm or better 20.35/11*14=25.9mm, MAX of Cape is 54.7/2=27.35mm
+  - PCB-Edge-Connectors: https://www.mouser.de/c/connectors/card-edge-connectors/?number%20of%20positions=26%20Position%7C~30%20Position&instock=y&active=y&sort=pricing
+    - PCIe 1x is cheap, has 1 mm distance and comes as TH & SMD, but it is designed for thick PCBs
+    - HSEC8-120-01-S-DV-A-GR-K: 40Con, Guide Rails 7x20.6mm 11.75mm high
+    - HSEC8-120-01-S-DV-A-K: without guide rails only 7.8mm high
+    - **HSEC8-120-01-L-DV-A-K-TR**: same, but cheaper
+  - ~~FFC/FPC-Con~~: https://www.mouser.de/c/connectors/ffc-fpc/ffc-fpc-connectors/?number%20of%20positions=26%20Position%7C~28%20Position%7C~30%20Position%7C~32%20Position&instock=y&active=y
+  - ~~FFC/FPC-Cable~~: https://www.mouser.de/c/connectors/ffc-fpc/ffc-fpc-jumper-cables/?number%20of%20conductors=26%20Conductor%7C~28%20Conductor%7C~30%20Conductor%7C~32%20Conductor&instock=y&active=y
+- current-limit LED0 (MSP430 is lower prio, so it gets 470R)
+- **NEW GPIO**
+  - GP10 P0.12  P5.0 (UCB1SIMO/SDA)
+  - GP11 P0.10  P6.0 (UCA3SIMO/TXD)
+  - GP12 P0.19  P6.1 (UCA3SOMI/RXD)
+  - GP13 P0.20  P6.3 (UCA3STE)
+  - GP14 P0.24  P6.6 (UCA3CLK)
+  - GP15 P0.27  P6.7 (UCA3STE)
+  - LED0 P1.13  P5.7
+- verify RF-Path
+  - PS_v1.8 ref circuit 7 shows improved 4 component filter: 1pF, 4.7nH, 1.2pF, 2.2nH (NP0 5%, hf ind. 5%)
+  - keepout under antenna-path for
+  - fanout shorter and thinner, C1 directly on RFOUT and GND
+- review problematic pins
+- also disable MSP with switch (avoids cross-feeding via gpio)
+
 ## Cost of Production
 
-- PCB-Fabrication 190 € / 30 n
+- PCB-Fabrication
+  - 190 € / 30 n with shipping
   - 1.6mm thick, 4 layer, .3mm vias - filled and capped, .1 mm traces and distance
-- parts for 1 n when ordering 10 n = 20.60 €
-- Pick & place:
-  - 29 different parts, 122 in total
+  - electro-polished stencil
+- BOM cost
+  - parts for 1 n when ordering 10 n = 20.60 €
+  - parts for n=10 are 182 € (18.20 €/n)
+  - parts for n=20 are 360 € (18 €/n)
+- Pick & place
+  - 29 different parts, 120 in total
+  - 0.5 mm pitch
+
+### to order
+
+- new C27 1pF: 100x 81-GJM1555C1H1R0JB1D
+- new C28 1.2pF: 100x 81-GJM1555C1H1R2JB1D
+- new L2 2.2nH: 100x 81-LQG15HZ2N2C02D
+- ~~SMA-Con?~~
+- new HSEC8-120-01-L-DV-A-K-TR: 20x 200-HSEC812001LDVAKT
+  - new headers for old cape?
+- more 1uF - 4x30 - 200x 81-GCM155C71A105KE8D
+- more 12pF -8x30 - 250x 77-VJ0402A120JXQPBC
+- 12x 240R per unit (more IO)
+- switch + comparator (MCP6546, TS5A3167)
+  - 3x 100k, 1x 10k, 1x 1M,
+  - 2x 100nF
+- 1x 470R
+
+## Extra remark
+
+- DNP: C20, SMA-Con, Antenna

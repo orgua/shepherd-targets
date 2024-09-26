@@ -84,6 +84,8 @@ The 40-pin Edge-Connector of Target V1.3 has an adapter to interface the 2x9 Hea
 - all shared GPIO is current limited to prevent damages to the hardware
   - limit to 8-10 mA @ 4V with 470 R or (2x) 220 R on each IC entry
 - IO-Pins not interfering with RF (nRF PS v1.6 page 578)
+- clock-crystals have high precision, 5 ppm, with matched impedance
+- protection for over- & under-voltage, see sub-chapters below
 
 ### Over-Voltage-Protection
 

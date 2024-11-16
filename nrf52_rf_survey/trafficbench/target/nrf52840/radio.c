@@ -419,11 +419,11 @@ void __attribute__((naked, section(".fast"))) RSSI_ISR_NAME()
             [TB] "I"((uintptr_t) RSSI_TIMER2 - 0x40000000),
             [TM] "I"((uintptr_t) MAIN_TIMER - 0x40000000),
             //[RADIO_E] "J"((uintptr_t)&(NRF_RADIO->EVENTS_RSSIEND) - (uintptr_t)NRF_RADIO),
-            [RADIO_RSSI] "J"((uintptr_t) & (NRF_RADIO->RSSISAMPLE) - (uintptr_t) NRF_RADIO),
-            [TA_E] "J"((uintptr_t) & (RSSI_TIMER->EVENTS_COMPARE[1]) - (uintptr_t) RSSI_TIMER),
-            [TB_E0] "J"((uintptr_t) & (RSSI_TIMER2->EVENTS_COMPARE[0]) - (uintptr_t) RSSI_TIMER2),
-            [TB_T3] "J"((uintptr_t) & (RSSI_TIMER2->TASKS_CAPTURE[3]) - (uintptr_t) RSSI_TIMER2),
-            [TB_CC3] "J"((uintptr_t) & (RSSI_TIMER2->CC[3]) - (uintptr_t) RSSI_TIMER2),
+            [RADIO_RSSI] "J"((uintptr_t) &(NRF_RADIO->RSSISAMPLE) - (uintptr_t) NRF_RADIO),
+            [TA_E] "J"((uintptr_t) &(RSSI_TIMER->EVENTS_COMPARE[1]) - (uintptr_t) RSSI_TIMER),
+            [TB_E0] "J"((uintptr_t) &(RSSI_TIMER2->EVENTS_COMPARE[0]) - (uintptr_t) RSSI_TIMER2),
+            [TB_T3] "J"((uintptr_t) &(RSSI_TIMER2->TASKS_CAPTURE[3]) - (uintptr_t) RSSI_TIMER2),
+            [TB_CC3] "J"((uintptr_t) &(RSSI_TIMER2->CC[3]) - (uintptr_t) RSSI_TIMER2),
             [TM_CCA] "J"((uintptr_t) &CCR_MAIN_RSSI_START - (uintptr_t) MAIN_TIMER),
             [TM_CCB] "J"((uintptr_t) &CCR_MAIN_RSSI - (uintptr_t) MAIN_TIMER));
 
@@ -671,7 +671,7 @@ void LED_ISR(MAIN_TIMER_ISR_NAME, LED_MAIN_TIMER_ISR)
 
         NRF_PPI->CHENCLR                = BV(PPI_TX_CONTROL);
         CCR_MAIN_COMPARE                = tx_ccr_disable;
-        NRF_PPI->CH[PPI_TX_CONTROL].TEP = (uintptr_t) & (NRF_RADIO->TASKS_DISABLE);
+        NRF_PPI->CH[PPI_TX_CONTROL].TEP = (uintptr_t) &(NRF_RADIO->TASKS_DISABLE);
         NRF_PPI->CHENSET                = BV(PPI_TX_CONTROL);
 
         GPI_TRACE_MSG(TRACE_VERBOSE,
@@ -963,9 +963,9 @@ void radio_init()
     RSSI_TIMER3->BITMODE                   = BV_BY_NAME(TIMER_BITMODE_BITMODE, 32Bit);
     RSSI_TIMER3->SHORTS                    = 0;
     RSSI_TIMER3->TASKS_START               = 1;
-    NRF_MWU->REGION[RSSI_MWU_REGION].START = (uintptr_t) & (NRF_RADIO->RSSISAMPLE);
+    NRF_MWU->REGION[RSSI_MWU_REGION].START = (uintptr_t) &(NRF_RADIO->RSSISAMPLE);
     NRF_MWU->REGION[RSSI_MWU_REGION].END =
-            (uintptr_t) & (NRF_RADIO->RSSISAMPLE) + sizeof(NRF_RADIO->RSSISAMPLE) - 1;
+            (uintptr_t) &(NRF_RADIO->RSSISAMPLE) + sizeof(NRF_RADIO->RSSISAMPLE) - 1;
     NRF_MWU->REGIONENSET = BV_BY_NAME_PREEXP(CONCAT(MWU_REGIONENSET_RGN, RSSI_MWU_REGION, RA), Set);
 
 // configure temperature sensor -> nothing to do
@@ -1007,23 +1007,23 @@ void radio_init()
     // MAIN_TIMER.COMPARE[START] -> RADIO.ENABLE etc. (on demand)
     // MAIN_TIMER.COMPARE[START] -> TEMP.START
     NRF_PPI->CH[PPI_START].EEP =
-            (uintptr_t) & (MAIN_TIMER->EVENTS_COMPARE[CCI_MAIN_START_READY_END]);
+            (uintptr_t) &(MAIN_TIMER->EVENTS_COMPARE[CCI_MAIN_START_READY_END]);
     // NRF_PPI->CH[PPI_START].TEP = ...	-> radio_start_rx(), radio_start_tx()
-    NRF_PPI->FORK[PPI_START].TEP = (uintptr_t) & (NRF_TEMP->TASKS_START);
+    NRF_PPI->FORK[PPI_START].TEP = (uintptr_t) &(NRF_TEMP->TASKS_START);
 
     // RADIO.READY -> RSSI_TIMER.START
     // RADIO.READY -> MAIN_TIMER.CAPTURE[READY]
-    NRF_PPI->CH[PPI_READY].EEP   = (uintptr_t) & (NRF_RADIO->EVENTS_READY);
-    NRF_PPI->CH[PPI_READY].TEP   = (uintptr_t) & (RSSI_TIMER->TASKS_START);
+    NRF_PPI->CH[PPI_READY].EEP   = (uintptr_t) &(NRF_RADIO->EVENTS_READY);
+    NRF_PPI->CH[PPI_READY].TEP   = (uintptr_t) &(RSSI_TIMER->TASKS_START);
     NRF_PPI->FORK[PPI_READY].TEP =
-            (uintptr_t) & (MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_START_READY_END]);
+            (uintptr_t) &(MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_START_READY_END]);
 
     // RADIO.ADDRESS -> MAIN_TIMER.CAPTURE[ADDRESS]
-    NRF_PPI->CH[PPI_ADDRESS].EEP = (uintptr_t) & (NRF_RADIO->EVENTS_ADDRESS);
-    NRF_PPI->CH[PPI_ADDRESS].TEP = (uintptr_t) & (MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_ADDRESS]);
+    NRF_PPI->CH[PPI_ADDRESS].EEP = (uintptr_t) &(NRF_RADIO->EVENTS_ADDRESS);
+    NRF_PPI->CH[PPI_ADDRESS].TEP = (uintptr_t) &(MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_ADDRESS]);
 #if DEBUG_GPIO
   #if GPI_ARCH_IS_BOARD(nRF_PCA10056)
-    NRF_PPI->FORK[PPI_ADDRESS].TEP = (uintptr_t) & (NRF_GPIOTE->TASKS_OUT[GPIOTE_DEBUG1]);
+    NRF_PPI->FORK[PPI_ADDRESS].TEP = (uintptr_t) &(NRF_GPIOTE->TASKS_OUT[GPIOTE_DEBUG1]);
   #endif
 #endif
 
@@ -1032,62 +1032,62 @@ void radio_init()
     //	NRF_PPI->CH[PPI_PAYLOAD].TEP = (uintptr_t)&(MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_PAYLOAD]);
 
     // RADIO.END -> MAIN_TIMER.CAPTURE[END]
-    NRF_PPI->CH[PPI_END].EEP = (uintptr_t) & (NRF_RADIO->EVENTS_END);
-    NRF_PPI->CH[PPI_END].TEP = (uintptr_t) & (MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_START_READY_END]);
+    NRF_PPI->CH[PPI_END].EEP = (uintptr_t) &(NRF_RADIO->EVENTS_END);
+    NRF_PPI->CH[PPI_END].TEP = (uintptr_t) &(MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_START_READY_END]);
 #if DEBUG_GPIO
   #if GPI_ARCH_IS_BOARD(nRF_PCA10056)
-    NRF_PPI->FORK[PPI_END].TEP = (uintptr_t) & (NRF_GPIOTE->TASKS_OUT[GPIOTE_DEBUG1]);
+    NRF_PPI->FORK[PPI_END].TEP = (uintptr_t) &(NRF_GPIOTE->TASKS_OUT[GPIOTE_DEBUG1]);
   #endif
 #endif
 
     // MAIN_TIMER.COMPARE[COMPARE] -> RADIO.START etc. (on demand)
-    NRF_PPI->CH[PPI_TX_CONTROL].EEP = (uintptr_t) & (MAIN_TIMER->EVENTS_COMPARE[CCI_MAIN_COMPARE]);
+    NRF_PPI->CH[PPI_TX_CONTROL].EEP = (uintptr_t) &(MAIN_TIMER->EVENTS_COMPARE[CCI_MAIN_COMPARE]);
 // NRF_PPI->CH[PPI_TX_CONTROL].TEP = ... -> radio_start_tx()
 #if DEBUG_GPIO
   #if GPI_ARCH_IS_BOARD(nRF_PCA10056)
-    NRF_PPI->FORK[PPI_TX_CONTROL].TEP = (uintptr_t) & (NRF_GPIOTE->TASKS_OUT[GPIOTE_DEBUG1]);
+    NRF_PPI->FORK[PPI_TX_CONTROL].TEP = (uintptr_t) &(NRF_GPIOTE->TASKS_OUT[GPIOTE_DEBUG1]);
   #endif
 #endif
 
     // RSSI_TIMER.COMPARE[0] -> RADIO.RSSISTART
     // RSSI_TIMER.COMPARE[0] -> MAIN_TIMER.CAPTURE[RSSI_START]
-    NRF_PPI->CH[PPI_RSSI_START].EEP = (uintptr_t) & (RSSI_TIMER->EVENTS_COMPARE[0]);
-    NRF_PPI->CH[PPI_RSSI_START].TEP = (uintptr_t) & (NRF_RADIO->TASKS_RSSISTART);
+    NRF_PPI->CH[PPI_RSSI_START].EEP = (uintptr_t) &(RSSI_TIMER->EVENTS_COMPARE[0]);
+    NRF_PPI->CH[PPI_RSSI_START].TEP = (uintptr_t) &(NRF_RADIO->TASKS_RSSISTART);
 #if DEBUG_RSSI
     NRF_PPI->FORK[PPI_RSSI_START].TEP =
-            (uintptr_t) & (MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_RSSI_START]);
+            (uintptr_t) &(MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_RSSI_START]);
 #endif
 #if DEBUG_GPIO
   #if GPI_ARCH_IS_BOARD(FLOCKLAB_nRF5)
-    NRF_PPI->CH[PPI_DEBUG1].EEP   = (uintptr_t) & (RSSI_TIMER->EVENTS_COMPARE[0]);
-    NRF_PPI->CH[PPI_DEBUG1].TEP   = (uintptr_t) & (NRF_GPIOTE->TASKS_SET[GPIOTE_DEBUG1]);
-    NRF_PPI->FORK[PPI_DEBUG1].TEP = (uintptr_t) & (NRF_GPIOTE->TASKS_SET[GPIOTE_DEBUG2]);
+    NRF_PPI->CH[PPI_DEBUG1].EEP   = (uintptr_t) &(RSSI_TIMER->EVENTS_COMPARE[0]);
+    NRF_PPI->CH[PPI_DEBUG1].TEP   = (uintptr_t) &(NRF_GPIOTE->TASKS_SET[GPIOTE_DEBUG1]);
+    NRF_PPI->FORK[PPI_DEBUG1].TEP = (uintptr_t) &(NRF_GPIOTE->TASKS_SET[GPIOTE_DEBUG2]);
   #endif
 #endif
 
     // RADIO.RSSIEND -> RSSI_TIMER2.START
     // RADIO.RSSIEND -> MAIN_TIMER.CAPTURE[RSSI]
-    NRF_PPI->CH[PPI_RSSI_END].EEP   = (uintptr_t) & (NRF_RADIO->EVENTS_RSSIEND);
-    NRF_PPI->CH[PPI_RSSI_END].TEP   = (uintptr_t) & (RSSI_TIMER2->TASKS_START);
-    NRF_PPI->FORK[PPI_RSSI_END].TEP = (uintptr_t) & (MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_RSSI]);
+    NRF_PPI->CH[PPI_RSSI_END].EEP   = (uintptr_t) &(NRF_RADIO->EVENTS_RSSIEND);
+    NRF_PPI->CH[PPI_RSSI_END].TEP   = (uintptr_t) &(RSSI_TIMER2->TASKS_START);
+    NRF_PPI->FORK[PPI_RSSI_END].TEP = (uintptr_t) &(MAIN_TIMER->TASKS_CAPTURE[CCI_MAIN_RSSI]);
 
     // RSSI_TIMER2.COMPARE[0] -> RSSI_TIMER3.COUNT
-    NRF_PPI->CH[PPI_RSSI_COUNT].EEP = (uintptr_t) & (RSSI_TIMER2->EVENTS_COMPARE[0]);
-    NRF_PPI->CH[PPI_RSSI_COUNT].TEP = (uintptr_t) & (RSSI_TIMER3->TASKS_COUNT);
+    NRF_PPI->CH[PPI_RSSI_COUNT].EEP = (uintptr_t) &(RSSI_TIMER2->EVENTS_COMPARE[0]);
+    NRF_PPI->CH[PPI_RSSI_COUNT].TEP = (uintptr_t) &(RSSI_TIMER3->TASKS_COUNT);
 #if DEBUG_GPIO
   #if GPI_ARCH_IS_BOARD(FLOCKLAB_nRF5)
-    NRF_PPI->FORK[PPI_RSSI_COUNT].TEP = (uintptr_t) & (NRF_GPIOTE->TASKS_CLR[GPIOTE_DEBUG1]);
+    NRF_PPI->FORK[PPI_RSSI_COUNT].TEP = (uintptr_t) &(NRF_GPIOTE->TASKS_CLR[GPIOTE_DEBUG1]);
   #endif
 #endif
 
     // MWU.RSSISAMPLE -> RSSI_TIMER2.STOP+CLEAR
-    NRF_PPI->CH[PPI_RSSI_MWU].EEP   = (uintptr_t) & (NRF_MWU->EVENTS_REGION[RSSI_MWU_REGION].RA);
-    NRF_PPI->CH[PPI_RSSI_MWU].TEP   = (uintptr_t) & (RSSI_TIMER2->TASKS_STOP);
-    NRF_PPI->FORK[PPI_RSSI_MWU].TEP = (uintptr_t) & (RSSI_TIMER2->TASKS_CLEAR);
+    NRF_PPI->CH[PPI_RSSI_MWU].EEP   = (uintptr_t) &(NRF_MWU->EVENTS_REGION[RSSI_MWU_REGION].RA);
+    NRF_PPI->CH[PPI_RSSI_MWU].TEP   = (uintptr_t) &(RSSI_TIMER2->TASKS_STOP);
+    NRF_PPI->FORK[PPI_RSSI_MWU].TEP = (uintptr_t) &(RSSI_TIMER2->TASKS_CLEAR);
 #if DEBUG_GPIO
   #if GPI_ARCH_IS_BOARD(FLOCKLAB_nRF5)
-    NRF_PPI->CH[PPI_DEBUG2].EEP = (uintptr_t) & (NRF_MWU->EVENTS_REGION[RSSI_MWU_REGION].RA);
-    NRF_PPI->CH[PPI_DEBUG2].TEP = (uintptr_t) & (NRF_GPIOTE->TASKS_CLR[GPIOTE_DEBUG2]);
+    NRF_PPI->CH[PPI_DEBUG2].EEP = (uintptr_t) &(NRF_MWU->EVENTS_REGION[RSSI_MWU_REGION].RA);
+    NRF_PPI->CH[PPI_DEBUG2].TEP = (uintptr_t) &(NRF_GPIOTE->TASKS_CLR[GPIOTE_DEBUG2]);
   #endif
 #endif
 
@@ -1151,7 +1151,7 @@ Gpi_Fast_Tick_Native radio_start_rx(Gpi_Fast_Tick_Native start_tick, Gpi_Fast_Ti
 
     // allocate rx queue destination slot
     Rx_Queue_Entry *q              = &rx_queue[rx_queue_num_written_radio % NUM_ELEMENTS(rx_queue)];
-    NRF_RADIO->PACKETPTR           = (uintptr_t) & (q->packet.ble_header);
+    NRF_RADIO->PACKETPTR           = (uintptr_t) &(q->packet.ble_header);
     rx_queue_num_writing           = rx_queue_num_written_radio + 1;
 
     // init packet status
@@ -1228,7 +1228,7 @@ Gpi_Fast_Tick_Native radio_start_rx(Gpi_Fast_Tick_Native start_tick, Gpi_Fast_Ti
 
     // use CCR_MAIN_START_READY_END to start radio via PPI
     CCR_MAIN_START_READY_END      = start_tick_internal;
-    NRF_PPI->CH[PPI_START].TEP    = (uintptr_t) & (NRF_RADIO->TASKS_RXEN);
+    NRF_PPI->CH[PPI_START].TEP    = (uintptr_t) &(NRF_RADIO->TASKS_RXEN);
 
     // enable PPI channels (except for PPI_START)
     NRF_PPI->CHENSET              = PPI_CHEN_RX_MASK;
@@ -1392,7 +1392,7 @@ Gpi_Fast_Tick_Native radio_start_tx(Gpi_Fast_Tick_Native start_tick,
     cp1_internal         = carrier_period_1;
 
     // init DMA data pointer
-    NRF_RADIO->PACKETPTR = (uintptr_t) & (packet->ble_header);
+    NRF_RADIO->PACKETPTR = (uintptr_t) &(packet->ble_header);
 
     // connect shortcuts and PPI channels (those used only with Tx)
     // NOTE: we use shortcuts or PPI to ensure that turn-on and turn-off delays
@@ -1412,7 +1412,7 @@ Gpi_Fast_Tick_Native radio_start_tx(Gpi_Fast_Tick_Native start_tick,
             start_tick_internal -= RADIO_TX_RAMP_UP_TOLERANCE;
         }
 
-        if (cp1_internal) NRF_PPI->CH[PPI_TX_CONTROL].TEP = (uintptr_t) & (NRF_RADIO->TASKS_START);
+        if (cp1_internal) NRF_PPI->CH[PPI_TX_CONTROL].TEP = (uintptr_t) &(NRF_RADIO->TASKS_START);
         else NRF_RADIO->SHORTS |= BV_BY_NAME(RADIO_SHORTS_TXREADY_START, Enabled);
     }
     if (carrier_period_2)
@@ -1422,7 +1422,7 @@ Gpi_Fast_Tick_Native radio_start_tx(Gpi_Fast_Tick_Native start_tick,
                 carrier_period_1 + air_time + carrier_period_2 - PPI_DELAY - RADIO_TX_DISABLE_DELAY;
 
         if (!cp1_internal)
-            NRF_PPI->CH[PPI_TX_CONTROL].TEP = (uintptr_t) & (NRF_RADIO->TASKS_DISABLE);
+            NRF_PPI->CH[PPI_TX_CONTROL].TEP = (uintptr_t) &(NRF_RADIO->TASKS_DISABLE);
         // else done in timer ISR
 
         // NOTE: In contrast to READY->START, we allow using the shortcut for END->DISABLE
@@ -1432,7 +1432,7 @@ Gpi_Fast_Tick_Native radio_start_tx(Gpi_Fast_Tick_Native start_tick,
 
     // use CCR_MAIN_START_READY_END to start radio via PPI
     CCR_MAIN_START_READY_END   = start_tick_internal;
-    NRF_PPI->CH[PPI_START].TEP = (uintptr_t) & (NRF_RADIO->TASKS_TXEN);
+    NRF_PPI->CH[PPI_START].TEP = (uintptr_t) &(NRF_RADIO->TASKS_TXEN);
 
     // enable PPI channels (except for PPI_START and PPI_TX_CONTROL)
     NRF_PPI->CHENSET           = PPI_CHEN_TX_MASK;

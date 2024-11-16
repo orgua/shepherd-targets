@@ -435,7 +435,7 @@ static void assemble_tx_packet(Radio_Packet *packet, const Params_TRX *params,
         ASSERT_ELSE(desc->size >= DESC_HEADER_SIZE /*&& desc->size <= desc_remaining*/)
         {
             GPI_TRACE_MSG(TRACE_ERROR, "schedule at %04X:%04X: inconsistent size specs.",
-                          program_state.pc, (uintptr_t) & (desc->size) - (uintptr_t) schedule);
+                          program_state.pc, (uintptr_t) &(desc->size) - (uintptr_t) schedule);
             break;
         }
 
@@ -458,7 +458,7 @@ static void assemble_tx_packet(Radio_Packet *packet, const Params_TRX *params,
                 {
                     GPI_TRACE_MSG(TRACE_ERROR, "schedule at %04X:%04X: size exceeds payload length",
                                   program_state.pc,
-                                  (uintptr_t) & (desc->size) - (uintptr_t) schedule);
+                                  (uintptr_t) &(desc->size) - (uintptr_t) schedule);
                     goto break_loop;
                 }
 
@@ -485,7 +485,7 @@ static void assemble_tx_packet(Radio_Packet *packet, const Params_TRX *params,
                 {
                     GPI_TRACE_MSG(TRACE_ERROR, "schedule at %04X:%04X: size exceeds payload length",
                                   program_state.pc,
-                                  (uintptr_t) & (desc->size) - (uintptr_t) schedule);
+                                  (uintptr_t) &(desc->size) - (uintptr_t) schedule);
                     goto break_loop;
                 }
 
@@ -505,7 +505,7 @@ static void assemble_tx_packet(Radio_Packet *packet, const Params_TRX *params,
                 {
                     GPI_TRACE_MSG(TRACE_ERROR, "schedule at %04X:%04X: size exceeds payload length",
                                   program_state.pc,
-                                  (uintptr_t) & (desc->random.num_bytes) - (uintptr_t) schedule);
+                                  (uintptr_t) &(desc->random.num_bytes) - (uintptr_t) schedule);
                     goto break_loop;
                 }
 
@@ -527,7 +527,7 @@ static void assemble_tx_packet(Radio_Packet *packet, const Params_TRX *params,
                 {
                     GPI_TRACE_MSG(TRACE_ERROR, "schedule at %04X:%04X: unknown payload type: %u",
                                   program_state.pc,
-                                  (uintptr_t) & (desc->type) - (uintptr_t) schedule, desc->type);
+                                  (uintptr_t) &(desc->type) - (uintptr_t) schedule, desc->type);
                 }
                 goto break_loop;
                 //break;
@@ -570,8 +570,8 @@ break_loop:
                               "schedule at %04X:%04X: checkpoint marker pos exceeds payload length "
                               "(%u >= %u)",
                               program_state.pc,
-                              (uintptr_t) & (desc->random.num_bytes) - (uintptr_t) schedule,
-                              cpm_pos, packet->raw_payload_length);
+                              (uintptr_t) &(desc->random.num_bytes) - (uintptr_t) schedule, cpm_pos,
+                              packet->raw_payload_length);
             }
 
             // nothing to do, will be detected on rx too
@@ -590,7 +590,7 @@ break_loop:
                                   "schedule at %04X:%04X: checkpoint marker overwrites checkpoint "
                                   "(%u vs. %u + %u)",
                                   program_state.pc,
-                                  (uintptr_t) & (desc->random.num_bytes) - (uintptr_t) schedule,
+                                  (uintptr_t) &(desc->random.num_bytes) - (uintptr_t) schedule,
                                   cpm_pos, cp_pos, sizeof(*checkpoint));
 
                     // treat damaged checkpoint as no checkpoint

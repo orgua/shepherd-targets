@@ -114,12 +114,12 @@ void GPI_TRACE_DSR_VECTOR()
     #if !GPI_TRACE_OVERFLOW_ON_WRITE
         if (num_written - num_read > NUM_ELEMENTS(s_msg_queue))
             num_read = num_written - NUM_ELEMENTS(s_msg_queue);
-                    // ATTENTION: to be absolutely safe that we do not end up with corrupt timestamps if
-                    // overflows occur, we should do overflow handling in this routine the full, clean way
-                    // (i.e. with locked write access and checking num_written before). However, we forgo this
-                    // topic in favor of performance because we expect that TRACE overflows are seen as
-                    // critical issues in typical applications and hence should be avoided completely by
-                    // choosing a big enough queue size.
+                // ATTENTION: to be absolutely safe that we do not end up with corrupt timestamps if
+                // overflows occur, we should do overflow handling in this routine the full, clean way
+                // (i.e. with locked write access and checking num_written before). However, we forgo this
+                // topic in favor of performance because we expect that TRACE overflows are seen as
+                // critical issues in typical applications and hence should be avoided completely by
+                // choosing a big enough queue size.
     #endif
 
         // avoid msg_end == msg in case of full queue

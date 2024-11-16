@@ -322,7 +322,7 @@ int __attribute__((weak)) __SEGGER_RTL_X_file_write(FILE *stream, const char *s,
 {
     if ((stream != stdout) && (stream != stderr)) return EOF;
 
-            // advanced interrupt driven implementation that enables higher level of async I/O
+        // advanced interrupt driven implementation that enables higher level of async I/O
     #if GPI_STDOUT_INTERRUPT_ENABLED
 
     const char *const end = &s[len];

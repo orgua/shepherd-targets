@@ -328,7 +328,7 @@ TEST_EXPANSION(CONCAT(CONCAT_NOEXP(A, B), C));
 #define offsetof(T, m)    __builtin_offsetof(T, m)
 
 /// convert a pointer to an array element to the index of that element
-#define ARRAY_INDEX(p, a) (((uintptr_t) (p) - (uintptr_t) & (a)[0]) / sizeof((a)[0]))
+#define ARRAY_INDEX(p, a) (((uintptr_t) (p) - (uintptr_t) &(a)[0]) / sizeof((a)[0]))
 
 //**************************************************************************************************
 // bit twiddling

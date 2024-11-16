@@ -61,9 +61,9 @@ GPI_TRACE_CONFIG(<TODO: module name>, TRACE_BASE_SELECTION |  GPI_TRACE_LOG_USER
 //**************************************************************************************************
 //**** Includes ************************************************************************************
 
+#include "gpi/platform.h"
 #include "gpi/clocks.h"
 #include "gpi/interrupts.h"
-#include "gpi/platform.h"
 #include "gpi/platform_spec.h"
 #include "gpi/tools.h"
 #include "gpi/trace.h"
@@ -590,11 +590,10 @@ void gpi_platform_init()
 #if GPI_HYBRID_CLOCK_USE_VHT
 
     NRF_PPI->CH[GPI_ARM_NRF_HYBRID_CLOCK_PPI_CHANNEL].EEP =
-            (uintptr_t) & (_gpi_clocks_rtc->EVENTS_TICK);
+            (uintptr_t) &(_gpi_clocks_rtc->EVENTS_TICK);
 
-    NRF_PPI->CH[GPI_ARM_NRF_HYBRID_CLOCK_PPI_CHANNEL].TEP =
-            (uintptr_t) &
-            (_gpi_clocks_fast_timer->TASKS_CAPTURE[GPI_ARM_NRF_HYBRID_CLOCK_CAPTURE_REG]);
+    NRF_PPI->CH[GPI_ARM_NRF_HYBRID_CLOCK_PPI_CHANNEL].TEP = (uintptr_t) &(
+            _gpi_clocks_fast_timer->TASKS_CAPTURE[GPI_ARM_NRF_HYBRID_CLOCK_CAPTURE_REG]);
 
     NRF_PPI->CHENSET = BV(GPI_ARM_NRF_HYBRID_CLOCK_PPI_CHANNEL);
 

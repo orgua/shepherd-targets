@@ -54,8 +54,8 @@ static void spi_init()
     P2REN &= ~(BIT0 | BIT1);
 
     /* C2C.GPIO as IRQ */
-    PJDIR  |= BIT2;
-    PJREN  &= ~BIT2;
+    PJDIR |= BIT2;
+    PJREN &= ~BIT2;
 
     /* Release reset */
     UCA0CTLW0 &= ~UCSWRST;

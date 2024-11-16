@@ -57,7 +57,6 @@ static void spi_init()
     PJDIR  |= BIT2;
     PJREN  &= ~BIT2;
 
-     */
     /* Release reset */
     UCA0CTLW0 &= ~UCSWRST;
 }
@@ -93,19 +92,19 @@ static int gpio_init(void)
 {
     /* To save energy, all non-shared GPIOs are put to a defined state:
         - input with pull-resistor enabled
-(Input with */
+    */
 
     /* THRCTRL.H0, C2C.CS, C2C.CLK */
-    P1OUT  = 0x0;
+    P1OUT  = 0u;
     P1DIR  = ~(BIT3 | BIT4 | BIT5);
     P1SEL0 = BIT3; /* analog input to disable input buffer */
-    P1SEL1 = BIT3;
+    P1SEL1 = BIT3; /* analog input to disable input buffer */
     P1IE   = 0u;
     P1IFG  = 0u;
     P1REN  = BIT3 | BIT4 | BIT5;
 
     /* C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
-    P2OUT  = 0;
+    P2OUT  = 0u;
     P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
     P2SEL0 = 0u;
     P2SEL1 = 0u;
@@ -123,28 +122,28 @@ static int gpio_init(void)
     P3REN  = BIT3 | BIT6;
 
     /* D4 */
-    P4OUT  = 0;
+    P4OUT  = 0u;
     P4DIR  = ~(BIT6);
-    P4SEL0 = 0x0;
-    P4SEL1 = 0x0;
+    P4SEL0 = 0u;
+    P4SEL1 = 0u;
     P4IE   = 0u;
     P4IFG  = 0u;
     P4REN  = BIT6;
 
     /* D10, D9, D8, D7, PWRGD_L, PWRGD_H, LED.0 */
-    P5OUT  = 0;
+    P5OUT  = 0u;
     P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7);
-    P5SEL0 = 0x0;
-    P5SEL1 = 0x0;
+    P5SEL0 = 0u;
+    P5SEL1 = 0u;
     P5IE   = 0u;
     P5IFG  = 0u;
     P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7;
 
     /* D11, D12, THRCTRL.L0, D13, SYS.SDA, SYS.SCL, D14, D15 */
-    P6OUT  = 0;
+    P6OUT  = 0u;
     P6DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
-    P6SEL0 = 0x0;
-    P6SEL1 = 0x0;
+    P6SEL0 = 0u;
+    P6SEL1 = 0u;
     P6IE   = 0u;
     P6IFG  = 0u;
     P6REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7;
@@ -168,10 +167,12 @@ static int gpio_init(void)
     P8REN  = 0u;
 
     /* LED.2P, MAX.INT, C2C.GPIO, D6 */
-    PJOUT  = 0;
+    PJOUT  = 0u;
     PJDIR  = ~(BIT0 | BIT1 | BIT2 | BIT6);
-    PJSEL0 = 0x0;
-    PJSEL1 = 0x0;
+    PJSEL0 = 0u;
+    PJSEL1 = 0u;
+    // PJIE = 0u;
+    // PJIFG = 0u;
     PJREN  = BIT0 | BIT1 | BIT2 | BIT6;
 
     return 0;

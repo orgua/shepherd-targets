@@ -20,23 +20,30 @@ extern const uint16_t SHEPHERD_NODE_ID;
 #define GPIO0       PIN_UART_RX
 #define GPIO1       PIN_UART_TX
 #define GPIO2       (8 * 2 + 3) // P2.3
-#define GPIO3       (8 * 2 + 4)
+#define GPIO3       (8 * 2 + 4) //   .4
 #define GPIO4       (8 * 4 + 6) // P4.6
 #define GPIO5       (8 * 3 + 6) // P3.6
 #define GPIO6       (8 * 0 + 6) // PJ.6
 #define GPIO7       (8 * 5 + 3) // P5.3
-#define GPIO8       (8 * 5 + 2)
-#define GPIO9       (8 * 5 + 1)
-#define PWRGDL      (8 * 5 + 4)
-#define PWRGDH      (8 * 5 + 5)
+#define GPIO8       (8 * 5 + 2) //   .2
+#define GPIO9       (8 * 5 + 1) //   .1
+#define GPIO10      (8 * 5 + 0) //   .0
+#define GPIO11      (8 * 6 + 0) // P6.0
+#define GPIO12      (8 * 6 + 1) //   .1
+#define GPIO13      (8 * 6 + 3) //   .3
+#define GPIO14      (8 * 6 + 6) //   .6
+#define GPIO15      (8 * 6 + 7) //   .7
+#define PWRGDL      (8 * 5 + 4) // P5.4
+#define PWRGDH      (8 * 5 + 5) //   .5
 
-#define PIN_LED0    (8 * 5 + 0) // P5.0 -> powered externally
+#define PIN_LED0    (8 * 5 + 7) // P5.7 -> powered externally
 //#define PIN_LED1    (40) // P5.0 -> powered externally
 #define PIN_LED2    (8 * 0 + 0) // PJ.0 -> burns energy-budget
 
-#define I2C_SCL     (8 * 6 + 5) // P1.08
+#define I2C_SCL     (8 * 6 + 5) // P6.05
 #define I2C_SDA     (8 * 6 + 4)
-#define I2C_INT     (8 * 7 + 3) // TODO: output of RTC
+//#define RTC_INT     (8 * 7 + 3) // output of RTC, not controllable
+#define MAX_INT     (8 * 1 + 5) // output of MAX-IC
 
 #define C2C_CLK     (8 * 1 + 5)
 #define C2C_CoPi    (8 * 2 + 0)
@@ -44,21 +51,42 @@ extern const uint16_t SHEPHERD_NODE_ID;
 #define C2C_PSel    (8 * 1 + 4)
 #define C2C_GPIO    (8 * 0 + 2)
 
+#define THRCTRL_H0  (8 * 1 + 3)
+#define THRCTRL_H1  (8 * 3 + 3)
+#define THRCTRL_L0  (8 * 6 + 2)
+#define THRCTRL_L1  (8 * 7 + 0)
+
 // index with reference to names of shepherds target-port
-const uint32_t gpios[] = {GPIO0, GPIO1, GPIO2, GPIO3, GPIO4,  GPIO5,
-                          GPIO6, GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH};
-const uint32_t pins[]  = {GPIO0, //GPIO1,
-                          GPIO2, GPIO3, GPIO4, GPIO5,  GPIO6,
-                          GPIO7, GPIO8, GPIO9, PWRGDL, PWRGDH}; // without uart-tx
+const uint32_t gpios[] = {
+        GPIO0, GPIO1, GPIO2, GPIO3,
+        GPIO4, GPIO5, GPIO6, GPIO7,
+        GPIO8, GPIO9, GPIO10, GPIO11,
+        GPIO12, GPIO13, GPIO14, GPIO15,
+        PWRGDL, PWRGDH
+};
+const uint32_t pins[]  = {
+        GPIO0, /*GPIO1,*/ GPIO2, GPIO3,
+        GPIO4, GPIO5,  GPIO6, GPIO7,
+        GPIO8, GPIO9, GPIO10, GPIO11,
+        GPIO12, GPIO13, GPIO14, GPIO15,
+        PWRGDL, PWRGDH
+}; // without uart-tx
 
 const uint32_t leds[]  = {PIN_LED0, PIN_LED2};
-const uint32_t i2c[]   = {I2C_SCL, I2C_SDA, I2C_INT};
+const uint32_t i2c[]   = {I2C_SCL, I2C_SDA, /*RTC_INT,*/ MAX_INT};
 const uint32_t c2c[]   = {C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO};
+const uint32_t thr[]   = {THRCTRL_H0, THRCTRL_H1, THRCTRL_L0, THRCTRL_L1};
 
 const uint32_t all[]   = {
-        GPIO0,   GPIO2,   GPIO3,   GPIO4,    GPIO5,    GPIO6,    GPIO7,
-        GPIO8,   GPIO9,   PWRGDL,  PWRGDH,   PIN_LED0, PIN_LED2, I2C_SCL,
-        I2C_SDA, I2C_INT, C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
+        GPIO0, /*GPIO1,*/ GPIO2, GPIO3,
+        GPIO4, GPIO5,  GPIO6, GPIO7,
+        GPIO8, GPIO9, GPIO10, GPIO11,
+        GPIO12, GPIO13, GPIO14, GPIO15,
+        PWRGDL, PWRGDH,
+        PIN_LED0, PIN_LED2,
+        I2C_SCL, I2C_SDA, /*RTC_INT,*/ MAX_INT,
+        C2C_CLK, C2C_CoPi, C2C_CiPo, C2C_PSel, C2C_GPIO,
+        THRCTRL_H0, THRCTRL_H1, THRCTRL_L0, THRCTRL_L1,
 }; // except uart-tx
 
 #define N_PINS  sizeof(pins) / sizeof(uint32_t)
@@ -66,6 +94,7 @@ const uint32_t all[]   = {
 #define N_LEDS  sizeof(leds) / sizeof(uint32_t)
 #define N_I2C   sizeof(i2c) / sizeof(uint32_t)
 #define N_C2C   sizeof(c2c) / sizeof(uint32_t)
+#define N_THR   sizeof(thr) / sizeof(uint32_t)
 #define N_ALL   sizeof(all) / sizeof(uint32_t)
 
 /* PLATFORM SPECIFIC CODE */

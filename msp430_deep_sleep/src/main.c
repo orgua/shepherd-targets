@@ -68,6 +68,7 @@ static void gpio_init(void)
     P5IFG  = 0u;
     P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7;
 
+    /* D11, D12, THRCTRL.L0, D13, SYS.SDA, SYS.SCL, D14, D15 */
     P6OUT  = 0u;
     P6DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
     P6SEL0 = 0u;
@@ -76,7 +77,7 @@ static void gpio_init(void)
     P6IFG  = 0u;
     P6REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7;
 
-    /* THRCTRL.L1, RTC_INT, VCAP_SENSE (without Resistor) */
+    /* THRCTRL.L1, RTC.INT, VCAP_SENSE (without Resistor) */
     P7OUT  = 0u;
     P7DIR  = ~(BIT0 | BIT3 | BIT5);
     P7SEL0 = BIT5; /* analog input to disable input buffer */

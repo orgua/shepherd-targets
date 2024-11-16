@@ -46,11 +46,18 @@ static void spi_init()
     /* UCA0CLK on P1.5 */
     P1SEL0 &= ~BIT5;
     P1SEL1 |= BIT5;
+    P1REN &= ~(BIT4 | BIT5);
 
     /* UCA0MOSI on P2.0 and UCA0MISO on P2.1 */
     P2SEL0 &= ~(BIT0 | BIT1);
     P2SEL1 |= (BIT0 | BIT1);
+    P2REN &= ~(BIT0 | BIT1);
 
+    /* C2C.GPIO as IRQ */
+    PJDIR  |= BIT2;
+    PJREN  &= ~BIT2;
+
+     */
     /* Release reset */
     UCA0CTLW0 &= ~UCSWRST;
 }
@@ -84,69 +91,88 @@ static void    dma_init(void)
 
 static int gpio_init(void)
 {
+    /* To save energy, all non-shared GPIOs are put to a defined state:
+        - input with pull-resistor enabled
+(Input with */
 
-    /* To save energy, all non-shared GPIOs are put to a defined state */
-
-    /* Exclude [THRCTRL.H0], C2C.CS, C2C. CLK */
+    /* THRCTRL.H0, C2C.CS, C2C.CLK */
     P1OUT  = 0x0;
-    P1DIR  = ~(BIT4 | BIT5);
-    P1SEL0 = 0u;
-    P1SEL1 = 0u;
-    P1REN  = BIT4 | BIT5;
+    P1DIR  = ~(BIT3 | BIT4 | BIT5);
+    P1SEL0 = BIT3; /* analog input to disable input buffer */
+    P1SEL1 = BIT3;
+    P1IE   = 0u;
+    P1IFG  = 0u;
+    P1REN  = BIT3 | BIT4 | BIT5;
 
-    /* Exclude C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
+    /* C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
     P2OUT  = 0;
     P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
     P2SEL0 = 0u;
     P2SEL1 = 0u;
+    P2IE   = 0u;
+    P2IFG  = 0u;
     P2REN  = BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6;
 
-    /* Exclude [THRCTRL.H1], D5 */
+    /* THRCTRL.H1, D5 */
     P3OUT  = 0u;
-    P3DIR  = ~(BIT6);
-    P3SEL0 = 0u;
-    P3SEL1 = 0u;
-    P3REN  = BIT6;
+    P3DIR  = ~(BIT3 | BIT6);
+    P3SEL0 = BIT3; /* analog input to disable input buffer */
+    P3SEL1 = BIT3; /* analog input to disable input buffer */
+    P3IE   = 0u;
+    P3IFG  = 0u;
+    P3REN  = BIT3 | BIT6;
 
-    /* Exclude D4 */
+    /* D4 */
     P4OUT  = 0;
     P4DIR  = ~(BIT6);
     P4SEL0 = 0x0;
     P4SEL1 = 0x0;
+    P4IE   = 0u;
+    P4IFG  = 0u;
     P4REN  = BIT6;
 
-    /* Exclude D10, D9, D8, D7, PWRGD_L, PWRGD_H  */
+    /* D10, D9, D8, D7, PWRGD_L, PWRGD_H, LED.0 */
     P5OUT  = 0;
-    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
+    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7);
     P5SEL0 = 0x0;
     P5SEL1 = 0x0;
-    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5;
+    P5IE   = 0u;
+    P5IFG  = 0u;
+    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7;
 
-    /* Exclude [THRCTRL.L0], SYS.SDA, SYS.SCL */
+    /* D11, D12, THRCTRL.L0, D13, SYS.SDA, SYS.SCL, D14, D15 */
     P6OUT  = 0;
-    P6DIR  = ~(BIT4 | BIT5);
+    P6DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
     P6SEL0 = 0x0;
     P6SEL1 = 0x0;
-    P6REN  = BIT4 | BIT5;
+    P6IE   = 0u;
+    P6IFG  = 0u;
+    P6REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7;
 
-    /* Exclude [THRCTRL.L1], RTC_INT, [VCAP_SENSE] */
-    P7OUT  = 0;
-    P7DIR  = ~(BIT3);
-    P7SEL0 = 0u;
-    P7SEL1 = 0u;
-    P7REN  = BIT3;
+    /* THRCTRL.L1, RTC.INT, VCAP_SENSE (without Resistor) */
+    P7OUT  = 0u;
+    P7DIR  = ~(BIT0 | BIT3 | BIT5);
+    P7SEL0 = BIT5; /* analog input to disable input buffer */
+    P7SEL1 = BIT5; /* analog input to disable input buffer */
+    P7IE   = 0u;
+    P7IFG  = 0u;
+    P7REN  = BIT0 | BIT3;
 
-    P8OUT  = 0;
+    /* not routed to pins */
+    P8OUT  = 0u;
     P8DIR  = 0xFF;
-    P8SEL0 = 0x0;
-    P8SEL1 = 0x0;
+    P8SEL0 = 0u;
+    P8SEL1 = 0u;
+    P8IE   = 0u;
+    P8IFG  = 0u;
+    P8REN  = 0u;
 
+    /* LED.2P, MAX.INT, C2C.GPIO, D6 */
     PJOUT  = 0;
-    /* Exclude LED_CTRL, [MAX_INT],  D6, Take control of C2C.GPIO */
-    PJDIR  = ~(BIT0 | BIT6);
+    PJDIR  = ~(BIT0 | BIT1 | BIT2 | BIT6);
     PJSEL0 = 0x0;
     PJSEL1 = 0x0;
-    PJREN  = BIT0 | BIT6;
+    PJREN  = BIT0 | BIT1 | BIT2 | BIT6;
 
     return 0;
 }

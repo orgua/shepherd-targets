@@ -23,14 +23,16 @@ static void gpio_init(void)
      *      - all inputs have now a pulldown-resistor activated,
      *      - sleep current rises from 19 to 21 nA (@3V) for the FRAM-Target
      * */
+    /* THRCTRL.H0, C2C.CS, C2C.CLK */
     P1OUT  = 0u;
-    P1DIR  = ~(BIT4 | BIT5);
-    P1SEL0 = 0u;
-    P1SEL1 = 0u;
+    P1DIR  = ~(BIT3 | BIT4 | BIT5);
+    P1SEL0 = BIT3; /* analog input to disable input buffer */
+    P1SEL1 = BIT3; /* analog input to disable input buffer */
     P1IE   = 0u;
     P1IFG  = 0u;
-    P1REN  = BIT4 | BIT5;
+    P1REN  = BIT3 | BIT4 | BIT5;
 
+    /* C2C.MOSI, C2C.MISO, D2, D3, D1, D0 */
     P2OUT  = 0u;
     P2DIR  = ~(BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6);
     P2SEL0 = 0u;
@@ -39,14 +41,16 @@ static void gpio_init(void)
     P2IFG  = 0u;
     P2REN  = BIT0 | BIT1 | BIT3 | BIT4 | BIT5 | BIT6;
 
+    /* THRCTRL.H1, D5 */
     P3OUT  = 0u;
-    P3DIR  = ~(BIT6);
-    P3SEL0 = 0u;
-    P3SEL1 = 0u;
+    P3DIR  = ~(BIT3 | BIT6);
+    P3SEL0 = BIT3; /* analog input to disable input buffer */
+    P3SEL1 = BIT3; /* analog input to disable input buffer */
     P3IE   = 0u;
     P3IFG  = 0u;
-    P3REN  = BIT6;
+    P3REN  = BIT3 | BIT6;
 
+    /* D4 */
     P4OUT  = 0u;
     P4DIR  = ~(BIT6);
     P4SEL0 = 0u;
@@ -55,30 +59,33 @@ static void gpio_init(void)
     P4IFG  = 0u;
     P4REN  = BIT6;
 
+    /* D10, D9, D8, D7, PWRGD_L, PWRGD_H, LED.0 */
     P5OUT  = 0u;
-    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5);
+    P5DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7);
     P5SEL0 = 0u;
     P5SEL1 = 0u;
     P5IE   = 0u;
     P5IFG  = 0u;
-    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5;
+    P5REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT7;
 
     P6OUT  = 0u;
-    P6DIR  = ~(BIT4 | BIT5);
+    P6DIR  = ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
     P6SEL0 = 0u;
     P6SEL1 = 0u;
     P6IE   = 0u;
     P6IFG  = 0u;
-    P6REN  = BIT4 | BIT5;
+    P6REN  = BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7;
 
+    /* THRCTRL.L1, RTC_INT, VCAP_SENSE (without Resistor) */
     P7OUT  = 0u;
-    P7DIR  = ~(BIT3);
-    P7SEL0 = 0u;
-    P7SEL1 = 0u;
+    P7DIR  = ~(BIT0 | BIT3 | BIT5);
+    P7SEL0 = BIT5; /* analog input to disable input buffer */
+    P7SEL1 = BIT5; /* analog input to disable input buffer */
     P7IE   = 0u;
     P7IFG  = 0u;
-    P7REN  = BIT3;
+    P7REN  = BIT0 | BIT3;
 
+    /* not routed to pins */
     P8OUT  = 0u;
     P8DIR  = 0xFF;
     P8SEL0 = 0u;
@@ -87,13 +94,14 @@ static void gpio_init(void)
     P8IFG  = 0u;
     P8REN  = 0u;
 
+    /* LED.2P, MAX.INT, C2C.GPIO, D6 */
     PJOUT  = 0u;
-    PJDIR  = ~(BIT0 | BIT2 | BIT6);
+    PJDIR  = ~(BIT0 | BIT1 | BIT2 | BIT6);
     PJSEL0 = 0u;
     PJSEL1 = 0u;
     // PJIE = 0u;
     // PJIFG = 0u;
-    PJREN  = BIT0 | BIT2 | BIT6;
+    PJREN  = BIT0 | BIT1 | BIT2 | BIT6;
 }
 
 

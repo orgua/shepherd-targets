@@ -2,6 +2,7 @@
 #include "nrf52840_bitfields.h"
 
 #define STACK_TOP (void *) 0x20002000
+#define CONFIG_NFCT_PINS_AS_GPIOS
 
 extern unsigned long _stext;
 extern unsigned long _sbss;

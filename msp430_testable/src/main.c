@@ -114,9 +114,9 @@ static inline void delay_ms(const uint32_t time)
 
 static void set_gpio_state(const uint32_t pin_num, const bool state)
 {
-    uint8_t bank = (pin_num >> 3u);
-    uint8_t pin  = (pin_num & 0b111);
-    if (bank > 8) return;
+    const uint8_t bank = (pin_num >> 3u) & 0b1111u;
+    const uint8_t pin  = (pin_num & 0b111u);
+    if (bank > 8u) return;
 
     if (state)
     {
@@ -146,9 +146,9 @@ static void set_gpio_state(const uint32_t pin_num, const bool state)
 
 static void set_gpio_dir(const uint32_t pin_num, const bool input)
 {
-    uint8_t bank = (pin_num >> 3u);
-    uint8_t pin  = (pin_num & 0b111);
-    if (bank > 8) return;
+    const uint8_t bank = (pin_num >> 3u) & 0b1111u;
+    const uint8_t pin  = (pin_num & 0b111u);
+    if (bank > 8u) return;
 
     if (input)
     {
@@ -179,7 +179,7 @@ static void set_gpio_dir(const uint32_t pin_num, const bool input)
 static void set_gpio_out(const uint32_t pin_num, const bool enable)
 {
     /* similar to nrf52-code */
-    set_gpio_state(pin_num, 0);
+    set_gpio_state(pin_num, 0u);
     set_gpio_dir(pin_num, !enable);
 }
 
@@ -234,10 +234,11 @@ static void gpio_init(void)
 
 /* GENERALIZED GPIO FUNCTIONS */
 
-static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
+static void toggle_gpio_one_high(const uint32_t array[], const uint32_t array_size)
 {
     /* set array to output */
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], true); }
+    delay_ms(100);
     /* switch each pin on in array */
     for (uint8_t count = 0; count < array_size; count++)
     {
@@ -246,6 +247,7 @@ static void toggle_gpio_one_high(unsigned int array[], unsigned int array_size)
         set_gpio_state(array[count], false);
     }
     /* set pins to INPUT */
+    delay_ms(100);
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], false); }
 }
 
@@ -266,9 +268,11 @@ int main(void)
 
     /* Switch on GPIO for 100ms in a row */
     toggle_gpio_one_high(leds, N_LEDS);
+    delay_ms(2000);
 
     /* run through all GPIO - to present them to the supervisor */
     toggle_gpio_one_high(all, N_ALL);
+    delay_ms(2000);
 
     /* Switch on LEDs for 100ms in a row (>=8 Reps, depending on node-id) */
     uint32_t rep_sum = SHEPHERD_NODE_ID ? SHEPHERD_NODE_ID >= 8 : 8;

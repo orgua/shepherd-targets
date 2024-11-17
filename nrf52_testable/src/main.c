@@ -150,7 +150,7 @@ void cmd_consumer(struct pt *pt)
 static inline void delay_ms(const uint32_t duration)
 {
     timer_reset();
-    uint32_t duration_us = duration * 1000;
+    const uint32_t duration_us = duration * 1000;
     while (timer_now_us() < duration_us);
 }
 
@@ -191,7 +191,7 @@ static bool get_gpio(const uint8_t pin_num)
 
 /* GENERALIZED GPIO FUNCTIONS */
 
-static void toggle_gpio_one_high(const uint32_t array[], uint8_t array_size)
+static void toggle_gpio_one_high(const uint32_t array[], const uint8_t array_size)
 {
     /* set array to output */
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], true); }
@@ -206,7 +206,7 @@ static void toggle_gpio_one_high(const uint32_t array[], uint8_t array_size)
     for (uint8_t count = 0; count < array_size; count++) { set_gpio_out(array[count], false); }
 }
 
-static uint8_t gpio_watcher(const uint32_t array[], uint8_t array_size)
+static uint8_t gpio_watcher(const uint32_t array[], const uint8_t array_size)
 {
     for (uint8_t count = 0; count < array_size; count++)
     {
@@ -248,6 +248,7 @@ int main(void)
         uint32_t map_old          = 0xFF;
         uint8_t  triggered[N_ALL] = {0};
         printf("\r\nGPIO WATCHER (%u pins)\r\n", N_ALL);
+        if (N_ALL > 32) printf("Error: Implementation can only handle 32 pins");
         while (1)
         {
             map_new = 0;
@@ -263,7 +264,7 @@ int main(void)
             {
                 for (uint8_t count = 0; count < N_ALL; count++)
                 {
-                    if (map_new & (1 << count)) printf("1");
+                    if (map_new & (1 << count)) printf("%u", count % 10);
                     else printf(" ");
                 }
                 printf("\r\n");

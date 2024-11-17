@@ -42,6 +42,7 @@ CFLAGS += -g3 -O0
 CFLAGS += ${INCLUDES}
 CFLAGS += -DNRF52840_XXAA
 CFLAGS += -DARM_MATH_CM4
+CFLAGS += -DCONFIG_NFCT_PINS_AS_GPIOS  # TODO: add to other projects
 CFLAGS += -Wall
 CFLAGS += -fno-builtin
 CFLAGS += -mthumb

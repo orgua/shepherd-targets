@@ -43,7 +43,7 @@ extern const uint16_t SHEPHERD_NODE_ID;
 #define I2C_SCL     (8 * 6 + 5) // P6.05
 #define I2C_SDA     (8 * 6 + 4)
 //#define RTC_INT     (8 * 7 + 3) // output of RTC, not controllable
-#define MAX_INT     (8 * 1 + 5) // output of MAX-IC
+#define MAX_INT     (8 * 0 + 5) // output of MAX-IC
 
 #define C2C_CLK     (8 * 1 + 5)
 #define C2C_CoPi    (8 * 2 + 0)

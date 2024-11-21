@@ -257,7 +257,7 @@ See `.wxmx`-maxima-file for more details.
   - 29 different parts, 120 in total
   - 0.5 mm pitch
 
-### to order
+### Ordering of Parts
 
 - new C27 1pF: 100x 81-GJM1555C1H1R0JB1D
 - new C28 1.2pF: 100x 81-GJM1555C1H1R2JB1D
@@ -320,7 +320,7 @@ sudo shepherd-sheep target-power -p A -v 3 --on
 sudo shepherd-sheep run /etc/shepherd/target_device_test1.yaml
 ```
 
-NOTE: best done with interconnector that only routes: pwr1, serial, programming-pins, pwr2
+NOTE: best done with inter-connector that only routes: pwr1, serial, programming-pins, pwr2
 Check UART output with logic analyzer or in shepherd recording.
 Behavior is described [here](https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable).
 
@@ -348,8 +348,8 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 ## Testing
 
 - programming via debug-adapter fails for nRF (OK for MSP), even at 200kbit or 100kbit instead of 500k
-
-- 1392386 - Vis OK, 5mA VT, 0mA 3V, prog nRF OK, pgm MSP OK
-- 1392379 - Vis OK, 5mA VT, 0mA 3V
-- 1392383 - Vis OK, 5mA VT, 0mA 3V
-- 1392395 - Vis OK, 5mA VT, 0mA 3V
+  - reason: unsoldered press-fit to shepherd cape
+- 6 of 24 targets had trouble programming the MSP
+  - removing two ICs showed no flaws
+  - as visual inspection is OK the next suspects are: pcb or chip-failure
+- report is in [planning-repo](https://github.com/orgua/shepherd_v2_planning/tree/main/doc_testbed)

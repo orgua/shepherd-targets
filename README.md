@@ -19,33 +19,32 @@ The repository contains a collection of target-hardware and mcu-firmwares used b
 
 ## nRF52 with MSP430FR as FRAM
 
-Hardware v1.0 uses
+Hardware v1.3 uses
 
-- nRF52840 (Panasonic PAN1780)
-- MSP430FR5962 (TI)
+- nRF52840
+- MSP430FR5994 (TI)
 - RTC AB1805
 
-![Target_nRF_MSP430](./media/shepherd_nRF_FRAM_Target_v1.0_photo_front_with_header.jpg)
+![Target_nRF_MSP430](./media/shepherd_nRF_FRAM_Target_v1.3_photo_front.jpg)
 
 BOM, gerber-files and schematics are available in the [PCB-Directory](https://github.com/orgua/shepherd-targets/tree/main/hardware). This folder also contains a guide for testing new target-PCBs.
 
-![Target_nRF_MSP430_render](./media/pcb_rendering_nRF_MSRP430_FRAM_Target.png)
-
-Hardware v1.2 uses
-
-- Nordic nRF52840
-- TI MSP430FR5994 (TI)
-- RTC AB1805
+![Target_nRF_MSP430_render](./media/shepherd_nRF_FRAM_Target_v1.3_render_front.png)
 
 ### Features
 
 - freedom to use both MCUs as needed (just as radio or FRAM) or disable when not needed (deep sleep)
 - over-voltage protection for V_LV (max 3.9V)
-- two debug LEDs with external supply (minimal impact on pwr-budget)
+- under-voltage protection with hysteresis for nRF
+- one debug LEDs with separate supply for minimal impact on pwr-budget
 - one self-powered LED to "burn" energy
 - io pins not interfering with RF (nRF PS v1.6 page 578)
-- LEDs / UART similar to Riotee
+- LEDs / UART similar to [Riotee](https://www.riotee.nessie-circuits.de/)
 - nRF uses low voltage mode (PSv1.1 page 61)
+- 16x GPIO shared to host, current-limited with 240R star-configuration (every participant has that resistor on its port to also keep data rates >10 MHz)
+- high & low power-good-signal (similar to riotee)
+- SMA-port for external antenna
+- 3rd possible way for reset (external), beside jtag and pwr-cycle
 
 ### nRF52-Firmwares
 

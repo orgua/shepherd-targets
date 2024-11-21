@@ -2,7 +2,9 @@
 
 # v0.5.0
 
-- adapt firmware to riotee, nRF-FRAM Target v1.2
+- adapt firmware to riotee, nRF-FRAM Target v1.3
+- improve testing
+- add new hardware
 
 # v0.4.2
 

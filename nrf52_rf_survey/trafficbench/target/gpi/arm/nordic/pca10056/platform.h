@@ -128,9 +128,9 @@
 //**************************************************************************************************
 
 #define GPI_LED_NONE 0
-#define GPI_LED_1    BV(32+13) // shepherd-target LED0
-#define GPI_LED_2    BV(3)  // shepherd-target LED2P
-#define GPI_LED_3    BV(32+13)
+#define GPI_LED_1    BV(32 + 13) // shepherd-target LED0
+#define GPI_LED_2    BV(3)       // shepherd-target LED2P
+#define GPI_LED_3    BV(32 + 13)
 #define GPI_LED_4    BV(3)
 
 #define GPI_BUTTON_1 BV(32 + 12) // unused by shepherd

@@ -124,7 +124,7 @@ One PMEG10010ELR Diode is between V_target and 3V3:
 Solution
 
 - analog switch controlled by comparator with small hysteresis
-- VON = 1.729 V, VOFF = 1.652 V according to datasheet (values are wrong?)
+- VON = 1.729 V, VOFF = 1.652 V according to formular in datasheet (values are wrong?)
 - VON = 1.797 V, VOFF = 1.642 V when solving the network with traditional methods
 - VON = 1.802 V, VOFF = 1.641 V from actual measurements
 
@@ -202,7 +202,7 @@ See `.wxmx`-maxima-file for more details.
   - target with hdr is 38.2 mm, so limiting the whole length now to 37
   - old-area was 25 x 24 = 600 mm², new usable area is 27 x 31 = 837
 - nRF has high current draw between 500...1650 mV -> VSrc with diode+cap is problematic
-  - voltage sweep is plotted in [this graphic](emu_ramp.plot_0s000_to_20s000.png)
+  - voltage sweep is plotted in [this graphic](emu_ramp.plot_0s000_to_40s000.png) and other
   - add comparator to delay power of nRF
   - fix targets: comparator + pwr-switch -> on when above 1.65 .. 1.70 V
     - off again when going below 1.4 V

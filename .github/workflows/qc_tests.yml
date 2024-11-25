@@ -24,3 +24,5 @@ jobs:
 
       - name: Run Pre-Commit Tests 🧪
         uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: ""  # avoid default "--all-files"

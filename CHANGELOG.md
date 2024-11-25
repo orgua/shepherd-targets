@@ -1,5 +1,11 @@
 # Changelog
 
+# v0.5.1
+
+- add documentation
+- update deps
+- fix QA
+
 # v0.5.0
 
 - adapt firmware to nRF-FRAM Target v1.3

@@ -6,26 +6,26 @@ pcb_z2 = 3.3;
 
 // unregular cube
 // 4 of the 12 edges are rounded
-module round_cuboid(x,y,z,r,$fn=48) 
+module round_cuboid(x,y,z,r,$fn=48)
 {
     cube([x,y-2*r,z],center=true);
     cube([x-2*r,y,z],center=true);
     cube([x-2*r,y-2*r,z],center=true);
-    
+
     translate([+x/2-r,+y/2-r,0]) cylinder(r=r,h=z,center=true);
     translate([+x/2-r,-y/2+r,0]) cylinder(r=r,h=z,center=true);
     translate([-x/2+r,+y/2-r,0]) cylinder(r=r,h=z,center=true);
     translate([-x/2+r,-y/2+r,0]) cylinder(r=r,h=z,center=true);
-}   
+}
 
 // unregular cube
 // all 12 edges are rounded
-module round_cuboid3(x,y,z,r,$fn=48) 
+module round_cuboid3(x,y,z,r,$fn=48)
 {
     cube([x,y-2*r,z-2*r],center=true);
     cube([x-2*r,y,z-2*r],center=true);
     cube([x-2*r,y-2*r,z],center=true);
-    
+
     translate([+x/2-r,+y/2-r,0]) cylinder(r=r,h=z-2*r,center=true);
     translate([+x/2-r,-y/2+r,0]) cylinder(r=r,h=z-2*r,center=true);
     translate([-x/2+r,+y/2-r,0]) cylinder(r=r,h=z-2*r,center=true);
@@ -35,12 +35,12 @@ module round_cuboid3(x,y,z,r,$fn=48)
     translate([+x/2-r,0,-z/2+r]) rotate([90,0,0]) cylinder(r=r,h=y-2*r,center=true);
     translate([-x/2+r,0,+z/2-r]) rotate([90,0,0]) cylinder(r=r,h=y-2*r,center=true);
     translate([-x/2+r,0,-z/2+r]) rotate([90,0,0]) cylinder(r=r,h=y-2*r,center=true);
-    
+
     translate([0,+y/2-r,+z/2-r]) rotate([0,90,0]) cylinder(r=r,h=x-2*r,center=true);
     translate([0,+y/2-r,-z/2+r]) rotate([0,90,0]) cylinder(r=r,h=x-2*r,center=true);
     translate([0,-y/2+r,+z/2-r]) rotate([0,90,0]) cylinder(r=r,h=x-2*r,center=true);
     translate([0,-y/2+r,-z/2+r]) rotate([0,90,0]) cylinder(r=r,h=x-2*r,center=true);
-    
+
     translate([+(x/2-r),+(y/2-r),+(z/2-r)]) sphere(r=r);
     translate([+(x/2-r),+(y/2-r),-(z/2-r)]) sphere(r=r);
     translate([+(x/2-r),-(y/2-r),+(z/2-r)]) sphere(r=r);
@@ -52,7 +52,7 @@ module round_cuboid3(x,y,z,r,$fn=48)
 }
 
 
-module target13() 
+module target13()
 {
     // cutouts
     union() {
@@ -66,7 +66,7 @@ module target13()
         translate([-pcb_x/2,0,3.3/2]) cube([10,21,3.3], center=true);
         translate([-(pcb_x+10-0.2)/2,0,3.3/2]) cube([10,21,20], center=true);
         translate([-pcb_x/2-0.2,0,-2]) cube([10,21,4], center=true);
-        
+
         // SMA-Connector
         translate([+pcb_x/2,0,3.3/2]) cube([10,21,3.3], center=true);
         translate([+(pcb_x+10-0.2)/2,0,3.3/2]) cube([10,21,20], center=true);
@@ -87,7 +87,7 @@ module window_honey_neg()
         for (i = [-5:1:5], j=[-5:1:10]) {
             translate([i*5.0,i*3.0 + j*6,0]) cylinder(h=25, d=5.7, $fn=6);
         }
-    }   
+    }
 }
 
 module cage()

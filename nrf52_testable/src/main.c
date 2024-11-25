@@ -100,7 +100,7 @@ void gpio_consumer(struct pt *pt)
     /* works for up to 8 pins */
     pt_begin(pt);
 
-    char *slot_num;
+    const char *slot_num;
 
     gpiote_init(pins, N_PINS);
 
@@ -108,7 +108,7 @@ void gpio_consumer(struct pt *pt)
     {
         pt_wait(pt, !pt_queue_empty(&q_pin_edges));
         slot_num = pt_queue_pop(&q_pin_edges);
-        printf("%u triggered\r\n", *slot_num);
+        printf("%c triggered\r\n", *slot_num);
     }
 
     pt_end(pt);
@@ -124,12 +124,12 @@ void cmd_consumer(struct pt *pt)
     while (1)
     {
         pt_wait(pt, !pt_queue_empty(&q_cmds));
-        char *cmd = pt_queue_pop(&q_cmds);
+        const char *cmd = pt_queue_pop(&q_cmds);
 
         /* Convert ascii number to pin number */
-        pin_idx   = *cmd - 0x30;
+        pin_idx         = *cmd - 0x30;
         if (pin_idx >= N_PINS)
-            printf("%c is outside of range of supported pins (%u)\r\n", *cmd, N_PINS);
+            printf("%c is outside of range of supported pins (%zu)\r\n", *cmd, N_PINS);
 
         /* Switch on pin for 100us */
         timer_reset();
@@ -247,7 +247,7 @@ int main(void)
         uint32_t map_new          = 0x00;
         uint32_t map_old          = 0xFF;
         uint8_t  triggered[N_ALL] = {0};
-        printf("\r\nGPIO WATCHER (%u pins)\r\n", N_ALL);
+        printf("\r\nGPIO WATCHER (%zu pins)\r\n", N_ALL);
         if (N_ALL > 32) printf("Error: Implementation can only handle 32 pins");
         while (1)
         {
@@ -264,7 +264,7 @@ int main(void)
             {
                 for (uint8_t count = 0; count < N_ALL; count++)
                 {
-                    if (map_new & (1 << count)) printf("%u", count % 10);
+                    if (map_new & (1 << count)) printf("%d", count % 10);
                     else printf(" ");
                 }
                 printf("\r\n");

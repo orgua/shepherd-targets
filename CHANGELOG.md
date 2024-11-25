@@ -5,6 +5,10 @@
 - adapt firmware to riotee, nRF-FRAM Target v1.3
 - improve testing
 - add new hardware
+  - target v1.3, manufactured and tested
+  - target adapter
+  - debug adapter
+  - target cage
 
 # v0.4.2
 

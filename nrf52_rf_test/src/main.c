@@ -56,9 +56,12 @@ int main(void)
 
     while (1)
     {
-        /* Switch on LED */
+/* Switch on LED */
+#if (GPIO_LED < 32)
         NRF_P0->OUTSET = (1u << GPIO_LED);
-
+#else
+        NRF_P1->OUTSET = (1u << (GPIO_LED - 32u));
+#endif
 
         /* Place the counter value within packets payload */
         memcpy(&pkt.payload[17], &counter, 4);
@@ -66,8 +69,12 @@ int main(void)
         counter++;
         delay_ms(30);
 
-        /* Switch off LED */
+/* Switch off LED */
+#if (GPIO_LED < 32)
         NRF_P0->OUTCLR = (1u << GPIO_LED);
+#else
+        NRF_P1->OUTCLR = (1u << (GPIO_LED - 32u));
+#endif
 
         delay_ms(1000);
     }

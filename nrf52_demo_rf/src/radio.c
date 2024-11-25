@@ -31,7 +31,8 @@ static __inline int8_t ch2freq(uint8_t ch)
     }
 }
 
-int radio_prepare_adv(adv_pck_t *pkt, ble_ll_addr_t *adv_addr, unsigned int len)
+int radio_prepare_adv(adv_pck_t *const pkt, const ble_ll_addr_t *const adv_addr,
+                      const unsigned int len)
 {
     pkt->header.pdu_type = ADV_NONCONN_IND;
     pkt->header.txadd    = 1;
@@ -40,7 +41,7 @@ int radio_prepare_adv(adv_pck_t *pkt, ble_ll_addr_t *adv_addr, unsigned int len)
     return 0;
 }
 
-__RAMFUNC pt_event_t *radio_send(adv_pck_t *pkt, uint8_t ch)
+__RAMFUNC pt_event_t *const radio_send(adv_pck_t *const pkt, const uint8_t ch)
 {
     NRF_RADIO->FREQUENCY        = ch2freq(ch);
     /* Whitening initialization see Bluetooth Core Spec 5.2 Section 3.2 */

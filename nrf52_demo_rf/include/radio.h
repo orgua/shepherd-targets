@@ -37,8 +37,9 @@ typedef struct
     uint8_t         payload[31];
 } __attribute__((__packed__)) adv_pck_t;
 
-int         radio_prepare_adv(adv_pck_t *pkt, ble_ll_addr_t *adv_addr, unsigned int len);
-pt_event_t *radio_send(adv_pck_t *pkt, uint8_t ch);
-int         radio_init();
+int               radio_prepare_adv(adv_pck_t *const pkt, const ble_ll_addr_t *const adv_addr,
+                                    const unsigned int len);
+pt_event_t *const radio_send(adv_pck_t *const pkt, const uint8_t ch);
+int               radio_init();
 
 #endif /* __RADIO_H__ */

@@ -60,7 +60,7 @@ repos:
     hooks:
       - id: clang-format
         types_or: [c++, c]
-        exclude: ^nrf52_rf_survey\/trafficbench\/target\/gpi\/platform_spec\.h
+        exclude: ^.*nrf52_rf_survey\/trafficbench\/target\/gpi\/platform_spec\.h
   # cpp-check comes last! fails if uninstalled
   - repo: https://github.com/pocc/pre-commit-hooks
     rev: "v1.3.5"
@@ -81,7 +81,7 @@ repos:
           - "--suppress=unmatchedSuppression"
           - "--suppress=constParameterCallback"
           - "--suppress=knownConditionTrueFalse"
-        exclude: ^nrf52_rf_survey\/trafficbench.*$
+        exclude: ^.*nrf52_rf_survey\/trafficbench.*$
 
 #     - id: clang-tidy
 #       args: [ "-checks=bugprone-,cert-,performance-,portability-"]

@@ -54,6 +54,7 @@
 #include "gpi/platform_spec.h"
 
 #include "../nrf528xx/platform.h" // nRF528xx common functionality
+#include "../nrf528xx/platform_internal.h"
 
 #include "gpi/tools.h"
 

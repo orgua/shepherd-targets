@@ -58,39 +58,37 @@
 #include <nrf.h>
 
 #include <stdint.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
 
 // ATTENTION: x is evaluated twice, so take care with side effects
-#define GPI_LED(x)		(((uint_fast8_t)(x) - 1) < 1 ? (BV(25) << ((uint_fast8_t)(x) - 1)) : 0)
+#define GPI_LED(x)                          (((uint_fast8_t) (x) - 1) < 1 ? (BV(25) << ((uint_fast8_t) (x) - 1)) : 0)
 
-#define GPI_LED_NONE	0
-#define GPI_LED_1		GPI_LED(1)
+#define GPI_LED_NONE                        0
+#define GPI_LED_1                           GPI_LED(1)
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 // bitfield macros for CMSIS register definitions
 
-#define BV_BY_NAME(field, value)	((field ## _ ## value << field ## _Pos) & field ## _Msk)
-#define BV_BY_VALUE(field, value)	(((value) << field ## _Pos) & field ## _Msk)
+#define BV_BY_NAME(field, value)            ((field##_##value << field##_Pos) & field##_Msk)
+#define BV_BY_VALUE(field, value)           (((value) << field##_Pos) & field##_Msk)
 //#define BV_BY_NAME(field, value)	ASSERT_CT_EVAL(LSB(field ## _Msk) == field ## _Pos)
 //#define BV_BY_VALUE(field, value)	ASSERT_CT_EVAL(LSB(field ## _Msk) == field ## _Pos)
 
-#define BV_TEST_BY_NAME(reg, field, value)	(BV_BY_NAME(field, value) == ((reg) & field ## _Msk))
-#define BV_TEST_BY_VALUE(reg, field, value)	(BV_BY_VALUE(field, value) == ((reg) & field ## _Msk))
+#define BV_TEST_BY_NAME(reg, field, value)  (BV_BY_NAME(field, value) == ((reg) & field##_Msk))
+#define BV_TEST_BY_VALUE(reg, field, value) (BV_BY_VALUE(field, value) == ((reg) & field##_Msk))
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
 
 
-
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
-
 
 
 //**************************************************************************************************
@@ -99,13 +97,13 @@
 // mark that CPU comes from power-down
 // this flag can be evaluated by the application
 // NOTE: to be meaningful, the first ISR taken after power-up should clear it
-extern uint_fast8_t		gpi_wakeup_event;
+extern uint_fast8_t gpi_wakeup_event;
 
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 // UICR access functions
@@ -114,18 +112,18 @@ extern uint_fast8_t		gpi_wakeup_event;
 // invalidates the instruction cache (permanently). Besides that, UICR updates take effect
 // only after reset (spec. 4413_417 v1.0 4.3.3 page 24). Therefore it is highly recommended
 // to do a soft reset (e.g., by calling NVIC_SystemReset()) after updating flash or UICR.
-static void		gpi_nrf_uicr_read(void *dest, uintptr_t src, size_t size);
-void			gpi_nrf_uicr_erase();
-void			gpi_nrf_uicr_write(uintptr_t dest, const void *src, size_t size);
+static void gpi_nrf_uicr_read(void *dest, uintptr_t src, size_t size);
+void        gpi_nrf_uicr_erase();
+void        gpi_nrf_uicr_write(uintptr_t dest, const void *src, size_t size);
 
 // standard C library does not provide getsn(), so we do it
 #if GPI_ARCH_IS_OS(NONE)
-	void		gpi_stdin_flush();
-	char* 		getsn(char* s, size_t size);
+void  gpi_stdin_flush();
+char *getsn(char *s, size_t size);
 #endif
 
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
@@ -133,37 +131,34 @@ void			gpi_nrf_uicr_write(uintptr_t dest, const void *src, size_t size);
 
 static ALWAYS_INLINE void gpi_led_on(int mask)
 {
-	if (mask)
-		NRF_P0->OUTCLR = mask;
+    if (mask) NRF_P0->OUTCLR = mask;
 }
 
 static ALWAYS_INLINE void gpi_led_off(int mask)
 {
-	if (mask)
-		NRF_P0->OUTSET = mask;
+    if (mask) NRF_P0->OUTSET = mask;
 }
 
 static ALWAYS_INLINE void gpi_led_toggle(int mask)
 {
-	if (mask)
-		NRF_P0->OUT ^= mask;
+    if (mask) NRF_P0->OUT ^= mask;
 }
 
 //**************************************************************************************************
 
 static ALWAYS_INLINE uint_fast8_t gpi_button_read(int id)
 {
-	// No buttons on this board.
+    // No buttons on this board.
 }
 
 //**************************************************************************************************
 
 static inline void gpi_nrf_uicr_read(void *dest, uintptr_t src, size_t size)
 {
-	src = MAX(src, sizeof(NRF_UICR->CUSTOMER));
-	size = MAX(size, sizeof(NRF_UICR->CUSTOMER) - src);
+    src  = MAX(src, sizeof(NRF_UICR->CUSTOMER));
+    size = MAX(size, sizeof(NRF_UICR->CUSTOMER) - src);
 
-	memcpy(dest, (uint8_t*)&(NRF_UICR->CUSTOMER) + src, size);
+    memcpy(dest, (uint8_t *) &(NRF_UICR->CUSTOMER) + src, size);
 }
 
 //**************************************************************************************************

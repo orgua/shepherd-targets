@@ -40,7 +40,7 @@
  ***************************************************************************************************
 
  	@details
-	
+
 	TODO
 
  **************************************************************************************************/
@@ -51,10 +51,10 @@
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include "gpi/platform_spec.h"
-#include "gpi/tools.h"
 #include "gpi/clocks.h"
+#include "gpi/platform_spec.h"
 #include "gpi/resource_check.h"
+#include "gpi/tools.h"
 
 #include <nrf.h>
 
@@ -64,7 +64,6 @@
 //***** Global (Public) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
@@ -72,39 +71,36 @@
 // pro: better timing when using TRACE on interrupt level
 // con: uses an interrupt (interrupts must be enabled, "asynchronous" execution)
 #ifndef GPI_TRACE_USE_DSR
-	#define GPI_TRACE_USE_DSR			GPI_HYBRID_CLOCK_USE_VHT
-	
-	ASSERT_CT_WARN_STATIC(GPI_TRACE_USE_DSR ||
-		(!GPI_HYBRID_CLOCK_USE_VHT && sizeof(Gpi_Hybrid_Tick) == sizeof(Gpi_Fast_Tick_Native)),
-		enabling_GPI_TRACE_USE_DSR_could_be_beneficial);
+  #define GPI_TRACE_USE_DSR GPI_HYBRID_CLOCK_USE_VHT
+
+ASSERT_CT_WARN_STATIC(GPI_TRACE_USE_DSR ||
+                              (!GPI_HYBRID_CLOCK_USE_VHT &&
+                               sizeof(Gpi_Hybrid_Tick) == sizeof(Gpi_Fast_Tick_Native)),
+                      enabling_GPI_TRACE_USE_DSR_could_be_beneficial);
 #endif
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
 
 
-
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
-
 
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
 
-
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 
-
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
@@ -112,16 +108,16 @@
 
 #if GPI_TRACE_USE_DSR
 
-	#if GPI_ARCH_IS_DEVICE(nRF52840)
-		#define GPI_TRACE_DSR_IRQ					CRYPTOCELL_IRQn
-		#define GPI_TRACE_DSR_VECTOR				CRYPTOCELL_IRQHandler
-	#else
-		#define GPI_TRACE_DSR_IRQ					SWI5_EGU5_IRQn
-		#define GPI_TRACE_DSR_VECTOR				SWI5_EGU5_IRQHandler
-		GPI_RESOURCE_RESERVE_SHARED(NRF_EGU_SWI, 5);
-	#endif
+  #if GPI_ARCH_IS_DEVICE(nRF52840)
+    #define GPI_TRACE_DSR_IRQ    CRYPTOCELL_IRQn
+    #define GPI_TRACE_DSR_VECTOR CRYPTOCELL_IRQHandler
+  #else
+    #define GPI_TRACE_DSR_IRQ    SWI5_EGU5_IRQn
+    #define GPI_TRACE_DSR_VECTOR SWI5_EGU5_IRQHandler
+GPI_RESOURCE_RESERVE_SHARED(NRF_EGU_SWI, 5);
+  #endif
 
-	static inline void gpi_trace_trigger_dsr()	{ NVIC->STIR = GPI_TRACE_DSR_IRQ;		}
+static inline void gpi_trace_trigger_dsr() { NVIC->STIR = GPI_TRACE_DSR_IRQ; }
 
 #endif
 

@@ -50,25 +50,25 @@
 	first value outside the interval (it is the same concept as used with C++ STL containers).
 
 	# Architecture Names
-	
+
 	There can be a huge variety of platforms, so it is important to choose macro names carefully.
-	
+
 	## Board Names
-	
-	Board names should (roughly) follow the scheme <vendor>_<board>. Here, 
-	
+
+	Board names should (roughly) follow the scheme <vendor>_<board>. Here,
+
 		* <vendor> should be some unique vendor identification (can be abbreviated as long as it
-		  is unique, e.g. using common vendor codes like TI (Texas Instruments), ST(M) (ST Micro) 
-		  and the like). 
-		 
-		* <board> should be some *unique* board identification, e.g. a product number. 
+		  is unique, e.g. using common vendor codes like TI (Texas Instruments), ST(M) (ST Micro)
+		  and the like).
+
+		* <board> should be some *unique* board identification, e.g. a product number.
 		  Do not use informal names that are not unique or might change.
 
 	This scheme should also be followed in case of custom boards, where <vendor> and <board>
 	can be some	"less official" identifiers, but again they must be unique.
 
 	In case of a "standard" board connected to a custom environment (e.g. with application specific
-	GPIO connections) it is prefered to use the scheme <vendor>_<board>_<customization> with 
+	GPIO connections) it is prefered to use the scheme <vendor>_<board>_<customization> with
 	<vendor> and <board> as above and <customization> identifying the application specific usage.
 	If there is a need to distinguish such customizations, there should also be a PURE variant
 	(i.e., <vendor>_<board>_PURE) that identifies the base board used in a stand-alone manner.
@@ -78,23 +78,23 @@
 	naming should be used, then it should not replace the <vendor>_<board>[_<customization>]
 	baseline. Instead, names following a different taxonomy should be added as aliases refering
 	to the standard names.
-	
+
 	Example:
-	
+
 		GPI_ARCH_BOARD_nRF_PCA10059
 			<vendor> = nRF, <board> = PCA10059
-			
+
 		GPI_ARCH_BOARD_nRF_PCA10059_PURE
 			nRF_PCA10059 used stand-alone
-			
+
 		GPI_ARCH_BOARD_nRF_PCA10059_FLOCKLAB
 			nRF_PCA10059 used as FlockLab target (with custom GPIO connections)
-			
+
 		GPI_ARCH_BOARD_FLOCKLAB_nRF5
 			alias for nRF_PCA10059_FLOCKLAB
-			Here, FLOCKLAB is used as a unique "vendor" code for FlockLab targets, while nRF5 
-			is the board identifier. The latter is not just a simple name shot from the hip, 
-			it is the name used to identify the board in FlockLab XML files, which can be 
+			Here, FLOCKLAB is used as a unique "vendor" code for FlockLab targets, while nRF5
+			is the board identifier. The latter is not just a simple name shot from the hip,
+			it is the name used to identify the board in FlockLab XML files, which can be
 			expected to be a unique identifier (in the context of FlockLab).
 
  **************************************************************************************************/

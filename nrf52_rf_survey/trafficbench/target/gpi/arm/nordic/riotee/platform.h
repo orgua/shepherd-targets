@@ -53,8 +53,7 @@
 
 #include "gpi/platform_spec.h"
 
-#include "../nrf528xx/platform.h"	// nRF528xx common functionality
-
+#include "../nrf528xx/platform.h" // nRF528xx common functionality
 
 #include "gpi/tools.h"
 
@@ -65,20 +64,20 @@
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
 
-#define GPI_LED_NONE				0
-#define GPI_LED_1					BV(3)
+#define GPI_LED_NONE 0
+#define GPI_LED_1    BV(3)
 
 #if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
-	#define GPI_LED_BOARD_1			BV(26)
+  #define GPI_LED_BOARD_1 BV(26)
 #endif
 
-#define GPI_BUTTON_PWRGD_H			BV(7)
-#define GPI_BUTTON_PWRGD_L			BV(23)
-#define GPI_BUTTON_MAX_INT			BV(25)
-#define GPI_BUTTON_RTC_INT			BV(30)
+#define GPI_BUTTON_PWRGD_H BV(7)
+#define GPI_BUTTON_PWRGD_L BV(23)
+#define GPI_BUTTON_MAX_INT BV(25)
+#define GPI_BUTTON_RTC_INT BV(30)
 
 #if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
-	#define GPI_BUTTON_BOARD_1		BV(3)
+  #define GPI_BUTTON_BOARD_1 BV(3)
 #endif
 
 // internal mapping to P0 and P1
@@ -87,52 +86,54 @@
 // If impossible, there is more work to do.
 // for details see gpi_button_read()
 #if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
-	#define _GPI_BUTTON_P0_MASK		(GPI_BUTTON_PWRGD_H | GPI_BUTTON_PWRGD_L | GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT)
-	#define _GPI_BUTTON_P1_MASK		(GPI_BUTTON_BOARD_1)
-	#define _GPI_BUTTON_INV_MASK	(GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT | GPI_BUTTON_BOARD_1)
+  #define _GPI_BUTTON_P0_MASK                                                                      \
+      (GPI_BUTTON_PWRGD_H | GPI_BUTTON_PWRGD_L | GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT)
+  #define _GPI_BUTTON_P1_MASK  (GPI_BUTTON_BOARD_1)
+  #define _GPI_BUTTON_INV_MASK (GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT | GPI_BUTTON_BOARD_1)
 #else
-	#define _GPI_BUTTON_P0_MASK		(GPI_BUTTON_PWRGD_H | GPI_BUTTON_PWRGD_L | GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT)
-	#define _GPI_BUTTON_P1_MASK		0
-	#define _GPI_BUTTON_INV_MASK	(GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT)
+  #define _GPI_BUTTON_P0_MASK                                                                      \
+      (GPI_BUTTON_PWRGD_H | GPI_BUTTON_PWRGD_L | GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT)
+  #define _GPI_BUTTON_P1_MASK  0
+  #define _GPI_BUTTON_INV_MASK (GPI_BUTTON_MAX_INT | GPI_BUTTON_RTC_INT)
 #endif
 
 // for details see comments in gpi/platform.h
 static ALWAYS_INLINE int gpi_led_index_to_mask(int i)
 {
-	// NOTE: with optimization enabled, the switch block gets replaced by
-	// * a constant if i is constant (due to constant propagation)
-	// * a lookup table with preceding 1 <= i <= i_max test, or
-	// * a fast conditional execution block (on ARM)
-	switch (i)
-	{
-		case 1:		return GPI_LED_1;
+    // NOTE: with optimization enabled, the switch block gets replaced by
+    // * a constant if i is constant (due to constant propagation)
+    // * a lookup table with preceding 1 <= i <= i_max test, or
+    // * a fast conditional execution block (on ARM)
+    switch (i)
+    {
+        case 1: return GPI_LED_1;
 
 #if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
-		case 2:		return GPI_LED_BOARD_1;
+        case 2: return GPI_LED_BOARD_1;
 #endif
-		default:	return GPI_LED_NONE;
-	}
+        default: return GPI_LED_NONE;
+    }
 }
 
 // for details see comments in gpi/platform.h
 static ALWAYS_INLINE int gpi_button_index_to_mask(int i)
 {
-	// NOTE: with optimization enabled, the switch block gets replaced by
-	// * a constant if i is constant (due to constant propagation)
-	// * a lookup table with preceding 1 <= i <= i_max test, or
-	// * a fast conditional execution block (on ARM)
-	switch (i)
-	{
-		case 1:		return GPI_BUTTON_PWRGD_H;
-		case 2:		return GPI_BUTTON_PWRGD_L;
-		case 3:		return GPI_BUTTON_MAX_INT;
-		case 4:		return GPI_BUTTON_RTC_INT;
+    // NOTE: with optimization enabled, the switch block gets replaced by
+    // * a constant if i is constant (due to constant propagation)
+    // * a lookup table with preceding 1 <= i <= i_max test, or
+    // * a fast conditional execution block (on ARM)
+    switch (i)
+    {
+        case 1: return GPI_BUTTON_PWRGD_H;
+        case 2: return GPI_BUTTON_PWRGD_L;
+        case 3: return GPI_BUTTON_MAX_INT;
+        case 4: return GPI_BUTTON_RTC_INT;
 
 #if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
-		case 5:		return GPI_BUTTON_BOARD_1;
+        case 5: return GPI_BUTTON_BOARD_1;
 #endif
-		default:	return 0;
-	}
+        default: return 0;
+    }
 }
 
 //**************************************************************************************************
@@ -140,38 +141,34 @@ static ALWAYS_INLINE int gpi_button_index_to_mask(int i)
 
 // UART pins
 #if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
-	#define _GPI_ARM_nRF_UART_TXD_PORT		0
-	#define _GPI_ARM_nRF_UART_TXD_PIN		8
-	#define _GPI_ARM_nRF_UART_RXD_PORT		0
-	#define _GPI_ARM_nRF_UART_RXD_PIN		21
+  #define _GPI_ARM_nRF_UART_TXD_PORT 0
+  #define _GPI_ARM_nRF_UART_TXD_PIN  8
+  #define _GPI_ARM_nRF_UART_RXD_PORT 0
+  #define _GPI_ARM_nRF_UART_RXD_PIN  21
 #endif
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
 
 
-
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
-
 
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
 
-
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 
-
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
@@ -179,38 +176,33 @@ static ALWAYS_INLINE int gpi_button_index_to_mask(int i)
 
 static ALWAYS_INLINE void gpi_led_on(int mask)
 {
-	if (mask)
-		NRF_P0->OUTSET = mask;
+    if (mask) NRF_P0->OUTSET = mask;
 }
 
 static ALWAYS_INLINE void gpi_led_off(int mask)
 {
-	if (mask)
-		NRF_P0->OUTCLR = mask;
+    if (mask) NRF_P0->OUTCLR = mask;
 }
 
 static ALWAYS_INLINE void gpi_led_toggle(int mask)
 {
-	if (mask)
-		NRF_P0->OUT ^= mask;
+    if (mask) NRF_P0->OUT ^= mask;
 }
 
 //**************************************************************************************************
 
 static ALWAYS_INLINE uint_fast32_t gpi_button_read(int mask)
 {
-	uint_fast32_t	x = 0;
+    uint_fast32_t x = 0;
 
-	if (mask & _GPI_BUTTON_P0_MASK)
-		x |= NRF_P0->IN & _GPI_BUTTON_P0_MASK;
+    if (mask & _GPI_BUTTON_P0_MASK) x |= NRF_P0->IN & _GPI_BUTTON_P0_MASK;
 
-	if (mask & _GPI_BUTTON_P1_MASK)
-		x |= NRF_P1->IN & _GPI_BUTTON_P1_MASK;
+    if (mask & _GPI_BUTTON_P1_MASK) x |= NRF_P1->IN & _GPI_BUTTON_P1_MASK;
 
-	x ^= _GPI_BUTTON_INV_MASK;
-	x &= mask;
+    x ^= _GPI_BUTTON_INV_MASK;
+    x &= mask;
 
-	return x;
+    return x;
 }
 
 //**************************************************************************************************

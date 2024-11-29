@@ -57,10 +57,11 @@
 //***** Local (Private) Defines and Consts *********************************************************
 
 #ifndef GPI_LFRC_CAL_TIMER_PPI_CHANNEL
-	#define GPI_LFRC_CAL_TIMER_PPI_CHANNEL	1	// start calibration timer after LFRC has been calibrated
+  #define GPI_LFRC_CAL_TIMER_PPI_CHANNEL 1 // start calibration timer after LFRC has been calibrated
 #endif
 #ifndef GPI_LFRC_CAL_TASK_PPI_CHANNEL
-	#define GPI_LFRC_CAL_TASK_PPI_CHANNEL	2	// start calibration after calibration timer reached 0 (EVENTS_CTTO)
+  #define GPI_LFRC_CAL_TASK_PPI_CHANNEL                                                            \
+      2 // start calibration after calibration timer reached 0 (EVENTS_CTTO)
 #endif
 
 #endif // __GPI_ARM_DPP2_COM_CLOCKS_H__

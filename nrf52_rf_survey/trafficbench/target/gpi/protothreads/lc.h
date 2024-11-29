@@ -60,7 +60,7 @@
  */
 
 #ifdef DOXYGEN
-/**
+  /**
  * Initialize a local continuation.
  *
  * This operation initializes the local continuation, thereby
@@ -68,9 +68,9 @@
  *
  * \hideinitializer
  */
-#define LC_INIT(lc)
+  #define LC_INIT(lc)
 
-/**
+  /**
  * Set a local continuation.
  *
  * The set operation saves the state of the function at the point
@@ -81,9 +81,9 @@
  *
  * \hideinitializer
  */
-#define LC_SET(lc)
+  #define LC_SET(lc)
 
-/**
+  /**
  * Resume a local continuation.
  *
  * The resume operation resumes a previously set local continuation, thus
@@ -93,9 +93,9 @@
  *
  * \hideinitializer
  */
-#define LC_RESUME(lc)
+  #define LC_RESUME(lc)
 
-/**
+  /**
  * Mark the end of local continuation usage.
  *
  * The end operation signifies that local continuations should not be
@@ -105,7 +105,7 @@
  *
  * \hideinitializer
  */
-#define LC_END(lc)
+  #define LC_END(lc)
 
 /**
  * \var typedef lc_t;
@@ -117,13 +117,13 @@
 #endif /* DOXYGEN */
 
 #ifndef __LC_H__
-#define __LC_H__
+  #define __LC_H__
 
-#ifdef LC_CONF_INCLUDE
-#include LC_CONF_INCLUDE
-#else /* LC_CONF_INCLUDE */
-#include "sys/lc-switch.h"
-#endif /* LC_CONF_INCLUDE */
+  #ifdef LC_CONF_INCLUDE
+    #include LC_CONF_INCLUDE
+  #else /* LC_CONF_INCLUDE */
+    #include "sys/lc-switch.h"
+  #endif /* LC_CONF_INCLUDE */
 
 #endif /* __LC_H__ */
 

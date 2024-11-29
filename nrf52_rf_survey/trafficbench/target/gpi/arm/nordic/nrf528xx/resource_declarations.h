@@ -57,20 +57,16 @@
 //***** Global (Public) Defines and Consts *********************************************************
 
 
-
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
-
 
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
 
 
-
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
-
 
 
 //**************************************************************************************************
@@ -186,16 +182,16 @@ GPI_RESOURCE_DECLARE(NRF_PDM);
 GPI_RESOURCE_DECLARE(NRF_ACL_NVMC);
 
 GPI_RESOURCE_DECLARE(NRF_PPI);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  0);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  1);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  2);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  3);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  4);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  5);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  6);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  7);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  8);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH,  9);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 0);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 1);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 2);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 3);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 4);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 5);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 6);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 7);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 8);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH, 9);
 GPI_RESOURCE_DECLARE(NRF_PPI_CH, 10);
 GPI_RESOURCE_DECLARE(NRF_PPI_CH, 11);
 GPI_RESOURCE_DECLARE(NRF_PPI_CH, 12);
@@ -235,9 +231,9 @@ GPI_RESOURCE_DECLARE(NRF_USBD);
 
 #if GPI_ARCH_IS_DEVICE(nRF52840)
 
-	GPI_RESOURCE_DECLARE(NRF_QSPI);
+GPI_RESOURCE_DECLARE(NRF_QSPI);
 
-	GPI_RESOURCE_DECLARE(NRF_CC_HOST_RGF_CRYPTOCELL);
+GPI_RESOURCE_DECLARE(NRF_CC_HOST_RGF_CRYPTOCELL);
 
 #endif
 
@@ -245,18 +241,16 @@ GPI_RESOURCE_DECLARE(NRF_USBD);
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-	extern "C" {
+extern "C" {
 #endif
 
 
-
 #ifdef __cplusplus
-	}
+}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
-
 
 
 //**************************************************************************************************

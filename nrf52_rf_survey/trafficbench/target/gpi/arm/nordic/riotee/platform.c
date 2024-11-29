@@ -132,10 +132,12 @@ void gpi_platform_init()
     // - NFCPINS is handled in nRF startup code (see CONFIG_NFCT_PINS_AS_GPIOS)
 
     // (re)init POWER settings
-    // supply voltage mode = Normal Voltage mode (VCC connected to VDD and VDDH, REG0 bypassed/disabled)
+    // supply voltage mode = High Voltage mode
     NRF_POWER->INTENCLR = -1u;
     NRF_POWER->POFCON   = BV_BY_NAME(POWER_POFCON_POF, Disabled);
-    NRF_POWER->DCDCEN   = BV_BY_NAME(POWER_DCDCEN_DCDCEN, Disabled); // set REG1 to LDO mode
+    NRF_POWER->DCDCEN   = BV_BY_NAME(POWER_DCDCEN_DCDCEN, Enabled); // set REG1 to DC/DC mode
+    NRF_POWER->DCDCEN0 =
+            BV_BY_NAME(POWER_DCDCEN0_DCDCEN, Disabled); // set REG0 to DC/DC mode (if enabled)
     for (i = 0; i <= 8; ++i)
         NRF_POWER->RAM[i].POWER =
                 0x0000FFFF; // all RAM sections enabled, no retention during System OFF
@@ -345,7 +347,7 @@ void gpi_platform_init()
                           BV_BY_NAME(CLOCK_LFCLKSRC_BYPASS, Disabled) |
                           BV_BY_NAME(CLOCK_LFCLKSRC_EXTERNAL, Disabled);
     NRF_CLOCK->HFXODEBOUNCE        = BV_BY_VALUE(CLOCK_HFXODEBOUNCE_HFXODEBOUNCE, 0x40);
-    NRF_CLOCK->LFXODEBOUNCE        = BV_BY_NAME(CLOCK_LFXODEBOUNCE_LFXODEBOUNCE, Normal);
+    // NRF_CLOCK->LFXODEBOUNCE        = BV_BY_NAME(CLOCK_LFXODEBOUNCE_LFXODEBOUNCE, Normal);
     // TODO: set to Extended if extended temperature range is needed [4452_021 v1.6 p.94]
 
     // start HFXO

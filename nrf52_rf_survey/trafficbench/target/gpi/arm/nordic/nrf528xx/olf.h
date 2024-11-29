@@ -1,7 +1,7 @@
 /***************************************************************************************************
  ***************************************************************************************************
  *
- *	Copyright (c) 2019, Networked Embedded Systems Lab, TU Dresden
+ *	Copyright (c) 2019 - 2024, Networked Embedded Systems Lab, TU Dresden
  *	All rights reserved.
  *
  *	Redistribution and use in source and binary forms, with or without
@@ -28,11 +28,11 @@
  *
  ***********************************************************************************************//**
  *
- *	@file					gpi/stdio_getsn.c
+ *	@file					gpi/arm/nordic/nrf528xx/olf.h
  *
- *	@brief					simple implementation of getsn()
+ *	@brief					optimized low-level functions, tuned for Nordic nRF528xx series
  *
- *	@version				$Id: 1d9218bce13fb54fe57b0ab1fe7fa2969ddbf66c $
+ *	@version				$Id: f737561ef980176b19f1f2073eafb4a4768dfded $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -44,34 +44,35 @@
 	TODO
 
  **************************************************************************************************/
-//***** Trace Settings *****************************************************************************
+
+#ifndef __GPI_ARM_nRF528xx_OLF_H__
+#define __GPI_ARM_nRF528xx_OLF_H__
+
+//**************************************************************************************************
+//***** Includes ***********************************************************************************
+
+// include non-device-specific functions from core part
+#include "gpi/arm/armv7-m/olf.h"
+
+#include <string.h>
+
+//**************************************************************************************************
+//***** Global (Public) Defines and Consts *********************************************************
 
 
 
 //**************************************************************************************************
-//**** Includes ************************************************************************************
-
-#include "gpi/platform.h"
-
-#include <stdio.h>
-
-//**************************************************************************************************
-//***** Local Defines and Consts *******************************************************************
+//***** Local (Private) Defines and Consts *********************************************************
 
 
 
 //**************************************************************************************************
-//***** Local Typedefs and Class Declarations ******************************************************
+//***** Forward Class and Struct Declarations ******************************************************
 
 
 
 //**************************************************************************************************
-//***** Forward Declarations ***********************************************************************
-
-
-
-//**************************************************************************************************
-//***** Local (Static) Variables *******************************************************************
+//***** Global Typedefs and Class Declarations *****************************************************
 
 
 
@@ -81,56 +82,49 @@
 
 
 //**************************************************************************************************
-//***** Local Functions ****************************************************************************
+//***** Prototypes of Global Functions *************************************************************
+
+#ifdef __cplusplus
+	extern "C" {
+#endif
 
 
+
+#ifdef __cplusplus
+	}
+#endif
 
 //**************************************************************************************************
-//***** Global Functions ***************************************************************************
+//***** Implementations of Inline Functions ********************************************************
 
-char* getsn(char *s, size_t size)
+static ALWAYS_INLINE void gpi_memcpy_8(void* dest, const void* src, size_t size)
 {
-	assert(size > 0);
+	__builtin_memcpy(dest, src, size);
+}
 
-	char *p = s;
+static ALWAYS_INLINE void gpi_memcpy_dma_aligned(void *dest, const void *src, size_t size)
+{
+	__builtin_memcpy(dest, src, size);
+}
 
-	gpi_stdin_flush();
+static ALWAYS_INLINE void gpi_memcpy_dma(void *dest, const void *src, size_t size)
+{
+	__builtin_memcpy(dest, src, size);
+}
 
-	while (1)
-	{
-		*p = getchar();
+static ALWAYS_INLINE void gpi_memcpy_dma_inline(void *dest, const void *src, size_t size)
+{
+	__builtin_memcpy(dest, src, size);
+}
 
-		// backspace, DEL
-		if (0x08 == *p || 0x7F == *p)
-		{
-			if (p != s)
-			{
-				putchar(*p);
-				p--;
-				size++;
-			}
-		}
-		else
-		{
-			if ('\n' == *p || '\r' == *p)
-			{
-				putchar(*p);
-				break;
-			}
+//**************************************************************************************************
 
-			if (size > 1)
-			{
-				putchar(*p);
-				p++;
-				size--;
-			}
-		}
-	}
-
-	*p = '\0';
-
-	return s;
+static ALWAYS_INLINE void gpi_memmove_dma_inline(void *dest, const void *src, size_t size)
+{
+	__builtin_memmove(dest, src, size);
 }
 
 //**************************************************************************************************
 //**************************************************************************************************
+
+#endif // __GPI_ARM_nRF528xx_OLF_H__

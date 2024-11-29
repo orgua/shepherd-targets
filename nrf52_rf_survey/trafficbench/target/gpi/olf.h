@@ -32,7 +32,7 @@
  *
  *	@brief					optimized low-level functions
  *
- *	@version				$Id$
+ *	@version				$Id: e8715352ef96f94ec8a461b55d033179805d20d6 $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -40,7 +40,7 @@
  ***************************************************************************************************
 
  	@details
-
+	
 	TODO
 
  **************************************************************************************************/
@@ -55,7 +55,7 @@
 // note: it would be nice to include that after the declarations below, but that would prevent
 // the platform specific code from selectively implementing functions as (static) inline
 #include "gpi/platform_spec.h"
-#include GPI_PLATFORM_PATH(olf.h)
+#include GPI_PLATFORM_PATH(olf.h)		
 
 #include <stdint.h>
 
@@ -63,73 +63,79 @@
 //***** Global (Public) Defines and Consts *********************************************************
 
 
+
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
+
 
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
 
 
+
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
+
 
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
 
+
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-extern "C" {
+	extern "C" {
 #endif
 
-uint8_t      gpi_slu_8(uint8_t x, unsigned int s);
-uint16_t     gpi_slu_16(uint16_t x, unsigned int s);
-uint32_t     gpi_slu_32(uint32_t x, unsigned int s);
+uint8_t			gpi_slu_8(uint8_t x, unsigned int s);
+uint16_t		gpi_slu_16(uint16_t x, unsigned int s);
+uint32_t		gpi_slu_32(uint32_t x, unsigned int s);
 // uintX_t		gpi_slu(uintX_t x, unsigned int s);			// defined as a macro
 
-uint32_t     gpi_mulu_16x16(uint16_t a, uint16_t b);
-uint32_t     gpi_mulu_32x16(uint32_t a, uint16_t b);
+uint32_t 		gpi_mulu_16x16(uint16_t a, uint16_t b);
+uint32_t 		gpi_mulu_32x16(uint32_t a, uint16_t b);
 // uintX_t		gpi_mulu(uintX_t a, uintX_t b);				// defined as a macro
 
-uint16_t     gpi_divu_16x8(uint16_t x, uint8_t d, int accurate);
+uint16_t		gpi_divu_16x8(uint16_t x, uint8_t d, int accurate);
 
-int_fast8_t  gpi_get_msb_8(uint8_t x);
-int_fast8_t  gpi_get_msb_16(uint16_t x);
-int_fast8_t  gpi_get_msb_32(uint32_t x);
+int_fast8_t		gpi_get_msb_8(uint8_t x);
+int_fast8_t 	gpi_get_msb_16(uint16_t x);
+int_fast8_t 	gpi_get_msb_32(uint32_t x);
 // int_fast8_t	gpi_get_msb(uintX_t x);			// defined as macro
 
-int_fast8_t  gpi_get_lsb_8(uint8_t x);
-int_fast8_t  gpi_get_lsb_16(uint16_t x);
-int_fast8_t  gpi_get_lsb_32(uint32_t x);
+int_fast8_t		gpi_get_lsb_8(uint8_t x);
+int_fast8_t 	gpi_get_lsb_16(uint16_t x);
+int_fast8_t 	gpi_get_lsb_32(uint32_t x);
 // int_fast8_t	gpi_get_lsb(uintX_t x);			// defined as macro
 
-uint_fast8_t gpi_popcnt_8(uint8_t x);
-uint_fast8_t gpi_popcnt_16(uint16_t x);
-uint_fast8_t gpi_popcnt_32(uint32_t x);
+uint_fast8_t	gpi_popcnt_8(uint8_t x);
+uint_fast8_t 	gpi_popcnt_16(uint16_t x);
+uint_fast8_t 	gpi_popcnt_32(uint32_t x);
 // uint_fast8_t	gpi_popcnt(uintX_t x);			// defined as macro
 
-uint8_t      gpi_bitswap_8(uint8_t x);
-uint16_t     gpi_bitswap_16(uint16_t x);
-uint32_t     gpi_bitswap_32(uint32_t x);
+uint8_t			gpi_bitswap_8(uint8_t x);
+uint16_t	 	gpi_bitswap_16(uint16_t x);
+uint32_t 		gpi_bitswap_32(uint32_t x);
 // uintX_t		gpi_bitswap(uintX_t x);			// defined as macro
 
-void         gpi_memcpy_8(void *dest, const void *src, size_t size);
-void         gpi_memcpy_dma(void *dest, const void *src, size_t size);
-void         gpi_memcpy_dma_aligned(void *dest, const void *src, size_t size);
-void         gpi_memcpy_dma_inline(void *dest, const void *src, size_t size);
-void         gpi_memmove_dma(void *dest, const void *src, size_t size);
-void         gpi_memmove_dma_inline(void *dest, const void *src, size_t size);
+void			gpi_memcpy_8(			void *dest, const void *src, size_t size);
+void			gpi_memcpy_dma(			void *dest, const void *src, size_t size);
+void 			gpi_memcpy_dma_aligned(	void *dest, const void *src, size_t size);
+void 			gpi_memcpy_dma_inline(	void *dest, const void *src, size_t size);
+void			gpi_memmove_dma(		void *dest, const void *src, size_t size);
+void			gpi_memmove_dma_inline(	void *dest, const void *src, size_t size);
 
 #ifdef __cplusplus
-}
+	}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
+
 
 
 //**************************************************************************************************

@@ -32,7 +32,7 @@
  *
  *	@brief					internal stuff used to implement optimized low-level functions
  *
- *	@version				$Id$
+ *	@version				$Id: 830f4909f2815aba773c3a7b68c637a16a320fde $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -51,7 +51,7 @@
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include "gpi/tools.h" // ASSERT_CT
+#include "gpi/tools.h"		// ASSERT_CT
 
 #include <stdint.h>
 
@@ -73,98 +73,96 @@
 // NOTE: sizeof(a) and typeof(a) do not evaluate a, i.e., they do not cause side effects
 
 #if !(__OPTIMIZE__)
-    // Without optimization the size dispatcher functions generate code for the size selection
-    // (due to missing constant propagation), which is not only unwanted, but, even worse, unoptimized.
-    // One idea to overcome this problem could be to declare the dispatcher functions with
-    // __attribute__((optimize(...)). Unfortunately, this attribute is ineffective with inline
-    // functions (since they are inlined, they inherit the optimization level of the caller).
-    // We cannot solve that, but to mitigate the performance penalty a bit, we declare the
-    // functions without inline in favor of the optimization (so the size dependency is still
-    // resolved at runtime, but at least more efficient).
-  #define _GPI_SIZE_DISPATCHER_DECL static __attribute__((optimize("Og")))
+	// Without optimization the size dispatcher functions generate code for the size selection
+	// (due to missing constant propagation), which is not only unwanted, but, even worse, unoptimized.
+	// One idea to overcome this problem could be to declare the dispatcher functions with
+	// __attribute__((optimize(...)). Unfortunately, this attribute is ineffective with inline
+	// functions (since they are inlined, they inherit the optimization level of the caller).
+	// We cannot solve that, but to mitigate the performance penalty a bit, we declare the
+	// functions without inline in favor of the optimization (so the size dependency is still
+	// resolved at runtime, but at least more efficient).
+	#define _GPI_SIZE_DISPATCHER_DECL	static __attribute__((optimize("Og"))) 
 #else
-  #define _GPI_SIZE_DISPATCHER_DECL static inline __attribute__((always_inline))
+	#define _GPI_SIZE_DISPATCHER_DECL	static inline __attribute__((always_inline))
 #endif
 
 
-#define _GPI_SIZE_DISPATCHER_FUNCTION_1_16(name, return_type)                                      \
-    _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint16_t _param_)        \
-    {                                                                                              \
-        switch (_size_)                                                                            \
-        {                                                                                          \
-            case 1: return name##_8(_param_);                                                      \
-            case 2: return name##_16(_param_);                                                     \
-            default: assert(0); return (return_type) - 1; /* must not happen */                    \
-        }                                                                                          \
-    }
+#define _GPI_SIZE_DISPATCHER_FUNCTION_1_16(name, return_type)					\
+	_GPI_SIZE_DISPATCHER_DECL return_type _ ## name ## _						\
+		(uint_fast8_t _size_, uint16_t _param_) {								\
+		switch (_size_) {														\
+			case 1: return name ## _8  (_param_);								\
+			case 2: return name ## _16 (_param_);								\
+			default: assert(0); return (return_type)-1; /* must not happen */	\
+	}}
 
-#define _GPI_SIZE_DISPATCHER_FUNCTION_1_32(name, return_type)                                      \
-    _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint32_t _param_)        \
-    {                                                                                              \
-        switch (_size_)                                                                            \
-        {                                                                                          \
-            case 1: return name##_8(_param_);                                                      \
-            case 2: return name##_16(_param_);                                                     \
-            case 4: return name##_32(_param_);                                                     \
-            default: assert(0); return (return_type) - 1; /* must not happen */                    \
-        }                                                                                          \
-    }
+#define _GPI_SIZE_DISPATCHER_FUNCTION_1_32(name, return_type)					\
+	_GPI_SIZE_DISPATCHER_DECL return_type _ ## name ## _						\
+		(uint_fast8_t _size_, uint32_t _param_) {								\
+		switch (_size_) {														\
+			case 1: return name ## _8  (_param_);								\
+			case 2: return name ## _16 (_param_);								\
+			case 4: return name ## _32 (_param_);								\
+			default: assert(0); return (return_type)-1; /* must not happen */	\
+	}}
 
-#define _GPI_SIZE_DISPATCHER_FUNCTION_2_32(name, return_type, param2_type)                         \
-    _GPI_SIZE_DISPATCHER_DECL return_type _##name##_(uint_fast8_t _size_, uint32_t _param_,        \
-                                                     param2_type _param2_)                         \
-    {                                                                                              \
-        switch (_size_)                                                                            \
-        {                                                                                          \
-            case 1: return name##_8(_param_, _param2_);                                            \
-            case 2: return name##_16(_param_, _param2_);                                           \
-            case 4: return name##_32(_param_, _param2_);                                           \
-            default: assert(0); return (return_type) - 1; /* must not happen */                    \
-        }                                                                                          \
-    }
+#define _GPI_SIZE_DISPATCHER_FUNCTION_2_32(name, return_type, param2_type)		\
+	_GPI_SIZE_DISPATCHER_DECL return_type _ ## name ## _						\
+		(uint_fast8_t _size_, uint32_t _param_, param2_type _param2_) {			\
+		switch (_size_) {														\
+			case 1: return name ## _8  (_param_, _param2_);						\
+			case 2: return name ## _16 (_param_, _param2_);						\
+			case 4: return name ## _32 (_param_, _param2_);						\
+			default: assert(0); return (return_type)-1; /* must not happen */	\
+	}}
 
-#define _GPI_SIZE_DISPATCHER_1_16(name, param)                                                     \
-    (_##name##_(sizeof(param), param) +                                                            \
-     ASSERT_CT_EVAL(sizeof(param) <= 2, name##_invalid_parameter_type))
+#define _GPI_SIZE_DISPATCHER_1_16(name, param) (								\
+	_ ## name ## _ (sizeof(param), param) +										\
+	ASSERT_CT_EVAL(sizeof(param) <= 2, name ## _invalid_parameter_type)	)
 
-#define _GPI_SIZE_DISPATCHER_1_32(name, param)                                                     \
-    (_##name##_(sizeof(param), param) +                                                            \
-     ASSERT_CT_EVAL(sizeof(param) <= 4, name##_invalid_parameter_type))
+#define _GPI_SIZE_DISPATCHER_1_32(name, param) (								\
+	_ ## name ## _ (sizeof(param), param) +										\
+	ASSERT_CT_EVAL(sizeof(param) <= 4, name ## _invalid_parameter_type)	)
 
-#define _GPI_SIZE_DISPATCHER_2_32(name, param, param2)                                             \
-    (_##name##_(sizeof(param), param, param2) +                                                    \
-     ASSERT_CT_EVAL(sizeof(param) <= 4, name##_invalid_parameter_type))
+#define _GPI_SIZE_DISPATCHER_2_32(name, param, param2) (						\
+	_ ## name ## _ (sizeof(param), param, param2) +								\
+	ASSERT_CT_EVAL(sizeof(param) <= 4, name ## _invalid_parameter_type)	)
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
+
 
 
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
 
 
+
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
+
 
 
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
 
+
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-extern "C" {
+	extern "C" {
 #endif
 
 
 #ifdef __cplusplus
-}
+	}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
+
 
 
 //**************************************************************************************************

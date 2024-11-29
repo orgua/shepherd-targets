@@ -1,7 +1,7 @@
 /***************************************************************************************************
  ***************************************************************************************************
  *
- *	Copyright (c) 2019 - 2024, Networked Embedded Systems Lab, TU Dresden
+ *	Copyright (c) 2024, Networked Embedded Systems Lab, TU Dresden
  *	All rights reserved.
  *
  *	Redistribution and use in source and binary forms, with or without
@@ -28,11 +28,11 @@
  *
  ***********************************************************************************************//**
  *
- *	@file					gpi/arm/nordic/pca10056/platform.c
+ *	@file					gpi/arm/nordic/riotee/platform.c
  *
  *	@brief					platform interface functions
  *
- *	@version				$Id: 1f59b295f80fe2a1ce501a5f672eacb9d8d82737 $
+ *	@version				$Id: 9140079406aaef3eab5108284ab6f9072ac73257 $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -139,11 +139,10 @@ void gpi_platform_init()
 	// - NFCPINS is handled in nRF startup code (see CONFIG_NFCT_PINS_AS_GPIOS)
 
 	// (re)init POWER settings
-	// supply voltage mode = High Voltage mode
+	// supply voltage mode = Normal Voltage mode (VCC connected to VDD and VDDH, REG0 bypassed/disabled)
 	NRF_POWER->INTENCLR = -1u;
 	NRF_POWER->POFCON = BV_BY_NAME(POWER_POFCON_POF, Disabled);
-	NRF_POWER->DCDCEN = BV_BY_NAME(POWER_DCDCEN_DCDCEN, Enabled);		// set REG1 to DC/DC mode
-	NRF_POWER->DCDCEN0 = BV_BY_NAME(POWER_DCDCEN0_DCDCEN, Disabled);	// set REG0 to DC/DC mode (if enabled)
+	NRF_POWER->DCDCEN = BV_BY_NAME(POWER_DCDCEN_DCDCEN, Disabled);		// set REG1 to LDO mode
 	for (i = 0; i <= 8; ++i)
 		NRF_POWER->RAM[i].POWER = 0x0000FFFF;	// all RAM sections enabled, no retention during System OFF
 
@@ -191,146 +190,174 @@ void gpi_platform_init()
 			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 	}
 
-	// P0.00 / XL1: [D14 (GPIO)] / XL1 (LFXO in)
+	// P0.00 / XL1: XL1 (LFXO in)
 	NRF_P0->PIN_CNF[0] =
 		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
 		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect)	|
 		BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
 		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
-	// P0.01 / XL2: [D15 (GPIO)] / XL2 (LFXO out)
+	// P0.01 / XL2: XL2 (LFXO out)
 	NRF_P0->PIN_CNF[1] =
 		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
 		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect)	|
 		BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
 		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
-	// P0.02 / AIN0:  AREF (GPIO)
-	// P0.03 / AIN1:  A0 (GPIO)
-	
-	// P0.04 / AIN2:  A1 (GPIO) / CTS_OPTIONAL
-	// reconfigured in uart_init() if used as CTS
+	// P0.02 / AIN0:	n.c.
 
-	// P0.05 / AIN3:  D16 (GPIO) / RTS, used as RTS
-	// reconfigured in uart_init()
-
-	// P0.06: D17 (GPIO) / TXD, used as TXD
-	// reconfigured in uart_init()
-
-	// P0.07:		  D18 (GPIO) / CTS_DEFAULT / TRACECLK
-	// reconfigured in uart_init() if used as CTS
-
-	// P0.08: D19 (GPIO) / RXD, used as RXD
-	// reconfigured in uart_init()
-
-	// P0.09 / NFC1:  D20 (GPIO) / NFC
-	// P0.10 / NFC2:  D21 (GPIO) / NFC
-
-	// P0.11:		  D22 (GPIO) / BUTTON1_DEFAULT / TRACEDATA2
-	// P0.12:		  D23 (GPIO) / BUTTON2_DEFAULT / TRACEDATA1
-	for (i = 11; i <= 12; ++i)
-	{
-		NRF_P0->PIN_CNF[i] =
-			BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
-			BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
-			BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
-			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-	}
-
-	// P0.13:		  D24 (GPIO) / LED1
-	// P0.14:		  D25 (GPIO) / LED2
-	// P0.15:		  D26 (GPIO) / LED3
-	// P0.16:		  D27 (GPIO) / LED4
-	NRF_P0->OUTSET = BV(13) | BV(14) | BV(15) | BV(16);
-	for (i = 13; i <= 16; ++i)
-	{
-		NRF_P0->PIN_CNF[i] =
-			BV_BY_NAME(GPIO_PIN_CNF_DIR, Output)		|
-			BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect)	|
-			BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
-			BV_BY_NAME(GPIO_PIN_CNF_DRIVE, H0D1)		|
-			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-	}
-
-	// P0.17:		  [D28 (GPIO)] / QSPI_nCS
-	// NOTE: After reset (power-on), the flash device is in stand-by mode, but not in
-	// Deep Power-down (DP) mode. The device can be send to DP mode by issuing the
-	// corresponding command.
-	NRF_P0->OUTSET = BV(17);
-	NRF_P0->PIN_CNF[17] =
+	// P0.03 / AIN1:	LED_CTRL
+	// set drive mode = wired-or to avoid conflicts with MSP430
+	// ATTENTION: we expect that MSP430 does the same (doesn't use push/pull)
+	NRF_P0->OUTCLR = BV(3);
+	NRF_P0->PIN_CNF[3] =
 		BV_BY_NAME(GPIO_PIN_CNF_DIR, Output)		|
 		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect)	|
 		BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
-		BV_BY_NAME(GPIO_PIN_CNF_DRIVE, S0S1)		|
+		BV_BY_NAME(GPIO_PIN_CNF_DRIVE, D0S1)		|	// wired-or
 		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+	
+	// P0.04 / AIN2:	D2 (GPIO)
+	// P0.05 / AIN3:	D3 (GPIO)
 
-	// P0.18 / RESET: D29 (GPIO) / RESET
-	NRF_P0->PIN_CNF[18] =
+	// P0.06:			SYS.SDA
+	// enable internal pull-up to ensure defined state on I2C bus
+	NRF_P0->PIN_CNF[6] =
 		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
 		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
 		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
 		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
-	// P0.19:		  [D30 (GPIO)] / QSPI_CLK
-	// P0.20:		  [D31 (GPIO)] / QSPI_DIO0
-	// P0.21:		  [D32 (GPIO)] / QSPI_DIO1
-	// P0.22:		  [D33 (GPIO)] / QSPI_DIO2
-	// P0.23:		  [D34 (GPIO)] / QSPI_DIO3
-	for (i = 19; i <= 23; ++i)
-	{
-		NRF_P0->PIN_CNF[i] =
+	// P0.07:			PWRGD_H
+	NRF_P0->PIN_CNF[7] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.08:			D1 (GPIO)
+	// P0.09 / NFC1:	THRCTRL_H0
+	// P0.10 / NFC2:	n.c.
+	// P0.11:			D7 (GPIO)
+	// P0.12:			D10 (GPIO)
+	// P0.13:			D8 (GPIO)
+
+	// P0.14:			C2C.MISO
+	// P0.15:			C2C.GPIO
+	// enable internal pull-up/down to ensure defined state on SPI bus
+	NRF_P0->PIN_CNF[14] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pulldown)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+	NRF_P0->PIN_CNF[15] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pulldown)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.16:			D9 (GPIO)
+
+	// P0.17:			C2C.MOSI
+	// P0.18 / RESET:	C2C.CLK
+	// enable internal pull-up/down to ensure defined state on SPI bus
+	NRF_P0->PIN_CNF[17] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pulldown)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+	NRF_P0->PIN_CNF[18] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pulldown)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.19:			n.c.
+	// P0.20:			n.c.
+	// P0.21:			D0 (GPIO)
+
+	// P0.22:			C2C.CS
+	// enable internal pull-up/down to ensure defined state on SPI bus
+	NRF_P0->PIN_CNF[22] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.23:			PWRGD_L
+	NRF_P0->PIN_CNF[23] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.24:			n.c.
+
+	// P0.25:			MAX_INT
+	NRF_P0->PIN_CNF[25] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.26:			D5 (GPIO), Board.LED
+	#if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
+		// set drive mode = wired-or to avoid conflicts with MSP430
+		// ATTENTION: we expect that MSP430 does the same (doesn't use push/pull)
+		NRF_P0->OUTCLR = BV(26);
+		NRF_P0->PIN_CNF[26] =
+			BV_BY_NAME(GPIO_PIN_CNF_DIR, Output)		|
+			BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect)	|
+			BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
+			BV_BY_NAME(GPIO_PIN_CNF_DRIVE, D0S1)		|	// wired-or
+			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+	#endif
+
+	// P0.27:			n.c.
+	// P0.28 / AIN4:	n.c.
+
+	// P0.29 / AIN5:	VCAP_SENSE
+	NRF_P0->PIN_CNF[29] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect)	|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.30 / AIN6:	RTC_INT
+	NRF_P0->PIN_CNF[30] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
+
+	// P0.31 / AIN7:	n.c.
+	// P1.00:			n.c.
+	// P1.01:			n.c.
+	// P1.02:			THRCTRL.H1
+
+	// P1.03:			D6 (GPIO), Board.BUTTON
+	#if GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF_BOARD)
+		NRF_P1->PIN_CNF[3] =
 			BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
 			BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
-			BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
+			BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled)		|
 			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-	}
+	#endif
 
-	// P0.24:		  D35 (GPIO) / BUTTON3
-	// P0.25:		  D36 (GPIO) / BUTTON4
-	for (i = 24; i <= 25; ++i)
-	{
-		NRF_P0->PIN_CNF[i] =
-			BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
-			BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
-			BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
-			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-	}
+	// P1.04:			THRCTRL.L1
+	// P1.05:			n.c.
+	// P1.06:			n.c.
+	// P1.07:			THRCTRL.L0
 
-	// P0.26:		  SDA
-	// P0.27:		  SCL
-	// NOTE: We enable the internal pullups because the external pullups depend on SHIELD_DETECT.
-	// The internal pullups should be disabled during I2C communication (external pullups provide
-	// well defined resistance with small tolerance to enable better slope control).
-	for (i = 26; i <= 27; ++i)
-	{
-		NRF_P0->PIN_CNF[i] =
-			BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
-			BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
-			BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
-			BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
-	}
+	// P1.08:			SYS.SCL
+	// enable internal pull-up to ensure defined state on I2C bus
+	NRF_P1->PIN_CNF[8] =
+		BV_BY_NAME(GPIO_PIN_CNF_DIR, Input)			|
+		BV_BY_NAME(GPIO_PIN_CNF_INPUT, Connect)		|
+		BV_BY_NAME(GPIO_PIN_CNF_PULL, Pullup)		|
+		BV_BY_NAME(GPIO_PIN_CNF_SENSE, Disabled);
 
-	// P0.28 / AIN4:  A2 (GPIO)
-	// P0.29 / AIN5:  A3 (GPIO)
-	// P0.30 / AIN6:  A4 (GPIO)
-	// P0.31 / AIN7:  A5 (GPIO)
-
-	// P1.00:		  D37 (GPIO) / SWO / TRACEDATA0
-	// P1.01:		  D0 (GPIO)
-	// P1.02:		  D1 (GPIO)
-	// P1.03:		  D2 (GPIO)
-	// P1.04:		  D3 (GPIO)
-	// P1.05:		  D4 (GPIO)
-	// P1.06:		  D5 (GPIO)
-	// P1.07:		  D6 (GPIO) / BUTTON1_OPTIONAL
-	// P1.08:		  D7 (GPIO) / BUTTON2_OPTIONAL
-	// P1.09:		  D38 (GPIO) / TRACEDATA3
-	// P1.10:		  D8 (GPIO)
-	// P1.11:		  D9 (GPIO)
-	// P1.12:		  D10 (GPIO)
-	// P1.13:		  D11 (GPIO)
-	// P1.14:		  D12 (GPIO)
-	// P1.15:		  D13 (GPIO)
+	// P1.09:			D4 (GPIO)
 
 
 	// init clock system
@@ -362,6 +389,9 @@ void gpi_platform_init()
 		BV_BY_NAME(CLOCK_LFCLKSRC_EXTERNAL, Disabled);
 	NRF_CLOCK->HFXODEBOUNCE =
 		BV_BY_VALUE(CLOCK_HFXODEBOUNCE_HFXODEBOUNCE, 0x40);
+	NRF_CLOCK->LFXODEBOUNCE =
+		BV_BY_NAME(CLOCK_LFXODEBOUNCE_LFXODEBOUNCE, Normal);
+		// TODO: set to Extended if extended temperature range is needed [4452_021 v1.6 p.94]
 
 	// start HFXO
 	NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;

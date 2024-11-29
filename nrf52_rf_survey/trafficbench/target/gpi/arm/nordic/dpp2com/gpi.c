@@ -3,13 +3,10 @@
 #include "../../armv7-m/olf.c"
 #include "../../armv7-m/profile.c"
 
-#include "../nrf528xx/platform.c"
-#include "../nrf528xx/clocks.c"
-#include "../nrf528xx/radio.c"
-#include "../nrf528xx/stdio.c"
+#include "../nrf52840/clocks.c"
+#include "../nrf52840/radio.c"
 
 #include "platform.c"
-#include "resource_check.c"
 
 // warn if used runtime environment has not been tested (is not explicitly supported)
 // NOTE: This check is not strictly necessary if implementation files are written perfectly generic.
@@ -19,5 +16,5 @@
 #include "gpi/tools.h"
 #include "gpi/platform_spec.h"
 ASSERT_CT_WARN_STATIC(
-	GPI_ARCH_IS_OS(NONE) && (GPI_ARCH_IS_CRT(SEGGER1) || GPI_ARCH_IS_CRT(SEGGER2)),
+	GPI_ARCH_IS_OS(NONE) && GPI_ARCH_IS_CRT(SEGGER1)),
 	untested_runtime_environment__use_GPI_at_your_own_risk);

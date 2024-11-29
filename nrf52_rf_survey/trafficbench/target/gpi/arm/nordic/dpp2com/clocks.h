@@ -28,14 +28,14 @@
  *
  ***********************************************************************************************//**
  *
- *	@file					gpi/profile.h
+ *	@file					gpi/arm/nordic/dpp2com/clocks.h
  *
- *	@brief					support for program execution time profiling
+ *	@brief					general-purpose slow, fast, and hybrid clock
  *
- *	@version				$Id: b0fb498db3eadbf16e2ee0169e29c0fbcd57b027 $
+ *	@version				$Id: 30e35eeb818af1c7a767d64261fc0b8c47f06f74 $
  *	@date					TODO
  *
- *	@author					Carsten Herrmann
+ *	@author					Fabian Mager
  *
  ***************************************************************************************************
 
@@ -45,59 +45,22 @@
 
  **************************************************************************************************/
 
-#ifndef __GPI_PROFILE_H__
-#define __GPI_PROFILE_H__
+#ifndef __GPI_ARM_DPP2_COM_CLOCKS_H__
+#define __GPI_ARM_DPP2_COM_CLOCKS_H__
 
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include "gpi/platform_spec.h"				// GPI_PLATFORM_PATH
-#include GPI_PLATFORM_PATH(profile.h)		// platform specific implementation
-
-//**************************************************************************************************
-//***** Global (Public) Defines and Consts *********************************************************
-
-
+#include "../nrf52840/clocks.h" // wrapper
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
-
-
-//**************************************************************************************************
-//***** Forward Class and Struct Declarations ******************************************************
-
-
-
-//**************************************************************************************************
-//***** Global Typedefs and Class Declarations *****************************************************
-
-
-
-//**************************************************************************************************
-//***** Global Variables ***************************************************************************
-
-
-
-//**************************************************************************************************
-//***** Prototypes of Global Functions *************************************************************
-
-#ifdef __cplusplus
-	extern "C" {
+#ifndef GPI_LFRC_CAL_TIMER_PPI_CHANNEL
+	#define GPI_LFRC_CAL_TIMER_PPI_CHANNEL	1	// start calibration timer after LFRC has been calibrated
+#endif
+#ifndef GPI_LFRC_CAL_TASK_PPI_CHANNEL
+	#define GPI_LFRC_CAL_TASK_PPI_CHANNEL	2	// start calibration after calibration timer reached 0 (EVENTS_CTTO)
 #endif
 
-
-
-#ifdef __cplusplus
-	}
-#endif
-
-//**************************************************************************************************
-//***** Implementations of Inline Functions ********************************************************
-
-
-
-//**************************************************************************************************
-//**************************************************************************************************
-
-#endif // __GPI_PROFILE_H__
+#endif // __GPI_ARM_DPP2_COM_CLOCKS_H__

@@ -32,7 +32,7 @@
  *
  *	@brief					basic interrupt handling (enable/disable, lock/unlock, ...)
  *
- *	@version				$Id$
+ *	@version				$Id: 65445956917db32ed767b65a3fb1ec61bd90dec5 $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -40,7 +40,7 @@
  ***************************************************************************************************
 
  	@details
-
+	
 	TODO
 
  **************************************************************************************************/
@@ -51,57 +51,63 @@
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include "gpi/platform_spec.h"           // GPI_PLATFORM_PATH
-#include GPI_PLATFORM_PATH(interrupts.h) // platform specific details
+#include "gpi/platform_spec.h"				// GPI_PLATFORM_PATH
+#include GPI_PLATFORM_PATH(interrupts.h)	// platform specific details
 
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
+
 
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 
+
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
+
 
 
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
 
 
+
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
+
 
 
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-extern "C" {
+	extern "C" {
 #endif
 
-void gpi_int_enable();
-void gpi_int_disable();
-int  gpi_int_lock();
-void gpi_int_unlock(int r);
+void		gpi_int_enable();
+void		gpi_int_disable();
+int			gpi_int_lock();
+void		gpi_int_unlock(int r);
 
-void gpi_atomic_or(volatile unsigned int *p, unsigned int mask);
-void gpi_atomic_and(volatile unsigned int *p, unsigned int mask);
-void gpi_atomic_set(volatile unsigned int *p, unsigned int mask);
-void gpi_atomic_clear(volatile unsigned int *p, unsigned int mask);
+void		gpi_atomic_or(   volatile unsigned int *p, unsigned int mask);
+void		gpi_atomic_and(  volatile unsigned int *p, unsigned int mask);
+void		gpi_atomic_set(  volatile unsigned int *p, unsigned int mask);
+void		gpi_atomic_clear(volatile unsigned int *p, unsigned int mask);
 
-void gpi_atomic_write_8(volatile uint8_t *p, uint8_t data);
-void gpi_atomic_write_16(volatile uint16_t *p, uint16_t data);
-void gpi_atomic_write_32(volatile uint32_t *p, uint32_t data);
+void		gpi_atomic_write_8( volatile uint8_t  *p, uint8_t  data);
+void		gpi_atomic_write_16(volatile uint16_t *p, uint16_t data);
+void		gpi_atomic_write_32(volatile uint32_t *p, uint32_t data);
 //void		gpi_atomic_write(   volatile uintXX_t *p, uintXX_t data);	// implemented as macro
 
 #ifdef __cplusplus
-}
+	}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
+
 
 
 //**************************************************************************************************

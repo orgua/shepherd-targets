@@ -1,7 +1,7 @@
 /***************************************************************************************************
  ***************************************************************************************************
  *
- *	Copyright (c) 2021, Networked Embedded Systems Lab, TU Dresden
+ *	Copyright (c) 2021 - 2024, Networked Embedded Systems Lab, TU Dresden
  *	All rights reserved.
  *
  *	Redistribution and use in source and binary forms, with or without
@@ -28,11 +28,11 @@
  *
  ***********************************************************************************************//**
  *
- *	@file					gpi/arm/nordic/nrf52840/resource_declarations.h
+ *	@file					gpi/arm/nordic/nrf528xx/resource_declarations.h
  *
- *	@brief					nRF52840 resource definitions (see resource_check.h)
+ *	@brief					nRF528xx resource definitions (see resource_check.h)
  *
- *	@version				$Id$
+ *	@version				$Id: 8f9c5def8b79a6f1b585b25053ebec3c89a6187a $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -45,33 +45,38 @@
 
  **************************************************************************************************/
 
-#ifndef __GPI_ARM_NRF52840_RESOURCE_DECLARATIONS_H__
-#define __GPI_ARM_NRF52840_RESOURCE_DECLARATIONS_H__
+#ifndef __GPI_ARM_NRF528xx_RESOURCE_DECLARATIONS_H__
+#define __GPI_ARM_NRF528xx_RESOURCE_DECLARATIONS_H__
 
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
+#include "gpi/platform_spec.h"
 
 //**************************************************************************************************
 //***** Global (Public) Defines and Consts *********************************************************
+
 
 
 //**************************************************************************************************
 //***** Local (Private) Defines and Consts *********************************************************
 
 
+
 //**************************************************************************************************
 //***** Forward Class and Struct Declarations ******************************************************
+
 
 
 //**************************************************************************************************
 //***** Global Typedefs and Class Declarations *****************************************************
 
 
+
 //**************************************************************************************************
 //***** Global Variables ***************************************************************************
 
-// nRF52840 resources
+// nRF528xx resources
 // NOTE: peripheral names are equal to those from nrf.h, besides that indexes are split up
 
 // TODO: break down subblocks as needed (gather some experience before). Consider the background
@@ -181,16 +186,16 @@ GPI_RESOURCE_DECLARE(NRF_PDM);
 GPI_RESOURCE_DECLARE(NRF_ACL_NVMC);
 
 GPI_RESOURCE_DECLARE(NRF_PPI);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 0);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 1);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 2);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 3);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 4);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 5);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 6);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 7);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 8);
-GPI_RESOURCE_DECLARE(NRF_PPI_CH, 9);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  0);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  1);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  2);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  3);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  4);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  5);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  6);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  7);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  8);
+GPI_RESOURCE_DECLARE(NRF_PPI_CH,  9);
 GPI_RESOURCE_DECLARE(NRF_PPI_CH, 10);
 GPI_RESOURCE_DECLARE(NRF_PPI_CH, 11);
 GPI_RESOURCE_DECLARE(NRF_PPI_CH, 12);
@@ -228,27 +233,33 @@ GPI_RESOURCE_DECLARE(NRF_FPU);
 
 GPI_RESOURCE_DECLARE(NRF_USBD);
 
-GPI_RESOURCE_DECLARE(NRF_QSPI);
+#if GPI_ARCH_IS_DEVICE(nRF52840)
 
-GPI_RESOURCE_DECLARE(NRF_CC_HOST_RGF_CRYPTOCELL);
+	GPI_RESOURCE_DECLARE(NRF_QSPI);
+
+	GPI_RESOURCE_DECLARE(NRF_CC_HOST_RGF_CRYPTOCELL);
+
+#endif
 
 //**************************************************************************************************
 //***** Prototypes of Global Functions *************************************************************
 
 #ifdef __cplusplus
-extern "C" {
+	extern "C" {
 #endif
 
 
+
 #ifdef __cplusplus
-}
+	}
 #endif
 
 //**************************************************************************************************
 //***** Implementations of Inline Functions ********************************************************
 
 
+
 //**************************************************************************************************
 //**************************************************************************************************
 
-#endif // __GPI_ARM_NRF52840_RESOURCE_DECLARATIONS_H__
+#endif // __GPI_ARM_NRF528xx_RESOURCE_DECLARATIONS_H__

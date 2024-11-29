@@ -93,7 +93,7 @@ GPI_TRACE_CONFIG(radio, GPI_TRACE_BASE_SELECTION | TRACE_USER_SELECTION);
 #define DEBUG_RSSI 0
 
 // use DEBUG_GPIO to connect internal events to GPIO pins (allows external monitoring)
-#define DEBUG_GPIO 1
+#define DEBUG_GPIO 0
 
 // sampling period in timer ticks
 #if DEBUG_RSSI

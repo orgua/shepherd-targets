@@ -1,7 +1,7 @@
 # nRF52 & MSP430 FRAM Target V1.3
 
 Shared pins between MCUs and Observer, **hypothetical Cape V2.6 (not produced yet)**.
-The testbed still used Cape v2.4 as of 2024-08.
+**The testbed still used Cape v2.4 as of 2024-08**.
 
 | SHP-V26  | Dir   | Riotee     | nRF52  | msp430  | Description                 |
 |----------|-------|------------|--------|---------|-----------------------------|
@@ -172,7 +172,7 @@ See `.wxmx`-maxima-file for more details.
 - 16x GPIO instead of 10x
 - no power-converters, but over-voltage-protection and under-volt-switch for nRF
 
-## Bugs & Proposed Fixes / Improvements
+## Bugs of prior Version & Proposed Fixes / Improvements
 
 - nRF - remove resist of alignment crosses
 - less paste on thermal pad of nRF? Thermal paste is OK

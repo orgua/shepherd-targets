@@ -5,28 +5,28 @@ Shared pins between MCUs and Observer, **hypothetical Cape V2.6 (not produced ye
 
 | SHP-V26  | Dir   | Riotee     | nRF52  | msp430  | Description                 |
 |----------|-------|------------|--------|---------|-----------------------------|
-| GPIO0    | TBD   | GPIO.0     | P0.21  | P2.6    | UART Target-RX, msp.A1.CiPo |
-| GPIO1    | TBD   | GPIO.1     | P0.08  | P2.5    | UART Target-TX, msp.A1.CoPi |
-| GPIO2    | TBD   | GPIO.2     | P0.04  | P2.3    | msp.A1.PSel                 |
-| GPIO3    | TBD   | GPIO.3     | P0.05  | P2.4    | msp.A1.CLK                  |
-| GPIO4    | TBD   | GPIO.4     | P1.09  | P4.6    |                             |
-| GPIO5    | TBD   | GPIO.5     | P0.26  | P3.6    |                             |
-| GPIO6    | TBD   | GPIO.6     | P1.03  | PJ.6    |                             |
-| GPIO7    | TBD   | GPIO.7     | P0.11  | P5.3    | msp.B1.PSel                 |
-| GPIO8    | TBD   | GPIO.8     | P0.13  | P5.2    | msp.B1.CLK                  |
-| GPIO9    | TBD   | GPIO.9     | P0.16  | P5.1    | msp.B1.CiPo                 |
-| GPIO10   | TBD   | -          | P0.12  | P5.0    | msp.B1.CoPi, SDA            |
-| GPIO11   | TBD   | -          | P0.10  | P6.0    | msp.A3.CoPi, TXD            |
-| GPIO12   | TBD   | -          | P0.19  | P6.1    | msp.A3.CiPo, RXD            |
-| GPIO13   | TBD   | -          | P0.20  | P6.3    | msp.A3.STE                  |
-| GPIO14   | TBD   | -          | P0.24  | P6.6    | msp.A3.CLK                  |
-| GPIO15   | TBD   | -          | P0.27  | P6.7    | msp.A3.STE                  |
+| GPIO0    | <-A-> | GPIO.0     | P0.21  | P2.6    | UART Target-RX, msp.A1.CiPo |
+| GPIO1    | <--   | GPIO.1     | P0.08  | P2.5    | UART Target-TX, msp.A1.CoPi |
+| GPIO2    | <-B-> | GPIO.2     | P0.04  | P2.3    | msp.A1.PSel                 |
+| GPIO3    | <-B-> | GPIO.3     | P0.05  | P2.4    | msp.A1.CLK                  |
+| GPIO4    | <-C-> | GPIO.4     | P1.09  | P4.6    |                             |
+| GPIO5    | <-C-> | GPIO.5     | P0.26  | P3.6    |                             |
+| GPIO6    | <-C-> | GPIO.6     | P1.03  | PJ.6    |                             |
+| GPIO7    | <-C-> | GPIO.7     | P0.11  | P5.3    | msp.B1.PSel                 |
+| GPIO8    | <--   | GPIO.8     | P0.13  | P5.2    | msp.B1.CLK                  |
+| GPIO9    | <--   | GPIO.9     | P0.16  | P5.1    | msp.B1.CiPo                 |
+| GPIO10   | <--   | -          | P0.12  | P5.0    | msp.B1.CoPi, SDA            |
+| GPIO11   | <--   | -          | P0.10  | P6.0    | msp.A3.CoPi, TXD            |
+| (GPIO12) | <--   | -          | P0.19  | P6.1    | msp.A3.CiPo, RXD            |
+| (GPIO13) | <--   | -          | P0.20  | P6.3    | msp.A3.STE                  |
+| (GPIO14) | <--   | -          | P0.24  | P6.6    | msp.A3.CLK                  |
+| (GPIO15) | <--   | -          | P0.27  | P6.7    | msp.A3.STE                  |
 | PwrGoodL | -->   | PG_L       | P0.23  | P5.4    |                             |
 | PwrGoodH | -->   | PG_H       | P0.07  | P5.5    |                             |
 | prog11   | -->   | SWD.CLK    | swdclk | -       |                             |
-| prog12   | <-A-> | SWD.IO     | swdio  | -       |                             |
+| prog12   | <-D-> | SWD.IO     | swdio  | -       |                             |
 | prog21   | -->   | SBW.CLK    | -      | sbwtck  |                             |
-| prog22   | <-B-> | SBW.IO     | -      | sbwtdio |                             |
+| prog22   | <-E-> | SBW.IO     | -      | sbwtdio |                             |
 |          | -     | LED.0      | P1.13  | P5.7    |                             |
 |          | -     | LED.2P     | P0.03  | PJ.0    |                             |
 |          | -     | I2C.SCL    | P1.08  | P6.5    |                             |
@@ -44,7 +44,11 @@ Shared pins between MCUs and Observer, **hypothetical Cape V2.6 (not produced ye
 |          |       | THRCTRL.L1 | P1.04  | P7.0    | shared, no fct for shp      |
 |          |       | VCAP.Sense | P0.29  | P7.5    | VTarget                     |
 
-**Note**: A, B, C in DIR-Column refer to switch-groups
+**Note**: 
+
+- A, B, C in DIR-Column refer to switch-groups. 1, 2 and/or 4 bits can be reversed to talk to the target.
+- D, E are switch-groups needed for programming
+- Shepherds GPIO12 to GPIO15 are not recordable by the testbed as pins on the SBC are all used up
 
 ## Connections to Cape V2.4 via Adapter
 

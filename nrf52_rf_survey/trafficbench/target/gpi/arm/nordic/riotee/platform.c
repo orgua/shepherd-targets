@@ -197,7 +197,7 @@ void gpi_platform_init()
     // P0.03 / AIN1:	LED_CTRL
     // set drive mode = wired-or to avoid conflicts with MSP430
     // ATTENTION: we expect that MSP430 does the same (doesn't use push/pull)
-    NRF_P0->OUTCLR     = BV(3);
+    NRF_P0->OUTSET     = BV(3);
     NRF_P0->PIN_CNF[3] = BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) |
                          BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
                          BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) |

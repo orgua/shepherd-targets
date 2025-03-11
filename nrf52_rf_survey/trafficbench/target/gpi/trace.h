@@ -430,7 +430,7 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
                   case 0:                                                                                      \
                   {                                                                                            \
                       _GPI_TRACE_ASSERT_VA(0, ##__VA_ARGS__);                                                  \
-                      _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group, msg)               \
+                      _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config & GPI_TRACE_LOG_TYPE, group, msg)              \
                       gpi_trace_store_msg(_s_, ##__VA_ARGS__);                                                 \
                       break;                                                                                   \
                   }                                                                                            \
@@ -439,14 +439,14 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
                       _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_FILE, &"x", ##__VA_ARGS__);                           \
                       if (1 == GPI_TRACE_FILTER_PATH)                                                          \
                       {                                                                                        \
-                          _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                          _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config & GPI_TRACE_LOG_TYPE, group,               \
                                                 _GPI_TRACE_FMT_FILE " " msg)                                   \
                           gpi_trace_store_msg(_s_, __FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")",             \
                                               ##__VA_ARGS__);                                                  \
                       }                                                                                        \
                       else                                                                                     \
                       {                                                                                        \
-                          _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                          _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config & GPI_TRACE_LOG_TYPE, group,               \
                                                 _GPI_TRACE_FMT_FILE " " msg)                                   \
                           gpi_trace_store_msg(                                                                 \
                                   _s_,                                                                         \
@@ -461,7 +461,7 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
                       _GPI_TRACE_ASSERT_VA(GPI_TRACE_LOG_SCOPE, &(__func__[0]), 0, (void *) 0,                 \
                                            ##__VA_ARGS__);                                                     \
                       _GPI_TRACE_MSG_FAST_1(                                                                   \
-                              0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                                  \
+                              0, gpi_trace_config & GPI_TRACE_LOG_TYPE, group,                                 \
                               "%-." GPI_TRACE_STRINGIFY(                                                       \
                                       GPI_TRACE_SIZE_SCOPE) "s (" GPI_TRACE_STRINGIFY(__LINE__) ")%-*.0s" msg) \
                       gpi_trace_store_msg(_s_, __func__,                                                       \
@@ -477,7 +477,7 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
                                            &(__func__[0]), ##__VA_ARGS__);                                     \
                       if (1 == GPI_TRACE_FILTER_PATH)                                                          \
                       {                                                                                        \
-                          _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                          _GPI_TRACE_MSG_FAST_1(1, gpi_trace_config & GPI_TRACE_LOG_TYPE, group,               \
                                                 _GPI_TRACE_FMT_FILE " " _GPI_TRACE_FMT_SCOPE                   \
                                                                     " " msg)                                   \
                           gpi_trace_store_msg(_s_, __FILE__ "(" GPI_TRACE_STRINGIFY(__LINE__) ")",             \
@@ -485,7 +485,7 @@ _GPI_TRACE_FILTER_PATH_x(0, 1) _GPI_TRACE_FILTER_PATH_x(1, 2) _GPI_TRACE_FILTER_
                       }                                                                                        \
                       else                                                                                     \
                       {                                                                                        \
-                          _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config &GPI_TRACE_LOG_TYPE, group,                \
+                          _GPI_TRACE_MSG_FAST_1(0, gpi_trace_config & GPI_TRACE_LOG_TYPE, group,               \
                                                 _GPI_TRACE_FMT_FILE " " _GPI_TRACE_FMT_SCOPE                   \
                                                                     " " msg)                                   \
                           gpi_trace_store_msg(                                                                 \

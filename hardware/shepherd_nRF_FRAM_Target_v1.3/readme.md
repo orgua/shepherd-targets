@@ -44,7 +44,7 @@ Shared pins between MCUs and Observer, **hypothetical Cape V2.6 (not produced ye
 |          |       | THRCTRL.L1 | P1.04  | P7.0    | shared, no fct for shp      |
 |          |       | VCAP.Sense | P0.29  | P7.5    | VTarget                     |
 
-**Note**: 
+**Note**:
 
 - A, B, C in DIR-Column refer to switch-groups. 1, 2 and/or 4 bits can be reversed to talk to the target.
 - D, E are switch-groups needed for programming

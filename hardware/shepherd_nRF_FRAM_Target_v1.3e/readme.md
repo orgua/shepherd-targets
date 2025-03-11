@@ -2,14 +2,14 @@
 
 Documentation of v1.3 is still up-to-date. It can be found in `/hardware/shepherd_nRF_FRAM_Target_v1.3/readme.md`.
 
-## Improvements for this Version 
+## Improvements for this Version
 
 - Edge-Connector is 17.40 mm wide, PCB-Edge has 17.20 mm, exactly to spec
   - resist bridge between pads is 0.3 mm, so this is fine, but pcb can be moved
   - -> still widen edge on both sides .05 mm to 17.30 mm
   - connector wiggles and prongs are almost on outer edge of pad
-- edge-connector is still a bit loose, 
-  - PCB has only 1.48 mm thickness without copper, resist, silk, but outer rail is 1.75 mm (spec) 
+- edge-connector is still a bit loose,
+  - PCB has only 1.48 mm thickness without copper, resist, silk, but outer rail is 1.75 mm (spec)
   - 1.64 to 1.70 mm on Cu, silk, resist
   - railing edge now has resist and silk screen
 - as 6 of 24 MSP430s were failing to be programmed - programming pins were checked & redone

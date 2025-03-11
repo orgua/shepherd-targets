@@ -14,6 +14,7 @@ This directory contains all files to manufacture hardware:
 - ~~V1.1 was designed, but is not yet manufactured~~
 - ~~V1.2 was designed and tested - discarded because of manufacturing problems~~
 - V1.3 is being deployed ATM
+- V1.3e will accompany the base-version and will hopefully reduce failure-rate of msp430 
 
 ## Adapters
 

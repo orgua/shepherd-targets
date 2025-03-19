@@ -1,7 +1,7 @@
 /***************************************************************************************************
  ***************************************************************************************************
  *
- *	Copyright (c) 2018 - 2024, Networked Embedded Systems Lab, TU Dresden
+ *	Copyright (c) 2018 - 2025, Networked Embedded Systems Lab, TU Dresden
  *	All rights reserved.
  *
  *	Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  *
  *	@brief					defines platform specific attributes and settings
  *
- *	@version				$Id: 5b051c981c3d13730eddaca3b2258e8df66efee2 $
+ *	@version				$Id: 666e98f3f0e6d859ca6b956b0cf7565a8b732ff8 $
  *	@date					TODO
  *
  *	@author					Carsten Herrmann
@@ -446,6 +446,10 @@
 	#define GPI_ARCH_BOARD_TUDNES_DPP2COM_END			(GPI_ARCH_BOARD_RIGADO_BMD340 + _GPI_ARCH_BOARD(1))
 #define GPI_ARCH_BOARD_RIGADO_BMD340_END			(GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(5))
 
+// TUD NES Lab Shepherd testbed targets
+#define GPI_ARCH_BOARD_TUDNES_SHEPHERD_NRF52840FRAM_V13		(GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(5))
+#define GPI_ARCH_BOARD_TUDNES_SHEPHERD_NRF52840FRAM_V13_END	(GPI_ARCH_DEVICE_nRF52840 + _GPI_ARCH_BOARD(6))
+
 // Nessie Circuits Riotee platform
 #define GPI_ARCH_BOARD_NESSIE_RIOTEE_NRF			(GPI_ARCH_DEVICE_nRF52833 + _GPI_ARCH_BOARD(1))
 	#define GPI_ARCH_BOARD_NESSIE_RIOTEE_NRF_PURE		(GPI_ARCH_BOARD_NESSIE_RIOTEE_NRF + _GPI_ARCH_BOARD(0))
@@ -467,6 +471,8 @@
 		#define GPI_PLATFORM_DIR	arm/nordic/pca10059
 	#elif GPI_ARCH_IS_BOARD(TUDNES_DPP2COM)
 		#define GPI_PLATFORM_DIR	arm/nordic/dpp2com
+	#elif GPI_ARCH_IS_BOARD(TUDNES_SHEPHERD_NRF52840FRAM_V13)
+		#define GPI_PLATFORM_DIR	arm/nordic/shepherd_nrf52
 	#elif GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF)
 		#define GPI_PLATFORM_DIR	arm/nordic/riotee
 	#else

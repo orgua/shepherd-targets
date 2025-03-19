@@ -132,12 +132,10 @@ void gpi_platform_init()
     // - NFCPINS is handled in nRF startup code (see CONFIG_NFCT_PINS_AS_GPIOS)
 
     // (re)init POWER settings
-    // supply voltage mode = High Voltage mode
+    // supply voltage mode = Normal Voltage mode (VCC connected to VDD and VDDH, REG0 bypassed/disabled)
     NRF_POWER->INTENCLR = -1u;
     NRF_POWER->POFCON   = BV_BY_NAME(POWER_POFCON_POF, Disabled);
-    NRF_POWER->DCDCEN   = BV_BY_NAME(POWER_DCDCEN_DCDCEN, Enabled); // set REG1 to DC/DC mode
-    NRF_POWER->DCDCEN0 =
-            BV_BY_NAME(POWER_DCDCEN0_DCDCEN, Disabled); // set REG0 to DC/DC mode (if enabled)
+    NRF_POWER->DCDCEN   = BV_BY_NAME(POWER_DCDCEN_DCDCEN, Disabled); // set REG1 to LDO mode
     for (i = 0; i <= 8; ++i)
         NRF_POWER->RAM[i].POWER =
                 0x0000FFFF; // all RAM sections enabled, no retention during System OFF
@@ -197,7 +195,7 @@ void gpi_platform_init()
     // P0.03 / AIN1:	LED_CTRL
     // set drive mode = wired-or to avoid conflicts with MSP430
     // ATTENTION: we expect that MSP430 does the same (doesn't use push/pull)
-    NRF_P0->OUTSET     = BV(3);
+    NRF_P0->OUTCLR     = BV(3);
     NRF_P0->PIN_CNF[3] = BV_BY_NAME(GPIO_PIN_CNF_DIR, Output) |
                          BV_BY_NAME(GPIO_PIN_CNF_INPUT, Disconnect) |
                          BV_BY_NAME(GPIO_PIN_CNF_PULL, Disabled) |
@@ -347,7 +345,7 @@ void gpi_platform_init()
                           BV_BY_NAME(CLOCK_LFCLKSRC_BYPASS, Disabled) |
                           BV_BY_NAME(CLOCK_LFCLKSRC_EXTERNAL, Disabled);
     NRF_CLOCK->HFXODEBOUNCE        = BV_BY_VALUE(CLOCK_HFXODEBOUNCE_HFXODEBOUNCE, 0x40);
-    // NRF_CLOCK->LFXODEBOUNCE        = BV_BY_NAME(CLOCK_LFXODEBOUNCE_LFXODEBOUNCE, Normal);
+    NRF_CLOCK->LFXODEBOUNCE        = BV_BY_NAME(CLOCK_LFXODEBOUNCE_LFXODEBOUNCE, Normal);
     // TODO: set to Extended if extended temperature range is needed [4452_021 v1.6 p.94]
 
     // start HFXO

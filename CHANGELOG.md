@@ -1,5 +1,13 @@
 # Changelog
 
+# v0.5.2
+
+- add revised nRF-FRAM Target v1.3e (no functional changes)
+- update GPI, which now supports this target
+- adapt trafficbench / rf-survey and generate link-matrix
+- deprecate old design-files (prior v1.3)
+- update deps and tooling
+
 # v0.5.1
 
 - add documentation

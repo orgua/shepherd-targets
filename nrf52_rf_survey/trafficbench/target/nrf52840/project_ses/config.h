@@ -8,7 +8,7 @@
 //**************************************************************************************************
 // GPI configuration
 
-#define GPI_ARCH_PLATFORM                         (GPI_ARCH_BOARD_NESSIE_RIOTEE_NRF_PURE | GPI_ARCH_CRT_SEGGER2)
+#define GPI_ARCH_PLATFORM                         (GPI_ARCH_BOARD_TUDNES_SHEPHERD_NRF52840FRAM_V13 | GPI_ARCH_CRT_SEGGER2)
 #define GPI_STDOUT_UART_BAUDRATE                  115200
 #define GPI_ARM_NRF_STDOUT_UART_FLOWCONTROL_MODE  0
 // 3: flow ctrl on, 0: off

@@ -35,24 +35,14 @@ Current configuration
 specially for shepherd
 
 - reduced uart-speed to 115_200 for now (in config.h)
-- disable flow control (readme warns about it) to just stream uart (mode=0 in config.h)
+- disable flow control (readme warns about it) to just stream uart (`mode=0` in config.h)
 - disable button press to start (section removed in main.c)
 - deactivate DEBUG_GPIO in `radio.c`
 - current GPI modifications
   - reformatted with projects clang-format
-  - use `ARCH_BOARD_NESSIE_RIOTEE_NRF_PURE` as `GPI_ARCH_PLATFORM` in `trafficbench/config.h`
-  - added `#include "../nrf528xx/platform_internal.h"` in `riotee/platform.h` to add back macros for trafficbench
-  - enable DCDC in `riotee/platform.c`, L141, copy from pca10056 (alternative is LDO)
-  - comment-out LFXODEBOUNCE in `riotee/platform.c`, L350
-  - added `#define LED_SYNC GPI_LED_1` for riotee `#elif GPI_ARCH_IS_BOARD(NESSIE_RIOTEE_NRF)` in `trafficbench/scheduler.c`
-- OLD GPI modifications
-  - hardcoded GPI_ARCH_BOARD_nRF_PCA10056 as hardware
-  - miss-use that board as shepherd-target (adapt platform.c/.h)
-  - actively use led1-led3 (`GPI_LED_x` in `platform.h`)
-  - remove other gpio
-  - use correct uart-pins (`UARTE_PSEL_TXD_PIN` & `UARTE_PSEL_RXD_PIN` in `platform.c`)
-  - set button-macros to harmless gpio (`GPI_BUTTON_x` in `platform.h`)
-  -
+  - use `GPI_ARCH_BOARD_TUDNES_SHEPHERD_NRF52840FRAM_V13` as `GPI_ARCH_PLATFORM` in `trafficbench/config.h`
+  - added `#include "gpi/arm/nordic/nrf528xx/platform_internal.h"` in `trafficbench/target/nrf52840/radio_queues_custom.h` to add back macros for trafficbench
+  - added `#define LED_SYNC GPI_LED_0` for our target `#elif GPI_ARCH_IS_BOARD(TUDNES_SHEPHERD_NRF52840FRAM_V13)` in `trafficbench/scheduler.c`
 
 ## Usage on the testbed
 
@@ -77,9 +67,7 @@ shepherd-herd -v run -a /var/shepherd/content/task/nes_lab/tasks_rf_survey.yaml
 scp
 ```
 
-
 scp /var/shepherd/recordings/
-
 
 ## TODO:
 

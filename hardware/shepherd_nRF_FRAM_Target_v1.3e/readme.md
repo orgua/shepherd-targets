@@ -2,7 +2,7 @@
 
 Documentation of v1.3 is still up-to-date. It can be found in `/hardware/shepherd_nRF_FRAM_Target_v1.3/readme.md`.
 
-## Improvements for this Version
+## Implemented Changes
 
 - Edge-Connector is 17.40 mm wide, PCB-Edge has 17.20 mm, exactly to spec
   - resist bridge between pads is 0.3 mm, so this is fine, but pcb can be moved
@@ -23,3 +23,16 @@ Documentation of v1.3 is still up-to-date. It can be found in `/hardware/shepher
 
 - BOM for 30n with spare, 650 € @ Mouser
 - Panels for 30n, 214 € @ JLCPCB
+
+## Errata & future Improvements
+
+- BGA without paste? MSP-failure-rate stays ~ 20 %
+  - low temp paste is harder to control - does not wet as good and needs manual fixes (almost on every PCB)
+- bridge to panel should be moved away from BGA
+- holes on panel can be 3.2 mm for stencil printer
+- QR Code can now be directly created in Altium
+- perforated breaking lines on panels (extension of milled line)
+- bridge to panel can be thinner
+- move LED a bit away from SMA
+- pin 1 marking bigger on ICs
+- is there a paste-pad under the TS5A

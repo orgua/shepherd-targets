@@ -1,7 +1,7 @@
 # nRF52 Testable
 
 The app monitors shared GPIO pins and reports via uart upon detection.
-This needs a second MCU that toggles these gpio.
+This needs a second MCU that toggles these gpio (companion-firmware `/msp430_testable`). 
 Alternatively this FW can change the mode to toggling-behavior.
 
 Other modes:
@@ -46,35 +46,66 @@ Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to
 ## Example Output Mode 0
 
 ```uart
-GPIO WATCHER
-9 triggered
-10 triggered
-11 triggered
-0 triggered
-1 triggered
-2 triggered
-3 triggered
-4 triggered
-5 triggered
-6 triggered
-7 triggered
-8 triggered
-12 triggered
-13 triggered
-14 triggered
-15 triggered
-16 triggered
-17 triggered
-18 triggered
-19 triggered
-Received all 20 shared pins!!
-9 triggered
-Received all 20 shared pins!!
-10 triggered
-Received all 20 shared pins!!
-11 triggered
-Received all 20 shared pins!!
-[repeated last 6 lines]
+GPIO WATCHER (31 pins) 
+               56              
+0              56              
+               56              
+ 1             56              
+               56              
+  2            56              
+               56              
+   3           56              
+               56              
+    4          56              
+               56              
+     5         56              
+               56              
+      6        56              
+               56              
+       7       56              
+               56              
+        8      56              
+               56              
+         9     56              
+               56              
+          0    56              
+               56              
+           1   56              
+               56              
+            2  56              
+               56              
+             3 56              
+               56              
+              456              
+               56              
+               567             
+               56              
+               56 8            
+               56              
+               56  9           
+               56              
+               56   0          
+               56              
+               56    1         
+               56              
+               56     2        
+               56              
+               56      3       
+               56              
+               56       4      
+               56              
+               56        5     
+               56              
+               56         6    
+               56              
+               56          7   
+               56              
+               56           8  
+               56              
+               56            9 
+               56              
+               56             0
+Received all 31 shared pins!!
 ```
 
 ## Source

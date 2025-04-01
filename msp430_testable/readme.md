@@ -1,5 +1,6 @@
 # Msp430 Testable
 
+This is the companion-firmware for `/nrf_testable` to verify the hardware.
 The firmware toggles all used & shared GPIOs and depends on a receiver / supervisor that verifies each pin.
 
 Sequence:

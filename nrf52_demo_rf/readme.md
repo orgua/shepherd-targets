@@ -6,7 +6,7 @@ If the supply voltage reaches 3.3V or the pin goes high, it sends a BLE advertis
 
 Edit the definitions of the GPIO pins at the top of `src/app.c` to reflect your hardware.
 
-An App like `RaMBLE` can be used to monitor rf-activity.
+An App like `LightBlue` or `RaMBLE` can be used to monitor rf-activity.
 
 ## Source
 

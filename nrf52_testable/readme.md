@@ -1,7 +1,7 @@
 # nRF52 Testable
 
 The app monitors shared GPIO pins and reports via uart upon detection.
-This needs a second MCU that toggles these gpio (companion-firmware `/msp430_testable`). 
+This needs a second MCU that toggles these gpio (companion-firmware `/msp430_testable`).
 Alternatively this FW can change the mode to toggling-behavior.
 
 Other modes:
@@ -46,64 +46,64 @@ Edit the `pins` array and the UART pin definitions at the top of `src/main.c` to
 ## Example Output Mode 0
 
 ```uart
-GPIO WATCHER (31 pins) 
-               56              
-0              56              
-               56              
- 1             56              
-               56              
-  2            56              
-               56              
-   3           56              
-               56              
-    4          56              
-               56              
-     5         56              
-               56              
-      6        56              
-               56              
-       7       56              
-               56              
-        8      56              
-               56              
-         9     56              
-               56              
-          0    56              
-               56              
-           1   56              
-               56              
-            2  56              
-               56              
-             3 56              
-               56              
-              456              
-               56              
-               567             
-               56              
-               56 8            
-               56              
-               56  9           
-               56              
-               56   0          
-               56              
-               56    1         
-               56              
-               56     2        
-               56              
-               56      3       
-               56              
-               56       4      
-               56              
-               56        5     
-               56              
-               56         6    
-               56              
-               56          7   
-               56              
-               56           8  
-               56              
-               56            9 
-               56              
+GPIO WATCHER (31 pins)
+               56
+0              56
+               56
+ 1             56
+               56
+  2            56
+               56
+   3           56
+               56
+    4          56
+               56
+     5         56
+               56
+      6        56
+               56
+       7       56
+               56
+        8      56
+               56
+         9     56
+               56
+          0    56
+               56
+           1   56
+               56
+            2  56
+               56
+             3 56
+               56
+              456
+               56
+               567
+               56
+               56 8
+               56
+               56  9
+               56
+               56   0
+               56
+               56    1
+               56
+               56     2
+               56
+               56      3
+               56
+               56       4
+               56
+               56        5
+               56
+               56         6
+               56
+               56          7
+               56
+               56           8
+               56
+               56            9
+               56
                56             0
 Received all 31 shared pins!!
 ```

@@ -35,4 +35,5 @@ Documentation of v1.3 is still up-to-date. It can be found in `/hardware/shepher
 - bridge to panel can be thinner
 - move LED a bit away from SMA
 - pin 1 marking bigger on ICs
-- is there a paste-pad under the TS5A
+- is there a paste-pad under the TS5A?
+- allow using internal switching regulator from nRF to lower power-consumption

@@ -4,15 +4,15 @@ C:\Users\hans\Documents\Altium\shepherd_v24_target_adapter_hdr\Project Outputs\P
 ========================================================================================================================
 File Design Information:
 
-Date:       12/09/24
-Time:       14:51
+Date:       01/04/25
+Time:       20:39
 Revision:   Not in VersionControl
 Variant:    No variations
 Units used: mm
 
 "Designator","Comment","Layer","Footprint","Center-X(mm)","Center-Y(mm)","Rotation","Manufacturer PN","Value"
-"P5","P_HDR_2x5_2.54mm_dbg","TopLayer","P_Pinheader_2x5_R2.54mm_pressfit","24,5800","6,6000","0","",""
-"P4","P_HDR_2x5_2.54mm_dbg","TopLayer","P_Pinheader_2x5_R2.54mm_pressfit","24,5800","14,2000","0","",""
-"P3","P_HDR_2x5_2.54mm_dbg","TopLayer","P_Pinheader_2x5_R2.54mm_pressfit","24,5800","20,8000","0","",""
+"P5","P_HDR_2x5_2.54mm_dbg","TopLayer","P_Pinheader_2x5_R2.54mm_pressfit","24,5400","6,0200","0","",""
+"P4","P_HDR_2x5_2.54mm_dbg","TopLayer","P_Pinheader_2x5_R2.54mm_pressfit","24,5400","13,6400","0","",""
+"P3","P_HDR_2x5_2.54mm_dbg","TopLayer","P_Pinheader_2x5_R2.54mm_pressfit","24,5400","21,2600","0","",""
 "P2","P_HSEC8-120-01-S-DV","BottomLayer","P_HSEC8-120-01-S-DV","9,8300","13,5000","270","HSEC8-120-01-L-DV-A-K-TR",""
 "P1","P_HSEC8-120-Edge","TopLayer","P_HSEC8-120_edge","3,0000","13,5000","270","",""

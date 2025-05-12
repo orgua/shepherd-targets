@@ -7,7 +7,7 @@ Shared pins between MCUs and Observers with **Cape V2.5 (deployed in near future
 **Note**:
 
 - GPIO12 to GPIO15 are not recordable by the testbed with cape V2.5, as pins on the SBC are all used up
-- The nRF has no outer reset line - so configuring one could keep the MCU in permanent reset. Code for the nRF52-DK may use P0.21 for reset - it is actively used for UART-Rx here. 
+- The nRF has no outer reset line - so configuring one could keep the MCU in permanent reset. Code for the nRF52-DK may use P0.21 for reset - it is actively used for UART-Rx here.
 - A, B, C in DIR-Column refer to switch-groups. 1, 2 and/or 4 bits can be reversed to talk to the target.
 - D, E are switch-groups needed for programming
 

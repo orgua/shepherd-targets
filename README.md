@@ -86,4 +86,4 @@ To build the code, you'll need the gcc toolchain for the MSP430 microcontroller 
 
 ### Controlling the Node-ID
 
-When an elf-firmware contains a ``SHEPHERD_NODE_ID`` the variable will patched with the actual target-ID before running the experiment. See the proposed [c-file](https://github.com/orgua/shepherd-targets/tree/main/nrf52_demo_rf/src/shepherd_node_id.c) for more information.
+When an `elf`-firmware contains a ``SHEPHERD_NODE_ID``, the variable will be patched with the actual target-ID before running the experiment. See the proposed [c-file](https://github.com/orgua/shepherd-targets/tree/main/nrf52_demo_rf/src/shepherd_node_id.c) for more information.

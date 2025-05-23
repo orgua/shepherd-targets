@@ -4,21 +4,22 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   call-build-msp:
-    uses: ./.github/workflows/build_msp.yml
+    uses: ./.github/workflows/build_msp.yaml
   call-build-nrf:
-    uses: ./.github/workflows/build_nrf.yml
-  run-quality-control:
-    uses: ./.github/workflows/qc_tests.yml
+    uses: ./.github/workflows/build_nrf.yaml
+  run-quality-assurance:
+    uses: ./.github/workflows/qa_tests.yaml
   release-firmware:
     runs-on: ubuntu-latest
     needs:
-      #- run-quality-control
+      - run-quality-assurance
       - call-build-msp
       - call-build-nrf
     steps:

@@ -50,8 +50,8 @@ on server - prereq:
 
 ```shell
 cd ~
-git clone https://github.com/orgua/shepherd-datalib
-cd shepherd-datalib/extr
+git clone https://github.com/nes-lab/shepherd-tools
+cd shepherd-tools/extr
 
 python3 gen_energy_envs.py
 python3 gen_firmwares.py

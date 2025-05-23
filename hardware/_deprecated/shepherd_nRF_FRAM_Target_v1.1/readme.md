@@ -1,7 +1,7 @@
 # nRF52 & MSP430 FRAM Target V1.1
 
 - not yet manufactured / skipped
-- changes to V1.0 are minimal, so the [documentation from there](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.0) can be used
+- changes to V1.0 are minimal, so the [documentation from there](https://github.com/nes-lab/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.0) can be used
 
 ## Bugs, Changes, Improvements
 
@@ -26,4 +26,4 @@ see v1.0 document.
 - add a system to identify pcb? OW-nodeid or i2c-rom?
 - ditch PAN1780 module to allow an external antenna (rf-performance of pan-module is sub-par)
 
--> will be implemented in [v1.2](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.2)
+-> will be implemented in [v1.2](https://github.com/nes-lab/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.2)

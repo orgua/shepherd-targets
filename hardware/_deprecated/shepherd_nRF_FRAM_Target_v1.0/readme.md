@@ -55,8 +55,8 @@ Shared pins between MCUs
 
 ```Shell
 cd ~
-git clone https://github.com/orgua/shepherd-datalib
-cd shepherd-datalib
+git clone https://github.com/nes-lab/shepherd-tools
+cd shepherd-tools
 git checkout dev
 git pull
 
@@ -80,7 +80,7 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test1.yaml
 
 NOTE: best done with interconnector that only routes: pwr1, serial, programming-pins, pwr2
 Check UART output with logic analyzer or in shepherd recording.
-Behavior is described [here](https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable).
+Behavior is described [here](https://github.com/nes-lab/shepherd-targets/tree/main/nrf52_testable).
 
 ### Testing the Radio
 
@@ -92,7 +92,7 @@ sudo shepherd-sheep target-power -p A -v 3 --on
 sudo shepherd-sheep run /etc/shepherd/target_device_test2.yaml
 ```
 
-Behavior is described [here](https://github.com/orgua/shepherd-targets/tree/main/nrf52_rf_test).
+Behavior is described [here](https://github.com/nes-lab/shepherd-targets/tree/main/nrf52_rf_test).
 
 ### Testing Power-consumption during sleep
 
@@ -103,7 +103,7 @@ sudo shepherd-sheep program -p A -m 2 -v 3 -t msp430 extra/content/msp430_deep_s
 sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 ```
 
--> Overview / Results for manufactured PCBs moved to [doc_testbed](https://github.com/orgua/shepherd_v2_planning/tree/main/doc_testbed)
+-> Overview / Results for manufactured PCBs moved to [doc_testbed](https://github.com/orgua/shepherd-v2-planning/tree/main/doc_testbed)
 
 ## Bugs, Changes, Improvements
 
@@ -121,8 +121,8 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 
 ### v1.1
 
-[here](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.1) - skipped
+[here](https://github.com/nes-lab/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.1) - skipped
 
 ### v1.2
 
-[here](https://github.com/orgua/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.2)
+[here](https://github.com/nes-lab/shepherd-targets/tree/main/hardware/shepherd_nRF_FRAM_Target_v1.2)

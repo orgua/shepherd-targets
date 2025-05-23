@@ -216,8 +216,8 @@ See `.wxmx`-maxima-file for more details.
 
 ```Shell
 cd ~
-git clone https://github.com/orgua/shepherd-datalib
-cd shepherd-datalib
+git clone https://github.com/nes-lab/shepherd-tools
+cd shepherd-tools
 git checkout dev
 git pull
 
@@ -241,7 +241,7 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test1.yaml
 
 NOTE: best done with inter-connector that only routes: pwr1, serial, programming-pins, pwr2
 Check UART output with logic analyzer or in shepherd recording.
-Behavior is described [here](https://github.com/orgua/shepherd-targets/tree/main/nrf52_testable).
+Behavior is described [here](https://github.com/nes-lab/shepherd-targets/tree/main/nrf52_testable).
 
 ### Testing the Radio
 
@@ -253,7 +253,7 @@ sudo shepherd-sheep target-power -p A -v 3 --on
 sudo shepherd-sheep run /etc/shepherd/target_device_test2.yaml
 ```
 
-Behavior is described [here](https://github.com/orgua/shepherd-targets/tree/main/nrf52_rf_test).
+Behavior is described [here](https://github.com/nes-lab/shepherd-targets/tree/main/nrf52_rf_test).
 
 ### Testing Power-consumption during sleep
 
@@ -271,7 +271,7 @@ sudo shepherd-sheep run /etc/shepherd/target_device_test3.yaml
 - 6 of 24 targets had trouble programming the MSP
   - removing two ICs showed no flaws
   - as visual inspection is OK the next suspects are: pcb or chip-failure
-- report is in [planning-repo](https://github.com/orgua/shepherd_v2_planning/tree/main/doc_testbed)
+- report is in [planning-repo](https://github.com/orgua/shepherd-v2-planning/tree/main/doc_testbed)
 
 ## Implemented Changes / Bugs of prior Version
 

@@ -1,4 +1,4 @@
-name: Test for Quality Control
+name: QA-Tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-22.04 # TODO: -latest was 20.04 and had old packages
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout 🛎️

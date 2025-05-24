@@ -32,7 +32,7 @@ jobs:
         with:
           path: content/
 
-      - run: cp ${{ github.workspace }}/metadata_fw.yaml content/
+      - run: cp ${{ github.workspace }}/firmware/metadata_fw.yaml content/
       - run: zip -7 -r firmwares.zip content/
 
       - name: Release

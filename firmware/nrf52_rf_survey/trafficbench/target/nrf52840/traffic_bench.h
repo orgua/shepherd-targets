@@ -51,7 +51,7 @@
 //**************************************************************************************************
 //***** Includes ***********************************************************************************
 
-#include "radio.h" // RSSISpy radio interface
+#include "radio.h"
 
 #include "gpi/interrupts.h"
 #include "gpi/protothreads.h"

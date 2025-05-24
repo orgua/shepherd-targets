@@ -36,11 +36,11 @@ jobs:
 
     - name: Build the project "${{ matrix.subproject }}" 🧱
       run: make
-      working-directory: "${{ github.workspace }}/${{ matrix.subproject }}/"
+      working-directory: "${{ github.workspace }}/firmware/${{ matrix.subproject }}/"
 
     - run: "mkdir -p content/${{ matrix.subproject }}/"
-    - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.elf content/${{ matrix.subproject }}/"
-    - run: "cp ${{ github.workspace }}/${{ matrix.subproject }}/_build/build.hex content/${{ matrix.subproject }}/"
+    - run: "cp ${{ github.workspace }}/firmware/${{ matrix.subproject }}/_build/build.elf content/${{ matrix.subproject }}/"
+    - run: "cp ${{ github.workspace }}/firmware/${{ matrix.subproject }}/_build/build.hex content/${{ matrix.subproject }}/"
 
     - name: Upload artifacts to github 🔼
       uses: actions/upload-artifact@v4

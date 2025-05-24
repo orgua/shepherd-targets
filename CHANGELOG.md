@@ -1,5 +1,13 @@
 # Changelog
 
+# v0.6.0
+
+- extend documentation
+- hardware - add more adapters (mostly for debug)
+- change repo location and update references
+- move firmwares into `/firmware`-subdir
+- update deps and tooling
+
 # v0.5.2
 
 - add revised nRF-FRAM Target v1.3e (no functional changes)

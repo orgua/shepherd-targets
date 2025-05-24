@@ -11,8 +11,8 @@ Current configuration
 
 ## Installation
 
-- adapt schedule with the [schedule-builder-script](./schedule_builder/build.py)
-- compiling: follow the [readme](./trafficbench/README.md) of trafficbench
+- adapt schedule with the [schedule-builder-script](schedule_builder/build.py)
+- compiling: follow the [readme](trafficbench/README.md) of trafficbench
   - newest studio version (tested with v7.30) is fine
   - extra package needed (and restart studio after install) - should be automatic: CMSIS 5 5 CMSIS-CORE Support Package
 
